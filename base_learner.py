@@ -1,14 +1,18 @@
 import abc
 import datetime
 import json
+import typing
 
 from field_hash_collection import FieldHashCollection
 
 
 class BaseLearner(abc.ABC):
-    def __init__(self, file_prefix: str, file_name: str):
+    def __init__(self, file_prefix: str, file_name: str,
+                 collection: typing.Type[FieldHashCollection]):
         self.file_prefix = file_prefix
         self.file_name = file_name
+        self.collection = collection
+
         self.path = f"{self.file_prefix}/{self.file_name}"
         self.contents = self._load()
 
@@ -20,7 +24,7 @@ class BaseLearner(abc.ABC):
         raise NotImplementedError
 
     def _load(self) -> FieldHashCollection:
-        contents = FieldHashCollection()
+        contents = self.collection()
         try:
             open(self.path)
         except FileNotFoundError:

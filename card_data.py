@@ -1,5 +1,6 @@
 from base_learner import BaseLearner
 from browser import Browser
+from field_hash_collection import FieldHashCollection
 
 
 class Rarity(object):
@@ -34,9 +35,15 @@ class CardData(object):
         return f"{self.name} - {self.set_num}, {self.card_num}"
 
 
+class CardCollection(FieldHashCollection):
+    def _add_to_dict(self, input: input):
+        self.dict[input.set_num][input.card_num].append(input)  # dict[set_num][card_num]=objects
+        self.dict["name"][input.name].append(input)  # dict["name"][name]=objects
+
+
 class CardLearner(BaseLearner):
     def __init__(self, file_prefix: str):
-        super().__init__(file_prefix, "cards.json")
+        super().__init__(file_prefix, "cards.json", CardCollection)
         self.contents = self._load()
 
     def _update_contents(self):
@@ -66,7 +73,7 @@ class CardLearner(BaseLearner):
             is_empty = True
         for card_link in card_table:
             name = card_link.text
-            if len(self.contents.dict['name'][name]) == 0:
+            if len(self.contents.dict["name"][name]) == 0:
                 card_url = card_link.get_attribute("href")
                 set_num = self._get_set_num_from_card_url(card_url)
                 card_num = self._get_card_num_from_card_url(card_url)
