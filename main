@@ -1,4 +1,5 @@
 from card_data import CardLearner
+from collection_data import CollectionLearner
 from deck_data import DeckLearner
 
 file_prefix = "test"
@@ -6,4 +7,7 @@ file_prefix = "test"
 card_learner = CardLearner(file_prefix)
 # card_learner.update()
 deck_learner = DeckLearner(file_prefix)
-deck_learner.update()
+# deck_learner.update()
+
+collection = CollectionLearner(file_prefix)
+collection.update()

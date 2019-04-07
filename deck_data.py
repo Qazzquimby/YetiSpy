@@ -21,6 +21,18 @@ class CardPlayset(object):
     def __str__(self):
         return f"{self.num_played}x {self.set_num}-{self.card_num}"
 
+    @classmethod
+    def from_export_text(cls, text):
+        numbers = [int(number) for number in re.findall(r'\d+', text)]
+        if len(numbers) == 3:
+            num_played = numbers[0]
+            set_num = numbers[1]
+            card_num = numbers[2]
+            playset = CardPlayset(set_num, card_num, num_played)
+            return playset
+        else:
+            return None
+
 
 class DeckData(object):
     def __init__(self, deck_id, card_playsets, archetype, last_updated, is_tournament,
@@ -79,7 +91,7 @@ class DeckData(object):
 
         playsets = []
         for row in deck_export_rows:
-            playset = DeckData._get_playset_from_deck_export_row(row)
+            playset = CardPlayset.from_export_text(row)
 
             matching_cards = card_learner.contents.dict[playset.set_num][playset.card_num]
             if len(matching_cards) == 0:
@@ -99,15 +111,6 @@ class DeckData(object):
             if other_playset.set_num == playset.set_num and other_playset.card_num == playset.card_num:
                 return other_playset
         return None
-
-    @staticmethod
-    def _get_playset_from_deck_export_row(row):
-        numbers = [int(number) for number in re.findall(r'\d+', row)]
-        num_played = numbers[0]
-        set_num = numbers[1]
-        card_num = numbers[2]
-        playset = CardPlayset(set_num, card_num, num_played)
-        return playset
 
     @staticmethod
     def _get_deck_export_contents(browser: Browser):
