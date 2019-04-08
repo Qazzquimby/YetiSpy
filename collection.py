@@ -3,14 +3,14 @@ from deck import CardPlayset
 from field_hash_collection import FieldHashCollection
 
 
-class CardPlaysetCollection(FieldHashCollection):
+class PlaysetCollection(FieldHashCollection):
     def _add_to_dict(self, input: input):
         self.dict[input.set_num][input.card_num].append(input)  # dict[set_num][card_num]=objects
 
 
 class CollectionLearner(BaseLearner):
     def __init__(self, file_prefix: str):
-        super().__init__(file_prefix, "collection_type.json", CardPlaysetCollection)
+        super().__init__(file_prefix, "collection_type.json", PlaysetCollection)
 
     def _update_contents(self):
         try:
@@ -25,7 +25,7 @@ class CollectionLearner(BaseLearner):
             pass
 
     def _load(self):
-        self.contents = CardPlaysetCollection()
+        self.contents = PlaysetCollection()
         self._update_contents()
 
     def _json_entry_to_content(self, json_entry):

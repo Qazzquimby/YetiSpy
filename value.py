@@ -4,7 +4,8 @@ from collections import defaultdict
 
 from base_learner import BaseLearner
 from card import CardCollection
-from collection import CardPlaysetCollection
+from collection import PlaysetCollection
+from deck import CardPlayset
 from field_hash_collection import FieldHashCollection
 from play_rate import CardCountPlayRateCollection, CardCountPlayRate
 
@@ -33,7 +34,7 @@ class ValueCollection(FieldHashCollection):
 
 class ValueLearner(BaseLearner):
     def __init__(self, file_prefix,
-                 collection: CardPlaysetCollection,
+                 collection: PlaysetCollection,
                  play_rates: CardCountPlayRateCollection,
                  cards: CardCollection):
         self.collection = collection
@@ -56,7 +57,7 @@ class ValueLearner(BaseLearner):
 
         matching_playset = self._get_matching_playset(play_rate)
         if matching_playset is None:
-            return
+            matching_playset = CardPlayset(play_rate.set_num, play_rate.card_num, 0)
 
         num_owned = matching_playset.num_played
         if num_owned >= 4:
@@ -66,6 +67,8 @@ class ValueLearner(BaseLearner):
         assert new_count in [1, 2, 3, 4]
 
         card_value = self._get_card_value(play_rate, matching_playset, new_count)
+        if card_value.play_rate == 0:
+            return
 
         self.contents.append(card_value)
 
