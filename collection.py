@@ -10,7 +10,7 @@ class PlaysetCollection(FieldHashCollection):
 
 class CollectionLearner(BaseLearner):
     def __init__(self, file_prefix: str):
-        super().__init__(file_prefix, "collection_type.json", PlaysetCollection)
+        super().__init__(file_prefix, "collection.json", PlaysetCollection)
 
     def _update_contents(self):
         try:
@@ -20,13 +20,22 @@ class CollectionLearner(BaseLearner):
                 for line in collection_lines:
                     playset = CardPlayset.from_export_text(line)
                     if playset is not None:
-                        self.contents.append(playset)
+                        matches = self.contents.dict[playset.set_num][playset.card_num]
+                        if len(matches) > 0:
+                            existing_playset = matches[0]
+                            existing_playset.num_played += playset.num_played
+                        else:
+                            self.contents.append(playset)
         except FileNotFoundError:
             pass
 
     def _load(self):
         self.contents = PlaysetCollection()
         self._update_contents()
+        self._save()
+
+    def update(self):
+        pass  # always updates
 
     def _json_entry_to_content(self, json_entry):
         pass
