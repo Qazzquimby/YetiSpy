@@ -1,5 +1,5 @@
 from base_learner import BaseLearner
-from deck_data import CardPlayset
+from deck import CardPlayset
 from field_hash_collection import FieldHashCollection
 
 
@@ -14,7 +14,7 @@ class CollectionLearner(BaseLearner):
 
     def _update_contents(self):
         try:
-            with open("collection_type.txt", "r") as collection_file:
+            with open("collection.txt", "r") as collection_file:
                 collection_text = collection_file.read()
                 collection_lines = collection_text.split("\n")
                 for line in collection_lines:
@@ -25,7 +25,8 @@ class CollectionLearner(BaseLearner):
             pass
 
     def _load(self):
-        return CardPlaysetCollection()
+        self.contents = CardPlaysetCollection()
+        self._update_contents()
 
     def _json_entry_to_content(self, json_entry):
         pass

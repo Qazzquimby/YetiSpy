@@ -5,7 +5,7 @@ import typing
 
 from base_learner import BaseLearner
 from browser import Browser
-from card_data import CardLearner
+from card import CardLearner
 from field_hash_collection import FieldHashCollection
 
 

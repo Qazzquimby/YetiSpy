@@ -1,12 +1,13 @@
-from card_data import CardLearner
-from card_play_rate_data import CardPlayRateLearner
-from collection_data import CollectionLearner
-from deck_data import DeckLearner
+from card import CardLearner
+from collection import CollectionLearner
+from deck import DeckLearner
+from play_rate import CardPlayRateLearner
+from value import ValueLearner
 
 file_prefix = "test"
 
 card_learner = CardLearner(file_prefix)
-card_learner.update()
+# card_learner.update()
 deck_learner = DeckLearner(file_prefix)
 # deck_learner.update()
 
@@ -16,3 +17,8 @@ collection = CollectionLearner(file_prefix)
 card_play_rates = CardPlayRateLearner(file_prefix,
                                       card_learner.contents,
                                       deck_learner.contents)
+
+card_values = ValueLearner(file_prefix, collection.contents,
+                           card_play_rates.contents,
+                           card_learner.contents)
+card_values.update()
