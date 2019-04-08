@@ -44,7 +44,6 @@ class CardCollection(FieldHashCollection):
 class CardLearner(BaseLearner):
     def __init__(self, file_prefix: str):
         super().__init__(file_prefix, "cards.json", CardCollection)
-        self.contents = self._load()
 
     def _update_contents(self):
         with Browser() as browser:
@@ -81,7 +80,6 @@ class CardLearner(BaseLearner):
                 card = CardData(set_num, card_num, name, rarity)
                 self.contents.append(card)
 
-        self._save()
         return is_empty
 
     def _get_set_num_from_card_url(self, url):

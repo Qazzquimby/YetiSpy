@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import re
 import typing
 
@@ -8,8 +10,12 @@ from field_hash_collection import FieldHashCollection
 
 
 class DeckCollection(FieldHashCollection):
-    def _add_to_dict(self, input):
+    def _add_to_dict(self, input: DeckData):
         self.dict["deck_id"][input.deck_id].append(input)
+        for playset in input.card_playsets:
+            num_played = playset.num_played
+            for i in range(num_played):
+                self.dict[(playset.set_num, playset.card_num)][i + 1].append(input)
 
 
 class CardPlayset(object):
@@ -162,7 +168,7 @@ class DeckLearner(BaseLearner):
         page = 1
         deck_urls = []
         while True:
-            url = f"https://eternalwarcry.com/decks?td=1&mdb=15&p={page}"  # todo upgrade to 90days
+            url = f"https://eternalwarcry.com/decks?td=1&mdb=90&p={page}"
             browser.get(url)
 
             deck_links = browser.find_elements_by_xpath(

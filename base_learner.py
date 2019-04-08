@@ -8,23 +8,26 @@ from field_hash_collection import FieldHashCollection
 
 class BaseLearner(abc.ABC):
     def __init__(self, file_prefix: str, file_name: str,
-                 collection: typing.Type[FieldHashCollection]):
+                 collection_type: typing.Type[FieldHashCollection]):
         self.file_prefix = file_prefix
         self.file_name = file_name
-        self.collection = collection
+        self.collection_type = collection_type
 
+        self.updated = False
         self.path = f"{self.file_prefix}/{self.file_name}"
-        self.contents = self._load()
+        self.contents = None
+        self._load()
 
     def update(self):
         self._update_contents()
         self._save()
+        self.contents.updated = True
 
     def _update_contents(self):
         raise NotImplementedError
 
-    def _load(self) -> FieldHashCollection:
-        contents = self.collection()
+    def _load(self):
+        contents = self.collection_type()
         try:
             open(self.path)
         except FileNotFoundError:
@@ -34,7 +37,7 @@ class BaseLearner(abc.ABC):
         for json_entry in json_entries:
             content = self._json_entry_to_content(json_entry)
             contents.append(content)
-        return contents
+        self.contents = contents
 
     def _create_file(self):
         with open(self.path, 'w+') as file:
@@ -53,5 +56,5 @@ class BaseLearner(abc.ABC):
                 return obj.__dict__
 
         with open(self.path, "w") as file:
-            json.dump(self.contents._contents, file, indent=4, sort_keys=True, default=encode)
+            json.dump(self.contents.contents, file, indent=4, sort_keys=True, default=encode)
         print("Saved.")
