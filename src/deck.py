@@ -4,11 +4,11 @@ import re
 import typing
 from dataclasses import dataclass
 
-from base_learner import BaseLearner
-from browser import Browser
-from card import CardLearner
-from deck_searches import DeckSearch
-from field_hash_collection import JsonLoadedCollection
+from src.base_learner import BaseLearner
+from src.browser import Browser
+from src.card import CardLearner
+from src.deck_searches import DeckSearch
+from src.field_hash_collection import JsonLoadedCollection
 
 
 class DeckCollection(JsonLoadedCollection):

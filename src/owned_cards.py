@@ -1,6 +1,6 @@
-from base_learner import BaseLearner
-from deck import CardPlayset
-from field_hash_collection import JsonLoadedCollection
+from src.base_learner import BaseLearner
+from src.deck import CardPlayset
+from src.field_hash_collection import JsonLoadedCollection
 
 
 class PlaysetCollection(JsonLoadedCollection):

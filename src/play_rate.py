@@ -1,7 +1,7 @@
-from base_learner import BaseLearner
-from card import CardCollection
-from deck import DeckCollection
-from field_hash_collection import JsonLoadedCollection
+from src.base_learner import BaseLearner
+from src.card import CardCollection
+from src.deck import DeckCollection
+from src.field_hash_collection import JsonLoadedCollection
 
 
 class PlayRate:

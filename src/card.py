@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from base_learner import BaseLearner
-from browser import Browser
-from field_hash_collection import JsonLoadedCollection
+from src.base_learner import BaseLearner
+from src.browser import Browser
+from src.field_hash_collection import JsonLoadedCollection
 
 
 @dataclass

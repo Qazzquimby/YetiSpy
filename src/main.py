@@ -1,9 +1,9 @@
-from card import CardLearner
-from deck import DeckLearner
-from deck_searches import get_deck_searches
-from owned_cards import OwnedCardsLearner
-from play_rate import PlayRateLearner
-from value import ValueLearner, SummedValues
+from src.card import CardLearner
+from src.deck import DeckLearner
+from src.deck_searches import get_deck_searches
+from src.owned_cards import OwnedCardsLearner
+from src.play_rate import PlayRateLearner
+from src.value import ValueLearner, SummedValues
 
 file_prefix = "output"
 

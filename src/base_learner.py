@@ -4,16 +4,16 @@ import json
 import os
 import typing
 
-from field_hash_collection import JsonLoadedCollection
+from src.field_hash_collection import JsonLoadedCollection
 
 
-class JsonInterface():
+class JsonInterface:
     def __init__(self, file_prefix: str, file_name: str,
                  collection_type: typing.Type[JsonLoadedCollection]):
         self.file_prefix = file_prefix
         self.file_name = file_name
         self.collection_type = collection_type
-        self.path = f"{self.file_prefix}/{self.file_name}"
+        self.path = f"../{self.file_prefix}/{self.file_name}"
 
     def load_empty(self) -> JsonLoadedCollection:
         collection = self.collection_type()

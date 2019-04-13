@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from collections import defaultdict
 
-from base_learner import BaseLearner, JsonInterface
-from card import CardCollection
-from deck import CardPlayset
-from field_hash_collection import JsonLoadedCollection
-from owned_cards import PlaysetCollection
-from play_rate import PlayRateCollection, PlayRate
+from src.base_learner import BaseLearner, JsonInterface
+from src.card import CardCollection
+from src.deck import CardPlayset
+from src.field_hash_collection import JsonLoadedCollection
+from src.owned_cards import PlaysetCollection
+from src.play_rate import PlayRateCollection, PlayRate
 
 
 class Value:
@@ -28,16 +28,16 @@ class Value:
 
 
 class ValueCollection(JsonLoadedCollection):
-    @staticmethod
-    def json_entry_to_content(json_entry: dict):
-        pass
-
     def __init__(self):
         self.deck_search = None
         super().__init__()
 
     def _add_to_dict(self, entry):
         self.dict["card_name"][entry.card_name].append(entry)
+
+    @staticmethod
+    def json_entry_to_content(json_entry: dict):
+        pass
 
 
 class ValueLearner(BaseLearner):
@@ -106,7 +106,7 @@ class ValueLearner(BaseLearner):
         return ValueCollection()
 
     def _save(self):
-        self.collection.contents = sorted(self.collection.contents, reverse=True)
+        self.collection.contents.sort(reverse=True)
         super()._save()
 
 
