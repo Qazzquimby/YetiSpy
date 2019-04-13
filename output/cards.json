@@ -8460,12 +8460,6 @@
     "set_num": 3
   },
   {
-    "card_num": 36,
-    "name": "Xo of the Endless Hoard",
-    "rarity": "legendary",
-    "set_num": 5
-  },
-  {
     "card_num": 49,
     "name": "Great-Kiln Titan",
     "rarity": "legendary",
@@ -8476,6 +8470,12 @@
     "name": "Kaleb, Uncrowned Prince",
     "rarity": "legendary",
     "set_num": 1
+  },
+  {
+    "card_num": 36,
+    "name": "Xo of the Endless Hoard",
+    "rarity": "legendary",
+    "set_num": 5
   },
   {
     "card_num": 62,

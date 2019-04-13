@@ -1,0 +1,6368 @@
+[
+  {
+    "card_name": "Crest of Order",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 202.0
+  },
+  {
+    "card_name": "Korovyat Palace",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 176.0
+  },
+  {
+    "card_name": "Crest of Wisdom",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 158.0
+  },
+  {
+    "card_name": "Crest of Cunning",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 158.0
+  },
+  {
+    "card_name": "Crest of Mystery",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 152.0
+  },
+  {
+    "card_name": "Desecrate",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 154.0
+  },
+  {
+    "card_name": "Crest of Fury",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 151.0
+  },
+  {
+    "card_name": "Strategize",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 146.0
+  },
+  {
+    "card_name": "Vara, Vengeance-Seeker",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 136.0
+  },
+  {
+    "card_name": "Crest of Glory",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 140.0
+  },
+  {
+    "card_name": "Moonstone Vanguard",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 154.0
+  },
+  {
+    "card_name": "Auralian Merchant",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 130.0
+  },
+  {
+    "card_name": "Crest of Vengeance",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 119.0
+  },
+  {
+    "card_name": "Harsh Rule",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 129.0
+  },
+  {
+    "card_name": "Equivocate",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 133.0
+  },
+  {
+    "card_name": "Slay",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 107.0
+  },
+  {
+    "card_name": "Glasshopper",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 130.0
+  },
+  {
+    "card_name": "Defiance",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 120.0
+  },
+  {
+    "card_name": "Red Canyon Smuggler",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 108.0
+  },
+  {
+    "card_name": "Xo of the Endless Hoard",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 113.0
+  },
+  {
+    "card_name": "Bore",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 112.0
+  },
+  {
+    "card_name": "Bear Guard Bayonet",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 108.0
+  },
+  {
+    "card_name": "Hojan, Crownbreaker",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 106.0
+  },
+  {
+    "card_name": "Great Valley Smuggler",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 101.0
+  },
+  {
+    "card_name": "Hidden Road Smuggler",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 90.0
+  },
+  {
+    "card_name": "Howling Peak Smuggler",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 98.0
+  },
+  {
+    "card_name": "Howling Peak",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 96.0
+  },
+  {
+    "card_name": "Kerendon Merchant",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 95.0
+  },
+  {
+    "card_name": "Regent's Tomb",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 79.0
+  },
+  {
+    "card_name": "Crest of Progress",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 83.0
+  },
+  {
+    "card_name": "Disjunction",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 82.0
+  },
+  {
+    "card_name": "Jennev Merchant",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 96.0
+  },
+  {
+    "card_name": "Honor of Claws",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 91.0
+  },
+  {
+    "card_name": "Dizo's Office",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 81.0
+  },
+  {
+    "card_name": "Hailstorm",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 80.0
+  },
+  {
+    "card_name": "Crest of Impulse",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 94.0
+  },
+  {
+    "card_name": "Crest of Chaos",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 74.0
+  },
+  {
+    "card_name": "Severin, the Mad Mage",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 74.0
+  },
+  {
+    "card_name": "Amber Waystone",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 73.0
+  },
+  {
+    "card_name": "Cobalt Waystone",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 87.0
+  },
+  {
+    "card_name": "Banish",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 64.0
+  },
+  {
+    "card_name": "Display of Knowledge",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 68.0
+  },
+  {
+    "card_name": "Vargo Redclaw",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 66.0
+  },
+  {
+    "card_name": "Aniyah, Arctic Sheriff",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 76.0
+  },
+  {
+    "card_name": "Cykalis, the Burning Sand",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 85.0
+  },
+  {
+    "card_name": "Hooru Banner",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 79.0
+  },
+  {
+    "card_name": "End of the Story",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 69.0
+  },
+  {
+    "card_name": "Winchest Merchant",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 68.0
+  },
+  {
+    "card_name": "Xenan Temple",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 58.0
+  },
+  {
+    "card_name": "Rizahn, Greatbow Master",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 61.0
+  },
+  {
+    "card_name": "Auric Runehammer",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 60.0
+  },
+  {
+    "card_name": "Amaran Stinger",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 71.0
+  },
+  {
+    "card_name": "Avigraft",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 56.0
+  },
+  {
+    "card_name": "Ebon Dune Smuggler",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 55.0
+  },
+  {
+    "card_name": "Teacher of Humility",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 75.0
+  },
+  {
+    "card_name": "Burglarize",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 54.0
+  },
+  {
+    "card_name": "Vision of Austerity",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 69.0
+  },
+  {
+    "card_name": "Argenport Banner",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 48.0
+  },
+  {
+    "card_name": "Valkyrie Enforcer",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 53.0
+  },
+  {
+    "card_name": "Trail Maker",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 47.0
+  },
+  {
+    "card_name": "Sandstorm Titan",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 52.0
+  },
+  {
+    "card_name": "Icaria, Valkyrie Captain",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 57.0
+  },
+  {
+    "card_name": "Eilyn, the Rising Storm",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 57.0
+  },
+  {
+    "card_name": "Silverwing Courier",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 59.0
+  },
+  {
+    "card_name": "Telut, Queen's Hand",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 43.0
+  },
+  {
+    "card_name": "In Cold Blood",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 47.0
+  },
+  {
+    "card_name": "Azindel, Revealed",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 42.0
+  },
+  {
+    "card_name": "Shadowlands Borderscout",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 41.0
+  },
+  {
+    "card_name": "Stormhalt Knife",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 49.0
+  },
+  {
+    "card_name": "Ixtun Cargo",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 39.0
+  },
+  {
+    "card_name": "Svetya, Merciful Orene",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 39.0
+  },
+  {
+    "card_name": "Crownwatch Standard",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 38.0
+  },
+  {
+    "card_name": "Apex Predator",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 37.0
+  },
+  {
+    "card_name": "Sword of Unity",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 42.0
+  },
+  {
+    "card_name": "Call for Aid",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 36.0
+  },
+  {
+    "card_name": "Jotun Feast-Caller",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 36.0
+  },
+  {
+    "card_name": "Xenan Initiation",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 55.0
+  },
+  {
+    "card_name": "Display of Ambition",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 35.0
+  },
+  {
+    "card_name": "Inquisitor Makto",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 34.0
+  },
+  {
+    "card_name": "Black-Sky Harbinger",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 39.0
+  },
+  {
+    "card_name": "Kaleb's Choice",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 38.0
+  },
+  {
+    "card_name": "Ixtun Merchant",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 43.0
+  },
+  {
+    "card_name": "The Praxis Arcanum",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 33.0
+  },
+  {
+    "card_name": "Vanquisher's Blade",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 37.0
+  },
+  {
+    "card_name": "Ponysnatcher",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 32.0
+  },
+  {
+    "card_name": "Rhysta, Acantha's Herald",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 31.0
+  },
+  {
+    "card_name": "Diogo M\u00e1laga, Elonze",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 31.0
+  },
+  {
+    "card_name": "Heart of the Vault",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 56.0
+  },
+  {
+    "card_name": "Suffocate",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 35.0
+  },
+  {
+    "card_name": "Ripknife Assassin",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 35.0
+  },
+  {
+    "card_name": "Worldbearer Behemoth",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 30.0
+  },
+  {
+    "card_name": "Marshal Ironthorn",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 30.0
+  },
+  {
+    "card_name": "Stonepowder Alchemist",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 29.0
+  },
+  {
+    "card_name": "Auralian Cargo",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 29.0
+  },
+  {
+    "card_name": "Crown of Possibilities",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 29.0
+  },
+  {
+    "card_name": "Lost Scroll",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 28.0
+  },
+  {
+    "card_name": "Eilyn's Choice",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 38.0
+  },
+  {
+    "card_name": "Imperial Loyalist",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 38.0
+  },
+  {
+    "card_name": "Dread",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 28.0
+  },
+  {
+    "card_name": "Pit of Lenekta",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 28.0
+  },
+  {
+    "card_name": "Casualties of the Cause",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 26.0
+  },
+  {
+    "card_name": "The Winter Crown",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 26.0
+  },
+  {
+    "card_name": "Amilli, Cloudmarshal",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 26.0
+  },
+  {
+    "card_name": "Svetya, Orene of Kosul",
+    "new_count": 1,
+    "rarity": "promo",
+    "value": 36.0
+  },
+  {
+    "card_name": "Shelterwing Rider",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 30.0
+  },
+  {
+    "card_name": "Star-Reader's Blade",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 24.0
+  },
+  {
+    "card_name": "Cull the Deck",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 23.0
+  },
+  {
+    "card_name": "Display of Honor",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 23.0
+  },
+  {
+    "card_name": "Winchest Cargo",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 23.0
+  },
+  {
+    "card_name": "Petition",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 22.0
+  },
+  {
+    "card_name": "Sword of the Sky King",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 32.0
+  },
+  {
+    "card_name": "Quicksilver Mirror",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 22.0
+  },
+  {
+    "card_name": "Eilyn, Clan Mother",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 27.0
+  },
+  {
+    "card_name": "Cirso's Cleaver",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 22.0
+  },
+  {
+    "card_name": "Privilege of Rank",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 26.0
+  },
+  {
+    "card_name": "Annihilate",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 21.0
+  },
+  {
+    "card_name": "Sheriff Marley",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 21.0
+  },
+  {
+    "card_name": "Martyr's Chains",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 21.0
+  },
+  {
+    "card_name": "Solitude",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 21.0
+  },
+  {
+    "card_name": "Sandstorm Scarf",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 25.0
+  },
+  {
+    "card_name": "Savagery",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 25.0
+  },
+  {
+    "card_name": "The Great Parliament",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 20.0
+  },
+  {
+    "card_name": "Shakedown",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 19.0
+  },
+  {
+    "card_name": "Heirloom Seeker",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 19.0
+  },
+  {
+    "card_name": "Lethrai Hideaway",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 24.0
+  },
+  {
+    "card_name": "Display of Instinct",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 24.0
+  },
+  {
+    "card_name": "Gunrunner",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 39.0
+  },
+  {
+    "card_name": "Xenan Obelisk",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 39.0
+  },
+  {
+    "card_name": "Jennev Cargo",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 19.0
+  },
+  {
+    "card_name": "Lumen Reclaimer",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 19.0
+  },
+  {
+    "card_name": "Cursed Prophet Deleph",
+    "new_count": 1,
+    "rarity": "promo",
+    "value": 19.0
+  },
+  {
+    "card_name": "Obliterate",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 28.0
+  },
+  {
+    "card_name": "Crownwatch Press-Gang",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 18.0
+  },
+  {
+    "card_name": "Mournful Deathcap",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 18.0
+  },
+  {
+    "card_name": "End of Hostilities",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 18.0
+  },
+  {
+    "card_name": "Kothon, the Far-Watcher",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 18.0
+  },
+  {
+    "card_name": "Inquisitor's Blade",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 17.0
+  },
+  {
+    "card_name": "Champion of Fury",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 17.0
+  },
+  {
+    "card_name": "Statuary Maiden",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 22.0
+  },
+  {
+    "card_name": "Tavrod, Auric Broker",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 17.0
+  },
+  {
+    "card_name": "Cabal Standard",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 16.0
+  },
+  {
+    "card_name": "Rat Cage",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 21.0
+  },
+  {
+    "card_name": "Secret Passage",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 16.0
+  },
+  {
+    "card_name": "Divining Rod",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 16.0
+  },
+  {
+    "card_name": "Profane Censer",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 16.0
+  },
+  {
+    "card_name": "Copperhall Bracers",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 21.0
+  },
+  {
+    "card_name": "Icaria, the Liberator",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 16.0
+  },
+  {
+    "card_name": "Hooru Pacifier",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 16.0
+  },
+  {
+    "card_name": "Power Stone",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 15.0
+  },
+  {
+    "card_name": "Devastating Setback",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 15.0
+  },
+  {
+    "card_name": "Highland Sharpshooter",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 15.0
+  },
+  {
+    "card_name": "Clock of Stolen Hours",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 20.0
+  },
+  {
+    "card_name": "Vicious Highwayman",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 20.0
+  },
+  {
+    "card_name": "Spark Hatcher",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 14.0
+  },
+  {
+    "card_name": "Pitfall Trap",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 19.0
+  },
+  {
+    "card_name": "Sudden Schism",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 14.0
+  },
+  {
+    "card_name": "Rindra's Choice",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 14.0
+  },
+  {
+    "card_name": "Twilight Hunt",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 14.0
+  },
+  {
+    "card_name": "Brilliant Idea",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 14.0
+  },
+  {
+    "card_name": "Crunch, the Hoarder",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 14.0
+  },
+  {
+    "card_name": "Kerendon Cargo",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 14.0
+  },
+  {
+    "card_name": "Alhed, Mount Breaker",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 14.0
+  },
+  {
+    "card_name": "Governor Sahin",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 14.0
+  },
+  {
+    "card_name": "Throne Warden",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 18.0
+  },
+  {
+    "card_name": "Xenan Lifespeaker",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 13.0
+  },
+  {
+    "card_name": "Rockslide",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 18.0
+  },
+  {
+    "card_name": "Display of Vision",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 13.0
+  },
+  {
+    "card_name": "Cauldron Cookbook",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 13.0
+  },
+  {
+    "card_name": "Andrik, Renegade Priest",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 13.0
+  },
+  {
+    "card_name": "Cirso, the Great Glutton",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 13.0
+  },
+  {
+    "card_name": "Mask of Torment",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 13.0
+  },
+  {
+    "card_name": "Zal Chi, Herald of War",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 18.0
+  },
+  {
+    "card_name": "Caiphus, Wandering King",
+    "new_count": 1,
+    "rarity": "promo",
+    "value": 13.0
+  },
+  {
+    "card_name": "Wanted Poster",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 17.0
+  },
+  {
+    "card_name": "Dragonbreath",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 12.0
+  },
+  {
+    "card_name": "Iceberg Scattershot",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 12.0
+  },
+  {
+    "card_name": "Clan Standard",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 22.0
+  },
+  {
+    "card_name": "Messenger Hawk",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 12.0
+  },
+  {
+    "card_name": "Linebreaker's Shield",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 12.0
+  },
+  {
+    "card_name": "Clockroach",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 12.0
+  },
+  {
+    "card_name": "Dreamsnatcher",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 12.0
+  },
+  {
+    "card_name": "Memory Dredger",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 12.0
+  },
+  {
+    "card_name": "Camrin, the Fox",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 12.0
+  },
+  {
+    "card_name": "Clutch of Talons",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 17.0
+  },
+  {
+    "card_name": "Darya, Warrior Poet",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 32.0
+  },
+  {
+    "card_name": "Molot & Nakova",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 12.0
+  },
+  {
+    "card_name": "Rindra, the Duskblade",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 12.0
+  },
+  {
+    "card_name": "Zende, the Heart-Binder",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 12.0
+  },
+  {
+    "card_name": "Journey Guide",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 11.0
+  },
+  {
+    "card_name": "Lingering Influence",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 11.0
+  },
+  {
+    "card_name": "Master Cartographer",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 11.0
+  },
+  {
+    "card_name": "Spitefeeder",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 11.0
+  },
+  {
+    "card_name": "Praxis Banner",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 31.0
+  },
+  {
+    "card_name": "Lethrai Courtier",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 16.0
+  },
+  {
+    "card_name": "Tripwire Grenadin",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 11.0
+  },
+  {
+    "card_name": "Black Iron Manacles",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 11.0
+  },
+  {
+    "card_name": "Stand Together",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 11.0
+  },
+  {
+    "card_name": "Temporal Distortion",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 11.0
+  },
+  {
+    "card_name": "Reyna, the Unwavering",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 16.0
+  },
+  {
+    "card_name": "Leave a Witness",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 11.0
+  },
+  {
+    "card_name": "Blackhall Warleader",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 11.0
+  },
+  {
+    "card_name": "Bandit Queen",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 16.0
+  },
+  {
+    "card_name": "Strength of Many",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 10.0
+  },
+  {
+    "card_name": "Temple Standard",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 10.0
+  },
+  {
+    "card_name": "Dawnwalker",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 10.0
+  },
+  {
+    "card_name": "Copperhall Paladin",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 10.0
+  },
+  {
+    "card_name": "Fenris Nightshade",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 10.0
+  },
+  {
+    "card_name": "Auric Interrogator",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 10.0
+  },
+  {
+    "card_name": "Zuberi, Outlands Warlord",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 10.0
+  },
+  {
+    "card_name": "Savior of the Meek",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 10.0
+  },
+  {
+    "card_name": "Tavia, Lethrai Raidleader",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 10.0
+  },
+  {
+    "card_name": "Shadowlands Tyrant",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 10.0
+  },
+  {
+    "card_name": "Moment of Creation",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 10.0
+  },
+  {
+    "card_name": "Emerald Waystone",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 9.0
+  },
+  {
+    "card_name": "Resolute Monk",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 9.0
+  },
+  {
+    "card_name": "Surgeon's Saw",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 9.0
+  },
+  {
+    "card_name": "Common Cause",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 14.0
+  },
+  {
+    "card_name": "Combustion Cell",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 9.0
+  },
+  {
+    "card_name": "Citywide Ban",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 9.0
+  },
+  {
+    "card_name": "Nocturnal Observer",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 9.0
+  },
+  {
+    "card_name": "Skycrag Scalebreaker",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 9.0
+  },
+  {
+    "card_name": "Rain of Frogs",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 14.0
+  },
+  {
+    "card_name": "Crystalline Chalice",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 9.0
+  },
+  {
+    "card_name": "Champion of Cunning",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 14.0
+  },
+  {
+    "card_name": "Sealed Writ",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 9.0
+  },
+  {
+    "card_name": "Jawbone Greatsword",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 9.0
+  },
+  {
+    "card_name": "Invoke the Waystones",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 9.0
+  },
+  {
+    "card_name": "Mystic Ascendant",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 9.0
+  },
+  {
+    "card_name": "Brel, Solist Apostate",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 9.0
+  },
+  {
+    "card_name": "Star-Reader Severin",
+    "new_count": 1,
+    "rarity": "promo",
+    "value": 9.0
+  },
+  {
+    "card_name": "Back-Alley Delinquent",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 8.0
+  },
+  {
+    "card_name": "Warhelm",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 8.0
+  },
+  {
+    "card_name": "Entrancer",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 13.0
+  },
+  {
+    "card_name": "Eternity Core",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 8.0
+  },
+  {
+    "card_name": "Elvish Swindler",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 13.0
+  },
+  {
+    "card_name": "Ephemeral Wisp",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 8.0
+  },
+  {
+    "card_name": "Vapor Hut",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 8.0
+  },
+  {
+    "card_name": "Lunar Magus",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 13.0
+  },
+  {
+    "card_name": "Golem Press",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 8.0
+  },
+  {
+    "card_name": "Stormtamer Operative",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 8.0
+  },
+  {
+    "card_name": "Argenport Instigator",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 13.0
+  },
+  {
+    "card_name": "Miris Nightshade",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 8.0
+  },
+  {
+    "card_name": "Steward of the Past",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 8.0
+  },
+  {
+    "card_name": "Grasping at Shadows",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 8.0
+  },
+  {
+    "card_name": "Bulletshaper",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 8.0
+  },
+  {
+    "card_name": "Katra, the Devoted",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 8.0
+  },
+  {
+    "card_name": "Crimson Firemaw",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 8.0
+  },
+  {
+    "card_name": "Kemmo, Ijin's Apprentice",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 8.0
+  },
+  {
+    "card_name": "Geomar, the Steel Tempest",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 8.0
+  },
+  {
+    "card_name": "Kenna, Shaman of the Scale",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 8.0
+  },
+  {
+    "card_name": "Torgov's Trading Post",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 8.0
+  },
+  {
+    "card_name": "Purify",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 7.0
+  },
+  {
+    "card_name": "Signal Flare",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 7.0
+  },
+  {
+    "card_name": "Porcelain Mask",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 7.0
+  },
+  {
+    "card_name": "Vital Arcana",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 7.0
+  },
+  {
+    "card_name": "Resurface",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 7.0
+  },
+  {
+    "card_name": "Maul",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 12.0
+  },
+  {
+    "card_name": "Last Chance",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 7.0
+  },
+  {
+    "card_name": "Mug",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 12.0
+  },
+  {
+    "card_name": "Cirso's Choice",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 7.0
+  },
+  {
+    "card_name": "Blistersting Wasp",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 7.0
+  },
+  {
+    "card_name": "Bazaar Trickster",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 7.0
+  },
+  {
+    "card_name": "Unraveling Fanatic",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 7.0
+  },
+  {
+    "card_name": "Memento Mori",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 7.0
+  },
+  {
+    "card_name": "Etched Monolith",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 7.0
+  },
+  {
+    "card_name": "Necessary Measures",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 7.0
+  },
+  {
+    "card_name": "Temple Shihan",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 7.0
+  },
+  {
+    "card_name": "Rejection",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 7.0
+  },
+  {
+    "card_name": "Marionette Cross",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 7.0
+  },
+  {
+    "card_name": "Rise to the Challenge",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 7.0
+  },
+  {
+    "card_name": "Chunk Chunk",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 7.0
+  },
+  {
+    "card_name": "Bloodletter",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 7.0
+  },
+  {
+    "card_name": "Howling Kurtarr",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 7.0
+  },
+  {
+    "card_name": "Vara, Fate-Touched",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 7.0
+  },
+  {
+    "card_name": "Ayan, the Abductor",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 7.0
+  },
+  {
+    "card_name": "Aid of the Hooru",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 7.0
+  },
+  {
+    "card_name": "Pummel",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 6.0
+  },
+  {
+    "card_name": "Trailblaze",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 6.0
+  },
+  {
+    "card_name": "Winter's Grasp",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 6.0
+  },
+  {
+    "card_name": "Mesmerized Moth",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 6.0
+  },
+  {
+    "card_name": "Reinvigorate",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 6.0
+  },
+  {
+    "card_name": "Storm Spiral",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 6.0
+  },
+  {
+    "card_name": "Blood Quill",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 6.0
+  },
+  {
+    "card_name": "Vara's Choice",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 6.0
+  },
+  {
+    "card_name": "Miner's Musket",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 6.0
+  },
+  {
+    "card_name": "Siege Breaker",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 6.0
+  },
+  {
+    "card_name": "Thief's Pick",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 6.0
+  },
+  {
+    "card_name": "Demand Death",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 6.0
+  },
+  {
+    "card_name": "Kaleb, Uncrowned Prince",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 6.0
+  },
+  {
+    "card_name": "Thundering Kerasaur",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 6.0
+  },
+  {
+    "card_name": "Novaquake Titan",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 6.0
+  },
+  {
+    "card_name": "Void Drummer",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 6.0
+  },
+  {
+    "card_name": "Wingbrewer",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 6.0
+  },
+  {
+    "card_name": "Starsteel Daisho",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 6.0
+  },
+  {
+    "card_name": "Stoneshaker",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 5.0
+  },
+  {
+    "card_name": "Nocturnal Creeper",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 5.0
+  },
+  {
+    "card_name": "Fallen Oni",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 5.0
+  },
+  {
+    "card_name": "Extinguish",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 5.0
+  },
+  {
+    "card_name": "Sanguine Sword",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 5.0
+  },
+  {
+    "card_name": "Token of Knowledge",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 5.0
+  },
+  {
+    "card_name": "Praxis Stranger",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 5.0
+  },
+  {
+    "card_name": "Shugo Standard",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 5.0
+  },
+  {
+    "card_name": "Ankle Cutter",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 5.0
+  },
+  {
+    "card_name": "Disassembler",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 5.0
+  },
+  {
+    "card_name": "Find the Way",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 5.0
+  },
+  {
+    "card_name": "Seasoned Spelunker",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 5.0
+  },
+  {
+    "card_name": "Tranquil Scholar",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 5.0
+  },
+  {
+    "card_name": "Kosul Battlemage",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 5.0
+  },
+  {
+    "card_name": "Arachnophobia",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 5.0
+  },
+  {
+    "card_name": "Waystone Titan",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 5.0
+  },
+  {
+    "card_name": "Arcanum Hourglass",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 5.0
+  },
+  {
+    "card_name": "Shepherd's Horn",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 5.0
+  },
+  {
+    "card_name": "Rilgon's Disciple",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 5.0
+  },
+  {
+    "card_name": "Darkveil Agent",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 5.0
+  },
+  {
+    "card_name": "Whispering Wind",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 5.0
+  },
+  {
+    "card_name": "Channel the Tempest",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 5.0
+  },
+  {
+    "card_name": "Weary Spiteling",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 5.0
+  },
+  {
+    "card_name": "Ashara, Ruthless Assassin",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 5.0
+  },
+  {
+    "card_name": "Eremot, the Gathering Dark",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 5.0
+  },
+  {
+    "card_name": "Colossal Pteriax",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 5.0
+  },
+  {
+    "card_name": "Anointer of the Faithful",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 5.0
+  },
+  {
+    "card_name": "Momentum Builder",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 5.0
+  },
+  {
+    "card_name": "Jekk, Hunted Fugitive",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 5.0
+  },
+  {
+    "card_name": "End of the Barrel",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 5.0
+  },
+  {
+    "card_name": "Molten Fist",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 5.0
+  },
+  {
+    "card_name": "Venom Rider",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 5.0
+  },
+  {
+    "card_name": "Rolant, the Iron Fist",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 5.0
+  },
+  {
+    "card_name": "Poaching Drake",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 5.0
+  },
+  {
+    "card_name": "Daraka, Queensguard",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 5.0
+  },
+  {
+    "card_name": "End of the Line",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 5.0
+  },
+  {
+    "card_name": "The Witching Hour",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 10.0
+  },
+  {
+    "card_name": "Nostrix, Lord of Visions",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 5.0
+  },
+  {
+    "card_name": "Grinva, Breaker of Will",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 5.0
+  },
+  {
+    "card_name": "Softfoot Burglar",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 4.0
+  },
+  {
+    "card_name": "Gun Down",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 4.0
+  },
+  {
+    "card_name": "Sharpened Reflex",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 4.0
+  },
+  {
+    "card_name": "Master-at-Arms",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 4.0
+  },
+  {
+    "card_name": "Downfall",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 4.0
+  },
+  {
+    "card_name": "Gift of Battle",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 4.0
+  },
+  {
+    "card_name": "Affliction",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 4.0
+  },
+  {
+    "card_name": "Bottoms Up",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 4.0
+  },
+  {
+    "card_name": "Urn of Choking Embers",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 4.0
+  },
+  {
+    "card_name": "Plunder",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 4.0
+  },
+  {
+    "card_name": "Calderan Gunsmith",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 4.0
+  },
+  {
+    "card_name": "Axe Sharpener",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 4.0
+  },
+  {
+    "card_name": "Steel-Eyed Pistoleer",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 4.0
+  },
+  {
+    "card_name": "Flexible Familiar",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 4.0
+  },
+  {
+    "card_name": "Parry",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 4.0
+  },
+  {
+    "card_name": "Vara's Intervention",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 4.0
+  },
+  {
+    "card_name": "Magenta Wisp",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 4.0
+  },
+  {
+    "card_name": "Longbarrel",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 4.0
+  },
+  {
+    "card_name": "Factory Quota",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 4.0
+  },
+  {
+    "card_name": "Flametail Whip",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 4.0
+  },
+  {
+    "card_name": "Purge the Darkness",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 4.0
+  },
+  {
+    "card_name": "Toppletower",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 4.0
+  },
+  {
+    "card_name": "Pathlighter",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 4.0
+  },
+  {
+    "card_name": "Challenge by Law",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 4.0
+  },
+  {
+    "card_name": "Acquisitive Crow",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 4.0
+  },
+  {
+    "card_name": "Corrupt",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 4.0
+  },
+  {
+    "card_name": "Impending Doom",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 4.0
+  },
+  {
+    "card_name": "Soulbringer",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 4.0
+  },
+  {
+    "card_name": "Acantha, the Huntress",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 4.0
+  },
+  {
+    "card_name": "Shush",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 4.0
+  },
+  {
+    "card_name": "Hunting Pteriax",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 4.0
+  },
+  {
+    "card_name": "Chairman's Contract",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 4.0
+  },
+  {
+    "card_name": "Flamestoker",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 4.0
+  },
+  {
+    "card_name": "Great-Kiln Titan",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 4.0
+  },
+  {
+    "card_name": "First Flame",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 4.0
+  },
+  {
+    "card_name": "Thrashing Dune Wurm",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 4.0
+  },
+  {
+    "card_name": "Ravid, Insect Master",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 4.0
+  },
+  {
+    "card_name": "Scourge of Frosthome",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 4.0
+  },
+  {
+    "card_name": "Zelia, the Vain",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 4.0
+  },
+  {
+    "card_name": "Fear Made Flesh",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 4.0
+  },
+  {
+    "card_name": "Diogo M\u00e1laga",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 4.0
+  },
+  {
+    "card_name": "Knucklebones",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 9.0
+  },
+  {
+    "card_name": "Knight-Chancellor Siraf",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 4.0
+  },
+  {
+    "card_name": "Serene Meditant",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 4.0
+  },
+  {
+    "card_name": "Shimmerpack",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 4.0
+  },
+  {
+    "card_name": "Quinn, Lone Wanderer",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 4.0
+  },
+  {
+    "card_name": "Talir's Unwinding",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 4.0
+  },
+  {
+    "card_name": "Yushkov, the Usurper",
+    "new_count": 1,
+    "rarity": "promo",
+    "value": 4.0
+  },
+  {
+    "card_name": "Justa, Regglar Jotun",
+    "new_count": 1,
+    "rarity": "promo",
+    "value": 4.0
+  },
+  {
+    "card_name": "Brenn, Chronicler of Ages",
+    "new_count": 1,
+    "rarity": "promo",
+    "value": 4.0
+  },
+  {
+    "card_name": "Oathbreaker",
+    "new_count": 1,
+    "rarity": "promo",
+    "value": 4.0
+  },
+  {
+    "card_name": "Hotblood Barbarian",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Into the Furnace",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Warpainter",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Wandering Forge",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Core Scavenger",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Jibbering Jackal",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Viper's Bite",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Peacekeeper's Helm",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Steady Marshal",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Stalwart Silverwing",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Talon of Nostrix",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Copperhall Marshal",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Aerialist's Khopesh",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Snowrager",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Changeestik",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Portent Reader",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Torrential Downpour",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Yeti Snowchucker",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Harbinger's Bite",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Lock Horns",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Lethrai Target Caller",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Cut Ties",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Auric Bully",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 3.0
+  },
+  {
+    "card_name": "Kindle",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Rusty Grenamotive",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Doorknocker",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Gilded Flames",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Moondial",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Fencing Master",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Xulta Convoy",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Minotaur Duelist",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Courier Albatross",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Glacier Shaper",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Lethrai Secretweaver",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Amethyst Monument",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Lethrai Lobotomy",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 8.0
+  },
+  {
+    "card_name": "Grenadin Bellower",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Infused Strike",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Territorial Elf",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Minotaur Lighthoof",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Iceberg Warchief",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Siraf's Choice",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Sadistic Ritualist",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "Cruciation",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 3.0
+  },
+  {
+    "card_name": "On the Hunt",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Yeti Sage",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Shingane Firebrand",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Phoenix Hammer",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Antique Polisher",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Beckoning Lumen",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Marisen's Disciple",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Shard of the Spire",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Spirit Guide",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Hammer of Might",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Honor the Fallen",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Lawman's Sidearm",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Hatecleaver",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Kyrex Coach Driver",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Auric Captain",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Bloodlust",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Tinker Dronedropper",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Alessi, Combrei Archmage",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Copperhall Elite",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Stronghold's Visage",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Derry Cathain, Ripclaw Rider",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 13.0
+  },
+  {
+    "card_name": "Feln Bloodcaster",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 3.0
+  },
+  {
+    "card_name": "Kyojun, Grand Shugo",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 3.0
+  },
+  {
+    "card_name": "Soulfire Drake",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 3.0
+  },
+  {
+    "card_name": "Sindok, Rage Incarnate",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 3.0
+  },
+  {
+    "card_name": "Azurite Prixis",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 8.0
+  },
+  {
+    "card_name": "Breeze Dancer",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 3.0
+  },
+  {
+    "card_name": "Snowsculptor",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 3.0
+  },
+  {
+    "card_name": "Lethrai Provocateur",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 3.0
+  },
+  {
+    "card_name": "Encroaching Darkness",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 3.0
+  },
+  {
+    "card_name": "Nametaker",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 3.0
+  },
+  {
+    "card_name": "Deepforged Plate",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 3.0
+  },
+  {
+    "card_name": "Jekk, Lone Gun",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 3.0
+  },
+  {
+    "card_name": "Feln Cauldron",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 3.0
+  },
+  {
+    "card_name": "Milos, Unwavering Idealist",
+    "new_count": 1,
+    "rarity": "promo",
+    "value": 3.0
+  },
+  {
+    "card_name": "Tamarys, the Geomancer",
+    "new_count": 1,
+    "rarity": "promo",
+    "value": 3.0
+  },
+  {
+    "card_name": "Veteran Mercenary",
+    "new_count": 1,
+    "rarity": "promo",
+    "value": 3.0
+  },
+  {
+    "card_name": "Light 'em Up",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Scrap Hound",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Blinkwolf",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Trick Shot",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Unpredictable Outlaw",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Manufacture",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Overheat",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Fiery Fissure",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Pyre Elemental",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Archive Curator",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Wurmstone",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Fishing Dinoch",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Oni Samurai",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Workshop Tinker",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Reinforced Baton",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Saddle Up",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Entrapment",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Frontier Confessor",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Shielded Shortbarrel",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Entangling Vines",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Unseal",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Yeti Windflyer",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Lethrai Darkstalker",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Cliffside Caretaker",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Hair-Trigger Pistol",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Corrupted Umbren",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Vile Varmint",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Triggerman",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Inspire Obedience",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Bear Arms",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Mighty Strikes",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Spellshield Architect",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Token of Ambition",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Token of Vision",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 2.0
+  },
+  {
+    "card_name": "Hidden Shiv",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Kaleb's Intervention",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Mindfire",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 12.0
+  },
+  {
+    "card_name": "Consuming Flames",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Grenarender",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Cinder Yeti",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Granite Ring",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Refracted Sentinel",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Hellfire Oni",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Ruckus Rouser",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Oni Gunwright",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Dissociate",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 7.0
+  },
+  {
+    "card_name": "Pompous Historian",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Sandspout Mirage",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Temple Artisan",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Plated Goliath",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Harmless Question",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Rolant's Intervention",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Copperhall Cudgel",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Rampart Arbalest",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Heirloom Blade",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Hearty Stranger",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Substitute",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Campfire Watchman",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Iceberg Hailshrieker",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Read the Stars",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Tend the Flock",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Rabid Yeti",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Brash Shorthorn",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Feral Spiteling",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Cowardice",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Sleeping Draught",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Sadistic Valkyrie",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Xenan Cultist",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Betray the Cause",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Dueling Pistols",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Xenan Fanatic",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Eye for an Eye",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Noble Firemane",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Auric Record Keeper",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Tunneling Gargantua",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Aerialist Trainer",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Rooftop Vigilante",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Knight of Sorrow",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Skywalk Enforcer",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Family Charter",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Disrupt",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 2.0
+  },
+  {
+    "card_name": "Pyroknight",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Notorious Scoundrel",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Censari Brigand",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Coalscrounger",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Honor the Ancestors",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Rika, Desert Navigator",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Shiftstone Processor",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Criva, the Crimson Scythe",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Groundbreaker",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Ashen Snakepit",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Reliquary Raider",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Insatiable Serasaur",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Steward of Prophecy",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Stirring Sand",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Predatory Carnosaur",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Sea of Teeth",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Adjudicator's Gavel",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Eager Owlet",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Tinker Overseer",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Caltrops",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Peacekeeper's Prod",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Shieldsmith",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Crownwatch Captain",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Rolant's Honor Guard",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Powderglider",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Clutchmate",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Spiritward Shaman",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Torgov, Icecap Trader",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Yetipult",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Gleaming Shield",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Lida, Most Skilled",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Fearbinder",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Hideout Pistol",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 7.0
+  },
+  {
+    "card_name": "Shadowlands Guide",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Torrent of Spiders",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Deadly Confrontation",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Umbren Reaper",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Mysterium Orb",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Recombobulate",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Sandglass Juggernaut",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Shatterglass Mage",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Rakano Artisan",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Pokpok, Rockpacker",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Unexpected Results",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Burn Them All",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Decimate",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Bloodrite Kalis",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Stonescar Pickaxe",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Infernal Tyrant",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Master's Lesson",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Auric Vigilante",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Enemy of My Enemy",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 2.0
+  },
+  {
+    "card_name": "Light the Fuse",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Scale Seeker",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Phoenix Stone",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Dramatist's Mask",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Bad News",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Gearcruncher",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 7.0
+  },
+  {
+    "card_name": "Gnash, Pridemaster",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Talir, Who Sees Beyond",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Stella, the Shotcaller",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Augmented Form",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Rolant's Fist",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Answer the Call",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Last Stand at the Gate",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Snowdrift Delver",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Mind Link",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "South-Wind Herald",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Thudrock, Arctic Artisan",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Alu, Death-Dreamer",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Big Brother",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Riddle Game",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Means to an End",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Mazag, the Waking Terror",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Whispers in the Void",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Venomspine Hydra",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Ijin, Imperial Armorer",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Ijin's Workshop",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Vadius, Clan Father",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Kaleb, Reborn",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Scraptank",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 7.0
+  },
+  {
+    "card_name": "Syl, Hand of the Cabal",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Reality Warden",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Vodakhan, Temple Speaker",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Bartholo, the Seducer",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Crownwatch Traitor",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Midnight Gale",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Snowcrush Animist",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Curiox, Insatiable Seeker",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 2.0
+  },
+  {
+    "card_name": "Genetrix Irel IV",
+    "new_count": 1,
+    "rarity": "promo",
+    "value": 2.0
+  },
+  {
+    "card_name": "Kosul Brigade",
+    "new_count": 2,
+    "rarity": "promo",
+    "value": 2.0
+  },
+  {
+    "card_name": "Drifter",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Flamefang Charmer",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Smith's Hammer",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Backpacker's Machete",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Sparkbot",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Barbarian Camp",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Welding Torch",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Heroic Bravo",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Ancient Bauble",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Lucky Prospector",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Sand Viper",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Baying Serasaur",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Deft Strike",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Minotaur Oathkeeper",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Arcane Defense",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Copperhall Herald",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Crownwatch Legionnaire",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Miner's Canary",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Sky Crew",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Jump Kick",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Frost Talisman",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Gruanform",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Crafty Yeti",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Electropy",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Mass Entomancy",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Nocturnal Kyrex",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Slope Sergeant",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Swear Vengeance",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Tock Tick",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Flashy Duelist",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Cabal Bludgeoner",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Cripple",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Final-Shot Rioter",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Bloodcall Invocation",
+    "new_count": 1,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Xenan Augury",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Bring Down",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Valkyrie Denouncer",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Bannerman",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 1.0
+  },
+  {
+    "card_name": "Firemane Cub",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Ruthless Stranger",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Dune Painter",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Grenade",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Skycrag Huntsman",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Twinbarrel",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Won't Be Pretty",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Gravemarker Oni",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Grenadin Cannoneer",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Swift Stranger",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Crowd Favorite",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Sunscorched Elemental",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Amaran Shoveler",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Gloaming Wisp",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Talir's Intervention",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Last Rites",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Locust",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Oasis Seeker",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Amber Ring",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Determined Stranger",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Camp Physician",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Gathering Lights",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Mistress of Light",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Sandbinder Sentinel",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Bury the Past",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Humbug Swarm",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Foraging Sauropod",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Humble Instructor",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Ironfist Faithful",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Crackshot Fugitive",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Unwavering Exorcist",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Fur Hat",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Silverwing Smith",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Pistolwhip",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Warband Skald",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Eilyn's Intervention",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Savage Skybrood",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Borderlands Waykeeper",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Fearless Yeti",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Icebreaker",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Icicle Marksman",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Cliffdiver Mantasaur",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Jotun Punter",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "North-Wind Herald",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Icequake",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Desperado",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Umbren Deathwatcher",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Subvert",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Headsman's Axe",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Gunrustler",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Brilliant Discovery",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Monolith Guardian",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Stoneshell Walker",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Iceberg Shineefinder",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Hunter's Harpoon",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Recycler",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Penitent Bull",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Duelist's Blade",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Rolant's Choice",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Spiked Helm",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Stranger's Mark",
+    "new_count": 1,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Alchemist's Concoction",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Veteran Strategist",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 1.0
+  },
+  {
+    "card_name": "Trail Stories",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Oni Dragonsmith",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Flamebelcher",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Quicktrigger Outlaw",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Milos Izalio, Heir to Rebellion",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Ruby Catalyst",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Arms Enthusiast",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Amaran Armadillo",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Evelina, Valley Searcher",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Forgotten Find",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Tome of Repetition",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Voice of the Speaker",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Dig Site",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Gear Master",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Wurmcalling",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Devoted Theurge",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Vault of the Praxis",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Gravewatch Guardian",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Serasaur Bull",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Temple Captain",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Bar the Gates",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Barricade",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Paladin Oathbook",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Hooru Envoy",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Kosul Elite",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Order of the Spire",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Rolant's Memorial",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Rakano Sheriff",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Silverwing Commander",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Defender's Bulwark",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Ironfist Archon",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Cloudsnake Saddle",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Iceberg Mason",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Trumpeting Warhowler",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Yeti Furflinger",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Regression",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Skyward Seer",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Celestial Omen",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Eilyn's Frostrider",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Scouting Party",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Shaluuk Captain",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Thunder Giant",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Cabal Countess",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Cat Burglar",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Devious Drone",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Relentless Gorehorn",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Street Leecher",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Ashara, the Deadshot",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Elder Astrologer",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Lurking Sanguar",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Oblivion Spike",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Pillar of Dreams",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Stonescar Scrapper",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 6.0
+  },
+  {
+    "card_name": "The End is Near",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Sleepless Night",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Waker of Ancients",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Righteous Fury",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Calderan Cradle",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Towering Stranger",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Hair-Trigger Stranger",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Champion of Progress",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Champion of Wisdom",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Bazaar Stampede",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Blistersting Claws",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Champion of Mystery",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Siphon Vitality",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Champion of Order",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Meditative Stranger",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Back for More",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Unfinished Business",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Champion of Vengeance",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Grim Stranger",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Ancient of the Ice Caves",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Lethrai Skystrider",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Horus Traver",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Recon Tower",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Reunite",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 1.0
+  },
+  {
+    "card_name": "Kennelmaster",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Bladerang",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Flamebrewer",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Shogun of the Wastes",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Claw of the First Dragon",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Rock Carapace",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Lavablood Goliath",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Time Flies",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Wandering Wisp",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Idol of Destran",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Ancient Terrazon",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Talir, Unbound",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Marisen, the Eldest",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Emerging Colossus",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Royal Guardian",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Ironfist Chancellor",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Tax Collector",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Xulta Foil",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Elias, the Broken Wing",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Minsod, the Peerless",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Lida's Apprentice",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Horde Plunderer",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Magus of the Mist",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Jarrall Iceheart",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Jotun Birth Song",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Eilyn, Queen of the Wilds",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Clutchkeeper",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Dumping Ground",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Touch of the Umbren",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Valkyrie Harvester",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Callous Survivalist",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "The Last Word",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Voprex, the Great Ruin",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Unraveler of Destinies",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Triumphant Stranger",
+    "new_count": 1,
+    "rarity": "legendary",
+    "value": 1.0
+  },
+  {
+    "card_name": "Lieutenant Relia",
+    "new_count": 1,
+    "rarity": "promo",
+    "value": 1.0
+  },
+  {
+    "card_name": "Colony Matron",
+    "new_count": 1,
+    "rarity": "promo",
+    "value": 1.0
+  },
+  {
+    "card_name": "Alpine Tracker",
+    "new_count": 1,
+    "rarity": "promo",
+    "value": 1.0
+  },
+  {
+    "card_name": "Helpful Doorbot",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Iceberg Frontrunner",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Rambot",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Young Gun",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Ruination Sledge",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Grandfather's Axe",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Hoof Slash",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Oni Eulogist",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Temple Raider",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Audacious Bandit",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Clan Wallbreaker",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Scalechannel Sorcerer",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Spitfire",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Surveilor",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Thunderhoof Warrior",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Dustblind",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Burning Glaive",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Magmatic Sentinel",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Unearth the Past",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Envelop",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Excavation Assistant",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Cryptic Etchings",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Illumination Wisp",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Learned Herbalist",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Sandglass Parma",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Trail Runner",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Sandcrawler",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Sirocco Elementalist",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Spiteful Lumen",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Watchful Amanera",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Sirocco Glider",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Striped Araktodon",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Amaran Archaeologist",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Awakened Sentinel",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Pack Hunt",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Voyaging Lumen",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Belching Behemoth",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Endure",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Spire Spellsword",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Sparring Partner",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Copperhall Shieldman",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Grit",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Guard Dog",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Highbranch Sentry",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Valkyrie Militant",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Crownwatch Recruiter",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Roosting Owl",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Crystal Dirk",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Farplace Finder",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Sinister Opportunist",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Weather the Storm",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Kosul Huntsman",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Reinforced Towershield",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Snowfort Trumpeter",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Icebow",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Wild Rider",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Court Mage",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Galeprowler",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Jotun Cyclops",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Ridgeline Watcher",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "First-Frost Shaman",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Skywalk Instructor",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Acantha's Outrider",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Cirso's Meddling",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Iceknuckle Jotun",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Borrowed Violence",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Afterimage",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Cabal Slasher",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Curator's Spear",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Longshot Marksman",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Lunging Wisp",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Threaten",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Coronal Umbren",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Flickerling",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Lethrai Memory-Keeper",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Skeeter",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Sorrow's Shroud",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Sporebreath",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Consuming Greed",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Holdup",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Breathstealer",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Lethrai Bladewhirl",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Umbren Thirster",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Improvised Club",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Journeyman Armorer",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Clan Hero",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Topaz Drake",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Kosul Beastmaster",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Blaze",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Astromancer's Compass",
+    "new_count": 3,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Argenport Stranger",
+    "new_count": 2,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Elysian Stranger",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Hooru Stranger",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Skycrag Stranger",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Xenan Stranger",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Alchemical Blast",
+    "new_count": 4,
+    "rarity": "common",
+    "value": 0.0
+  },
+  {
+    "card_name": "Cautious Traveler",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Firemane Lioness",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Flame Blast",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Oni Cavediver",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Frontier Bard",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Hipshot",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Jawbone Hatchet",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Ruincrawler Yeti",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Tumblebang",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Ancient Defenses",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Hardsight Cyclops",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Morningstar",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Outlands Brute",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Stonescar Sawed-Off",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Shingane Forge",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Staff of the Arch-Magister",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Stonepowder Heretic",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Forgeborn",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Sandstorm",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Sustaining Harp",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Dune Phantom",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Initiation Bell",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Bolster",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Fierce Mosaraptor",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Lumen Attendant",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Maddening Whisper",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Twinfang Cobra",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Ancient Excavator",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Wurmic Chanter",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Elysian Pathfinder",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Crownwatch Squire",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Svetya's Bravery",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Tinker Apprentice",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Chancellor's Horn",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Emerald Ring",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Mark of Shame",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Valkyrie Cadet",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Warrant Officer",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Auric Weaponsmith",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Loyal Falcon",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Victor's Cry",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Rallying Banner",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Ceremonial Mask",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "New Order Watchwing",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Prosecutor-at-Arms",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Cobalt Monument",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Frostwave",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Savage Denial",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 5.0
+  },
+  {
+    "card_name": "Cloudsnake Breeder",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Talon Dive",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Wild Cloudsnake",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Wind Cloak",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Cobalt Ring",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Skyrider Vanguard",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Lens of Clarity",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Serpent Mount",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Slushdumper",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Stormcaller",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Yeti Troublemaker",
+    "new_count": 4,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Boltcrafter Shaman",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Starved Vorlunk",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Jack's Knife",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Obliviobot",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Amethyst Ring",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Lethrai Nightblade",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Spur On",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Trigger-Happy",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Grimy Alp-luachra",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Direwood Prowler",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Alluring Ember",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Magus of Celerity",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Clan Huntcaller",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Jekk's Choice",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Smuggler's Stash",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Gate Guardian",
+    "new_count": 3,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Highwind Glider",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Makeshift Barrier",
+    "new_count": 2,
+    "rarity": "uncommon",
+    "value": 0.0
+  },
+  {
+    "card_name": "Brazen Daredevil",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Charchain Flail",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Frontier Jito",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Song of War",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Scrap Heap",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Stonescar Excavator",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Library Phoenix",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Steelfang Chakram",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Pouncing Drake",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "General Izalio",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Crested Runt",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Hall of Lost Kings",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Spire Chaplain",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Snow Pelting",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Maelstrom Bell",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Cloudsnake Harrier",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Eye of Winter",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Shapeshifter's Mask",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Aeva, Eilyn's Elite",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Crystallize",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Lethrai Falchion",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Azindel's Gift",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Clever Stranger",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Brimstone Altar",
+    "new_count": 3,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Accelerated Evolution",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Bereaved Stranger",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Recurring Nightmare",
+    "new_count": 2,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Withering Witch",
+    "new_count": 4,
+    "rarity": "rare",
+    "value": 0.0
+  },
+  {
+    "card_name": "Nika, the Freescaler",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 0.0
+  },
+  {
+    "card_name": "Strength of the Pack",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 0.0
+  },
+  {
+    "card_name": "Navani, Warsinger",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 0.0
+  },
+  {
+    "card_name": "A New Tomorrow",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 0.0
+  },
+  {
+    "card_name": "Curiox, the Collector",
+    "new_count": 3,
+    "rarity": "legendary",
+    "value": 0.0
+  },
+  {
+    "card_name": "Nightmaw, Sight Unseen",
+    "new_count": 2,
+    "rarity": "legendary",
+    "value": 0.0
+  },
+  {
+    "card_name": "Slimespitter Slug",
+    "new_count": 1,
+    "rarity": "rare",
+    "value": 5.0
+  }
+]

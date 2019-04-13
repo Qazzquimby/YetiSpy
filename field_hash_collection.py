@@ -4,13 +4,23 @@ import collections
 
 class FieldHashCollection(abc.ABC):
     def __init__(self):
-        self.contents = []  # todo make readonly property
+        self._contents = []
         self.dict = collections.defaultdict(lambda: collections.defaultdict(list))
         self.updated = False
 
-    def append(self, input):
-        self.contents.append(input)
-        self._add_to_dict(input)
+    @property
+    def contents(self):
+        return self._contents[:]
 
-    def _add_to_dict(self, input: input):
+    def append(self, entry: any):
+        self._contents.append(entry)
+        self._add_to_dict(entry)
+
+    def _add_to_dict(self, entry: any):
+        raise NotImplementedError
+
+
+class JsonLoadedCollection(FieldHashCollection, abc.ABC):
+    @staticmethod
+    def json_entry_to_content(json_entry: dict):
         raise NotImplementedError

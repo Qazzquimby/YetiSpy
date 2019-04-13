@@ -2,54 +2,66 @@ from __future__ import annotations
 
 from collections import defaultdict
 
-from base_learner import BaseLearner
+from base_learner import BaseLearner, JsonInterface
 from card import CardCollection
-from collection import PlaysetCollection
 from deck import CardPlayset
-from field_hash_collection import FieldHashCollection
-from play_rate import CardCountPlayRateCollection, CardCountPlayRate
+from field_hash_collection import JsonLoadedCollection
+from owned_cards import PlaysetCollection
+from play_rate import PlayRateCollection, PlayRate
 
 
-class Value(object):
-    def __init__(self, card_name, rarity, new_count, play_rate):
+class Value:
+    def __init__(self, card_name, rarity, new_count, value):
         self.card_name = card_name
         self.rarity = rarity
         self.new_count = new_count
-        self.play_rate = play_rate
+        self.value = value
 
-    def __int__(self):
-        return self.play_rate
+    def __float__(self):
+        return self.value
 
     def __lt__(self, other):
-        return int(self) < int(other)
+        return float(self) < float(other)
 
     def __eq__(self, other):
-        return int(self) == int(other)
+        return float(self) == float(other)
 
 
-class ValueCollection(FieldHashCollection):
-    def _add_to_dict(self, input: input):
-        self.dict["card_name"][input.card_name].append(input)
+class ValueCollection(JsonLoadedCollection):
+    @staticmethod
+    def json_entry_to_content(json_entry: dict):
+        pass
+
+    def __init__(self):
+        self.deck_search = None
+        super().__init__()
+
+    def _add_to_dict(self, entry):
+        self.dict["card_name"][entry.card_name].append(entry)
 
 
 class ValueLearner(BaseLearner):
     def __init__(self, file_prefix,
-                 collection: PlaysetCollection,
-                 play_rates: CardCountPlayRateCollection,
+                 owned_cards: PlaysetCollection,
+                 play_rates: PlayRateCollection,
                  cards: CardCollection):
-        self.collection = collection
+        self.owned_cards = owned_cards
         self.play_rates = play_rates
         self.cards = cards
 
         self.already_seen = defaultdict(bool)
 
-        super().__init__(file_prefix, "value.json", ValueCollection)
+        super().__init__(file_prefix, f"{self.play_rates.deck_search.name}/value.json",
+                         ValueCollection)
+        self._update_collection()  # todo make this better. Figure out how to handle autoupdate.
 
-    def _update_contents(self):
+        self.collection.deck_search = self.play_rates.deck_search
+
+    def _update_collection(self):
         for play_rate in self.play_rates.contents:
             self._update_value_from_play_rate(play_rate)
 
-    def _update_value_from_play_rate(self, play_rate: CardCountPlayRate):
+    def _update_value_from_play_rate(self, play_rate: PlayRate):
         play_rate_id = (play_rate.set_num, play_rate.card_num)
         if self.already_seen[play_rate_id]:
             return
@@ -66,36 +78,57 @@ class ValueLearner(BaseLearner):
         new_count = num_owned + 1
         assert new_count in [1, 2, 3, 4]
 
-        card_value = self._get_card_value(play_rate, matching_playset, new_count)
-        if card_value.play_rate == 0:
-            return
+        card_value = self._get_value(play_rate, matching_playset, new_count)
 
-        self.contents.append(card_value)
+        self.collection.append(card_value)
 
     def _get_matching_playset(self, play_rate):
-        matching_playsets = self.collection.dict[play_rate.set_num][play_rate.card_num]
+        matching_playsets = self.owned_cards.dict[play_rate.set_num][play_rate.card_num]
         if len(matching_playsets) == 0:
             return None
-        else:
-            return matching_playsets[0]
+        return matching_playsets[0]
 
-    def _get_card_value(self, play_rate, playset, new_count) -> Value:
+    def _get_value(self, play_rate, playset, new_count) -> Value:
         matching_cards = self.cards.dict[playset.set_num][
             playset.card_num]
         card = matching_cards[0]
         name = card.name
         rarity = card.rarity
         value_of_new_count = play_rate.play_rate_of_card_count[str(new_count)]
-        card_value = Value(name, rarity, new_count, value_of_new_count)
-        return card_value
+        weight = self.play_rates.deck_search.weight
+        value = Value(name, rarity, new_count, weight * value_of_new_count)
+        return value
 
     def _json_entry_to_content(self, json_entry):
         pass
 
     def _load(self):
-        self.contents = ValueCollection()
-        self._update_contents()
+        return ValueCollection()
 
     def _save(self):
-        self.contents.contents = sorted(self.contents.contents, reverse=True)
+        self.collection.contents = sorted(self.collection.contents, reverse=True)
         super()._save()
+
+
+class SummedValues:
+    def __init__(self, file_prefix, value_collections):
+        self.value_collections = value_collections
+        self.json_interface = JsonInterface(file_prefix, "overall_value.json", ValueCollection)
+
+        self.collection = self._init_collection()
+        self.save()
+
+    def _init_collection(self):
+        summed_value_collection = ValueCollection()
+        for value_collection in self.value_collections:
+            for value in value_collection.contents:
+                matching_values = summed_value_collection.dict["card_name"][value.card_name]
+                if len(matching_values) > 0:
+                    matching_values[0].value += value.value
+                else:
+                    summed_value_collection.append(value)
+
+        return summed_value_collection
+
+    def save(self):
+        self.json_interface.save(self.collection)

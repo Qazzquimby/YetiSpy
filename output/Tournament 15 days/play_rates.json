@@ -1,0 +1,1792 @@
+[
+  {
+    "card_num": 1,
+    "play_rate_of_card_count": {
+      "1": 5,
+      "2": 5,
+      "3": 5,
+      "4": 5
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 5,
+    "play_rate_of_card_count": {
+      "1": 5,
+      "2": 5,
+      "3": 5,
+      "4": 5
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 8,
+    "play_rate_of_card_count": {
+      "1": 8,
+      "2": 8,
+      "3": 8,
+      "4": 8
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 33,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 51,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 38,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 39,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 74,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 63,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 61,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 2
+  },
+  {
+    "card_num": 134,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 106,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 151,
+    "play_rate_of_card_count": {
+      "1": 7,
+      "2": 6,
+      "3": 4,
+      "4": 4
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 190,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 3,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 197,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 163,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 218,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 250,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 157,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 261,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 259,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 35,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 0
+  },
+  {
+    "card_num": 171,
+    "play_rate_of_card_count": {
+      "1": 5,
+      "2": 4,
+      "3": 4,
+      "4": 4
+    },
+    "set_num": 2
+  },
+  {
+    "card_num": 419,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 392,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 421,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 201,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 2
+  },
+  {
+    "card_num": 220,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 216,
+    "play_rate_of_card_count": {
+      "1": 4,
+      "2": 4,
+      "3": 3,
+      "4": 2
+    },
+    "set_num": 2
+  },
+  {
+    "card_num": 217,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 2
+  },
+  {
+    "card_num": 417,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 2,
+      "3": 2,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 408,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 3,
+      "3": 3,
+      "4": 2
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 1,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1003
+  },
+  {
+    "card_num": 6,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 20,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 29,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 51,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 67,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 44,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 5,
+    "play_rate_of_card_count": {
+      "1": 5,
+      "2": 5,
+      "3": 5,
+      "4": 5
+    },
+    "set_num": 1005
+  },
+  {
+    "card_num": 44,
+    "play_rate_of_card_count": {
+      "1": 4,
+      "2": 4,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 2
+  },
+  {
+    "card_num": 77,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 3,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 143,
+    "play_rate_of_card_count": {
+      "1": 5,
+      "2": 5,
+      "3": 3,
+      "4": 3
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 157,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 514,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 145,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 13,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 3,
+      "3": 3,
+      "4": 3
+    },
+    "set_num": 1005
+  },
+  {
+    "card_num": 114,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 193,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 116,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 147,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 153,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 165,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 3,
+      "3": 3,
+      "4": 3
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 217,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 2,
+      "3": 2,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 15,
+    "play_rate_of_card_count": {
+      "1": 4,
+      "2": 4,
+      "3": 3,
+      "4": 2
+    },
+    "set_num": 1005
+  },
+  {
+    "card_num": 141,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 227,
+    "play_rate_of_card_count": {
+      "1": 5,
+      "2": 3,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 16,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1004
+  },
+  {
+    "card_num": 193,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 152,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 153,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 251,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 269,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 1,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 17,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 3,
+      "3": 3,
+      "4": 3
+    },
+    "set_num": 1005
+  },
+  {
+    "card_num": 13,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1003
+  },
+  {
+    "card_num": 267,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 167,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 54,
+    "play_rate_of_card_count": {
+      "1": 5,
+      "2": 5,
+      "3": 4,
+      "4": 4
+    },
+    "set_num": 0
+  },
+  {
+    "card_num": 56,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 0
+  },
+  {
+    "card_num": 53,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 1,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 0
+  },
+  {
+    "card_num": 188,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 2
+  },
+  {
+    "card_num": 189,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 2
+  },
+  {
+    "card_num": 60,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 0
+  },
+  {
+    "card_num": 15,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1001
+  },
+  {
+    "card_num": 63,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 0
+  },
+  {
+    "card_num": 21,
+    "play_rate_of_card_count": {
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4
+    },
+    "set_num": 1003
+  },
+  {
+    "card_num": 206,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 2
+  },
+  {
+    "card_num": 51,
+    "play_rate_of_card_count": {
+      "1": 6,
+      "2": 6,
+      "3": 4,
+      "4": 4
+    },
+    "set_num": 0
+  },
+  {
+    "card_num": 220,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 2
+  },
+  {
+    "card_num": 62,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 0
+  },
+  {
+    "card_num": 374,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 192,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 381,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 244,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 228,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 233,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 279,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 425,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 3,
+      "3": 3,
+      "4": 3
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 21,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 4,
+    "play_rate_of_card_count": {
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4
+    },
+    "set_num": 1005
+  },
+  {
+    "card_num": 48,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 50,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 68,
+    "play_rate_of_card_count": {
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 70,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 69,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 480,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 103,
+    "play_rate_of_card_count": {
+      "1": 5,
+      "2": 4,
+      "3": 4,
+      "4": 4
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 68,
+    "play_rate_of_card_count": {
+      "1": 5,
+      "2": 5,
+      "3": 5,
+      "4": 5
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 3,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1001
+  },
+  {
+    "card_num": 86,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 3,
+      "3": 3,
+      "4": 3
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 112,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 151,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 126,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 166,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 1,
+      "3": 1,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 95,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 98,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 172,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 3,
+      "3": 3,
+      "4": 3
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 10,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 3,
+      "3": 3,
+      "4": 3
+    },
+    "set_num": 1005
+  },
+  {
+    "card_num": 11,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 1,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1005
+  },
+  {
+    "card_num": 117,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 11,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 1,
+      "3": 1,
+      "4": 0
+    },
+    "set_num": 1003
+  },
+  {
+    "card_num": 169,
+    "play_rate_of_card_count": {
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 221,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 143,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 244,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 1,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 268,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 215,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 217,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 3,
+      "3": 3,
+      "4": 3
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 224,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 236,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 167,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 2
+  },
+  {
+    "card_num": 251,
+    "play_rate_of_card_count": {
+      "1": 5,
+      "2": 5,
+      "3": 5,
+      "4": 5
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 243,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 1,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 198,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 266,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 2,
+      "3": 2,
+      "4": 1
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 215,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 268,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 402,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 247,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 0
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 261,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 251,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 1,
+      "4": 0
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 204,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 206,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 266,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 221,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 253,
+    "play_rate_of_card_count": {
+      "1": 6,
+      "2": 6,
+      "3": 6,
+      "4": 5
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 17,
+    "play_rate_of_card_count": {
+      "1": 4,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1002
+  },
+  {
+    "card_num": 223,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 2
+  },
+  {
+    "card_num": 267,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 371,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 23,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1005
+  },
+  {
+    "card_num": 26,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1005
+  },
+  {
+    "card_num": 46,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 36,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 52,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 67,
+    "play_rate_of_card_count": {
+      "1": 5,
+      "2": 5,
+      "3": 5,
+      "4": 5
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 7,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1005
+  },
+  {
+    "card_num": 57,
+    "play_rate_of_card_count": {
+      "1": 5,
+      "2": 5,
+      "3": 5,
+      "4": 5
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 99,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 7,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 1003
+  },
+  {
+    "card_num": 115,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 138,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 109,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 110,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 186,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 1,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 133,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 148,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 2,
+      "3": 2,
+      "4": 2
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 15,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 0
+    },
+    "set_num": 1003
+  },
+  {
+    "card_num": 19,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1004
+  },
+  {
+    "card_num": 182,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 1,
+      "3": 1,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 307,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 310,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 186,
+    "play_rate_of_card_count": {
+      "1": 4,
+      "2": 4,
+      "3": 4,
+      "4": 4
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 183,
+    "play_rate_of_card_count": {
+      "1": 5,
+      "2": 5,
+      "3": 5,
+      "4": 5
+    },
+    "set_num": 2
+  },
+  {
+    "card_num": 317,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 246,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 219,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 197,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 2
+  },
+  {
+    "card_num": 389,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 387,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 275,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 391,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 249,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 4
+  },
+  {
+    "card_num": 190,
+    "play_rate_of_card_count": {
+      "1": 3,
+      "2": 3,
+      "3": 3,
+      "4": 3
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 21,
+    "play_rate_of_card_count": {
+      "1": 5,
+      "2": 4,
+      "3": 4,
+      "4": 4
+    },
+    "set_num": 1005
+  },
+  {
+    "card_num": 263,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 3
+  },
+  {
+    "card_num": 385,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 1,
+      "3": 1,
+      "4": 1
+    },
+    "set_num": 1
+  },
+  {
+    "card_num": 245,
+    "play_rate_of_card_count": {
+      "1": 1,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 5
+  },
+  {
+    "card_num": 304,
+    "play_rate_of_card_count": {
+      "1": 2,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    "set_num": 3
+  }
+]

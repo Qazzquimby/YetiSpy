@@ -1,12 +1,14 @@
+from dataclasses import dataclass
+
 from base_learner import BaseLearner
 from browser import Browser
-from field_hash_collection import FieldHashCollection
+from field_hash_collection import JsonLoadedCollection
 
 
-class Rarity(object):
-    def __init__(self, rarity_id, name):
-        self.id = rarity_id
-        self.name = name
+@dataclass
+class Rarity:
+    id: str
+    name: str
 
 
 COMMON = "common"
@@ -24,7 +26,7 @@ rarity_string_to_id = {COMMON: 2,
                        PROMO: 6}
 
 
-class CardData(object):
+class CardData:
     def __init__(self, set_num: int, card_num: int, name: str, rarity: str):
         self.set_num = set_num
         self.card_num = card_num
@@ -35,17 +37,44 @@ class CardData(object):
         return f"{self.name} - {self.set_num}, {self.card_num}"
 
 
-class CardCollection(FieldHashCollection):
-    def _add_to_dict(self, input: input):
-        self.dict[input.set_num][input.card_num].append(input)  # dict[set_num][card_num]=objects
-        self.dict["name"][input.name].append(input)  # dict["name"][name]=objects
+class CardCollection(JsonLoadedCollection):
+    @staticmethod
+    def json_entry_to_content(json_entry: dict):
+        content = CardData(json_entry['set_num'],
+                           json_entry['card_num'],
+                           json_entry['name'],
+                           json_entry['rarity'])
+        return content
+
+    def _add_to_dict(self, entry: any):
+        self.dict[entry.set_num][entry.card_num].append(entry)  # dict[set_num][card_num]=objects
+        self.dict["name"][entry.name].append(entry)  # dict["name"][name]=objects
+
+
+def get_set_card_string_from_card_url(url: str):
+    base_url = 'https://eternalwarcry.com/cards/details/'
+    url = url.replace(base_url, "")
+    set_card_string = url.split("/")[0]
+    return set_card_string
+
+
+def get_card_num_from_card_url(url):
+    set_card_string = get_set_card_string_from_card_url(url)
+    card_num = int(set_card_string.split("-")[1])
+    return card_num
+
+
+def get_set_num_from_card_url(url):
+    set_card_string = get_set_card_string_from_card_url(url)
+    set_num = int(set_card_string.split("-")[0])
+    return set_num
 
 
 class CardLearner(BaseLearner):
     def __init__(self, file_prefix: str):
         super().__init__(file_prefix, "cards.json", CardCollection)
 
-    def _update_contents(self):
+    def _update_collection(self):
         with Browser() as browser:
             for rarity in RARITIES:
                 self._find_new_cards_with_rarity(rarity, browser)
@@ -72,35 +101,12 @@ class CardLearner(BaseLearner):
             is_empty = True
         for card_link in card_table:
             name = card_link.text
-            if len(self.contents.dict["name"][name]) == 0:
+            if len(self.collection.dict["name"][name]) == 0:
                 card_url = card_link.get_attribute("href")
-                set_num = self._get_set_num_from_card_url(card_url)
-                card_num = self._get_card_num_from_card_url(card_url)
+                set_num = get_set_num_from_card_url(card_url)
+                card_num = get_card_num_from_card_url(card_url)
 
                 card = CardData(set_num, card_num, name, rarity)
-                self.contents.append(card)
+                self.collection.append(card)
 
         return is_empty
-
-    def _get_set_num_from_card_url(self, url):
-        set_card_string = self._get_set_card_string_from_card_url(url)
-        set_num = int(set_card_string.split("-")[0])
-        return set_num
-
-    def _get_card_num_from_card_url(self, url):
-        set_card_string = self._get_set_card_string_from_card_url(url)
-        card_num = int(set_card_string.split("-")[1])
-        return card_num
-
-    def _get_set_card_string_from_card_url(self, url: str):
-        base_url = 'https://eternalwarcry.com/cards/details/'
-        url = url.replace(base_url, "")
-        set_card_string = url.split("/")[0]
-        return set_card_string
-
-    def _json_entry_to_content(self, json_entry):
-        content = CardData(json_entry['set_num'],
-                           json_entry['card_num'],
-                           json_entry['name'],
-                           json_entry['rarity'])
-        return content

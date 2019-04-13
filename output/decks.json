@@ -244,7 +244,7 @@
     ],
     "deck_id": "Flt2JOgVxFM",
     "is_tournament": false,
-    "last_updated": "4,377",
+    "last_updated": "5,272",
     "success": "Tuesday Night Eternal - Pauper - Top 8\nApril 3, 2019\n1st"
   },
   {
@@ -348,7 +348,7 @@
     ],
     "deck_id": "Z7DoE-DCGsQ",
     "is_tournament": false,
-    "last_updated": "1,033",
+    "last_updated": "1,426",
     "success": "Tuesday Night Eternal - Pauper - Top 8\nApril 3, 2019\n3rd"
   },
   {
@@ -462,7 +462,7 @@
     ],
     "deck_id": "xQzmc2XT_QY",
     "is_tournament": false,
-    "last_updated": "644",
+    "last_updated": "866",
     "success": "Tuesday Night Eternal - Pauper - Top 8\nApril 3, 2019\n5th"
   },
   {
@@ -576,7 +576,7 @@
     ],
     "deck_id": "dcud4gldJ5Q",
     "is_tournament": false,
-    "last_updated": "631",
+    "last_updated": "840",
     "success": "Tuesday Night Eternal - Pauper - Top 8\nApril 3, 2019\n4th"
   },
   {
@@ -705,7 +705,7 @@
     ],
     "deck_id": "nbwM9Z1gwB8",
     "is_tournament": false,
-    "last_updated": "812",
+    "last_updated": "1,056",
     "success": "Tuesday Night Eternal - Pauper - Top 8\nApril 3, 2019\n6th"
   },
   {
@@ -809,7 +809,7 @@
     ],
     "deck_id": "yRuGRj-aU6E",
     "is_tournament": false,
-    "last_updated": "466",
+    "last_updated": "611",
     "success": "Tuesday Night Eternal - Pauper - Top 8\nApril 3, 2019\n7th"
   },
   {
@@ -923,7 +923,7 @@
     ],
     "deck_id": "_fE2KTYmMZI",
     "is_tournament": false,
-    "last_updated": "389",
+    "last_updated": "523",
     "success": "Tuesday Night Eternal - Pauper - Top 8\nApril 3, 2019\n8th"
   },
   {
@@ -1037,8 +1037,127 @@
     ],
     "deck_id": "O1b7xBxQzC0",
     "is_tournament": false,
-    "last_updated": "2,262",
+    "last_updated": "2,375",
     "success": "ETS 2019 Community Championship - Top 8\nMarch 24, 2019\n5th"
+  },
+  {
+    "archetype": "March 24, 2019",
+    "card_playsets": [
+      {
+        "card_num": 39,
+        "num_played": 2,
+        "set_num": 5
+      },
+      {
+        "card_num": 55,
+        "num_played": 3,
+        "set_num": 3
+      },
+      {
+        "card_num": 193,
+        "num_played": 4,
+        "set_num": 1
+      },
+      {
+        "card_num": 200,
+        "num_played": 2,
+        "set_num": 1
+      },
+      {
+        "card_num": 153,
+        "num_played": 4,
+        "set_num": 4
+      },
+      {
+        "card_num": 21,
+        "num_played": 4,
+        "set_num": 1003
+      },
+      {
+        "card_num": 64,
+        "num_played": 3,
+        "set_num": 3
+      },
+      {
+        "card_num": 67,
+        "num_played": 4,
+        "set_num": 4
+      },
+      {
+        "card_num": 80,
+        "num_played": 3,
+        "set_num": 1
+      },
+      {
+        "card_num": 168,
+        "num_played": 2,
+        "set_num": 3
+      },
+      {
+        "card_num": 68,
+        "num_played": 3,
+        "set_num": 4
+      },
+      {
+        "card_num": 169,
+        "num_played": 4,
+        "set_num": 4
+      },
+      {
+        "card_num": 170,
+        "num_played": 3,
+        "set_num": 4
+      },
+      {
+        "card_num": 69,
+        "num_played": 4,
+        "set_num": 3
+      },
+      {
+        "card_num": 57,
+        "num_played": 4,
+        "set_num": 5
+      },
+      {
+        "card_num": 16,
+        "num_played": 4,
+        "set_num": 1004
+      },
+      {
+        "card_num": 261,
+        "num_played": 2,
+        "set_num": 3
+      },
+      {
+        "card_num": 425,
+        "num_played": 4,
+        "set_num": 1
+      },
+      {
+        "card_num": 421,
+        "num_played": 4,
+        "set_num": 1
+      },
+      {
+        "card_num": 63,
+        "num_played": 4,
+        "set_num": 0
+      },
+      {
+        "card_num": 232,
+        "num_played": 1,
+        "set_num": 1
+      },
+      {
+        "card_num": 151,
+        "num_played": 1,
+        "set_num": 3
+      }
+    ],
+    "deck_id": "YDccXEyQwjM",
+    "is_tournament": false,
+    "last_updated": "2,351",
+    "success": "ETS 2019 Community Championship - Top 8\nMarch 24, 2019\n3rd"
   },
   {
     "archetype": "March 24, 2019",
@@ -1166,127 +1285,8 @@
     ],
     "deck_id": "UyWgUSgR1VM",
     "is_tournament": false,
-    "last_updated": "3,790",
+    "last_updated": "4,127",
     "success": "ETS 2019 Community Championship - Top 8\nMarch 24, 2019\n1st"
-  },
-  {
-    "archetype": "March 24, 2019",
-    "card_playsets": [
-      {
-        "card_num": 39,
-        "num_played": 2,
-        "set_num": 5
-      },
-      {
-        "card_num": 55,
-        "num_played": 3,
-        "set_num": 3
-      },
-      {
-        "card_num": 193,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 200,
-        "num_played": 2,
-        "set_num": 1
-      },
-      {
-        "card_num": 153,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 21,
-        "num_played": 4,
-        "set_num": 1003
-      },
-      {
-        "card_num": 64,
-        "num_played": 3,
-        "set_num": 3
-      },
-      {
-        "card_num": 67,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 80,
-        "num_played": 3,
-        "set_num": 1
-      },
-      {
-        "card_num": 168,
-        "num_played": 2,
-        "set_num": 3
-      },
-      {
-        "card_num": 68,
-        "num_played": 3,
-        "set_num": 4
-      },
-      {
-        "card_num": 169,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 170,
-        "num_played": 3,
-        "set_num": 4
-      },
-      {
-        "card_num": 69,
-        "num_played": 4,
-        "set_num": 3
-      },
-      {
-        "card_num": 57,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 16,
-        "num_played": 4,
-        "set_num": 1004
-      },
-      {
-        "card_num": 261,
-        "num_played": 2,
-        "set_num": 3
-      },
-      {
-        "card_num": 425,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 421,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 63,
-        "num_played": 4,
-        "set_num": 0
-      },
-      {
-        "card_num": 232,
-        "num_played": 1,
-        "set_num": 1
-      },
-      {
-        "card_num": 151,
-        "num_played": 1,
-        "set_num": 3
-      }
-    ],
-    "deck_id": "YDccXEyQwjM",
-    "is_tournament": false,
-    "last_updated": "2,106",
-    "success": "ETS 2019 Community Championship - Top 8\nMarch 24, 2019\n3rd"
   },
   {
     "archetype": "March 24, 2019",
@@ -1409,7 +1409,7 @@
     ],
     "deck_id": "isBwtLA66lY",
     "is_tournament": false,
-    "last_updated": "2,688",
+    "last_updated": "2,917",
     "success": "ETS 2019 Community Championship - Top 8\nMarch 24, 2019\n2nd"
   },
   {
@@ -1543,11 +1543,11 @@
     ],
     "deck_id": "wc16GQjk150",
     "is_tournament": false,
-    "last_updated": "1,183",
+    "last_updated": "1,255",
     "success": "ETS 2019 Community Championship - Top 8\nMarch 24, 2019\n3rd"
   },
   {
-    "archetype": "1,654",
+    "archetype": "1,751",
     "card_playsets": [
       {
         "card_num": 130,
@@ -1786,7 +1786,7 @@
     ],
     "deck_id": "UIcVMP1rjuM",
     "is_tournament": false,
-    "last_updated": "1,567",
+    "last_updated": "1,679",
     "success": "ETS 2019 Community Championship - Top 8\nMarch 24, 2019\n5th"
   },
   {
@@ -1910,7 +1910,7 @@
     ],
     "deck_id": "gbF9lU0P5U8",
     "is_tournament": false,
-    "last_updated": "1,254",
+    "last_updated": "1,400",
     "success": "ETS 2019 Community Championship - Top 8\nMarch 24, 2019\n5th"
   },
   {
@@ -2158,7 +2158,7 @@
     ],
     "deck_id": "F90H8V3iBuM",
     "is_tournament": false,
-    "last_updated": "5,775",
+    "last_updated": "5,827",
     "success": "ECQ: Homecoming - Top 8\nMarch 17, 2019\n3rd"
   },
   {
@@ -2312,7 +2312,7 @@
     ],
     "deck_id": "8BBgajiW1l4",
     "is_tournament": false,
-    "last_updated": "4,113",
+    "last_updated": "4,169",
     "success": "ECQ: Homecoming - Top 8\nMarch 17, 2019\n3rd"
   },
   {
@@ -2436,7 +2436,7 @@
     ],
     "deck_id": "nkMZkA9PmcA",
     "is_tournament": false,
-    "last_updated": "3,129",
+    "last_updated": "3,174",
     "success": "ECQ: Homecoming - Top 8\nMarch 17, 2019\n5th"
   },
   {
@@ -2565,7 +2565,7 @@
     ],
     "deck_id": "B9fSKjamFlY",
     "is_tournament": false,
-    "last_updated": "4,926",
+    "last_updated": "4,995",
     "success": "ECQ: Homecoming - Top 8\nMarch 17, 2019\n2nd"
   },
   {
@@ -2694,7 +2694,7 @@
     ],
     "deck_id": "gkUqtv8c_OQ",
     "is_tournament": false,
-    "last_updated": "2,796",
+    "last_updated": "2,912",
     "success": "ECQ: Homecoming - Top 8\nMarch 17, 2019\n5th"
   },
   {
@@ -2828,7 +2828,7 @@
     ],
     "deck_id": "HGVeQIALwaE",
     "is_tournament": false,
-    "last_updated": "1,422",
+    "last_updated": "1,453",
     "success": "ECQ: Homecoming - Top 8\nMarch 17, 2019\n5th"
   },
   {
@@ -2957,7 +2957,7 @@
     ],
     "deck_id": "mD6Q4Umplds",
     "is_tournament": false,
-    "last_updated": "2,330",
+    "last_updated": "2,382",
     "success": "ECQ: Homecoming - Top 8\nMarch 17, 2019\n5th"
   },
   {
@@ -3148,13 +3148,13 @@
         "set_num": 5
       },
       {
-        "card_num": 36,
-        "num_played": 3,
+        "card_num": 245,
+        "num_played": 4,
         "set_num": 5
       },
       {
-        "card_num": 245,
-        "num_played": 4,
+        "card_num": 36,
+        "num_played": 3,
         "set_num": 5
       },
       {
@@ -3215,7 +3215,7 @@
     ],
     "deck_id": "ZjH6bYLzEDU",
     "is_tournament": false,
-    "last_updated": "3,435",
+    "last_updated": "3,476",
     "success": "ETS 2019 Season 1 Inivitational - Top 16\nMarch 9, 2019\n3rd"
   },
   {
@@ -3334,7 +3334,7 @@
     ],
     "deck_id": "ONJRarjb5RE",
     "is_tournament": false,
-    "last_updated": "2,710",
+    "last_updated": "2,740",
     "success": "ETS 2019 Season 1 Inivitational - Top 16\nMarch 9, 2019\n5th"
   },
   {
@@ -3463,7 +3463,7 @@
     ],
     "deck_id": "EQi3EIGDi4E",
     "is_tournament": false,
-    "last_updated": "5,187",
+    "last_updated": "5,252",
     "success": "ETS 2019 Season 1 Inivitational - Top 16\nMarch 9, 2019\n2nd"
   },
   {
@@ -3696,7 +3696,7 @@
     ],
     "deck_id": "_0hUWitRSUk",
     "is_tournament": false,
-    "last_updated": "3,218",
+    "last_updated": "3,258",
     "success": "ETS 2019 Season 1 Inivitational - Top 16\nMarch 9, 2019\n5th"
   },
   {
@@ -3825,7 +3825,7 @@
     ],
     "deck_id": "D-DYJKk_3gk",
     "is_tournament": false,
-    "last_updated": "2,503",
+    "last_updated": "2,530",
     "success": "ETS 2019 Season 1 Inivitational - Top 16\nMarch 9, 2019\n9th"
   },
   {
@@ -3887,13 +3887,13 @@
         "set_num": 5
       },
       {
-        "card_num": 36,
-        "num_played": 4,
+        "card_num": 245,
+        "num_played": 3,
         "set_num": 5
       },
       {
-        "card_num": 245,
-        "num_played": 3,
+        "card_num": 36,
+        "num_played": 4,
         "set_num": 5
       },
       {
@@ -3944,7 +3944,7 @@
     ],
     "deck_id": "Kh5DTh2tQAg",
     "is_tournament": false,
-    "last_updated": "1,373",
+    "last_updated": "1,385",
     "success": "ETS 2019 Season 1 Inivitational - Top 16\nMarch 9, 2019\n5th"
   },
   {
@@ -4063,7 +4063,7 @@
     ],
     "deck_id": "-We_5bgNECE",
     "is_tournament": false,
-    "last_updated": "943",
+    "last_updated": "958",
     "success": "ETS 2019 Season 1 Inivitational - Top 16\nMarch 9, 2019\n9th"
   },
   {
@@ -4197,7 +4197,7 @@
     ],
     "deck_id": "N27r6UCKHq4",
     "is_tournament": false,
-    "last_updated": "856",
+    "last_updated": "863",
     "success": "ETS 2019 Season 1 Inivitational - Top 16\nMarch 9, 2019\n9th"
   },
   {
@@ -4336,7 +4336,7 @@
     ],
     "deck_id": "h6fZ6TvYl0k",
     "is_tournament": false,
-    "last_updated": "1,071",
+    "last_updated": "1,077",
     "success": "ETS 2019 Season 1 Inivitational - Top 16\nMarch 9, 2019\n9th"
   },
   {
@@ -4475,7 +4475,7 @@
     ],
     "deck_id": "U_PjFXTURgk",
     "is_tournament": false,
-    "last_updated": "1,524",
+    "last_updated": "1,538",
     "success": "ETS 2019 Season 1 Inivitational - Top 16\nMarch 9, 2019\n9th"
   },
   {
@@ -4609,7 +4609,7 @@
     ],
     "deck_id": "MZMOjWfflgs",
     "is_tournament": false,
-    "last_updated": "2,358",
+    "last_updated": "2,381",
     "success": "ETS 2019 Season 1 Inivitational - Top 16\nMarch 9, 2019\n3rd"
   },
   {
@@ -4681,13 +4681,13 @@
         "set_num": 2
       },
       {
-        "card_num": 36,
-        "num_played": 3,
+        "card_num": 245,
+        "num_played": 4,
         "set_num": 5
       },
       {
-        "card_num": 245,
-        "num_played": 4,
+        "card_num": 36,
+        "num_played": 3,
         "set_num": 5
       },
       {
@@ -4748,7 +4748,7 @@
     ],
     "deck_id": "6kJlGJG5SlI",
     "is_tournament": false,
-    "last_updated": "589",
+    "last_updated": "592",
     "success": "ETS 2019 Season 1 Inivitational - Top 16\nMarch 9, 2019\n9th"
   },
   {
@@ -4877,7 +4877,7 @@
     ],
     "deck_id": "e04JvuJZhOA",
     "is_tournament": false,
-    "last_updated": "917",
+    "last_updated": "924",
     "success": "ETS 2019 Season 1 Inivitational - Top 16\nMarch 9, 2019\n9th"
   },
   {
@@ -4939,12 +4939,12 @@
         "set_num": 5
       },
       {
-        "card_num": 36,
+        "card_num": 245,
         "num_played": 4,
         "set_num": 5
       },
       {
-        "card_num": 245,
+        "card_num": 36,
         "num_played": 4,
         "set_num": 5
       },
@@ -4996,7 +4996,7 @@
     ],
     "deck_id": "k7XFawk8wZQ",
     "is_tournament": false,
-    "last_updated": "835",
+    "last_updated": "842",
     "success": "ETS 2019 Season 1 Inivitational - Top 16\nMarch 9, 2019\n9th"
   },
   {
@@ -5120,7 +5120,7 @@
     ],
     "deck_id": "iX6U61sDNvQ",
     "is_tournament": false,
-    "last_updated": "1,810",
+    "last_updated": "2,104",
     "success": "ECL Casual Friday\nMarch 8, 2019\n1st"
   },
   {
@@ -5279,7 +5279,7 @@
     ],
     "deck_id": "GTIa2bpKcoA",
     "is_tournament": false,
-    "last_updated": "955",
+    "last_updated": "966",
     "success": "ECL Casual Friday\nMarch 8, 2019\n2nd"
   },
   {
@@ -5383,7 +5383,7 @@
     ],
     "deck_id": "2Mqufpzdv8M",
     "is_tournament": false,
-    "last_updated": "753",
+    "last_updated": "756",
     "success": "ECL Casual Friday\nMarch 8, 2019\n3rd"
   },
   {
@@ -5492,7 +5492,7 @@
     ],
     "deck_id": "_k0AAZipbTo",
     "is_tournament": false,
-    "last_updated": "933",
+    "last_updated": "943",
     "success": "ECL Casual Friday\nMarch 8, 2019\n4th"
   },
   {
@@ -5626,7 +5626,7 @@
     ],
     "deck_id": "jTN9pldYRdY",
     "is_tournament": false,
-    "last_updated": "1,091",
+    "last_updated": "1,112",
     "success": "ECL Casual Friday\nMarch 8, 2019\n5th"
   },
   {
@@ -5760,7 +5760,7 @@
     ],
     "deck_id": "tdt6WLIK-Yw",
     "is_tournament": false,
-    "last_updated": "497",
+    "last_updated": "499",
     "success": "ECL Casual Friday\nMarch 8, 2019\n6th"
   },
   {
@@ -5894,7 +5894,7 @@
     ],
     "deck_id": "O_fRlQHgzbI",
     "is_tournament": false,
-    "last_updated": "7,785",
+    "last_updated": "7,817",
     "success": "ETS 2019 S1W8 - Top 8\nMarch 2, 2019\n1st"
   },
   {
@@ -6008,7 +6008,7 @@
     ],
     "deck_id": "dvHnzdGpopk",
     "is_tournament": false,
-    "last_updated": "1,204",
+    "last_updated": "1,212",
     "success": "Degrading Card Pool Tuesday\nMarch 6, 2019\n1st"
   },
   {
@@ -6162,11 +6162,11 @@
     ],
     "deck_id": "OQtEIYOMJ_M",
     "is_tournament": false,
-    "last_updated": "811",
+    "last_updated": "820",
     "success": "Degrading Card Pool Tuesday\nMarch 6, 2019\n2nd"
   },
   {
-    "archetype": "913",
+    "archetype": "919",
     "card_playsets": [
       {
         "card_num": 77,
@@ -6440,7 +6440,7 @@
     ],
     "deck_id": "FpOMhc34Pzw",
     "is_tournament": false,
-    "last_updated": "648",
+    "last_updated": "655",
     "success": "Degrading Card Pool Tuesday\nMarch 6, 2019\n4th"
   },
   {
@@ -6569,7 +6569,111 @@
     ],
     "deck_id": "Pi_Vl_qfm4o",
     "is_tournament": false,
-    "last_updated": "4,436",
+    "last_updated": "4,489",
+    "success": "ETS 2019 S1W8 - Top 8\nMarch 2, 2019\n3rd"
+  },
+  {
+    "archetype": "March 3, 2019",
+    "card_playsets": [
+      {
+        "card_num": 74,
+        "num_played": 4,
+        "set_num": 1
+      },
+      {
+        "card_num": 7,
+        "num_played": 4,
+        "set_num": 1003
+      },
+      {
+        "card_num": 4,
+        "num_played": 4,
+        "set_num": 1002
+      },
+      {
+        "card_num": 65,
+        "num_played": 4,
+        "set_num": 3
+      },
+      {
+        "card_num": 70,
+        "num_played": 4,
+        "set_num": 4
+      },
+      {
+        "card_num": 157,
+        "num_played": 3,
+        "set_num": 1
+      },
+      {
+        "card_num": 126,
+        "num_played": 4,
+        "set_num": 4
+      },
+      {
+        "card_num": 249,
+        "num_played": 3,
+        "set_num": 4
+      },
+      {
+        "card_num": 338,
+        "num_played": 4,
+        "set_num": 1
+      },
+      {
+        "card_num": 174,
+        "num_played": 4,
+        "set_num": 1
+      },
+      {
+        "card_num": 346,
+        "num_played": 4,
+        "set_num": 1
+      },
+      {
+        "card_num": 12,
+        "num_played": 4,
+        "set_num": 1004
+      },
+      {
+        "card_num": 110,
+        "num_played": 4,
+        "set_num": 5
+      },
+      {
+        "card_num": 51,
+        "num_played": 3,
+        "set_num": 3
+      },
+      {
+        "card_num": 424,
+        "num_played": 4,
+        "set_num": 1
+      },
+      {
+        "card_num": 247,
+        "num_played": 4,
+        "set_num": 4
+      },
+      {
+        "card_num": 58,
+        "num_played": 4,
+        "set_num": 0
+      },
+      {
+        "card_num": 332,
+        "num_played": 1,
+        "set_num": 1
+      },
+      {
+        "card_num": 74,
+        "num_played": 1,
+        "set_num": 5
+      }
+    ],
+    "deck_id": "9A50EPM-EXM",
+    "is_tournament": false,
+    "last_updated": "4,942",
     "success": "ETS 2019 S1W8 - Top 8\nMarch 2, 2019\n3rd"
   },
   {
@@ -6678,112 +6782,8 @@
     ],
     "deck_id": "tvyINKTLErk",
     "is_tournament": false,
-    "last_updated": "2,620",
+    "last_updated": "2,637",
     "success": "ETS 2019 S1W8 - Top 8\nMarch 2, 2019\n5th"
-  },
-  {
-    "archetype": "March 3, 2019",
-    "card_playsets": [
-      {
-        "card_num": 74,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 7,
-        "num_played": 4,
-        "set_num": 1003
-      },
-      {
-        "card_num": 4,
-        "num_played": 4,
-        "set_num": 1002
-      },
-      {
-        "card_num": 65,
-        "num_played": 4,
-        "set_num": 3
-      },
-      {
-        "card_num": 70,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 157,
-        "num_played": 3,
-        "set_num": 1
-      },
-      {
-        "card_num": 126,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 249,
-        "num_played": 3,
-        "set_num": 4
-      },
-      {
-        "card_num": 338,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 174,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 346,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 12,
-        "num_played": 4,
-        "set_num": 1004
-      },
-      {
-        "card_num": 110,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 51,
-        "num_played": 3,
-        "set_num": 3
-      },
-      {
-        "card_num": 424,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 247,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 58,
-        "num_played": 4,
-        "set_num": 0
-      },
-      {
-        "card_num": 332,
-        "num_played": 1,
-        "set_num": 1
-      },
-      {
-        "card_num": 74,
-        "num_played": 1,
-        "set_num": 5
-      }
-    ],
-    "deck_id": "9A50EPM-EXM",
-    "is_tournament": false,
-    "last_updated": "4,865",
-    "success": "ETS 2019 S1W8 - Top 8\nMarch 2, 2019\n3rd"
   },
   {
     "archetype": "March 3, 2019",
@@ -6921,7 +6921,7 @@
     ],
     "deck_id": "9uhazRRRt-A",
     "is_tournament": false,
-    "last_updated": "3,827",
+    "last_updated": "3,860",
     "success": "ETS 2019 S1W8 - Top 8\nMarch 2, 2019\n5th"
   },
   {
@@ -7055,7 +7055,7 @@
     ],
     "deck_id": "QuycHxtDbFM",
     "is_tournament": false,
-    "last_updated": "7,141",
+    "last_updated": "7,236",
     "success": "ETS 2019 S1W8 - Top 8\nMarch 2, 2019\n2nd"
   },
   {
@@ -7179,7 +7179,7 @@
     ],
     "deck_id": "CKs7rehCDyg",
     "is_tournament": false,
-    "last_updated": "4,102",
+    "last_updated": "4,165",
     "success": "ETS 2019 S1W8 - Top 8\nMarch 2, 2019\n5th"
   },
   {
@@ -7308,7 +7308,7 @@
     ],
     "deck_id": "uhDmdpdzC_0",
     "is_tournament": false,
-    "last_updated": "2,367",
+    "last_updated": "2,375",
     "success": "ETS 2019 S1W8 - Top 8\nMarch 2, 2019\n5th"
   },
   {
@@ -7432,7 +7432,7 @@
     ],
     "deck_id": "Fq8M8trN_Ng",
     "is_tournament": false,
-    "last_updated": "1,297",
+    "last_updated": "1,309",
     "success": "ECL Casual Friday\nMarch 1, 2019\n1st"
   },
   {
@@ -7556,7 +7556,7 @@
     ],
     "deck_id": "YOd4pGMxeTU",
     "is_tournament": false,
-    "last_updated": "665",
+    "last_updated": "672",
     "success": "ECL Casual Friday\nMarch 1, 2019\n2nd"
   },
   {
@@ -7685,7 +7685,7 @@
     ],
     "deck_id": "Eiswvt3qFdQ",
     "is_tournament": false,
-    "last_updated": "889",
+    "last_updated": "905",
     "success": "ECL Casual Friday\nMarch 1, 2019\n3rd"
   },
   {
@@ -7854,7 +7854,7 @@
     ],
     "deck_id": "feHnHJujxBI",
     "is_tournament": false,
-    "last_updated": "660",
+    "last_updated": "669",
     "success": "ECL Casual Friday\nMarch 1, 2019\n4th"
   },
   {
@@ -7903,7 +7903,7 @@
     ],
     "deck_id": "gsUWBheVyiY",
     "is_tournament": false,
-    "last_updated": "732",
+    "last_updated": "739",
     "success": "ECL Casual Friday\nMarch 1, 2019\n5th"
   },
   {
@@ -8162,7 +8162,7 @@
     ],
     "deck_id": "djyqR5BWgqY",
     "is_tournament": false,
-    "last_updated": "769",
+    "last_updated": "775",
     "success": "ECL Casual Friday\nMarch 1, 2019\n6th"
   },
   {
@@ -8296,7 +8296,7 @@
     ],
     "deck_id": "kb0r_FeytfI",
     "is_tournament": false,
-    "last_updated": "615",
+    "last_updated": "620",
     "success": "ECL Casual Friday\nMarch 1, 2019\n7th"
   },
   {
@@ -8440,7 +8440,7 @@
     ],
     "deck_id": "cvLOBKR02fY",
     "is_tournament": false,
-    "last_updated": "863",
+    "last_updated": "868",
     "success": "ECL Casual Friday\nMarch 1, 2019\n8th"
   },
   {
@@ -8559,7 +8559,7 @@
     ],
     "deck_id": "sw6xCnBnrOI",
     "is_tournament": false,
-    "last_updated": "1,925",
+    "last_updated": "1,945",
     "success": "Degrading Card Pool Tuesday\nFebruary 27, 2019\n1st"
   },
   {
@@ -8688,7 +8688,7 @@
     ],
     "deck_id": "JyS0SWaenmg",
     "is_tournament": false,
-    "last_updated": "5,571",
+    "last_updated": "5,588",
     "success": "ETS 2019 S1W7 - Top 8\nFebruary 23, 2019\n5th"
   },
   {
@@ -8817,7 +8817,7 @@
     ],
     "deck_id": "0Vh66z58qF8",
     "is_tournament": false,
-    "last_updated": "3,257",
+    "last_updated": "3,271",
     "success": "ETS 2019 S1W7 - Top 8\nFebruary 23, 2019\n3rd"
   },
   {
@@ -8931,11 +8931,11 @@
     ],
     "deck_id": "giheobVBZ0c",
     "is_tournament": false,
-    "last_updated": "4,011",
+    "last_updated": "4,070",
     "success": "ETS 2019 S1W7 - Top 8\nFebruary 23, 2019\n5th"
   },
   {
-    "archetype": "895",
+    "archetype": "900",
     "card_playsets": [
       {
         "card_num": 134,
@@ -9069,7 +9069,7 @@
     "success": "Degrading Card Pool Tuesday\nFebruary 27, 2019\n2nd"
   },
   {
-    "archetype": "592",
+    "archetype": "598",
     "card_playsets": [
       {
         "card_num": 392,
@@ -9218,7 +9218,7 @@
     "success": "Degrading Card Pool Tuesday\nFebruary 27, 2019\n3rd"
   },
   {
-    "archetype": "742",
+    "archetype": "748",
     "card_playsets": [
       {
         "card_num": 77,
@@ -9477,7 +9477,7 @@
     ],
     "deck_id": "1UNZz0nN3rE",
     "is_tournament": false,
-    "last_updated": "705",
+    "last_updated": "711",
     "success": "Degrading Card Pool Tuesday\nFebruary 27, 2019\n5th"
   },
   {
@@ -9611,7 +9611,7 @@
     ],
     "deck_id": "zUi8ty_rI_8",
     "is_tournament": false,
-    "last_updated": "3,852",
+    "last_updated": "3,863",
     "success": "ETS 2019 S1W7 - Top 8\nFebruary 23, 2019\n2nd"
   },
   {
@@ -9725,7 +9725,7 @@
     ],
     "deck_id": "ZK6AAUEdnjQ",
     "is_tournament": false,
-    "last_updated": "6,026",
+    "last_updated": "6,069",
     "success": "ETS 2019 S1W7 - Top 8\nFebruary 23, 2019\n1st"
   },
   {
@@ -9864,7 +9864,7 @@
     ],
     "deck_id": "vCAYkL6KVZE",
     "is_tournament": false,
-    "last_updated": "2,358",
+    "last_updated": "2,369",
     "success": "ETS 2019 S1W7 - Top 8\nFebruary 23, 2019\n3rd"
   },
   {
@@ -9993,7 +9993,7 @@
     ],
     "deck_id": "V3t0zLZi1Pw",
     "is_tournament": false,
-    "last_updated": "1,767",
+    "last_updated": "1,773",
     "success": "ECL Sunday Challenge Top 4\nFebruary 24, 2019\n1st"
   },
   {
@@ -10107,7 +10107,7 @@
     ],
     "deck_id": "frwsMZHjfYs",
     "is_tournament": false,
-    "last_updated": "1,548",
+    "last_updated": "1,554",
     "success": "ECL Sunday Challenge Top 4\nFebruary 24, 2019\n2nd"
   },
   {
@@ -10246,7 +10246,7 @@
     ],
     "deck_id": "Ew1tGOHMJC8",
     "is_tournament": false,
-    "last_updated": "937",
+    "last_updated": "945",
     "success": "ECL Sunday Challenge Top 4\nFebruary 24, 2019\n3rd"
   },
   {
@@ -10380,7 +10380,7 @@
     ],
     "deck_id": "hBw6FgjMXgk",
     "is_tournament": false,
-    "last_updated": "968",
+    "last_updated": "973",
     "success": "ECL Sunday Challenge Top 4\nFebruary 24, 2019\n4th"
   },
   {
@@ -10504,7 +10504,7 @@
     ],
     "deck_id": "hYet4niyYfM",
     "is_tournament": false,
-    "last_updated": "1,922",
+    "last_updated": "1,929",
     "success": "ETS 2019 S1W7 - Top 8\nFebruary 23, 2019\n5th"
   },
   {
@@ -10613,7 +10613,7 @@
     ],
     "deck_id": "TjeK2UOh5co",
     "is_tournament": false,
-    "last_updated": "1,064",
+    "last_updated": "1,070",
     "success": "ETS 2019 S1W7 - Top 8\nFebruary 23, 2019\n5th"
   },
   {
@@ -10846,7 +10846,7 @@
     ],
     "deck_id": "VtZEjyHi3Ec",
     "is_tournament": false,
-    "last_updated": "4,920",
+    "last_updated": "4,929",
     "success": "ETS 2019 S1W6 - Top 8\nFebruary 16, 2019\n5th"
   },
   {
@@ -10975,7 +10975,7 @@
     ],
     "deck_id": "QSxtXlxXNME",
     "is_tournament": false,
-    "last_updated": "3,337",
+    "last_updated": "3,347",
     "success": "ETS 2019 S1W6 - Top 8\nFebruary 16, 2019\n3rd"
   },
   {
@@ -11104,7 +11104,7 @@
     ],
     "deck_id": "99Y7Ejea2Lw",
     "is_tournament": false,
-    "last_updated": "4,041",
+    "last_updated": "4,046",
     "success": "ETS 2019 S1W6 - Top 8\nFebruary 16, 2019\n2nd"
   },
   {
@@ -11233,7 +11233,7 @@
     ],
     "deck_id": "clKhZ9UvoNw",
     "is_tournament": false,
-    "last_updated": "2,206",
+    "last_updated": "2,210",
     "success": "ETS 2019 S1W6 - Top 8\nFebruary 16, 2019\n5th"
   },
   {
@@ -11342,11 +11342,11 @@
     ],
     "deck_id": "qQV811KG0Dg",
     "is_tournament": false,
-    "last_updated": "2,506",
+    "last_updated": "2,519",
     "success": "ETS 2019 S1W6 - Top 8\nFebruary 16, 2019\n5th"
   },
   {
-    "archetype": "1,253",
+    "archetype": "1,263",
     "card_playsets": [
       {
         "card_num": 392,
@@ -11590,7 +11590,7 @@
     ],
     "deck_id": "mVzGekuPJUo",
     "is_tournament": false,
-    "last_updated": "1,823",
+    "last_updated": "1,828",
     "success": "ECL Sunday Challenge Top 4\nFebruary 17, 2019\n1st"
   },
   {
@@ -11714,7 +11714,7 @@
     ],
     "deck_id": "thDO52D-UDg",
     "is_tournament": false,
-    "last_updated": "1,130",
+    "last_updated": "1,141",
     "success": "ECL Sunday Challenge Top 4\nFebruary 17, 2019\n2nd"
   },
   {
@@ -11828,7 +11828,7 @@
     ],
     "deck_id": "uVXjwIt7KnE",
     "is_tournament": false,
-    "last_updated": "1,177",
+    "last_updated": "1,180",
     "success": "ECL Sunday Challenge Top 4\nFebruary 17, 2019\n3rd"
   },
   {
@@ -11942,7 +11942,7 @@
     ],
     "deck_id": "SLleKT6C2uo",
     "is_tournament": false,
-    "last_updated": "2,057",
+    "last_updated": "2,059",
     "success": "ETS 2019 S1W6 - Top 8\nFebruary 16, 2019\n3rd"
   },
   {
@@ -12056,7 +12056,7 @@
     ],
     "deck_id": "66u6KNcGGX4",
     "is_tournament": false,
-    "last_updated": "1,405",
+    "last_updated": "1,413",
     "success": "ETS 2019 S1W6 - Top 8\nFebruary 16, 2019\n5th"
   },
   {
@@ -12210,7 +12210,7 @@
     ],
     "deck_id": "7Vq7JT4S8H0",
     "is_tournament": false,
-    "last_updated": "950",
+    "last_updated": "961",
     "success": "ECL Casual Friday\nFebruary 15, 2019\n1st"
   },
   {
@@ -12354,7 +12354,7 @@
     ],
     "deck_id": "C_-bcLJ8J8U",
     "is_tournament": false,
-    "last_updated": "766",
+    "last_updated": "771",
     "success": "ECL Casual Friday\nFebruary 15, 2019\n2nd"
   },
   {
@@ -12483,7 +12483,7 @@
     ],
     "deck_id": "hC9_QYdFhaA",
     "is_tournament": false,
-    "last_updated": "711",
+    "last_updated": "722",
     "success": "ECL Casual Friday\nFebruary 15, 2019\n3rd"
   },
   {
@@ -12677,7 +12677,7 @@
     ],
     "deck_id": "7W_gLsuTJfk",
     "is_tournament": false,
-    "last_updated": "716",
+    "last_updated": "723",
     "success": "ECL Casual Friday\nFebruary 15, 2019\n4th"
   },
   {
@@ -12811,7 +12811,7 @@
     ],
     "deck_id": "r5KMVubAVaU",
     "is_tournament": false,
-    "last_updated": "551",
+    "last_updated": "556",
     "success": "ECL Casual Friday\nFebruary 15, 2019\n5th"
   },
   {
@@ -12893,14 +12893,14 @@
         "set_num": 4
       },
       {
-        "card_num": 36,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
         "card_num": 96,
         "num_played": 2,
         "set_num": 3
+      },
+      {
+        "card_num": 36,
+        "num_played": 4,
+        "set_num": 5
       },
       {
         "card_num": 74,
@@ -12955,7 +12955,7 @@
     ],
     "deck_id": "7U_iN12BmdQ",
     "is_tournament": false,
-    "last_updated": "455",
+    "last_updated": "460",
     "success": "ECL Casual Friday\nFebruary 15, 2019\n6th"
   },
   {
@@ -13244,7 +13244,7 @@
     ],
     "deck_id": "7XkfFQEpa_s",
     "is_tournament": false,
-    "last_updated": "582",
+    "last_updated": "591",
     "success": "ECL Casual Friday\nFebruary 15, 2019\n7th"
   },
   {
@@ -13854,7 +13854,7 @@
     ],
     "deck_id": "KzVmZpzHbpE",
     "is_tournament": false,
-    "last_updated": "4,362",
+    "last_updated": "4,368",
     "success": "ETS 2019 S1W5 - Top 8\nFebruary 9, 2019\n1st"
   },
   {
@@ -13983,7 +13983,7 @@
     ],
     "deck_id": "q7Co0mqh9ho",
     "is_tournament": false,
-    "last_updated": "3,832",
+    "last_updated": "3,841",
     "success": "ECQ: Price of Freedom - Top 8\nFebruary 10, 2019\n3rd"
   },
   {
@@ -14112,7 +14112,7 @@
     ],
     "deck_id": "ZljD-lizSKE",
     "is_tournament": false,
-    "last_updated": "3,584",
+    "last_updated": "3,592",
     "success": "ECQ: Price of Freedom - Top 8\nFebruary 10, 2019\n5th"
   },
   {
@@ -14241,11 +14241,11 @@
     ],
     "deck_id": "gmmwZQyKC7k",
     "is_tournament": false,
-    "last_updated": "825",
+    "last_updated": "830",
     "success": "Degrading Card Pool Tuesday\nFebruary 12, 2019\n1st"
   },
   {
-    "archetype": "688",
+    "archetype": "695",
     "card_playsets": [
       {
         "card_num": 5,
@@ -14479,11 +14479,11 @@
     ],
     "deck_id": "pTxY5jvlBMI",
     "is_tournament": false,
-    "last_updated": "676",
+    "last_updated": "679",
     "success": "Degrading Card Pool Tuesday\nFebruary 12, 2019\n3rd"
   },
   {
-    "archetype": "497",
+    "archetype": "499",
     "card_playsets": [
       {
         "card_num": 392,
@@ -14737,7 +14737,7 @@
     ],
     "deck_id": "A8d9Vpjkimk",
     "is_tournament": false,
-    "last_updated": "740",
+    "last_updated": "746",
     "success": "Degrading Card Pool Tuesday\nFebruary 12, 2019\n5th"
   },
   {
@@ -15005,7 +15005,7 @@
     ],
     "deck_id": "7_xr-zWoh24",
     "is_tournament": false,
-    "last_updated": "2,239",
+    "last_updated": "2,243",
     "success": "ECQ: Price of Freedom - Top 8\nFebruary 10, 2019\n5th"
   },
   {
@@ -15129,7 +15129,7 @@
     ],
     "deck_id": "FGwZj_aVEFI",
     "is_tournament": false,
-    "last_updated": "1,972",
+    "last_updated": "1,978",
     "success": "ETS 2019 S1W5 - Top 8\nFebruary 9, 2019\n2nd"
   },
   {
@@ -15253,7 +15253,7 @@
     ],
     "deck_id": "m4TTDtNQl3Q",
     "is_tournament": false,
-    "last_updated": "2,263",
+    "last_updated": "2,269",
     "success": "ETS 2019 S1W5 - Top 8\nFebruary 9, 2019\n3rd"
   },
   {
@@ -15382,7 +15382,7 @@
     ],
     "deck_id": "RueSwMWCQ88",
     "is_tournament": false,
-    "last_updated": "3,160",
+    "last_updated": "3,215",
     "success": "ETS 2019 S1W5 - Top 8\nFebruary 9, 2019\n5th"
   },
   {
@@ -15511,7 +15511,7 @@
     ],
     "deck_id": "Yg0lK2Ld92c",
     "is_tournament": false,
-    "last_updated": "1,594",
+    "last_updated": "1,601",
     "success": "ETS 2019 S1W5 - Top 8\nFebruary 9, 2019\n5th"
   },
   {
@@ -15630,7 +15630,7 @@
     ],
     "deck_id": "zve4otSv-Fw",
     "is_tournament": false,
-    "last_updated": "1,462",
+    "last_updated": "1,470",
     "success": "ETS 2019 S1W5 - Top 8\nFebruary 9, 2019\n5th"
   },
   {
@@ -15769,7 +15769,7 @@
     ],
     "deck_id": "ev9IL1EjK_4",
     "is_tournament": false,
-    "last_updated": "1,730",
+    "last_updated": "1,737",
     "success": "ETS 2019 S1W5 - Top 8\nFebruary 9, 2019\n3rd"
   },
   {
@@ -15898,7 +15898,7 @@
     ],
     "deck_id": "uKt2lIyrwrY",
     "is_tournament": false,
-    "last_updated": "681",
+    "last_updated": "685",
     "success": "ETS 2019 S1W5 - Top 8\nFebruary 9, 2019\n5th"
   },
   {
@@ -16032,7 +16032,7 @@
     ],
     "deck_id": "At5GX45QpwQ",
     "is_tournament": false,
-    "last_updated": "4,309",
+    "last_updated": "4,315",
     "success": "ECL Saturday Top 4\nFebruary 2, 2019\n1st"
   },
   {
@@ -16099,13 +16099,13 @@
         "set_num": 2
       },
       {
-        "card_num": 36,
-        "num_played": 3,
+        "card_num": 245,
+        "num_played": 4,
         "set_num": 5
       },
       {
-        "card_num": 245,
-        "num_played": 4,
+        "card_num": 36,
+        "num_played": 3,
         "set_num": 5
       },
       {
@@ -16166,7 +16166,7 @@
     ],
     "deck_id": "V8TN1F1cqIA",
     "is_tournament": false,
-    "last_updated": "3,100",
+    "last_updated": "3,105",
     "success": "ECL Saturday Top 4\nFebruary 2, 2019\n3rd"
   },
   {
@@ -16305,7 +16305,7 @@
     ],
     "deck_id": "Y9odJTc3E_I",
     "is_tournament": false,
-    "last_updated": "2,887",
+    "last_updated": "2,894",
     "success": "ECL Saturday Top 4\nFebruary 2, 2019\n4th"
   },
   {
@@ -16434,7 +16434,7 @@
     ],
     "deck_id": "Oyiqhezxa44",
     "is_tournament": false,
-    "last_updated": "2,271",
+    "last_updated": "2,275",
     "success": "ECL Saturday Top 4\nFebruary 2, 2019\n2nd"
   },
   {
@@ -16633,11 +16633,11 @@
     ],
     "deck_id": "nZE0czJA5ro",
     "is_tournament": false,
-    "last_updated": "1,743",
+    "last_updated": "1,752",
     "success": "ECL Casual Friday\nFebruary 1, 2019\n1st"
   },
   {
-    "archetype": "1,270",
+    "archetype": "1,275",
     "card_playsets": [
       {
         "card_num": 130,
@@ -16896,7 +16896,7 @@
     ],
     "deck_id": "OlRLmHomOcQ",
     "is_tournament": false,
-    "last_updated": "1,132",
+    "last_updated": "1,139",
     "success": "ECL Casual Friday\nFebruary 1, 2019\n3rd"
   },
   {
@@ -17200,11 +17200,11 @@
     ],
     "deck_id": "xx31gBGBzNs",
     "is_tournament": false,
-    "last_updated": "745",
+    "last_updated": "752",
     "success": "ECL Casual Friday\nFebruary 1, 2019\n4th"
   },
   {
-    "archetype": "950",
+    "archetype": "957",
     "card_playsets": [
       {
         "card_num": 312,
@@ -17433,7 +17433,7 @@
     ],
     "deck_id": "jqsywe7qpGo",
     "is_tournament": false,
-    "last_updated": "8,347",
+    "last_updated": "8,361",
     "success": "ETS 2019 S1W4 - Top 8\nJanuary 26, 2019\n1st"
   },
   {
@@ -17577,7 +17577,7 @@
     ],
     "deck_id": "fR7K5rZdo8Q",
     "is_tournament": false,
-    "last_updated": "8,181",
+    "last_updated": "8,195",
     "success": "ETS 2019 S1W4 - Top 8\nJanuary 26, 2019\n3rd"
   },
   {
@@ -17639,13 +17639,13 @@
         "set_num": 5
       },
       {
-        "card_num": 36,
-        "num_played": 4,
+        "card_num": 245,
+        "num_played": 3,
         "set_num": 5
       },
       {
-        "card_num": 245,
-        "num_played": 3,
+        "card_num": 36,
+        "num_played": 4,
         "set_num": 5
       },
       {
@@ -17696,7 +17696,7 @@
     ],
     "deck_id": "MlRnw78s55k",
     "is_tournament": false,
-    "last_updated": "5,741",
+    "last_updated": "5,751",
     "success": "ETS 2019 S1W4 - Top 8\nJanuary 26, 2019\n3rd"
   },
   {
@@ -17825,7 +17825,7 @@
     ],
     "deck_id": "1fs9qxpzD1g",
     "is_tournament": false,
-    "last_updated": "4,854",
+    "last_updated": "4,863",
     "success": "ETS 2019 S1W4 - Top 8\nJanuary 26, 2019\n5th"
   },
   {
@@ -17959,7 +17959,7 @@
     ],
     "deck_id": "9itWQHiNk8c",
     "is_tournament": false,
-    "last_updated": "6,518",
+    "last_updated": "6,542",
     "success": "ETS 2019 S1W4 - Top 8\nJanuary 26, 2019\n2nd"
   },
   {
@@ -18063,7 +18063,7 @@
     ],
     "deck_id": "UWyA3pyFLWM",
     "is_tournament": false,
-    "last_updated": "1,414",
+    "last_updated": "1,418",
     "success": "Degrading Card Pool Tuesday\nJanuary 29, 2019\n1st"
   },
   {
@@ -18222,11 +18222,11 @@
     ],
     "deck_id": "CXKGl3R-gPU",
     "is_tournament": false,
-    "last_updated": "1,045",
+    "last_updated": "1,050",
     "success": "Degrading Card Pool Tuesday\nJanuary 29, 2019\n2nd"
   },
   {
-    "archetype": "887",
+    "archetype": "892",
     "card_playsets": [
       {
         "card_num": 312,
@@ -18440,7 +18440,7 @@
     ],
     "deck_id": "NDaa0uAAEp8",
     "is_tournament": false,
-    "last_updated": "651",
+    "last_updated": "655",
     "success": "Degrading Card Pool Tuesday\nJanuary 29, 2019\n4th"
   },
   {
@@ -18554,7 +18554,7 @@
     ],
     "deck_id": "L8Hf6Dq6KR8",
     "is_tournament": false,
-    "last_updated": "952",
+    "last_updated": "958",
     "success": "Degrading Card Pool Tuesday\nJanuary 29, 2019\n5th"
   },
   {
@@ -18678,7 +18678,7 @@
     ],
     "deck_id": "IB262TeoJGs",
     "is_tournament": false,
-    "last_updated": "5,203",
+    "last_updated": "5,217",
     "success": "ECL Sunday Challenge Top 4\nJanuary 27, 2019\n1st"
   },
   {
@@ -18802,7 +18802,7 @@
     ],
     "deck_id": "OjvfGesZI-Y",
     "is_tournament": false,
-    "last_updated": "2,977",
+    "last_updated": "2,984",
     "success": "ETS 2019 S1W4 - Top 8\nJanuary 26, 2019\n5th"
   },
   {
@@ -18951,7 +18951,7 @@
     ],
     "deck_id": "fV3Zj6b2tWg",
     "is_tournament": false,
-    "last_updated": "2,122",
+    "last_updated": "2,125",
     "success": "ECL Sunday Challenge Top 4\nJanuary 27, 2019\n2nd"
   },
   {
@@ -19085,7 +19085,7 @@
     ],
     "deck_id": "bqpD9J2XINI",
     "is_tournament": false,
-    "last_updated": "1,944",
+    "last_updated": "1,957",
     "success": "ECL Sunday Challenge Top 4\nJanuary 27, 2019\n3rd"
   },
   {
@@ -19229,7 +19229,7 @@
     ],
     "deck_id": "KA2TL2_tTwE",
     "is_tournament": false,
-    "last_updated": "1,957",
+    "last_updated": "1,963",
     "success": "ECL Sunday Challenge Top 4\nJanuary 27, 2019\n4th"
   },
   {
@@ -19348,7 +19348,7 @@
     ],
     "deck_id": "l70bW1_PYMw",
     "is_tournament": false,
-    "last_updated": "1,630",
+    "last_updated": "1,633",
     "success": "ETS 2019 S1W4 - Top 8\nJanuary 26, 2019\n5th"
   },
   {
@@ -19482,7 +19482,7 @@
     ],
     "deck_id": "sBt1OEo8MPg",
     "is_tournament": false,
-    "last_updated": "2,207",
+    "last_updated": "2,218",
     "success": "ETS 2019 S1W4 - Top 8\nJanuary 26, 2019\n5th"
   },
   {
@@ -19606,7 +19606,7 @@
     ],
     "deck_id": "8VtTw5WKNe0",
     "is_tournament": false,
-    "last_updated": "1,308",
+    "last_updated": "1,312",
     "success": "ECL Casual Friday\nJanuary 25, 2019\n1st"
   },
   {
@@ -19705,7 +19705,7 @@
     ],
     "deck_id": "gVbqj62sQ8c",
     "is_tournament": false,
-    "last_updated": "1,015",
+    "last_updated": "1,019",
     "success": "ECL Casual Friday\nJanuary 25, 2019\n2nd"
   },
   {
@@ -19844,7 +19844,7 @@
     ],
     "deck_id": "tK-PsRLgZN8",
     "is_tournament": false,
-    "last_updated": "859",
+    "last_updated": "862",
     "success": "ECL Casual Friday\nJanuary 25, 2019\n3rd"
   },
   {
@@ -19973,7 +19973,7 @@
     ],
     "deck_id": "TOXCnfzs9wY",
     "is_tournament": false,
-    "last_updated": "760",
+    "last_updated": "763",
     "success": "ECL Casual Friday\nJanuary 25, 2019\n4th"
   },
   {
@@ -20092,7 +20092,7 @@
     ],
     "deck_id": "jmeXruIFucU",
     "is_tournament": false,
-    "last_updated": "1,151",
+    "last_updated": "1,159",
     "success": "ECL Casual Friday\nJanuary 25, 2019\n5th"
   },
   {
@@ -20266,7 +20266,7 @@
     ],
     "deck_id": "tdUa7vT1DOY",
     "is_tournament": false,
-    "last_updated": "1,074",
+    "last_updated": "1,087",
     "success": "ECL Casual Friday\nJanuary 25, 2019\n6th"
   },
   {
@@ -20400,7 +20400,7 @@
     ],
     "deck_id": "dwxO2RL-32g",
     "is_tournament": false,
-    "last_updated": "845",
+    "last_updated": "852",
     "success": "ECL Casual Friday\nJanuary 25, 2019\n7th"
   },
   {
@@ -20534,7 +20534,7 @@
     ],
     "deck_id": "EK924EL6xrM",
     "is_tournament": false,
-    "last_updated": "9,439",
+    "last_updated": "9,450",
     "success": "ETS 2019 S1W3 - Top 8\nJanuary 19, 2019\n5th"
   },
   {
@@ -20693,7 +20693,7 @@
     ],
     "deck_id": "xVOGJ4USCYU",
     "is_tournament": false,
-    "last_updated": "1,389",
+    "last_updated": "1,392",
     "success": "Degrading Card Pool Tuesday\nJanuary 22, 2019\n1st"
   },
   {
@@ -20812,7 +20812,7 @@
     ],
     "deck_id": "UAdUQyud4fA",
     "is_tournament": false,
-    "last_updated": "4,309",
+    "last_updated": "4,314",
     "success": "ETS 2019 S1W3 - Top 8\nJanuary 19, 2019\n5th"
   },
   {
@@ -20946,7 +20946,7 @@
     ],
     "deck_id": "0JO-BaqHjUc",
     "is_tournament": false,
-    "last_updated": "1,347",
+    "last_updated": "1,349",
     "success": "Degrading Card Pool Tuesday\nJanuary 22, 2019\n2nd"
   },
   {
@@ -21060,7 +21060,7 @@
     ],
     "deck_id": "uW6g8N1PZRI",
     "is_tournament": false,
-    "last_updated": "826",
+    "last_updated": "829",
     "success": "Degrading Card Pool Tuesday\nJanuary 22, 2019\n3rd"
   },
   {
@@ -21169,7 +21169,7 @@
     ],
     "deck_id": "HYAVh4SiNWs",
     "is_tournament": false,
-    "last_updated": "652",
+    "last_updated": "655",
     "success": "Degrading Card Pool Tuesday\nJanuary 22, 2019\n4th"
   },
   {
@@ -21288,11 +21288,11 @@
     ],
     "deck_id": "0RHNuCjjqLE",
     "is_tournament": false,
-    "last_updated": "818",
+    "last_updated": "822",
     "success": "Degrading Card Pool Tuesday\nJanuary 22, 2019\n5th"
   },
   {
-    "archetype": "3,361",
+    "archetype": "3,368",
     "card_playsets": [
       {
         "card_num": 13,
@@ -21516,7 +21516,7 @@
     ],
     "deck_id": "YT3yhKx3QK8",
     "is_tournament": false,
-    "last_updated": "3,747",
+    "last_updated": "3,756",
     "success": "ETS 2019 S1W3 - Top 8\nJanuary 19, 2019\n1st"
   },
   {
@@ -21583,13 +21583,13 @@
         "set_num": 5
       },
       {
-        "card_num": 36,
-        "num_played": 2,
+        "card_num": 245,
+        "num_played": 3,
         "set_num": 5
       },
       {
-        "card_num": 245,
-        "num_played": 3,
+        "card_num": 36,
+        "num_played": 2,
         "set_num": 5
       },
       {
@@ -21650,7 +21650,7 @@
     ],
     "deck_id": "DGt3LlmrPYg",
     "is_tournament": false,
-    "last_updated": "4,535",
+    "last_updated": "4,540",
     "success": "ETS 2019 S1W3 - Top 8\nJanuary 19, 2019\n2nd"
   },
   {
@@ -21717,12 +21717,12 @@
         "set_num": 5
       },
       {
-        "card_num": 36,
+        "card_num": 245,
         "num_played": 3,
         "set_num": 5
       },
       {
-        "card_num": 245,
+        "card_num": 36,
         "num_played": 3,
         "set_num": 5
       },
@@ -21784,7 +21784,7 @@
     ],
     "deck_id": "AJUHrJ0n9u8",
     "is_tournament": false,
-    "last_updated": "3,219",
+    "last_updated": "3,228",
     "success": "ECL Sunday Challenge Top 8\nJanuary 20, 2019\n2nd"
   },
   {
@@ -21908,7 +21908,7 @@
     ],
     "deck_id": "Yao_LR6ppcM",
     "is_tournament": false,
-    "last_updated": "1,408",
+    "last_updated": "1,412",
     "success": "ECL Sunday Challenge Top 8\nJanuary 20, 2019\n3rd"
   },
   {
@@ -22042,7 +22042,7 @@
     ],
     "deck_id": "ypBKEAzmZfk",
     "is_tournament": false,
-    "last_updated": "2,215",
+    "last_updated": "2,223",
     "success": "ECL Sunday Challenge Top 8\nJanuary 20, 2019\n4th"
   },
   {
@@ -22156,7 +22156,7 @@
     ],
     "deck_id": "KLCowzcXnvA",
     "is_tournament": false,
-    "last_updated": "2,020",
+    "last_updated": "2,029",
     "success": "ECL Sunday Challenge Top 8\nJanuary 20, 2019\n5th"
   },
   {
@@ -22290,7 +22290,7 @@
     ],
     "deck_id": "SFwdH6cUXY8",
     "is_tournament": false,
-    "last_updated": "1,621",
+    "last_updated": "1,628",
     "success": "ECL Sunday Challenge Top 8\nJanuary 20, 2019\n6th"
   },
   {
@@ -22394,7 +22394,7 @@
     ],
     "deck_id": "bDgHTuFfR-k",
     "is_tournament": false,
-    "last_updated": "1,805",
+    "last_updated": "1,811",
     "success": "ECL Sunday Challenge Top 8\nJanuary 20, 2019\n7th"
   },
   {
@@ -22518,7 +22518,7 @@
     ],
     "deck_id": "KqhIwl9A-fQ",
     "is_tournament": false,
-    "last_updated": "1,702",
+    "last_updated": "1,709",
     "success": "ECL Sunday Challenge Top 8\nJanuary 20, 2019\n8th"
   },
   {
@@ -22652,7 +22652,7 @@
     ],
     "deck_id": "lkGAZyYhVhA",
     "is_tournament": false,
-    "last_updated": "2,181",
+    "last_updated": "2,188",
     "success": "ETS 2019 S1W3 - Top 8\nJanuary 19, 2019\n5th"
   },
   {
@@ -22771,11 +22771,11 @@
     ],
     "deck_id": "iA5TyrYKki4",
     "is_tournament": false,
-    "last_updated": "2,637",
+    "last_updated": "2,644",
     "success": "ETS 2019 S1W3 - Top 8\nJanuary 19, 2019\n5th"
   },
   {
-    "archetype": "2,851",
+    "archetype": "2,856",
     "card_playsets": [
       {
         "card_num": 5,
@@ -23029,11 +23029,11 @@
     ],
     "deck_id": "PVS7osK-JLw",
     "is_tournament": false,
-    "last_updated": "2,189",
+    "last_updated": "2,195",
     "success": "ETS 2019 S1W3 - Top 8\nJanuary 19, 2019\n3rd"
   },
   {
-    "archetype": "8,048",
+    "archetype": "8,058",
     "card_playsets": [
       {
         "card_num": 134,
@@ -23277,7 +23277,7 @@
     ],
     "deck_id": "Hr2bqbP1zKQ",
     "is_tournament": false,
-    "last_updated": "6,669",
+    "last_updated": "6,682",
     "success": "Eternal Championship Qualifier: Burning Hope - Top 8\nJanuary 13, 2019\n1st"
   },
   {
@@ -23535,7 +23535,7 @@
     ],
     "deck_id": "LroYhIzUBsk",
     "is_tournament": false,
-    "last_updated": "2,747",
+    "last_updated": "2,753",
     "success": "Eternal Championship Qualifier: Burning Hope - Top 8\nJanuary 13, 2019\n2nd"
   },
   {
@@ -23659,7 +23659,7 @@
     ],
     "deck_id": "J82V3GJLriE",
     "is_tournament": false,
-    "last_updated": "1,527",
+    "last_updated": "1,532",
     "success": "Eternal Championship Qualifier: Burning Hope - Top 8\nJanuary 13, 2019\n5th"
   },
   {
@@ -23798,11 +23798,11 @@
     ],
     "deck_id": "YWplKSKj7Mg",
     "is_tournament": false,
-    "last_updated": "2,494",
+    "last_updated": "2,499",
     "success": "Eternal Championship Qualifier: Burning Hope - Top 8\nJanuary 13, 2019\n5th"
   },
   {
-    "archetype": "1,638",
+    "archetype": "1,646",
     "card_playsets": [
       {
         "card_num": 134,
@@ -24021,7 +24021,7 @@
     ],
     "deck_id": "hoemE5k98HE",
     "is_tournament": false,
-    "last_updated": "1,708",
+    "last_updated": "1,711",
     "success": "Degrading Card Pool Tuesday\nJanuary 15, 2019\n2nd"
   },
   {
@@ -24150,7 +24150,7 @@
     ],
     "deck_id": "L7x8xaxiuuc",
     "is_tournament": false,
-    "last_updated": "590",
+    "last_updated": "592",
     "success": "Degrading Card Pool Tuesday\nJanuary 15, 2019\n3rd"
   },
   {
@@ -24294,7 +24294,7 @@
     ],
     "deck_id": "-Mub7FdFi-Q",
     "is_tournament": false,
-    "last_updated": "714",
+    "last_updated": "718",
     "success": "Degrading Card Pool Tuesday\nJanuary 15, 2019\n4th"
   },
   {
@@ -24453,7 +24453,7 @@
     ],
     "deck_id": "AVRzOPSzzjQ",
     "is_tournament": false,
-    "last_updated": "964",
+    "last_updated": "971",
     "success": "Degrading Card Pool Tuesday\nJanuary 15, 2019\n5th"
   },
   {
@@ -24572,7 +24572,7 @@
     ],
     "deck_id": "kn0izqvvEK0",
     "is_tournament": false,
-    "last_updated": "557",
+    "last_updated": "560",
     "success": "Degrading Card Pool Tuesday\nJanuary 15, 2019\n6th"
   },
   {
@@ -24701,7 +24701,7 @@
     ],
     "deck_id": "EH_58un71_c",
     "is_tournament": false,
-    "last_updated": "707",
+    "last_updated": "716",
     "success": "Degrading Card Pool Tuesday\nJanuary 15, 2019\n7th"
   },
   {
@@ -24825,7 +24825,7 @@
     ],
     "deck_id": "TrjqIMKtCP4",
     "is_tournament": false,
-    "last_updated": "3,569",
+    "last_updated": "3,578",
     "success": "ETS 2019 S1W2 - Top 8\nJanuary 12, 2019\n1st"
   },
   {
@@ -24934,7 +24934,7 @@
     ],
     "deck_id": "_MysJGE4pUU",
     "is_tournament": false,
-    "last_updated": "2,548",
+    "last_updated": "2,561",
     "success": "ETS 2019 S1W2 - Top 8\nJanuary 12, 2019\n5th"
   },
   {
@@ -25088,7 +25088,7 @@
     ],
     "deck_id": "CiQ_xRn5GNY",
     "is_tournament": false,
-    "last_updated": "1,573",
+    "last_updated": "1,578",
     "success": "Eternal Championship Qualifier: Burning Hope - Top 8\nJanuary 13, 2019\n3rd"
   },
   {
@@ -25222,7 +25222,7 @@
     ],
     "deck_id": "DwlQNv4fWWU",
     "is_tournament": false,
-    "last_updated": "846",
+    "last_updated": "851",
     "success": "Eternal Championship Qualifier: Burning Hope - Top 8\nJanuary 13, 2019\n5th"
   },
   {
@@ -25356,7 +25356,7 @@
     ],
     "deck_id": "0M-_Li0hVLQ",
     "is_tournament": false,
-    "last_updated": "1,359",
+    "last_updated": "1,367",
     "success": "ECL Sunday Challenge\nJanuary 13, 2019\n1st"
   },
   {
@@ -25475,7 +25475,7 @@
     ],
     "deck_id": "3EKWEobxP2s",
     "is_tournament": false,
-    "last_updated": "844",
+    "last_updated": "850",
     "success": "ECL Sunday Challenge\nJanuary 13, 2019\n2nd"
   },
   {
@@ -25619,7 +25619,7 @@
     ],
     "deck_id": "xuLGgNIfMcI",
     "is_tournament": false,
-    "last_updated": "711",
+    "last_updated": "718",
     "success": "ECL Sunday Challenge\nJanuary 13, 2019\n3rd"
   },
   {
@@ -25748,7 +25748,7 @@
     ],
     "deck_id": "KHhPLCcmveI",
     "is_tournament": false,
-    "last_updated": "704",
+    "last_updated": "707",
     "success": "ECL Sunday Challenge\nJanuary 13, 2019\n4th"
   },
   {
@@ -25872,7 +25872,7 @@
     ],
     "deck_id": "xV3bwXEzLUQ",
     "is_tournament": false,
-    "last_updated": "387",
+    "last_updated": "390",
     "success": "ECL Sunday Challenge\nJanuary 13, 2019\n5th"
   },
   {
@@ -25996,7 +25996,7 @@
     ],
     "deck_id": "BcqlWg87Y3I",
     "is_tournament": false,
-    "last_updated": "407",
+    "last_updated": "410",
     "success": "ECL Sunday Challenge\nJanuary 13, 2019\n6th"
   },
   {
@@ -26120,7 +26120,7 @@
     ],
     "deck_id": "1_hImU26guI",
     "is_tournament": false,
-    "last_updated": "742",
+    "last_updated": "745",
     "success": "ECL Sunday Challenge\nJanuary 13, 2019\n7th"
   },
   {
@@ -26254,7 +26254,7 @@
     ],
     "deck_id": "xPxq3-VcL5s",
     "is_tournament": false,
-    "last_updated": "834",
+    "last_updated": "838",
     "success": "ECL Sunday Challenge\nJanuary 13, 2019\n8th"
   },
   {
@@ -26378,7 +26378,7 @@
     ],
     "deck_id": "ieIXdikNeYs",
     "is_tournament": false,
-    "last_updated": "1,109",
+    "last_updated": "1,110",
     "success": "ETS 2019 S1W2 - Top 8\nJanuary 12, 2019\n3rd"
   },
   {
@@ -26502,7 +26502,7 @@
     ],
     "deck_id": "Kzmx_BHkl4c",
     "is_tournament": false,
-    "last_updated": "1,535",
+    "last_updated": "1,546",
     "success": "ETS 2019 S1W2 - Top 8\nJanuary 12, 2019\n5th"
   },
   {
@@ -26626,7 +26626,7 @@
     ],
     "deck_id": "Y2i2Az33NTc",
     "is_tournament": false,
-    "last_updated": "1,642",
+    "last_updated": "1,648",
     "success": "ETS 2019 S1W2 - Top 8\nJanuary 12, 2019\n5th"
   },
   {
@@ -26760,7 +26760,7 @@
     ],
     "deck_id": "UULxCmHAZvs",
     "is_tournament": false,
-    "last_updated": "1,761",
+    "last_updated": "1,766",
     "success": "ETS 2019 S1W2 - Top 8\nJanuary 12, 2019\n2nd"
   },
   {
@@ -26889,7 +26889,7 @@
     ],
     "deck_id": "ZiKZAE_FWG0",
     "is_tournament": false,
-    "last_updated": "1,365",
+    "last_updated": "1,370",
     "success": "ETS 2019 S1W2 - Top 8\nJanuary 12, 2019\n3rd"
   },
   {
@@ -27033,7 +27033,7 @@
     ],
     "deck_id": "tmi8F-9I9qQ",
     "is_tournament": false,
-    "last_updated": "1,134",
+    "last_updated": "1,137",
     "success": "ETS 2019 S1W2 - Top 8\nJanuary 12, 2019\n5th"
   },
   {
@@ -27167,142 +27167,8 @@
     ],
     "deck_id": "BOvRsx3HwPE",
     "is_tournament": false,
-    "last_updated": "745",
+    "last_updated": "751",
     "success": "ECL Casual Friday\nJanuary 11, 2019\n4th"
-  },
-  {
-    "archetype": "January 9, 2019",
-    "card_playsets": [
-      {
-        "card_num": 408,
-        "num_played": 2,
-        "set_num": 1
-      },
-      {
-        "card_num": 8,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 269,
-        "num_played": 2,
-        "set_num": 1
-      },
-      {
-        "card_num": 274,
-        "num_played": 3,
-        "set_num": 4
-      },
-      {
-        "card_num": 176,
-        "num_played": 2,
-        "set_num": 2
-      },
-      {
-        "card_num": 15,
-        "num_played": 4,
-        "set_num": 1001
-      },
-      {
-        "card_num": 207,
-        "num_played": 3,
-        "set_num": 2
-      },
-      {
-        "card_num": 217,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 15,
-        "num_played": 4,
-        "set_num": 1003
-      },
-      {
-        "card_num": 99,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 19,
-        "num_played": 4,
-        "set_num": 1004
-      },
-      {
-        "card_num": 68,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 224,
-        "num_played": 1,
-        "set_num": 5
-      },
-      {
-        "card_num": 183,
-        "num_played": 4,
-        "set_num": 2
-      },
-      {
-        "card_num": 182,
-        "num_played": 2,
-        "set_num": 5
-      },
-      {
-        "card_num": 36,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 268,
-        "num_played": 4,
-        "set_num": 3
-      },
-      {
-        "card_num": 251,
-        "num_played": 4,
-        "set_num": 3
-      },
-      {
-        "card_num": 266,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 60,
-        "num_played": 2,
-        "set_num": 0
-      },
-      {
-        "card_num": 54,
-        "num_played": 2,
-        "set_num": 0
-      },
-      {
-        "card_num": 61,
-        "num_played": 1,
-        "set_num": 0
-      },
-      {
-        "card_num": 275,
-        "num_played": 1,
-        "set_num": 3
-      },
-      {
-        "card_num": 21,
-        "num_played": 1,
-        "set_num": 1004
-      },
-      {
-        "card_num": 201,
-        "num_played": 1,
-        "set_num": 2
-      }
-    ],
-    "deck_id": "-JH3RCMq_-U",
-    "is_tournament": false,
-    "last_updated": "5,150",
-    "success": "ECL Tuesday - Top 8\nJanuary 8, 2019\n1st"
   },
   {
     "archetype": "January 12, 2019",
@@ -27475,7 +27341,7 @@
     ],
     "deck_id": "yzl8TysucuY",
     "is_tournament": false,
-    "last_updated": "956",
+    "last_updated": "960",
     "success": "ECL Casual Friday\nJanuary 11, 2019\n1st"
   },
   {
@@ -27594,11 +27460,11 @@
     ],
     "deck_id": "h-HUik95x_8",
     "is_tournament": false,
-    "last_updated": "930",
+    "last_updated": "932",
     "success": "ECL Casual Friday\nJanuary 11, 2019\n2nd"
   },
   {
-    "archetype": "735",
+    "archetype": "744",
     "card_playsets": [
       {
         "card_num": 257,
@@ -27700,893 +27566,5 @@
     "is_tournament": false,
     "last_updated": "v1.42 - Defiance",
     "success": "ECL Casual Friday\nJanuary 11, 2019\n3rd"
-  },
-  {
-    "archetype": "January 9, 2019",
-    "card_playsets": [
-      {
-        "card_num": 408,
-        "num_played": 3,
-        "set_num": 1
-      },
-      {
-        "card_num": 8,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 269,
-        "num_played": 2,
-        "set_num": 1
-      },
-      {
-        "card_num": 274,
-        "num_played": 1,
-        "set_num": 4
-      },
-      {
-        "card_num": 15,
-        "num_played": 2,
-        "set_num": 1001
-      },
-      {
-        "card_num": 261,
-        "num_played": 2,
-        "set_num": 4
-      },
-      {
-        "card_num": 11,
-        "num_played": 2,
-        "set_num": 1003
-      },
-      {
-        "card_num": 169,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 218,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 290,
-        "num_played": 1,
-        "set_num": 1
-      },
-      {
-        "card_num": 381,
-        "num_played": 2,
-        "set_num": 1
-      },
-      {
-        "card_num": 15,
-        "num_played": 1,
-        "set_num": 1003
-      },
-      {
-        "card_num": 19,
-        "num_played": 4,
-        "set_num": 1004
-      },
-      {
-        "card_num": 187,
-        "num_played": 4,
-        "set_num": 3
-      },
-      {
-        "card_num": 385,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 219,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 182,
-        "num_played": 1,
-        "set_num": 5
-      },
-      {
-        "card_num": 36,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 148,
-        "num_played": 1,
-        "set_num": 5
-      },
-      {
-        "card_num": 151,
-        "num_played": 3,
-        "set_num": 3
-      },
-      {
-        "card_num": 268,
-        "num_played": 4,
-        "set_num": 3
-      },
-      {
-        "card_num": 267,
-        "num_played": 4,
-        "set_num": 3
-      },
-      {
-        "card_num": 266,
-        "num_played": 4,
-        "set_num": 3
-      },
-      {
-        "card_num": 62,
-        "num_played": 2,
-        "set_num": 0
-      },
-      {
-        "card_num": 193,
-        "num_played": 1,
-        "set_num": 1
-      },
-      {
-        "card_num": 188,
-        "num_played": 1,
-        "set_num": 2
-      },
-      {
-        "card_num": 218,
-        "num_played": 1,
-        "set_num": 5
-      },
-      {
-        "card_num": 417,
-        "num_played": 1,
-        "set_num": 1
-      }
-    ],
-    "deck_id": "hXcDko8UH9o",
-    "is_tournament": false,
-    "last_updated": "2,722",
-    "success": "ECL Tuesday - Top 8\nJanuary 8, 2019\n2nd"
-  },
-  {
-    "archetype": "January 9, 2019",
-    "card_playsets": [
-      {
-        "card_num": 1,
-        "num_played": 2,
-        "set_num": 1003
-      },
-      {
-        "card_num": 408,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 8,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 165,
-        "num_played": 4,
-        "set_num": 3
-      },
-      {
-        "card_num": 143,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 11,
-        "num_played": 4,
-        "set_num": 1003
-      },
-      {
-        "card_num": 21,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 169,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 218,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 95,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 227,
-        "num_played": 3,
-        "set_num": 1
-      },
-      {
-        "card_num": 231,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 219,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 36,
-        "num_played": 3,
-        "set_num": 5
-      },
-      {
-        "card_num": 151,
-        "num_played": 4,
-        "set_num": 3
-      },
-      {
-        "card_num": 266,
-        "num_played": 4,
-        "set_num": 3
-      },
-      {
-        "card_num": 243,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 253,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 51,
-        "num_played": 2,
-        "set_num": 0
-      },
-      {
-        "card_num": 32,
-        "num_played": 1,
-        "set_num": 4
-      },
-      {
-        "card_num": 218,
-        "num_played": 1,
-        "set_num": 5
-      },
-      {
-        "card_num": 186,
-        "num_played": 1,
-        "set_num": 2
-      }
-    ],
-    "deck_id": "jYGM9qR-1K8",
-    "is_tournament": false,
-    "last_updated": "1,761",
-    "success": "ECL Tuesday - Top 8\nJanuary 8, 2019\n3rd"
-  },
-  {
-    "archetype": "January 9, 2019",
-    "card_playsets": [
-      {
-        "card_num": 77,
-        "num_played": 3,
-        "set_num": 5
-      },
-      {
-        "card_num": 252,
-        "num_played": 3,
-        "set_num": 1
-      },
-      {
-        "card_num": 86,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 9,
-        "num_played": 4,
-        "set_num": 1004
-      },
-      {
-        "card_num": 112,
-        "num_played": 3,
-        "set_num": 4
-      },
-      {
-        "card_num": 35,
-        "num_played": 2,
-        "set_num": 0
-      },
-      {
-        "card_num": 13,
-        "num_played": 4,
-        "set_num": 1002
-      },
-      {
-        "card_num": 210,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 168,
-        "num_played": 2,
-        "set_num": 5
-      },
-      {
-        "card_num": 236,
-        "num_played": 4,
-        "set_num": 2
-      },
-      {
-        "card_num": 151,
-        "num_played": 3,
-        "set_num": 1
-      },
-      {
-        "card_num": 166,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 95,
-        "num_played": 2,
-        "set_num": 5
-      },
-      {
-        "card_num": 19,
-        "num_played": 4,
-        "set_num": 1004
-      },
-      {
-        "card_num": 18,
-        "num_played": 4,
-        "set_num": 1002
-      },
-      {
-        "card_num": 231,
-        "num_played": 4,
-        "set_num": 2
-      },
-      {
-        "card_num": 264,
-        "num_played": 4,
-        "set_num": 3
-      },
-      {
-        "card_num": 55,
-        "num_played": 4,
-        "set_num": 0
-      },
-      {
-        "card_num": 76,
-        "num_played": 1,
-        "set_num": 5
-      },
-      {
-        "card_num": 143,
-        "num_played": 1,
-        "set_num": 1
-      },
-      {
-        "card_num": 226,
-        "num_played": 1,
-        "set_num": 3
-      },
-      {
-        "card_num": 213,
-        "num_played": 1,
-        "set_num": 5
-      },
-      {
-        "card_num": 136,
-        "num_played": 1,
-        "set_num": 3
-      }
-    ],
-    "deck_id": "r5MM_xbVhoI",
-    "is_tournament": false,
-    "last_updated": "2,000",
-    "success": "ECL Tuesday - Top 8\nJanuary 8, 2019\n4th"
-  },
-  {
-    "archetype": "January 9, 2019",
-    "card_playsets": [
-      {
-        "card_num": 250,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 130,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 86,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 13,
-        "num_played": 4,
-        "set_num": 1003
-      },
-      {
-        "card_num": 112,
-        "num_played": 2,
-        "set_num": 4
-      },
-      {
-        "card_num": 35,
-        "num_played": 2,
-        "set_num": 0
-      },
-      {
-        "card_num": 13,
-        "num_played": 4,
-        "set_num": 1002
-      },
-      {
-        "card_num": 235,
-        "num_played": 2,
-        "set_num": 2
-      },
-      {
-        "card_num": 210,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 236,
-        "num_played": 4,
-        "set_num": 2
-      },
-      {
-        "card_num": 151,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 166,
-        "num_played": 2,
-        "set_num": 1
-      },
-      {
-        "card_num": 213,
-        "num_played": 2,
-        "set_num": 5
-      },
-      {
-        "card_num": 19,
-        "num_played": 4,
-        "set_num": 1004
-      },
-      {
-        "card_num": 18,
-        "num_played": 4,
-        "set_num": 1002
-      },
-      {
-        "card_num": 231,
-        "num_played": 4,
-        "set_num": 2
-      },
-      {
-        "card_num": 193,
-        "num_played": 2,
-        "set_num": 4
-      },
-      {
-        "card_num": 264,
-        "num_played": 4,
-        "set_num": 3
-      },
-      {
-        "card_num": 97,
-        "num_played": 2,
-        "set_num": 4
-      },
-      {
-        "card_num": 55,
-        "num_played": 4,
-        "set_num": 0
-      },
-      {
-        "card_num": 9,
-        "num_played": 1,
-        "set_num": 1004
-      },
-      {
-        "card_num": 143,
-        "num_played": 1,
-        "set_num": 1
-      },
-      {
-        "card_num": 95,
-        "num_played": 1,
-        "set_num": 5
-      },
-      {
-        "card_num": 242,
-        "num_played": 1,
-        "set_num": 2
-      },
-      {
-        "card_num": 182,
-        "num_played": 1,
-        "set_num": 5
-      }
-    ],
-    "deck_id": "dxjtTHMZQn4",
-    "is_tournament": false,
-    "last_updated": "1,431",
-    "success": "ECL Tuesday - Top 8\nJanuary 8, 2019\n5th"
-  },
-  {
-    "archetype": "1,351",
-    "card_playsets": [
-      {
-        "card_num": 408,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 8,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 244,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 202,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 21,
-        "num_played": 2,
-        "set_num": 4
-      },
-      {
-        "card_num": 169,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 217,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 157,
-        "num_played": 2,
-        "set_num": 1
-      },
-      {
-        "card_num": 95,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 135,
-        "num_played": 2,
-        "set_num": 5
-      },
-      {
-        "card_num": 304,
-        "num_played": 4,
-        "set_num": 3
-      },
-      {
-        "card_num": 227,
-        "num_played": 3,
-        "set_num": 1
-      },
-      {
-        "card_num": 219,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 36,
-        "num_played": 3,
-        "set_num": 5
-      },
-      {
-        "card_num": 199,
-        "num_played": 3,
-        "set_num": 2
-      },
-      {
-        "card_num": 266,
-        "num_played": 4,
-        "set_num": 3
-      },
-      {
-        "card_num": 243,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 253,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 53,
-        "num_played": 2,
-        "set_num": 0
-      },
-      {
-        "card_num": 188,
-        "num_played": 1,
-        "set_num": 2
-      },
-      {
-        "card_num": 186,
-        "num_played": 1,
-        "set_num": 2
-      }
-    ],
-    "deck_id": "7x_LA0QB4oU",
-    "is_tournament": false,
-    "last_updated": "v1.42 - Defiance",
-    "success": "ECL Tuesday - Top 8\nJanuary 8, 2019\n6th"
-  },
-  {
-    "archetype": "January 9, 2019",
-    "card_playsets": [
-      {
-        "card_num": 250,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 77,
-        "num_played": 2,
-        "set_num": 5
-      },
-      {
-        "card_num": 13,
-        "num_played": 4,
-        "set_num": 1003
-      },
-      {
-        "card_num": 112,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 13,
-        "num_played": 4,
-        "set_num": 1002
-      },
-      {
-        "card_num": 210,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 236,
-        "num_played": 4,
-        "set_num": 2
-      },
-      {
-        "card_num": 151,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 166,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 95,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 286,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 19,
-        "num_played": 4,
-        "set_num": 1004
-      },
-      {
-        "card_num": 18,
-        "num_played": 4,
-        "set_num": 1002
-      },
-      {
-        "card_num": 231,
-        "num_played": 4,
-        "set_num": 2
-      },
-      {
-        "card_num": 264,
-        "num_played": 4,
-        "set_num": 3
-      },
-      {
-        "card_num": 55,
-        "num_played": 4,
-        "set_num": 0
-      },
-      {
-        "card_num": 143,
-        "num_played": 1,
-        "set_num": 1
-      },
-      {
-        "card_num": 224,
-        "num_played": 1,
-        "set_num": 4
-      },
-      {
-        "card_num": 285,
-        "num_played": 1,
-        "set_num": 1
-      },
-      {
-        "card_num": 12,
-        "num_played": 1,
-        "set_num": 1004
-      },
-      {
-        "card_num": 110,
-        "num_played": 1,
-        "set_num": 5
-      }
-    ],
-    "deck_id": "7ycMaC5mmrI",
-    "is_tournament": false,
-    "last_updated": "1,021",
-    "success": "ECL Tuesday - Top 8\nJanuary 8, 2019\n7th"
-  },
-  {
-    "archetype": "January 9, 2019",
-    "card_playsets": [
-      {
-        "card_num": 8,
-        "num_played": 4,
-        "set_num": 1
-      },
-      {
-        "card_num": 237,
-        "num_played": 3,
-        "set_num": 5
-      },
-      {
-        "card_num": 208,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 15,
-        "num_played": 3,
-        "set_num": 1001
-      },
-      {
-        "card_num": 143,
-        "num_played": 1,
-        "set_num": 1
-      },
-      {
-        "card_num": 239,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 210,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 198,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 236,
-        "num_played": 4,
-        "set_num": 2
-      },
-      {
-        "card_num": 166,
-        "num_played": 3,
-        "set_num": 1
-      },
-      {
-        "card_num": 19,
-        "num_played": 4,
-        "set_num": 1004
-      },
-      {
-        "card_num": 275,
-        "num_played": 2,
-        "set_num": 3
-      },
-      {
-        "card_num": 246,
-        "num_played": 4,
-        "set_num": 4
-      },
-      {
-        "card_num": 240,
-        "num_played": 2,
-        "set_num": 5
-      },
-      {
-        "card_num": 36,
-        "num_played": 4,
-        "set_num": 5
-      },
-      {
-        "card_num": 268,
-        "num_played": 3,
-        "set_num": 3
-      },
-      {
-        "card_num": 243,
-        "num_played": 3,
-        "set_num": 4
-      },
-      {
-        "card_num": 264,
-        "num_played": 2,
-        "set_num": 3
-      },
-      {
-        "card_num": 60,
-        "num_played": 4,
-        "set_num": 0
-      },
-      {
-        "card_num": 55,
-        "num_played": 4,
-        "set_num": 0
-      },
-      {
-        "card_num": 1,
-        "num_played": 1,
-        "set_num": 1003
-      },
-      {
-        "card_num": 95,
-        "num_played": 1,
-        "set_num": 5
-      },
-      {
-        "card_num": 213,
-        "num_played": 1,
-        "set_num": 5
-      },
-      {
-        "card_num": 317,
-        "num_played": 1,
-        "set_num": 1
-      },
-      {
-        "card_num": 172,
-        "num_played": 1,
-        "set_num": 1
-      }
-    ],
-    "deck_id": "KHyyKCWhlkI",
-    "is_tournament": false,
-    "last_updated": "1,322",
-    "success": "ECL Tuesday - Top 8\nJanuary 8, 2019\n8th"
   }
 ]
