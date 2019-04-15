@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from src.base_learner import BaseLearner
 from src.browser import Browser
 from src.field_hash_collection import JsonLoadedCollection
+from src.progress_printer import ProgressPrinter
 
 
 @dataclass
@@ -73,8 +74,10 @@ def get_set_num_from_card_url(url):
 class CardLearner(BaseLearner):
     def __init__(self, file_prefix: str):
         super().__init__(file_prefix, "cards.json", CardCollection)
+        self.progress_printer = ProgressPrinter("Updating cards", 25, 5)
 
     def _update_collection(self):
+
         with Browser() as browser:
             for rarity in RARITIES:
                 self._find_new_cards_with_rarity(rarity, browser)
@@ -82,6 +85,7 @@ class CardLearner(BaseLearner):
     def _find_new_cards_with_rarity(self, rarity: str, browser: Browser):
         page = 1
         while True:
+            self.progress_printer.maybe_print()
             is_empty = self._find_new_cards_with_rarity_on_page(rarity, page, browser)
             page += 1
             if is_empty:

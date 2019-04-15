@@ -9,6 +9,7 @@ from src.browser import Browser
 from src.card import CardLearner
 from src.deck_searches import DeckSearch
 from src.field_hash_collection import JsonLoadedCollection
+from src.progress_printer import ProgressPrinter
 
 
 class DeckCollection(JsonLoadedCollection):
@@ -16,7 +17,7 @@ class DeckCollection(JsonLoadedCollection):
         self.deck_search = None
         super().__init__()
 
-    def _add_to_dict(self, entry: DeckData):
+    def _add_to_dict(self, entry: Deck):
         self.dict["deck_id"][entry.deck_id].append(entry)
         for playset in entry.card_playsets:
             num_played = playset.num_played
@@ -35,7 +36,7 @@ class DeckCollection(JsonLoadedCollection):
             )
             playsets.append(playset)
 
-        content = DeckData(
+        content = Deck(
             json_entry['deck_id'],
             playsets,
             json_entry['archetype'],
@@ -67,7 +68,7 @@ class Playset:
 
 
 @dataclass
-class DeckData:
+class Deck:
     deck_id: str
     card_playsets: typing.List[Playset]
     archetype: str
@@ -89,19 +90,19 @@ class DeckData:
         is_tournament = cls._get_is_tournament_from_url(url)
         success = cls._get_success(browser)
 
-        deck = DeckData(deck_id, card_playsets, archetype, last_updated, is_tournament, success)
+        deck = Deck(deck_id, card_playsets, archetype, last_updated, is_tournament, success)
 
         return deck
 
     @staticmethod
     def get_id_from_url(url: str):
-        id_deck_type_string = DeckData._get_id_deck_type_string_from_url(url)
+        id_deck_type_string = Deck._get_id_deck_type_string_from_url(url)
         deck_id = id_deck_type_string.split("/")[0]
         return deck_id
 
     @staticmethod
     def _get_is_tournament_from_url(url: str):
-        id_deck_type_string = DeckData._get_id_deck_type_string_from_url(url)
+        id_deck_type_string = Deck._get_id_deck_type_string_from_url(url)
         is_tournament_string = id_deck_type_string.split("/")[1]
         return is_tournament_string == "tournament-deck"
 
@@ -113,8 +114,8 @@ class DeckData:
 
     @staticmethod
     def _get_card_playsets(browser: Browser, card_learner):
-        deck_export = DeckData._get_deck_export(browser)
-        playsets = DeckData._get_playsets_from_deck_export(deck_export, card_learner)
+        deck_export = Deck._get_deck_export(browser)
+        playsets = Deck._get_playsets_from_deck_export(deck_export, card_learner)
         return playsets
 
     @staticmethod
@@ -131,7 +132,7 @@ class DeckData:
             if len(matching_cards) == 0:
                 continue  # This is a card with no rarity and we don't care about it.
 
-            matching_playset = DeckData._get_existing_matching_playset(playset, playsets)
+            matching_playset = Deck._get_existing_matching_playset(playset, playsets)
             if matching_playset is not None:
                 matching_playset.num_played += playset.num_played
             else:
@@ -186,14 +187,17 @@ class DeckLearner(BaseLearner):
         card_learner = CardLearner(self.json_interface.file_prefix)
 
         deck_urls = self._get_deck_urls(browser)
+        progress_printer = ProgressPrinter(f"Updating {self.deck_search.name} decks",
+                                           len(deck_urls), 100)
 
         for deck_url in deck_urls:
-            deck_id = DeckData.get_id_from_url(deck_url)
+            progress_printer.maybe_print()
+            deck_id = Deck.get_id_from_url(deck_url)
             matching_decks = self.collection.dict['deck_id'][deck_id]
             if len(matching_decks) > 0:
                 continue
 
-            deck_data = DeckData.from_deck_url(deck_url, browser, card_learner)
+            deck_data = Deck.from_deck_url(deck_url, browser, card_learner)
             if deck_data is not None:
                 self.collection.append(deck_data)
 
