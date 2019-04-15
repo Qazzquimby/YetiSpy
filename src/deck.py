@@ -172,10 +172,10 @@ class Deck:
         last_updated = browser.find_element_by_xpath('//*[@id="deck-details"]/div[11]/div[2]').text
         return last_updated
 
-
 class DeckLearner(BaseLearner):
     def __init__(self, file_prefix: str, deck_search: DeckSearch):
         self.deck_search = deck_search
+
         super().__init__(file_prefix, f"{self.deck_search.name}/decks.json", DeckCollection)
         self.collection.deck_search = self.deck_search
 
@@ -184,22 +184,42 @@ class DeckLearner(BaseLearner):
             self._find_new_decks(browser)
 
     def _find_new_decks(self, browser):
+
         card_learner = CardLearner(self.json_interface.file_prefix)
 
         deck_urls = self._get_deck_urls(browser)
+
+        new_deck_ids = [Deck.get_id_from_url(url) for url in deck_urls]
+
+        self._prune_outdated_decks(new_deck_ids)
+
         progress_printer = ProgressPrinter(f"Updating {self.deck_search.name} decks",
                                            len(deck_urls), 100)
-
         for deck_url in deck_urls:
-            progress_printer.maybe_print()
-            deck_id = Deck.get_id_from_url(deck_url)
-            matching_decks = self.collection.dict['deck_id'][deck_id]
-            if len(matching_decks) > 0:
-                continue
+            self._process_deck_url(deck_url, browser, card_learner, progress_printer)
 
-            deck_data = Deck.from_deck_url(deck_url, browser, card_learner)
-            if deck_data is not None:
-                self.collection.append(deck_data)
+    def _prune_outdated_decks(self, new_deck_ids):
+        pruned_collection = DeckCollection()
+        for deck in self.collection.contents:
+            if deck.deck_id in new_deck_ids:
+                pruned_collection.append(deck)
+        self.collection = pruned_collection
+
+    def _process_deck_url(self, deck_url: str,
+                          browser: Browser,
+                          card_learner: CardLearner,
+                          progress_printer: ProgressPrinter):
+
+        progress_printer.maybe_print()
+
+        deck_id = Deck.get_id_from_url(deck_url)
+        matching_decks = self.collection.dict['deck_id'][deck_id]
+        if len(matching_decks) > 0:
+            return
+
+        deck_data = Deck.from_deck_url(deck_url, browser, card_learner)
+        if deck_data is not None:
+            self.collection.append(deck_data)
 
     def _get_deck_urls(self, browser):
         page = 1
