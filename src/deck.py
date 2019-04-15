@@ -28,7 +28,7 @@ class DeckCollection(JsonLoadedCollection):
         playset_dicts = json_entry['card_playsets']
         playsets = []
         for playset_dict in playset_dicts:
-            playset = CardPlayset(
+            playset = Playset(
                 playset_dict["set_num"],
                 playset_dict["card_num"],
                 playset_dict["num_played"]
@@ -45,7 +45,7 @@ class DeckCollection(JsonLoadedCollection):
         return content
 
 
-class CardPlayset:
+class Playset:
     def __init__(self, set_num, card_num, num_played):
         self.set_num = set_num
         self.card_num = card_num
@@ -61,7 +61,7 @@ class CardPlayset:
             num_played = numbers[0]
             set_num = numbers[1]
             card_num = numbers[2]
-            playset = CardPlayset(set_num, card_num, num_played)
+            playset = Playset(set_num, card_num, num_played)
             return playset
         return None
 
@@ -69,7 +69,7 @@ class CardPlayset:
 @dataclass
 class DeckData:
     deck_id: str
-    card_playsets: typing.List[CardPlayset]
+    card_playsets: typing.List[Playset]
     archetype: str
     last_updated: str
     is_tournament: bool
@@ -81,6 +81,9 @@ class DeckData:
         browser.get(url)
         deck_id = cls.get_id_from_url(url)
         card_playsets = cls._get_card_playsets(browser, card_learner)
+        if len(card_playsets) == 0:
+            return None
+
         archetype = cls._get_archetype(browser)
         last_updated = cls._get_last_updated(browser)
         is_tournament = cls._get_is_tournament_from_url(url)
@@ -122,7 +125,7 @@ class DeckData:
 
         playsets = []
         for row in deck_export_rows:
-            playset = CardPlayset.from_export_text(row)
+            playset = Playset.from_export_text(row)
 
             matching_cards = card_learner.collection.dict[playset.set_num][playset.card_num]
             if len(matching_cards) == 0:
@@ -137,7 +140,7 @@ class DeckData:
         return playsets
 
     @staticmethod
-    def _get_existing_matching_playset(playset: CardPlayset, playsets: typing.List[CardPlayset]):
+    def _get_existing_matching_playset(playset: Playset, playsets: typing.List[Playset]):
         for other_playset in playsets:
             sets_match = other_playset.set_num == playset.set_num
             card_nums_match = other_playset.card_num == playset.card_num
@@ -180,7 +183,7 @@ class DeckLearner(BaseLearner):
             self._find_new_decks(browser)
 
     def _find_new_decks(self, browser):
-        card_learner = CardLearner(self.json_interface.file_name)
+        card_learner = CardLearner(self.json_interface.file_prefix)
 
         deck_urls = self._get_deck_urls(browser)
 
@@ -191,7 +194,8 @@ class DeckLearner(BaseLearner):
                 continue
 
             deck_data = DeckData.from_deck_url(deck_url, browser, card_learner)
-            self.collection.append(deck_data)
+            if deck_data is not None:
+                self.collection.append(deck_data)
 
     def _get_deck_urls(self, browser):
         page = 1

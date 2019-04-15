@@ -13,7 +13,7 @@ class JsonInterface:
         self.file_prefix = file_prefix
         self.file_name = file_name
         self.collection_type = collection_type
-        self.path = f"../{self.file_prefix}/{self.file_name}"
+        self.path = f"{self.file_prefix}/{self.file_name}"
 
     def load_empty(self) -> JsonLoadedCollection:
         collection = self.collection_type()

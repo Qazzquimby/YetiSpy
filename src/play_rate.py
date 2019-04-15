@@ -58,14 +58,17 @@ class PlayRateLearner(BaseLearner):
         return super()._load()
 
     def _update_collection(self):
-
         for card in self.cards.contents:
-            card_count_play_rate = PlayRate(card.set_num, card.card_num)
+            play_rate = PlayRate(card.set_num, card.card_num)
             for num_played in range(1, 5):
                 decks_with_num_played = self.decks.dict[(card.set_num, card.card_num)][num_played]
                 num_played_play_count = len(decks_with_num_played)
-                card_count_play_rate.play_rate_of_card_count[str(num_played)] += \
+                play_rate.play_rate_of_card_count[str(num_played)] += \
                     num_played_play_count
 
-            if card_count_play_rate.play_rate_of_card_count['1'] > 0:  # owns at least one
-                self.collection.append(card_count_play_rate)
+            num_decks = len(self.decks.contents)
+            for num_played in range(1, 5):
+                play_rate.play_rate_of_card_count[str(num_played)] *= 100 / num_decks
+
+            if play_rate.play_rate_of_card_count['1'] > 0:  # used at least once
+                self.collection.append(play_rate)

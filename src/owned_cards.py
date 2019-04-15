@@ -1,5 +1,5 @@
 from src.base_learner import BaseLearner
-from src.deck import CardPlayset
+from src.deck import Playset
 from src.field_hash_collection import JsonLoadedCollection
 
 
@@ -23,7 +23,7 @@ class OwnedCardsLearner(BaseLearner):
                 collection_text = collection_file.read()
                 collection_lines = collection_text.split("\n")
                 for line in collection_lines:
-                    playset = CardPlayset.from_export_text(line)
+                    playset = Playset.from_export_text(line)
                     if playset is not None:
                         matches = self.collection.dict[playset.set_num][playset.card_num]
                         if len(matches) > 0:
