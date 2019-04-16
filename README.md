@@ -67,7 +67,7 @@ decks, your collection, and the weights you provided for the deck searches, to o
 called "**Dist/Output/Overall_Value.json**." This is the only file you probably care about. Most 
 other files in output are for intermediate steps, and are less readable.
 
-#####Interpreting your results.
+##### Interpreting your results.
 Overall_Value.json contains a series of blocks representing cards, where cards at the top used 
 more often in your deck searches.
 
