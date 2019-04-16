@@ -45,17 +45,14 @@ class PlayRateLearner(BaseLearner):
 
         self.collection.deck_search = self.decks.deck_search
 
-        if self.cards.updated or self.decks.updated:  # todo properly remake
-            self._update_collection()
-            self._save()
+        self._update_collection()
+        self._save()
 
     def update(self):
         pass  # updates automatically
 
     def _load(self):
-        if self.cards.updated or self.decks.updated:
-            return self.json_interface.load_empty()  # todo properly remake
-        return super()._load()
+        return self.json_interface.load_empty()  # todo properly remake
 
     def _update_collection(self):
         for card in self.cards.contents:

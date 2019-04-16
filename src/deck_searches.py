@@ -11,8 +11,9 @@ class DeckSearch:
 
 def get_deck_searches():
     deck_searches = []
+    search_urls_file_name = "search_urls.csv"
 
-    with open("search_urls.csv", "r") as file:
+    with open(search_urls_file_name, "r") as file:
         reader = csv.reader(file)
         for line in reader:
             deck_search = _get_deck_search_from_line(line)
