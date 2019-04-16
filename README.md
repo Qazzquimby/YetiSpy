@@ -8,7 +8,7 @@ with the number of relevant decks that have at least one more copy of the card t
 in their collection. Focusing on buying the cards higher on the list will bring the user closest 
 to building the relevant decks.
 
-##Setup
+## Setup
 If you're reading this from the Github page, click "Clone or download," "Download ZIP," and 
 extract the archive.
 
@@ -16,11 +16,11 @@ Navigate to the dist folder inside. *All interaction with Eternal Card Evaluator
 in the dist folder.* Everything outside of the dist folder can be safely deleted, 
 and is only there to allow viewing and modification of the source code.
 
-#####Supply your collection
+##### Supply your collection
 1. In Eternal -> Cards -> My Collection -> press "Export Collection."
 2. Paste to collection.txt (the one in dist) to supply your collection data.
 
-#####Choose the decks you're interested in
+##### Choose the decks you're interested in
 
 Eternal Card Evaluator reads decks from [EternalWarcy Deck Searches][https://eternalwarcry.com/decks].
 
@@ -37,7 +37,7 @@ days as a maximum.
 
 In the future, additional search parameters may be added, such as filtering by views or rating.
 
-#####Supply the decks you're interested in
+##### Supply the decks you're interested in
 1. Supply any search criteria you want in the 
 [EternalWarcy Deck Search][https://eternalwarcry.com/decks] interface.
 2. Press search. Stay on the first page of the search results (URL cannot have a "p=x" term).
@@ -52,7 +52,7 @@ with a weight of 4 will count for twice as much as a card in a search with a wei
 For example `Tournament 15, 2.5, https://eternalwarcry.com/decks?td=1&mdb=15` represents all 
 tournament decks in the last 15 days.
 
-#####Getting your results
+##### Getting your results
 Whenever a new set comes out, run "Update_Cards.exe." If this program hasn't been updated in a 
 while, it may be necessary to run the first time you use it. Update_Cards.exe learns from 
 EternalWarcry, so you may have to wait for them to update with the new set.
@@ -101,7 +101,7 @@ with priority 10, and never used in a seaerch with priority 1, the value would b
     }, ...
 ```
 
-##The Future
+## The Future
 In no particular order, I hope to add:
 - (High Priority) Evaluation of how to spend gold, to maximize finding high priority cards.
 - Automatically handling of updates, rather than making the user click multiple exes.
@@ -109,7 +109,7 @@ In no particular order, I hope to add:
 
 All of these are somewhat difficult, and may not happen.
 
-##Bugs
+## Bugs
 I hope not.
 
 Please first make sure instructions were followed:
