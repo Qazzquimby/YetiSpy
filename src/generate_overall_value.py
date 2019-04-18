@@ -3,7 +3,7 @@ from src.deck import DeckLearner
 from src.deck_searches import get_deck_searches
 from src.owned_cards import OwnedCardsLearner
 from src.play_rate import PlayRateLearner
-from src.value import ValueLearner, SummedValues
+from src.values import ValueLearner, SummedValues
 
 file_prefix = "output"
 
@@ -26,7 +26,6 @@ if __name__ == '__main__':
         value_learner = ValueLearner(file_prefix, owned_cards_learner.collection,
                                      card_play_rates.collection,
                                      card_learner.collection)
-        value_learner.update()
         values.append(value_learner.collection)
 
     overall_value = SummedValues(file_prefix, values)

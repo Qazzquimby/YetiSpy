@@ -154,7 +154,7 @@ class Deck:
         # Browser must already be at deck url
 
         deck_export_text_area = browser.find_element_by_xpath('//*[@id="export-deck-text"]')
-        deck_export = deck_export_text_area.get_attribute("values")
+        deck_export = deck_export_text_area.get_attribute("value")
         return deck_export
 
     @staticmethod

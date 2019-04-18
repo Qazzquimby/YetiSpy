@@ -27,8 +27,8 @@ class OwnedCardsLearner(BaseLearner):
                     if playset is not None:
                         matches = self.collection.dict[playset.set_num][playset.card_num]
                         if len(matches) > 0:
-                            existing_playset = matches[0]
-                            existing_playset.num_played += playset.num_copies
+                            existing_playset = matches[0]  # type: Playset
+                            existing_playset.num_copies += playset.num_copies
                         else:
                             self.collection.append(playset)
         except FileNotFoundError:

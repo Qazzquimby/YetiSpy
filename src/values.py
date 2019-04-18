@@ -34,7 +34,8 @@ class Value:
 
 class ValueCollection(JsonLoadedCollection):
     def __init__(self):
-        self.deck_search = None  # type: typing.Optional[DeckSearch]
+        self.deck_search: typing.Optional[DeckSearch] = None
+        self._contents: Value
         super().__init__()
 
     def _add_to_dict(self, entry):
@@ -59,8 +60,11 @@ class ValueLearner(BaseLearner):
         super().__init__(file_prefix, f"{self.play_rates.deck_search.name}/value.json",
                          ValueCollection)
         self._update_collection()  # todo make this better. Figure out how to handle autoupdate.
-
+        self._save()
         self.collection.deck_search = self.play_rates.deck_search
+
+    def update(self):
+        pass  # automatic
 
     def _update_collection(self):
         for play_rate in self.play_rates.contents:
@@ -80,10 +84,9 @@ class ValueLearner(BaseLearner):
         if num_owned >= 4:
             return
 
-        new_count = num_owned + 1
-        assert new_count in [1, 2, 3, 4]
+        assert num_owned in [0, 1, 2, 3]
 
-        card_value = self._get_value(play_rate, owned_playset, new_count)
+        card_value = self._get_values(play_rate, owned_playset, num_owned)
 
         self.collection.append(card_value)
 
@@ -93,13 +96,13 @@ class ValueLearner(BaseLearner):
             return None
         return owned_playsets[0]
 
-    def _get_value(self, play_rate: PlayRate, owned: Playset, new_count: int) -> Value:
+    def _get_values(self, play_rate: PlayRate, owned: Playset, num_owned: int) -> Value:
         card = self.cards.dict[owned.set_num][owned.card_num][0]
 
-        rate = play_rate.play_rate_of_card_count[str(new_count)]
+        values = [play_rate.play_rate_of_card_count[str(card_count)] for card_count in range(num_owned + 1, 5)]
 
-        value = Value(card.name, card.rarity, new_count, rate)
-        return value
+        values = Value(card.name, card.rarity, num_owned, values)
+        return values
 
     def _load(self) -> ValueCollection:
         return ValueCollection()
@@ -124,18 +127,18 @@ class SummedValues:
         for value_collection in self.value_collections:
             current_weight = value_collection.deck_search.weight
             total_weight += current_weight
-            for value in value_collection.contents:
-                matching_values = summed_value_collection.dict["card_name"][value.card_name]
-                if len(matching_values) > 0:
-                    matching_value = matching_values[0]
+            for value_set in value_collection.contents:
+                matching_value_sets = summed_value_collection.dict["card_name"][value_set.card_name]
+                if len(matching_value_sets) > 0:
+                    matching_value_set: Value = matching_value_sets[0]
                     weight_difference = total_weight - current_weight
-                    old_values = matching_value.value * weight_difference / total_weight
-                    new_value = value.value * current_weight / total_weight
-                    averaged_values = old_values + new_value
+                    old_values = [value * weight_difference / total_weight for value in matching_value_set.values]
+                    new_values = [value * current_weight / total_weight for value in value_set.values]
+                    averaged_values = [old + new for old, new in zip(old_values, new_values)]
 
-                    matching_value.value = averaged_values
+                    matching_value_set.values = averaged_values
                 else:
-                    summed_value_collection.append(value)
+                    summed_value_collection.append(value_set)
 
         return summed_value_collection
 
