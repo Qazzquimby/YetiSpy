@@ -18,24 +18,22 @@ class ProgressPrinter:
             self.previous_prints += 1
             self.current_num_calls = 0
 
-    def _get_interval(self, total_values, max_calls_between_prints):
+    def _get_interval(self, total_values: int, max_calls_between_prints: int) -> int:
         last_interval = PROGRESS_INTERVALS[0]
 
         for interval in PROGRESS_INTERVALS:
-            calls_between_prints = self._get_calls_between_prints_from_interval(total_values,
-                                                                                interval)
+            calls_between_prints = self._get_calls_between_prints_from_interval(total_values, interval)
             if calls_between_prints >= max_calls_between_prints:
                 return last_interval
             last_interval = interval
         return PROGRESS_INTERVALS[-1]
 
-    def _get_calls_between_prints(self, total_values):
-        calls_between_prints = self._get_calls_between_prints_from_interval(total_values,
-                                                                            self.interval)
+    def _get_calls_between_prints(self, total_values: int) -> float:
+        calls_between_prints = self._get_calls_between_prints_from_interval(total_values, self.interval)
         return calls_between_prints
 
     @staticmethod
-    def _get_calls_between_prints_from_interval(total_values, interval):
+    def _get_calls_between_prints_from_interval(total_values: int, interval: int) -> float:
         return total_values * interval / 100
 
     def _print(self):

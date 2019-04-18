@@ -1,4 +1,5 @@
 import csv
+import typing
 from dataclasses import dataclass
 
 
@@ -9,7 +10,7 @@ class DeckSearch:
     url: str
 
 
-def get_deck_searches():
+def get_deck_searches() -> typing.List[DeckSearch]:
     deck_searches = []
     search_urls_file_name = "search_urls.csv"
 
@@ -22,7 +23,7 @@ def get_deck_searches():
     return deck_searches
 
 
-def _get_deck_search_from_line(line):
+def _get_deck_search_from_line(line: str) -> DeckSearch:
     name = line[0]
     weight = float(line[1])
     url = line[2]

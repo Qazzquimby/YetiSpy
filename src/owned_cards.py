@@ -28,13 +28,13 @@ class OwnedCardsLearner(BaseLearner):
                         matches = self.collection.dict[playset.set_num][playset.card_num]
                         if len(matches) > 0:
                             existing_playset = matches[0]
-                            existing_playset.num_played += playset.num_played
+                            existing_playset.num_played += playset.num_copies
                         else:
                             self.collection.append(playset)
         except FileNotFoundError:
             print("collection.txt not found")
 
-    def _load(self):
+    def _load(self) -> PlaysetCollection:
         return PlaysetCollection()
 
     def update(self):

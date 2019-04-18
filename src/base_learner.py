@@ -8,7 +8,8 @@ from src.field_hash_collection import JsonLoadedCollection
 
 
 class JsonInterface:
-    def __init__(self, file_prefix: str, file_name: str,
+    def __init__(self, file_prefix: str,
+                 file_name: str,
                  collection_type: typing.Type[JsonLoadedCollection]):
         self.file_prefix = file_prefix
         self.file_name = file_name
@@ -31,14 +32,14 @@ class JsonInterface:
         return json_entries
 
     # noinspection PyMethodMayBeStatic
-    def _read_json(self, json_file):
+    def _read_json(self, json_file: typing.TextIO):
         try:
             json_entries = json.load(json_file)
         except json.decoder.JSONDecodeError:
             json_entries = []
         return json_entries
 
-    def _get_collection_from_json_entries(self, json_entries):
+    def _get_collection_from_json_entries(self, json_entries: typing.List[any]) -> JsonLoadedCollection:
         collection = self.collection_type()
         for json_entry in json_entries:
             content = self._json_entry_to_content(json_entry)
@@ -49,7 +50,7 @@ class JsonInterface:
         content = self.collection_type.json_entry_to_content(json_entry)
         return content
 
-    def save(self, collection):
+    def save(self, collection: JsonLoadedCollection):
         print("Saving work. Do not close program.")
 
         def encode(obj):

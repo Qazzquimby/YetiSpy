@@ -4,7 +4,7 @@ import typing
 from collections import defaultdict
 
 from src.base_learner import BaseLearner, JsonInterface
-from src.card import CardCollection
+from src.card import CardCollection, Rarity
 from src.deck import Playset
 from src.deck_searches import DeckSearch
 from src.field_hash_collection import JsonLoadedCollection
@@ -13,14 +13,17 @@ from src.play_rate import PlayRateCollection, PlayRate
 
 
 class Value:
-    def __init__(self, card_name, rarity, new_count, value):
+    def __init__(self, card_name: str, rarity: Rarity, num_owned: int, values: typing.List[float]):
         self.card_name = card_name
         self.rarity = rarity
-        self.new_count = new_count
-        self.value = value
+        self.num_owned = num_owned
+        self.values = values
 
     def __float__(self):
-        return self.value
+        try:
+            return self.values[0]
+        except IndexError:
+            return 0
 
     def __lt__(self, other):
         return float(self) < float(other)
@@ -38,31 +41,12 @@ class ValueCollection(JsonLoadedCollection):
         self.dict["card_name"][entry.card_name].append(entry)
 
     @staticmethod
-    def json_entry_to_content(json_entry: dict):
+    def json_entry_to_content(json_entry: dict) -> None:
         pass
 
 
-class PlayRateNormalizer:
-    # todo remove. Instead make play rate show the percentage of decks used in, rather than total num
-    def __init__(self, play_rates: typing.List[PlayRate]):
-        self.total_cards_played = self._init_total_cards_played(play_rates)
-
-    def normalize_play_rate(self, play_rate: float) -> float:
-        normalized = play_rate * 4 * 75 / self.total_cards_played
-        return normalized
-
-    # noinspection PyMethodMayBeStatic
-    def _init_total_cards_played(self, play_rates: typing.List[PlayRate]) -> int:
-        total_cards = 0
-        for play_rate in play_rates:
-            for i in range(1, 5):
-                num_cards = play_rate.play_rate_of_card_count[str(i)]
-                total_cards += num_cards
-        return total_cards
-
-
 class ValueLearner(BaseLearner):
-    def __init__(self, file_prefix,
+    def __init__(self, file_prefix: str,
                  owned_cards: PlaysetCollection,
                  play_rates: PlayRateCollection,
                  cards: CardCollection):
@@ -71,7 +55,6 @@ class ValueLearner(BaseLearner):
         self.cards = cards
 
         self.already_seen = defaultdict(bool)
-        self.play_rate_normalizer = PlayRateNormalizer(self.play_rates.contents)
 
         super().__init__(file_prefix, f"{self.play_rates.deck_search.name}/value.json",
                          ValueCollection)
@@ -93,7 +76,7 @@ class ValueLearner(BaseLearner):
         if owned_playset is None:
             owned_playset = Playset(play_rate.set_num, play_rate.card_num, 0)
 
-        num_owned = owned_playset.num_played
+        num_owned = owned_playset.num_copies
         if num_owned >= 4:
             return
 
@@ -104,7 +87,7 @@ class ValueLearner(BaseLearner):
 
         self.collection.append(card_value)
 
-    def _get_owned_playset(self, play_rate: PlayRate):
+    def _get_owned_playset(self, play_rate: PlayRate) -> typing.Optional[PlayRate]:
         owned_playsets = self.owned_cards.dict[play_rate.set_num][play_rate.card_num]
         if len(owned_playsets) == 0:
             return None
@@ -118,7 +101,7 @@ class ValueLearner(BaseLearner):
         value = Value(card.name, card.rarity, new_count, rate)
         return value
 
-    def _load(self):
+    def _load(self) -> ValueCollection:
         return ValueCollection()
 
     def _save(self):
@@ -134,7 +117,7 @@ class SummedValues:
         self.collection = self._init_collection()
         self.save()
 
-    def _init_collection(self):
+    def _init_collection(self) -> ValueCollection:
         summed_value_collection = ValueCollection()
 
         total_weight = 0

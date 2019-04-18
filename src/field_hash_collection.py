@@ -1,5 +1,6 @@
 import abc
 import collections
+import typing
 
 
 class FieldHashCollection(abc.ABC):
@@ -9,7 +10,7 @@ class FieldHashCollection(abc.ABC):
         self.updated = False
 
     @property
-    def contents(self):
+    def contents(self) -> typing.List[any]:
         return self._contents[:]
 
     def append(self, entry: any):

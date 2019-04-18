@@ -26,7 +26,7 @@ class PlayRateCollection(JsonLoadedCollection):
         self.dict[entry.set_num][entry.card_num].append(entry)
 
     @staticmethod
-    def json_entry_to_content(json_entry: dict):
+    def json_entry_to_content(json_entry: dict) -> PlayRate:
         content = PlayRate(json_entry['set_num'],
                            json_entry['card_num'])
         content.play_rate_of_card_count = json_entry['play_rate_of_card_count']
@@ -51,7 +51,7 @@ class PlayRateLearner(BaseLearner):
     def update(self):
         pass  # updates automatically
 
-    def _load(self):
+    def _load(self) -> PlayRateCollection:
         return self.json_interface.load_empty()  # todo properly remake
 
     def _update_collection(self):
