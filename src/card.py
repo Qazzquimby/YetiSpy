@@ -1,3 +1,5 @@
+import json
+import typing
 from dataclasses import dataclass
 
 from src.base_learner import BaseLearner
@@ -27,7 +29,7 @@ rarity_string_to_id = {COMMON: 2,
                        PROMO: 6}
 
 
-class CardData:
+class Card:
     def __init__(self, set_num: int, card_num: int, name: str, rarity: str):
         self.set_num = set_num
         self.card_num = card_num
@@ -41,11 +43,11 @@ class CardData:
 class CardCollection(JsonLoadedCollection):
 
     @staticmethod
-    def json_entry_to_content(json_entry: dict) -> CardData:
-        content = CardData(json_entry['set_num'],
-                           json_entry['card_num'],
-                           json_entry['name'],
-                           json_entry['rarity'])
+    def json_entry_to_content(json_entry: dict) -> Card:
+        content = Card(json_entry['set_num'],
+                       json_entry['card_num'],
+                       json_entry['name'],
+                       json_entry['rarity'])
         return content
 
     def _add_to_dict(self, entry: any):
@@ -78,39 +80,37 @@ class CardLearner(BaseLearner):
         self.progress_printer = ProgressPrinter("Updating cards", 25, 5)
 
     def _update_collection(self):
+        card_json = self._get_card_json()
+        entries = json.loads(card_json)
+        self.collection = self._make_collection_from_export_entries(entries)
+
+    @staticmethod
+    def _get_card_json():
         with Browser() as browser:
-            for rarity in RARITIES:
-                self._find_new_cards_with_rarity(rarity, browser)
+            browser.get("https://eternalwarcry.com/content/cards/eternal-cards.json")
+            element = browser.find_element_by_xpath("/html/body/pre")
+            card_json = element.text
+        return card_json
 
-    def _find_new_cards_with_rarity(self, rarity: str, browser: Browser):
-        page = 1
-        while True:
-            self.progress_printer.maybe_print()
-            is_empty = self._find_new_cards_with_rarity_on_page(rarity, page, browser)
-            page += 1
-            if is_empty:
-                break
+    @staticmethod
+    def _make_collection_from_export_entries(entries: typing.List[dict]) -> CardCollection:
+        collection = CardCollection()
+        for entry in entries:
+            card = CardLearner._make_card_from_export_entry(entry)
+            if card is not None:
+                collection.append(card)
+        return collection
 
-    def _find_new_cards_with_rarity_on_page(self, rarity: str, page, browser: Browser) -> bool:
-        rarity_id = rarity_string_to_id[rarity]
-        url = f"https://eternalwarcry.com/cards?Rarities={rarity_id}&cardview=false&p={page}"
-        browser.get(url)
+    @staticmethod
+    def _make_card_from_export_entry(entry: dict) -> typing.Optional[Card]:
+        try:
+            if not entry["DeckBuildable"]:
+                return None
 
-        is_empty = False
-
-        card_table = browser.find_elements_by_xpath(
-            '//*[@id="body-wrapper"]/div/div/div[2]/div[2]/div[3]/div/table/tbody/tr[*]/td[1]/a'
-        )
-        if len(card_table) == 0:
-            is_empty = True
-        for card_link in card_table:
-            name = card_link.text
-            if len(self.collection.dict["name"][name]) == 0:
-                card_url = card_link.get_attribute("href")
-                set_num = get_set_num_from_card_url(card_url)
-                card_num = get_card_num_from_card_url(card_url)
-
-                card = CardData(set_num, card_num, name, rarity)
-                self.collection.append(card)
-
-        return is_empty
+            content = Card(entry['SetNumber'],
+                           entry['EternalID'],
+                           entry['Name'],
+                           entry['Rarity'].lower())
+            return content
+        except KeyError:
+            return None

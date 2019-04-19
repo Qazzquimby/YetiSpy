@@ -22,7 +22,7 @@ class JsonInterface:
 
     def load(self) -> JsonLoadedCollection:
         json_entries = self._load_json_entries()
-        collection = self._get_collection_from_json_entries(json_entries)
+        collection = self.get_collection_from_json_entries(json_entries)
         return collection
 
     def _load_json_entries(self):
@@ -39,7 +39,7 @@ class JsonInterface:
             json_entries = []
         return json_entries
 
-    def _get_collection_from_json_entries(self, json_entries: typing.List[any]) -> JsonLoadedCollection:
+    def get_collection_from_json_entries(self, json_entries: typing.List[any]) -> JsonLoadedCollection:
         collection = self.collection_type()
         for json_entry in json_entries:
             content = self._json_entry_to_content(json_entry)
