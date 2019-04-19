@@ -99,7 +99,7 @@ def get_set_num_from_card_url(url: str) -> int:
 class CardLearner(BaseLearner):
     def __init__(self, file_prefix: str):
         super().__init__(file_prefix, "cards.json", CardCollection)
-        self.progress_printer = ProgressPrinter("Updating value_sets", 25, 5)
+        self.progress_printer = ProgressPrinter("Updating value_collection", 25, 5)
 
     def _update_collection(self):
         card_json = self._get_card_json()

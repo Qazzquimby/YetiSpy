@@ -3,7 +3,7 @@ from eternal_collection_guide.deck import DeckLearner
 from eternal_collection_guide.deck_searches import get_deck_searches
 from eternal_collection_guide.owned_cards import OwnedCardsLearner
 from eternal_collection_guide.play_rate import PlayRateLearner
-from eternal_collection_guide.purchase_options import BuyPacks
+from eternal_collection_guide.purchase_options import BuyPacks, BuyCampaigns
 from eternal_collection_guide.sets import Sets
 from eternal_collection_guide.values import ValueLearner, SummedValues
 
@@ -35,6 +35,9 @@ if __name__ == '__main__':
     sets = Sets()
 
     buy_packs = BuyPacks(sets, card_learner.collection, overall_value.collection)
-    for pack in buy_packs:
-        print(pack.card_pack.set_num, pack.avg_value)
+    for buy_pack in buy_packs:
+        print(buy_pack.pack.set_num, buy_pack.avg_value_per_1000_gold)
+    buy_campaigns = BuyCampaigns(sets, card_learner.collection, overall_value.collection)
+    for buy_campaign in buy_campaigns:
+        print(buy_campaign.campaign.set_num, buy_campaign.avg_value_per_1000_gold)
     pass

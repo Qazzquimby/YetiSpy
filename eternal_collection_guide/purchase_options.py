@@ -1,9 +1,10 @@
 import abc
 import typing
 
-from eternal_collection_guide.card import RARITIES
-from eternal_collection_guide.card_pack import CardPack, NUM_CARDS_IN_PACK, RARITY_REGULAR_DISENCHANT
+from eternal_collection_guide.card import RARITIES, CardCollection
+from eternal_collection_guide.card_pack import CardPack, NUM_CARDS_IN_PACK, RARITY_REGULAR_DISENCHANT, Campaign
 from eternal_collection_guide.sets import Sets
+from eternal_collection_guide.values import ValueCollection
 
 
 class BuyOption(abc.ABC):
@@ -29,19 +30,19 @@ class BuyOption(abc.ABC):
         return self.gold_cost - self.avg_gold_output
 
     @property
-    def value_per_1000_gold(self):
+    def avg_value_per_1000_gold(self):
         return self.avg_value * 1000 / self.effective_gold_cost
 
 
 class BuyPacks:
-    def __init__(self, sets: Sets, cards, values):
+    def __init__(self, sets: Sets, cards: CardCollection, values: ValueCollection):
         self.sets = sets
-        self.packs: typing.List[BuyPack] = self._init_packs(cards, values)
+        self.contents: typing.List[BuyPack] = self._init_contents(cards, values)
 
     def __iter__(self):
-        yield from self.packs
+        yield from self.contents
 
-    def _init_packs(self, cards, values):
+    def _init_contents(self, cards, values):
         packs = []
         for card_set in self.sets.core_sets:
             pack = BuyPack(card_set.set_num, cards, values)
@@ -52,7 +53,7 @@ class BuyPacks:
 class BuyPack(BuyOption):
     def __init__(self, set_num, cards, values):
         super().__init__()
-        self.card_pack = CardPack(set_num, cards, values)
+        self.pack = CardPack(set_num, cards, values)
 
     @property
     def gold_cost(self) -> int:
@@ -75,4 +76,42 @@ class BuyPack(BuyOption):
 
     @property
     def avg_value(self) -> float:
-        return self.card_pack.average_value
+        return self.pack.average_value
+
+
+class BuyCampaigns:
+    def __init__(self, sets: Sets, cards: CardCollection, values: ValueCollection):
+        self.sets = sets
+        self.contents: typing.List[BuyCampaign] = self._init_contents(cards, values)
+
+    def __iter__(self):
+        yield from self.contents
+
+    def _init_contents(self, cards, values):
+        contents = []
+        for card_set in self.sets.campaigns:
+            buy_campaign = BuyCampaign(card_set.set_num, cards, values)
+            contents.append(buy_campaign)
+        return contents
+
+
+class BuyCampaign(BuyOption):
+    def __init__(self, set_num, cards, values):
+        super().__init__()
+        self.campaign = Campaign(set_num, cards, values)
+
+    @property
+    def gold_cost(self) -> int:
+        return 25000
+
+    @property
+    def avg_gold_output(self) -> float:
+        return 0
+
+    @property
+    def avg_shiftstone_output(self) -> float:
+        return 0
+
+    @property
+    def avg_value(self) -> float:
+        return self.campaign.average_value

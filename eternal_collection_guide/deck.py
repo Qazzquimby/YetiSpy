@@ -195,7 +195,7 @@ class DeckLearner(BaseLearner):
         self._prune_outdated_decks(new_deck_ids)
 
         progress_printer = ProgressPrinter(f"Updating {self.deck_search.name} decks",
-                                           len(deck_urls), 50)
+                                           len(deck_urls), 25)
         for deck_url in deck_urls:
             self._process_deck_url(deck_url, browser, card_learner, progress_printer)
 
