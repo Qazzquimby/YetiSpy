@@ -1,6 +1,6 @@
-from src.base_learner import BaseLearner
-from src.deck import Playset
-from src.field_hash_collection import JsonLoadedCollection
+from eternal_collection_guide.base_learner import BaseLearner
+from eternal_collection_guide.deck import Playset
+from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
 
 
 class PlaysetCollection(JsonLoadedCollection):

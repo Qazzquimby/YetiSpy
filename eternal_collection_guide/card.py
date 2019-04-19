@@ -2,10 +2,10 @@ import json
 import typing
 from dataclasses import dataclass
 
-from src.base_learner import BaseLearner
-from src.browser import Browser
-from src.field_hash_collection import JsonLoadedCollection
-from src.progress_printer import ProgressPrinter
+from eternal_collection_guide.base_learner import BaseLearner
+from eternal_collection_guide.browser import Browser
+from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
+from eternal_collection_guide.progress_printer import ProgressPrinter
 
 
 @dataclass
@@ -42,6 +42,28 @@ class Card:
 
 class CardCollection(JsonLoadedCollection):
 
+    def get_cards_in_set(self, set_num):
+        assert set_num > 0
+
+        if set_num == 1:
+            return self._get_cards_in_set(0) + self._get_cards_in_set(1)
+        return self._get_cards_in_set(set_num)
+
+    def _get_cards_in_set(self, set_num):
+
+        cards = []
+
+        if set_num == 1:
+            cards = self._get_cards_in_set(0)
+
+        card_nums_in_set = self.dict[set_num]
+        for card_num in card_nums_in_set.keys():
+            new_cards = self.dict[set_num][card_num]
+            assert len(new_cards) == 1
+            card = new_cards[0]
+            cards.append(card)
+        return cards
+
     @staticmethod
     def json_entry_to_content(json_entry: dict) -> Card:
         content = Card(json_entry['set_num'],
@@ -77,7 +99,7 @@ def get_set_num_from_card_url(url: str) -> int:
 class CardLearner(BaseLearner):
     def __init__(self, file_prefix: str):
         super().__init__(file_prefix, "cards.json", CardCollection)
-        self.progress_printer = ProgressPrinter("Updating cards", 25, 5)
+        self.progress_printer = ProgressPrinter("Updating value_sets", 25, 5)
 
     def _update_collection(self):
         card_json = self._get_card_json()
@@ -105,6 +127,8 @@ class CardLearner(BaseLearner):
     def _make_card_from_export_entry(entry: dict) -> typing.Optional[Card]:
         try:
             if not entry["DeckBuildable"]:
+                return None
+            if entry["Rarity"].lower() not in RARITIES:
                 return None
 
             content = Card(entry['SetNumber'],

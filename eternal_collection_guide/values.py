@@ -3,16 +3,16 @@ from __future__ import annotations
 import typing
 from collections import defaultdict
 
-from src.base_learner import BaseLearner, JsonInterface
-from src.card import CardCollection, Rarity
-from src.deck import Playset
-from src.deck_searches import DeckSearch
-from src.field_hash_collection import JsonLoadedCollection
-from src.owned_cards import PlaysetCollection
-from src.play_rate import PlayRateCollection, PlayRate
+from eternal_collection_guide.base_learner import BaseLearner, JsonInterface
+from eternal_collection_guide.card import CardCollection, Rarity
+from eternal_collection_guide.deck import Playset
+from eternal_collection_guide.deck_searches import DeckSearch
+from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
+from eternal_collection_guide.owned_cards import PlaysetCollection
+from eternal_collection_guide.play_rate import PlayRateCollection, PlayRate
 
 
-class Value:
+class ValueSet:
     def __init__(self, card_name: str, rarity: Rarity, num_owned: int, values: typing.List[float]):
         self.card_name = card_name
         self.rarity = rarity
@@ -35,7 +35,7 @@ class Value:
 class ValueCollection(JsonLoadedCollection):
     def __init__(self):
         self.deck_search: typing.Optional[DeckSearch] = None
-        self._contents: Value
+        self._contents: ValueSet
         super().__init__()
 
     def _add_to_dict(self, entry):
@@ -96,12 +96,12 @@ class ValueLearner(BaseLearner):
             return None
         return owned_playsets[0]
 
-    def _get_values(self, play_rate: PlayRate, owned: Playset, num_owned: int) -> Value:
+    def _get_values(self, play_rate: PlayRate, owned: Playset, num_owned: int) -> ValueSet:
         card = self.cards.dict[owned.set_num][owned.card_num][0]
 
         values = [play_rate.play_rate_of_card_count[str(card_count)] for card_count in range(num_owned + 1, 5)]
 
-        values = Value(card.name, card.rarity, num_owned, values)
+        values = ValueSet(card.name, card.rarity, num_owned, values)
         return values
 
     def _load(self) -> ValueCollection:
@@ -130,7 +130,7 @@ class SummedValues:
             for value_set in value_collection.contents:
                 matching_value_sets = summed_value_collection.dict["card_name"][value_set.card_name]
                 if len(matching_value_sets) > 0:
-                    matching_value_set: Value = matching_value_sets[0]
+                    matching_value_set: ValueSet = matching_value_sets[0]
                     weight_difference = total_weight - current_weight
                     old_values = [value * weight_difference / total_weight for value in matching_value_set.values]
                     new_values = [value * current_weight / total_weight for value in value_set.values]

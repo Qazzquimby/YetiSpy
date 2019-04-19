@@ -4,12 +4,12 @@ import re
 import typing
 from dataclasses import dataclass
 
-from src.base_learner import BaseLearner
-from src.browser import Browser
-from src.card import CardLearner
-from src.deck_searches import DeckSearch
-from src.field_hash_collection import JsonLoadedCollection
-from src.progress_printer import ProgressPrinter
+from eternal_collection_guide.base_learner import BaseLearner
+from eternal_collection_guide.browser import Browser
+from eternal_collection_guide.card import CardLearner
+from eternal_collection_guide.deck_searches import DeckSearch
+from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
+from eternal_collection_guide.progress_printer import ProgressPrinter
 
 
 class DeckCollection(JsonLoadedCollection):

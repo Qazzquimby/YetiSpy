@@ -4,7 +4,7 @@ import json
 import os
 import typing
 
-from src.field_hash_collection import JsonLoadedCollection
+from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
 
 
 class JsonInterface:
