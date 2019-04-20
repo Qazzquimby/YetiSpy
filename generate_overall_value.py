@@ -34,10 +34,13 @@ if __name__ == '__main__':
 
     sets = Sets()
 
-    buy_packs = BuyPacks(sets, card_learner.collection, overall_value.collection)
-    for buy_pack in buy_packs:
-        print(buy_pack.pack.set_num, buy_pack.avg_value_per_1000_gold)
-    buy_campaigns = BuyCampaigns(sets, card_learner.collection, overall_value.collection)
-    for buy_campaign in buy_campaigns:
-        print(buy_campaign.campaign.set_num, buy_campaign.avg_value_per_1000_gold)
+    with open(f"{file_prefix}/purchases.txt", "w+") as purchase_file:
+        buy_packs = BuyPacks(sets, card_learner.collection, overall_value.collection)
+        for buy_pack in buy_packs:
+            purchase_file.write(f"Buy pack: {buy_pack.pack.name} Value per 1000 gold="
+                                f"{buy_pack.avg_value_per_1000_gold}\n")
+        buy_campaigns = BuyCampaigns(sets, card_learner.collection, overall_value.collection)
+        for buy_campaign in buy_campaigns:
+            purchase_file.write(f"Buy campaign: {buy_pack.pack.name} Value per 1000 gold="
+                                f"{buy_pack.avg_value_per_1000_gold}\n")
     pass

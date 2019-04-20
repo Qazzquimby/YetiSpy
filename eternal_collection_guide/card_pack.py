@@ -9,7 +9,8 @@ RARITY_PREMIUM_DISENCHANT = {COMMON: 25, UNCOMMON: 50, PROMO: 400, RARE: 800, LE
 
 
 class CardPack:
-    def __init__(self, set_num: int, card_collection: CardCollection, value_collection: ValueCollection):
+    def __init__(self, name: str, set_num: int, card_collection: CardCollection, value_collection: ValueCollection):
+        self.name = name
         self.set_num = set_num
         self.cards = card_collection
         self.value_sets = value_collection
@@ -71,7 +72,8 @@ class CardPack:
 
 
 class Campaign:
-    def __init__(self, set_num: int, card_collection: CardCollection, value_collection: ValueCollection):
+    def __init__(self, name: str, set_num: int, card_collection: CardCollection, value_collection: ValueCollection):
+        self.name = name
         self.set_num = set_num
         self.cards = card_collection
         self.value_collection = value_collection

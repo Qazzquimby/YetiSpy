@@ -13,7 +13,7 @@ class CardSet:
     def from_set_selection_string(cls, set_selection_string):
         name = set_selection_string.split(" [")[0]
 
-        set_num_string_with_end_bracket = set_selection_string.split(" [CardSet")[1]
+        set_num_string_with_end_bracket = set_selection_string.split(" [Set")[1]
         set_num_string = set_num_string_with_end_bracket.split("]")[0]
         set_num = int(set_num_string)
 

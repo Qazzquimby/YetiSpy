@@ -47,7 +47,7 @@ class BuyOptions(abc.ABC):
                        content_type: typing.Type):
         contents = []
         for card_set in sets:
-            content = content_type(card_set.set_num, cards, values)
+            content = content_type(card_set.name, card_set.set_num, cards, values)
             contents.append(content)
         return contents
 
@@ -62,9 +62,9 @@ class BuyPacks(BuyOptions):
 
 
 class BuyPack(BuyOption):
-    def __init__(self, set_num, cards, values):
+    def __init__(self, set_name, set_num, cards, values):
         super().__init__()
-        self.pack = CardPack(set_num, cards, values)
+        self.pack = CardPack(set_name, set_num, cards, values)
 
     @property
     def gold_cost(self) -> int:
@@ -97,9 +97,9 @@ class BuyCampaigns(BuyOptions):
 
 
 class BuyCampaign(BuyOption):
-    def __init__(self, set_num, cards, values):
+    def __init__(self, set_name, set_num, cards, values):
         super().__init__()
-        self.campaign = Campaign(set_num, cards, values)
+        self.campaign = Campaign(set_name, set_num, cards, values)
 
     @property
     def gold_cost(self) -> int:
@@ -116,3 +116,29 @@ class BuyCampaign(BuyOption):
     @property
     def avg_value(self) -> float:
         return self.campaign.average_value
+
+# class BuyDraft(BuyOption):
+#     def __init__(self):
+#         self.newest_set = NotImplemented  # fixme
+#         self.newest_pack = NotImplementedError
+#
+#         self.draft_pack = NotImplementedError
+#
+#     @property
+#     def gold_cost(self) -> int:
+#         pass
+#
+#     @property
+#     def avg_gold_output(self) -> float:
+#         pass
+#
+#     @property
+#     def avg_shiftstone_output(self) -> float:
+#         400 + NotImplemented
+#
+#     @property
+#     def avg_value(self) -> float:
+#         pass
+#         # take average value of cards in pack
+#         # Estimate n highest valued cards
+#         # subtract their values from total
