@@ -33,6 +33,12 @@ class BuyOption(abc.ABC):
     def avg_value_per_1000_gold(self):
         return self.avg_value * 1000 / self.effective_gold_cost
 
+    def __lt__(self, other):
+        return self.avg_value_per_1000_gold < other.avg_value_per_1000_gold
+
+    def __eq__(self, other):
+        return self.avg_value_per_1000_gold == other.avg_value_per_1000_gold
+
 
 class BuyOptions(abc.ABC):
     def __init__(self, cards: CardCollection,
@@ -64,7 +70,7 @@ class BuyPacks(BuyOptions):
 class BuyPack(BuyOption):
     def __init__(self, set_name, set_num, cards, values):
         super().__init__()
-        self.pack = CardPack(set_name, set_num, cards, values)
+        self.content = CardPack(set_name, set_num, cards, values)
 
     @property
     def gold_cost(self) -> int:
@@ -87,7 +93,7 @@ class BuyPack(BuyOption):
 
     @property
     def avg_value(self) -> float:
-        return self.pack.average_value
+        return self.content.average_value
 
 
 class BuyCampaigns(BuyOptions):
@@ -99,7 +105,7 @@ class BuyCampaigns(BuyOptions):
 class BuyCampaign(BuyOption):
     def __init__(self, set_name, set_num, cards, values):
         super().__init__()
-        self.campaign = Campaign(set_name, set_num, cards, values)
+        self.content = Campaign(set_name, set_num, cards, values)
 
     @property
     def gold_cost(self) -> int:
@@ -115,7 +121,7 @@ class BuyCampaign(BuyOption):
 
     @property
     def avg_value(self) -> float:
-        return self.campaign.average_value
+        return self.content.average_value
 
 # class BuyDraft(BuyOption):
 #     def __init__(self):
@@ -139,6 +145,6 @@ class BuyCampaign(BuyOption):
 #     @property
 #     def avg_value(self) -> float:
 #         pass
-#         # take average value of cards in pack
+#         # take average value of cards in content
 #         # Estimate n highest valued cards
 #         # subtract their values from total
