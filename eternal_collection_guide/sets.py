@@ -5,7 +5,7 @@ from eternal_collection_guide.browser import Browser
 
 
 @dataclass
-class Set:
+class CardSet:
     name: str
     set_num: int
 
@@ -13,7 +13,7 @@ class Set:
     def from_set_selection_string(cls, set_selection_string):
         name = set_selection_string.split(" [")[0]
 
-        set_num_string_with_end_bracket = set_selection_string.split(" [Set")[1]
+        set_num_string_with_end_bracket = set_selection_string.split(" [CardSet")[1]
         set_num_string = set_num_string_with_end_bracket.split("]")[0]
         set_num = int(set_num_string)
 
@@ -28,8 +28,8 @@ class Set:
 
 class Sets:
     def __init__(self):
-        self.core_sets: typing.List[Set] = []
-        self.campaigns: typing.List[Set] = []
+        self.core_sets: typing.List[CardSet] = []
+        self.campaigns: typing.List[CardSet] = []
         self._init_sets()  # todo save this and only load it when cards have changed
 
     @property
@@ -42,7 +42,7 @@ class Sets:
         set_elements = browser.find_elements_by_xpath('//*[@id="CardSet"]/option')
         for set_element in set_elements:
             set_selection_string = set_element.text
-            card_set = Set.from_set_selection_string(set_selection_string)
+            card_set = CardSet.from_set_selection_string(set_selection_string)
             if 0 < card_set.set_num < 500:
                 self.core_sets.append(card_set)
             elif 900 < card_set.set_num:

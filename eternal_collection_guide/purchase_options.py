@@ -3,7 +3,7 @@ import typing
 
 from eternal_collection_guide.card import RARITIES, CardCollection
 from eternal_collection_guide.card_pack import CardPack, NUM_CARDS_IN_PACK, RARITY_REGULAR_DISENCHANT, Campaign
-from eternal_collection_guide.sets import Sets
+from eternal_collection_guide.sets import Sets, CardSet
 from eternal_collection_guide.values import ValueCollection
 
 
@@ -34,20 +34,31 @@ class BuyOption(abc.ABC):
         return self.avg_value * 1000 / self.effective_gold_cost
 
 
-class BuyPacks:
-    def __init__(self, sets: Sets, cards: CardCollection, values: ValueCollection):
-        self.sets = sets
-        self.contents: typing.List[BuyPack] = self._init_contents(cards, values)
+class BuyOptions(abc.ABC):
+    def __init__(self, cards: CardCollection,
+                 values: ValueCollection,
+                 sets: typing.List[CardSet],
+                 content_type: typing.Type):
+        self.contents: typing.List[BuyOption] = self._init_contents(cards, values, sets, content_type)
+
+    def _init_contents(self, cards: CardCollection,
+                       values: ValueCollection,
+                       sets: typing.List[CardSet],
+                       content_type: typing.Type):
+        contents = []
+        for card_set in sets:
+            content = content_type(card_set.set_num, cards, values)
+            contents.append(content)
+        return contents
 
     def __iter__(self):
         yield from self.contents
 
-    def _init_contents(self, cards, values):
-        packs = []
-        for card_set in self.sets.core_sets:
-            pack = BuyPack(card_set.set_num, cards, values)
-            packs.append(pack)
-        return packs
+
+class BuyPacks(BuyOptions):
+    def __init__(self, all_sets: Sets, cards: CardCollection, values: ValueCollection):
+        sets = all_sets.core_sets
+        super().__init__(cards, values, sets, BuyPack)
 
 
 class BuyPack(BuyOption):
@@ -79,20 +90,10 @@ class BuyPack(BuyOption):
         return self.pack.average_value
 
 
-class BuyCampaigns:
-    def __init__(self, sets: Sets, cards: CardCollection, values: ValueCollection):
-        self.sets = sets
-        self.contents: typing.List[BuyCampaign] = self._init_contents(cards, values)
-
-    def __iter__(self):
-        yield from self.contents
-
-    def _init_contents(self, cards, values):
-        contents = []
-        for card_set in self.sets.campaigns:
-            buy_campaign = BuyCampaign(card_set.set_num, cards, values)
-            contents.append(buy_campaign)
-        return contents
+class BuyCampaigns(BuyOptions):
+    def __init__(self, all_sets: Sets, cards: CardCollection, values: ValueCollection):
+        sets = all_sets.campaigns
+        super().__init__(cards, values, sets, BuyCampaign)
 
 
 class BuyCampaign(BuyOption):
