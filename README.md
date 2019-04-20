@@ -64,8 +64,8 @@ small change.
 
 To update your results, run "Generate_Overall_Value.exe." This combines the statistics from the 
 decks, your collection, and the weights you provided for the deck searches, to output a file 
-called "**Dist/Output/Overall_Value.json**." This is the only file you probably care about. Most 
-other files in output are for intermediate steps, and are less readable.
+called "**Dist/Output/Overall_Value.json**." This information is then used to create evaluate the 
+most efficient ways to spend gold, which are output in "**Dist/Output/Purchases.txt**"
 
 ##### Interpreting your results.
 Overall_Value.json contains a series of blocks representing cards, where cards at the top used 
@@ -102,9 +102,9 @@ with priority 10, and never used in a seaerch with priority 1, the value would b
 ```
 
 ## The Future
-In no particular order, I hope to add:
-- (High Priority) Evaluation of how to spend gold, to maximize finding high priority cards.
-- Automatically handling of updates, rather than making the user click multiple exes.
+I hope to add:
+- Add draft to purchase evaluation.
+- Automatically handling updates, rather than making the user click multiple exes.
 - Additional search parameters, such as by rating or views.
 
 All of these are somewhat difficult, and may not happen.
