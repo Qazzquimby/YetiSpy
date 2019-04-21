@@ -19,8 +19,8 @@ class FieldHashCollection(abc.ABC):
     def _add_to_dict(self, entry: any):
         raise NotImplementedError
 
-    def sort(self, reverse=False):
-        self._contents = sorted(self.contents, reverse=reverse)
+    def sort(self, key=None, reverse=False):
+        self._contents = sorted(self.contents, key=key, reverse=reverse)
 
 
 class JsonLoadedCollection(FieldHashCollection, abc.ABC):

@@ -10,6 +10,7 @@ from eternal_collection_guide.deck_searches import DeckSearch
 from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
 from eternal_collection_guide.owned_cards import PlaysetCollection
 from eternal_collection_guide.play_rate import PlayRateCollection, PlayRate
+from eternal_collection_guide.shiftstone import RARITY_REGULAR_ENCHANT
 
 
 class ValueSet:
@@ -18,6 +19,7 @@ class ValueSet:
         self.rarity = rarity
         self.num_owned = num_owned
         self.values = values
+        self.value_per_100_shiftstone = self.values[0] * 100 / RARITY_REGULAR_ENCHANT[self.rarity]
 
     def __float__(self):
         try:
@@ -116,6 +118,8 @@ class SummedValues:
     def __init__(self, file_prefix, value_collections: typing.List[ValueCollection]):
         self.value_collections = value_collections
         self.json_interface = JsonInterface(file_prefix, "overall_value.json", ValueCollection)
+        self.json_interface_by_shiftstone = JsonInterface(file_prefix, 'overall_value_by_shiftstone.json',
+                                                          ValueCollection)
 
         self.collection = self._init_collection()
         self.save()
@@ -145,3 +149,9 @@ class SummedValues:
     def save(self):
         self.collection.sort(reverse=True)
         self.json_interface.save(self.collection)
+
+        def get_value_per_100_shiftstone(value: ValueSet):
+            return value.value_per_100_shiftstone
+
+        self.collection.sort(key=get_value_per_100_shiftstone, reverse=True)
+        self.json_interface_by_shiftstone.save(self.collection)

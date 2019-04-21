@@ -1,11 +1,8 @@
 import typing
 
-from eternal_collection_guide.card import CardCollection, COMMON, Card, UNCOMMON, RARE, LEGENDARY, RARITIES, PROMO
+from eternal_collection_guide.card import CardCollection, Card, RARITIES
+from eternal_collection_guide.shiftstone import NUM_CARDS_IN_PACK
 from eternal_collection_guide.values import ValueCollection
-
-NUM_CARDS_IN_PACK = {COMMON: 8, UNCOMMON: 3, RARE: 0.9, LEGENDARY: 0.1, PROMO: 0.0}
-RARITY_REGULAR_DISENCHANT = {COMMON: 1, UNCOMMON: 10, PROMO: 100, RARE: 200, LEGENDARY: 800}
-RARITY_PREMIUM_DISENCHANT = {COMMON: 25, UNCOMMON: 50, PROMO: 400, RARE: 800, LEGENDARY: 3200}
 
 
 class CardPack:

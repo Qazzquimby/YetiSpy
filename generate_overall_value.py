@@ -42,9 +42,11 @@ if __name__ == '__main__':
     with open(f"{file_prefix}/purchases.txt", "w+") as purchase_file:
         for option in purchase_options:
             if type(option) is BuyCampaign:
+                # noinspection PyUnresolvedReferences
                 purchase_file.write(
                     f"Buy campaign: {option.content.name}  -  Value per 1000 gold = {option.avg_value_per_1000_gold}\n")
             if type(option) is BuyPack:
+                # noinspection PyUnresolvedReferences
                 purchase_file.write(
                     f"Buy pack: {option.content.name}  -  Value per 1000 gold = {option.avg_value_per_1000_gold}\n")
 

@@ -68,17 +68,29 @@ called "**Dist/Output/Overall_Value.json**." This information is then used to cr
 most efficient ways to spend gold, which are output in "**Dist/Output/Purchases.txt**"
 
 ##### Interpreting your results.
-Overall_Value.json contains a series of blocks representing cards, where cards at the top used 
-more often in your deck searches.
+**Overall_Value.json** and **Overall_Value_By_Shiftstone.json** contain a series of blocks 
+representing cards. In Overall_Value.json, cards are sorted by the frequency they're used in your
+ deck searches. In Overall_Value_By_Shiftstone.json, cards are sorted by the exchange rate of 
+ crafting shiftstone to the frequency of use in your deck searches.
 
-"New_Count" is the number of that card you will own after buying one more.
+"Num_Owned" is the number of that card that you currently own.
 
-"Value" is approximately the percentage of decks in your searches that have at least "New_Count" 
-copies of that card. That percentage is calculated for each of your deck searches, and then 
-averaged together based on the weights you gave. If a card was used in every deck in a search 
-with priority 10, and never used in a seaerch with priority 1, the value would be 90. 
+"Values" is a list of the percentage of decks in your searches that have more copies than you own.
+
+```
+"values": [
+    Percentage with 1 more copy than you own,
+    Percentage with 2 more copies than you own,
+    Percentage with 3 more copies than you own,
+    Percentage with 4 more copies than you own,
+]
+```
+
+That percentage is calculated for each of your deck searches, and then averaged together based on 
+the weights you gave. For example, if a card was used in every deck in a search 
+with priority 10, and never used in a search with priority 1, the value would be 90. 
  
- Here is some example data for a user with an empty collection, looking to build tournament decks:
+Here is some example data for a user with an empty collection, looking to build tournament decks:
 ```
 [
     {
