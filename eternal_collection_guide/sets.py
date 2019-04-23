@@ -32,11 +32,17 @@ class Sets:
 
     def __init__(self):
         if len(self.core_sets) + len(self.campaigns) == 0:
-            self._init_sets()  # todo save this and only load it when cards have changed
+            self._init_sets()  # todo save this and only load it when _cards have changed
 
     @property
     def newest_core_set(self):
         return max(self.core_sets)
+
+    # def avg_gold_chest_pack_value(self):
+    #     non_newest_core_sets: typing.List[CardSet] = self.core_sets[:].remove(self.newest_core_set)
+    #
+    #     card_packs = [CardPack(core_set.name, core_set.set_num) for core_set in non_newest_core_sets]
+
 
     def _init_sets(self):
         browser = Browser()

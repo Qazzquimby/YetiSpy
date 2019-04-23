@@ -206,22 +206,6 @@ class DeckLearner(BaseLearner):
                 pruned_collection.append(deck)
         self.collection = pruned_collection
 
-    def _process_deck_url(self, deck_url: str,
-                          browser: Browser,
-                          card_learner: CardLearner,
-                          progress_printer: ProgressPrinter):
-
-        progress_printer.maybe_print()
-
-        deck_id = Deck.get_id_from_url(deck_url)
-        matching_decks = self.collection.dict['deck_id'][deck_id]
-        if len(matching_decks) > 0:
-            return
-
-        deck_data = Deck.from_deck_url(deck_url, browser, card_learner)
-        if deck_data is not None:
-            self.collection.append(deck_data)
-
     def _get_deck_urls(self, browser: Browser) -> typing.List[str]:
         page = 1
         deck_urls = []
@@ -239,3 +223,19 @@ class DeckLearner(BaseLearner):
             deck_urls += new_deck_urls
             page += 1
         return deck_urls
+
+    def _process_deck_url(self, deck_url: str,
+                          browser: Browser,
+                          card_learner: CardLearner,
+                          progress_printer: ProgressPrinter):
+
+        progress_printer.maybe_print()
+
+        deck_id = Deck.get_id_from_url(deck_url)
+        matching_decks = self.collection.dict['deck_id'][deck_id]
+        if len(matching_decks) > 0:
+            return
+
+        deck_data = Deck.from_deck_url(deck_url, browser, card_learner)
+        if deck_data is not None:
+            self.collection.append(deck_data)

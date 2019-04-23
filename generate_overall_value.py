@@ -1,4 +1,5 @@
 from eternal_collection_guide.card import CardLearner
+from eternal_collection_guide.card_pack import CardPacks
 from eternal_collection_guide.deck import DeckLearner
 from eternal_collection_guide.deck_searches import get_deck_searches
 from eternal_collection_guide.draft import BuyDraft
@@ -12,7 +13,8 @@ file_prefix = "output"
 
 if __name__ == '__main__':
     card_learner = CardLearner(file_prefix)
-    # card_learner.update()
+    # card_learner.update())
+
 
     deck_searches = get_deck_searches()
     values = []
@@ -34,10 +36,11 @@ if __name__ == '__main__':
     overall_value = SummedValues(file_prefix, values)
 
     sets = Sets()
+    card_packs = CardPacks(sets, card_learner.collection, overall_value.collection)
 
     buy_packs = BuyPacks(sets, card_learner.collection, overall_value.collection)
     buy_campaigns = BuyCampaigns(sets, card_learner.collection, overall_value.collection)
-    buy_draft = BuyDraft(card_learner.collection, overall_value.collection)
+    buy_draft = BuyDraft()
 
     purchase_options = buy_packs.contents + buy_campaigns.contents
     purchase_options.append(buy_draft)

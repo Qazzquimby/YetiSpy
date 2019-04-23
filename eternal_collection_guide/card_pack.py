@@ -1,10 +1,61 @@
+from __future__ import annotations
+
 import abc
 import typing
 
 from eternal_collection_guide.browser import Browser
 from eternal_collection_guide.card import CardCollection, Card, RARITIES
+from eternal_collection_guide.sets import Sets
 from eternal_collection_guide.shiftstone import NUM_CARDS_IN_PACK
 from eternal_collection_guide.values import ValueCollection
+
+
+class CardPacks:
+    # todo singleton is not a good method
+    initialized = False
+    set_to_card_pack: typing.Dict[int, CardPack] = None
+    draft_pack: CardPack = None
+    avg_newest_pack_value: float = None
+    avg_golden_chest_pack_value: float = None
+
+    def __init__(self, sets: Sets, card_collection: CardCollection, value_collection: ValueCollection):
+        if not self.initialized:
+            self._sets = sets
+            self._cards = card_collection
+            self._values = value_collection
+
+            CardPacks.set_to_card_pack = self._init_set_to_card_pack()
+            CardPacks.draft_pack = DraftPack(self._cards, self._values)
+            CardPacks.avg_newest_pack_value = self._init_avg_newest_pack_value()
+            CardPacks.avg_golden_chest_pack_value = self._init_avg_golden_chest_pack_value()
+            CardPacks.initialized = True
+
+    def _init_set_to_card_pack(self) -> typing.Dict[int, CardPack]:
+        set_to_card_pack = {}
+
+        for core_set in self._sets.core_sets:
+            set_pack = SetPack(core_set.name, core_set.set_num, self._cards, self._values)
+            set_to_card_pack[core_set.set_num] = set_pack
+
+        return set_to_card_pack
+
+    def _init_avg_newest_pack_value(self):
+        newest_set = self._sets.newest_core_set
+        newest_pack: CardPack = CardPacks.set_to_card_pack[newest_set.set_num]
+        avg_value = newest_pack.avg_value
+
+        return avg_value
+
+    def _init_avg_golden_chest_pack_value(self):
+        old_core_sets = self._sets.core_sets[:]
+        old_core_sets.remove(self._sets.newest_core_set)
+
+        old_card_packs: typing.List[CardPack] = [CardPacks.set_to_card_pack[core_set.set_num] for core_set in
+                                                 old_core_sets]
+
+        summed_value = sum(card_pack.avg_value for card_pack in old_card_packs)
+        avg_value = summed_value / len(old_card_packs)
+        return avg_value
 
 
 class CardPack(abc.ABC):
@@ -12,9 +63,9 @@ class CardPack(abc.ABC):
         self.name = name
         self.cards = card_collection
         self.value_sets = value_collection
+        self.avg_value = self._init_avg_value()
 
-    @property
-    def avg_value(self):
+    def _init_avg_value(self):
         values_in_rarity = self._get_values_in_rarity()
         avg_value_of_rarity = self._get_avg_value_of_rarity_dict(values_in_rarity)
         avg_value_of_pack = self._get_avg_value_of_pack(avg_value_of_rarity)
