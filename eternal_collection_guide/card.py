@@ -42,14 +42,14 @@ class Card:
 
 class CardCollection(JsonLoadedCollection):
 
-    def get_cards_in_set(self, set_num):
+    def get_cards_in_set(self, set_num: int) -> typing.List[Card]:
         assert set_num > 0
 
         if set_num == 1:
             return self._get_cards_in_set(0) + self._get_cards_in_set(1)
         return self._get_cards_in_set(set_num)
 
-    def _get_cards_in_set(self, set_num):
+    def _get_cards_in_set(self, set_num: int) -> typing.List[Card]:
 
         cards = []
 

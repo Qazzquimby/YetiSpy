@@ -27,10 +27,12 @@ class CardSet:
 
 
 class Sets:
+    core_sets: typing.List[CardSet] = []
+    campaigns: typing.List[CardSet] = []
+
     def __init__(self):
-        self.core_sets: typing.List[CardSet] = []
-        self.campaigns: typing.List[CardSet] = []
-        self._init_sets()  # todo save this and only load it when cards have changed
+        if len(self.core_sets) + len(self.campaigns) == 0:
+            self._init_sets()  # todo save this and only load it when cards have changed
 
     @property
     def newest_core_set(self):

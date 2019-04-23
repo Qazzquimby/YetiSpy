@@ -2,7 +2,7 @@ import abc
 import typing
 
 from eternal_collection_guide.card import RARITIES, CardCollection
-from eternal_collection_guide.card_pack import CardPack, Campaign
+from eternal_collection_guide.card_pack import Campaign, SetPack
 from eternal_collection_guide.sets import Sets, CardSet
 from eternal_collection_guide.shiftstone import NUM_CARDS_IN_PACK, RARITY_REGULAR_DISENCHANT
 from eternal_collection_guide.values import ValueCollection
@@ -71,7 +71,7 @@ class BuyPacks(BuyOptions):
 class BuyPack(BuyOption):
     def __init__(self, set_name, set_num, cards, values):
         super().__init__()
-        self.content = CardPack(set_name, set_num, cards, values)
+        self.content = SetPack(set_name, set_num, cards, values)
 
     @property
     def gold_cost(self) -> int:
@@ -94,7 +94,7 @@ class BuyPack(BuyOption):
 
     @property
     def avg_value(self) -> float:
-        return self.content.average_value
+        return self.content.avg_value
 
 
 class BuyCampaigns(BuyOptions):
@@ -123,29 +123,3 @@ class BuyCampaign(BuyOption):
     @property
     def avg_value(self) -> float:
         return self.content.average_value
-
-# class BuyDraft(BuyOption):
-#     def __init__(self):
-#         self.newest_set = NotImplemented  # fixme
-#         self.newest_pack = NotImplementedError
-#
-#         self.draft_pack = NotImplementedError
-#
-#     @property
-#     def gold_cost(self) -> int:
-#         pass
-#
-#     @property
-#     def avg_gold_output(self) -> float:
-#         pass
-#
-#     @property
-#     def avg_shiftstone_output(self) -> float:
-#         400 + NotImplemented
-#
-#     @property
-#     def avg_value(self) -> float:
-#         pass
-#         # take average value of cards in content
-#         # Estimate n highest valued cards
-#         # subtract their values from total
