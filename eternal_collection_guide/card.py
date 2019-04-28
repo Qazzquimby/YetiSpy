@@ -1,3 +1,5 @@
+"""Objects related to Cards in Eternal"""
+
 import json
 import typing
 from dataclasses import dataclass
@@ -5,10 +7,9 @@ from dataclasses import dataclass
 from eternal_collection_guide.base_learner import BaseLearner
 from eternal_collection_guide.browser import Browser
 from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
-from eternal_collection_guide.progress_printer import ProgressPrinter
 
 
-@dataclass
+@dataclass(frozen=True)
 class Rarity:
     id: str
     name: str
@@ -29,12 +30,12 @@ rarity_string_to_id = {COMMON: 2,
                        PROMO: 6}
 
 
+@dataclass(frozen=True)
 class Card:
-    def __init__(self, set_num: int, card_num: int, name: str, rarity: str):
-        self.set_num = set_num
-        self.card_num = card_num
-        self.name = name
-        self.rarity = rarity
+    set_num: int
+    card_num: int
+    name: str
+    rarity: str
 
     def __str__(self):
         return f"{self.name} - {self.set_num}, {self.card_num}"

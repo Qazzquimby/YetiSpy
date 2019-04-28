@@ -1,8 +1,9 @@
 import abc
+import csv
 import typing
 
 from eternal_collection_guide.card import RARITIES, CardCollection
-from eternal_collection_guide.card_pack import Campaign, SetPack
+from eternal_collection_guide.card_pack import Campaign, SetPack, CardPacks
 from eternal_collection_guide.sets import Sets, CardSet
 from eternal_collection_guide.shiftstone import NUM_CARDS_IN_PACK, RARITY_REGULAR_DISENCHANT
 from eternal_collection_guide.values import ValueCollection
@@ -123,3 +124,32 @@ class BuyCampaign(BuyOption):
     @property
     def avg_value(self) -> float:
         return self.content.average_value
+
+
+class BuyLeague(BuyOption):
+    @property
+    def avg_gold_output(self) -> float:
+        return 0
+
+    @property
+    def avg_shiftstone_output(self) -> float:
+        return 0  # ignore for now
+
+    @property
+    def avg_value(self) -> float:
+        with open("league.csv", "r") as league_file:
+            csv_reader = csv.reader(league_file)
+            rows = list(csv_reader)
+
+        avg_value = 0
+        for row in rows:
+            set_num = int(row[0])
+            avg_value_of_pack = CardPacks.set_to_card_pack[set_num].avg_value
+            num_packs = int(row[1])
+            avg_value += avg_value_of_pack * num_packs
+
+        return avg_value
+
+    @property
+    def gold_cost(self) -> int:
+        return 12500

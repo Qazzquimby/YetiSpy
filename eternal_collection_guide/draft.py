@@ -15,8 +15,8 @@ class BuyDraft(BuyOption):
         self.num_newest_packs = 2
         self.num_draft_packs = 2
 
-        self.avg_wins = 2.5
-        self.avg_gold_chests = 1.5
+        self.avg_wins = 2.4
+        self.avg_gold_chests = self.avg_wins - 1  # only works if avg_wins between 2 and 4
         self.estimated_draft_efficiency = 1.25
 
     @property
