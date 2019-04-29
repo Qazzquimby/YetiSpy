@@ -1,8 +1,13 @@
 import abc
 import collections
+import typing
+
+from eternal_collection_guide.base_learner import CollectionContent
 
 
 class FieldHashCollection(abc.ABC):
+    content_type: typing.Type[CollectionContent]
+
     def __init__(self):
         self._contents = []
         self.dict = collections.defaultdict(lambda: collections.defaultdict(list))
@@ -24,6 +29,5 @@ class FieldHashCollection(abc.ABC):
 
 
 class JsonLoadedCollection(FieldHashCollection, abc.ABC):
-    @staticmethod
-    def json_entry_to_content(json_entry: dict):
-        raise NotImplementedError
+    def json_entry_to_content(self, json_entry: dict) -> CollectionContent:
+        return self.content_type.from_json_entry(json_entry)

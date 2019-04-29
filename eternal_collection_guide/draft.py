@@ -1,10 +1,10 @@
 # Average value of drafted _cards equal to average value of a pack (if we incorrectly assume other players have the same
 # priorities as you)
 
-# Average reward is 2 silver chests + 1 gold chest.
-from eternal_collection_guide.card import RARITIES
 from eternal_collection_guide.card_pack import CardPacks
 from eternal_collection_guide.purchase_options import BuyOption
+# Average reward is 2 silver chests + 1 gold chest.
+from eternal_collection_guide.rarities import RARITIES
 from eternal_collection_guide.shiftstone import NUM_CARDS_IN_PACK, RARITY_REGULAR_DISENCHANT
 
 

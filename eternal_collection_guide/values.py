@@ -4,12 +4,13 @@ import typing
 from collections import defaultdict
 
 from eternal_collection_guide.base_learner import BaseLearner, JsonInterface
-from eternal_collection_guide.card import CardCollection, Rarity
+from eternal_collection_guide.card import CardCollection
 from eternal_collection_guide.deck import Playset
 from eternal_collection_guide.deck_searches import DeckSearch
 from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
 from eternal_collection_guide.owned_cards import PlaysetCollection
 from eternal_collection_guide.play_rate import PlayRateCollection, PlayRate
+from eternal_collection_guide.rarities import Rarity
 from eternal_collection_guide.shiftstone import RARITY_REGULAR_ENCHANT
 
 

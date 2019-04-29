@@ -4,7 +4,8 @@ import abc
 import typing
 
 from eternal_collection_guide.browser import Browser
-from eternal_collection_guide.card import CardCollection, Card, RARITIES
+from eternal_collection_guide.card import CardCollection, Card
+from eternal_collection_guide.rarities import RARITIES
 from eternal_collection_guide.sets import Sets
 from eternal_collection_guide.shiftstone import NUM_CARDS_IN_PACK
 from eternal_collection_guide.values import ValueCollection

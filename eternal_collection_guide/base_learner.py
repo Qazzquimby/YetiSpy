@@ -1,11 +1,24 @@
+from __future__ import annotations
+
 """Base classes and utilities for learner objects."""
 import abc
 import datetime
 import json
 import os
 import typing
+from dataclasses import dataclass
 
-from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
+if typing.TYPE_CHECKING:
+    from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
+
+
+@dataclass(frozen=True)
+class CollectionContent(abc.ABC):
+    @classmethod
+    def from_json_entry(cls, entry):
+        # noinspection PyArgumentList
+        card = cls(**entry)
+        return card
 
 
 class JsonInterface:

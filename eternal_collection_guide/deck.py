@@ -15,7 +15,7 @@ from eternal_collection_guide.progress_printer import ProgressPrinter
 class DeckCollection(JsonLoadedCollection):
     def __init__(self):
         self.deck_search = None
-        super().__init__()
+        super().__init__(Deck)
 
     def _add_to_dict(self, entry: Deck):
         self.dict["deck_id"][entry.deck_id].append(entry)

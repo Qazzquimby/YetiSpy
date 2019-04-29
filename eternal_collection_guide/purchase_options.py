@@ -2,8 +2,9 @@ import abc
 import csv
 import typing
 
-from eternal_collection_guide.card import RARITIES, CardCollection
+from eternal_collection_guide.card import CardCollection
 from eternal_collection_guide.card_pack import Campaign, SetPack, CardPacks
+from eternal_collection_guide.rarities import RARITIES
 from eternal_collection_guide.sets import Sets, CardSet
 from eternal_collection_guide.shiftstone import NUM_CARDS_IN_PACK, RARITY_REGULAR_DISENCHANT
 from eternal_collection_guide.values import ValueCollection
