@@ -5,12 +5,11 @@ import typing
 from dataclasses import dataclass
 
 from eternal_collection_guide import urls
-from eternal_collection_guide.base_learner import BaseLearner
+from eternal_collection_guide.base_learner import DeckSearchLearner
 from eternal_collection_guide.browser import Browser
 from eternal_collection_guide.card import CardCollection
 from eternal_collection_guide.deck_searches import DeckSearch
 from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
-from eternal_collection_guide.progress_printer import ProgressPrinter
 
 
 @dataclass
@@ -37,6 +36,108 @@ class Deck:
 
         deck = cls(deck_id, card_playsets, archetype, last_updated, is_tournament, success)
         return deck
+
+
+def get_deck_id_from_url(url: str) -> str:
+    id_deck_type_string = _get_id_deck_type_string_from_url(url)
+    deck_id = id_deck_type_string.split("/")[0]
+    return deck_id
+
+
+class DeckCollection(JsonLoadedCollection):
+    def __init__(self):
+        self.deck_search = None
+        super().__init__()
+
+    def _add_to_dict(self, entry: Deck):
+        self.dict["deck_id"][entry.deck_id].append(entry)
+        for playset in entry.card_playsets:
+            for i in range(playset.num_copies):
+                self.dict[(playset.set_num, playset.card_num)][i + 1].append(entry)
+
+    @classmethod
+    def json_entry_to_content(cls, json_entry: dict) -> Deck:
+        playsets = [Playset(**playset_dict) for playset_dict in json_entry['card_playsets']]
+        json_entry['card_playsets'] = playsets
+
+        return Deck(**json_entry)
+
+
+@dataclass(frozen=True)
+class Playset:
+    set_num: int
+    card_num: int
+    num_copies: int
+
+    def __str__(self):
+        return f"{self.num_copies}x {self.set_num}-{self.card_num}"
+
+    @classmethod
+    def from_export_text(cls, text) -> typing.Optional[Playset]:
+        numbers = [int(number) for number in re.findall(r'\d+', text)]
+        if len(numbers) == 3:
+            num_played = numbers[0]
+            set_num = numbers[1]
+            card_num = numbers[2]
+            playset = Playset(set_num, card_num, num_played)
+            return playset
+        return None
+
+
+class DeckLearner(DeckSearchLearner):
+    def __init__(self, file_prefix: str, deck_search: DeckSearch, card_collection: CardCollection):
+        self.deck_search = deck_search
+        self.card_collection = card_collection
+        super().__init__(file_prefix, f"{self.deck_search.name}/decks.json", DeckCollection, deck_search)
+
+    def _update_collection(self):
+        with Browser() as browser:
+            deck_urls = self._get_deck_urls(browser)
+            self._prune_outdated_decks(deck_urls)
+            self._process_deck_urls(browser, self.card_collection, deck_urls)
+
+    def _get_deck_urls(self, browser: Browser) -> typing.List[str]:
+        page = 1
+        deck_urls = []
+        while True:
+            new_deck_urls = self._get_deck_urls_on_page(browser, page)
+            if len(new_deck_urls) == 0:
+                break
+            deck_urls += new_deck_urls
+            page += 1
+        return deck_urls
+
+    def _get_deck_urls_on_page(self, browser: Browser, page: int):
+        url = f"{self.deck_search.url}&p={page}"
+        browser.get(url)
+        deck_links = browser.find_elements_by_xpath(
+            '//*[@id="body-wrapper"]/div/form[2]/div[2]/table/tbody/tr[*]/td[2]/div[1]/div/a')
+        deck_urls = [deck_link.get_attribute("href") for deck_link in deck_links]
+        return deck_urls
+
+    def _prune_outdated_decks(self, deck_urls: typing.List[str]):
+        new_deck_ids = [get_deck_id_from_url(url) for url in deck_urls]
+
+        pruned_collection = DeckCollection()
+        for deck in self.collection.contents:
+            if deck.deck_id in new_deck_ids:
+                pruned_collection.append(deck)
+        self.collection = pruned_collection
+
+    def _process_deck_urls(self, browser: Browser, card_collection: CardCollection, deck_urls: typing.List[str]):
+        for deck_url in deck_urls:
+            self._process_deck_url(deck_url, browser, card_collection)
+
+    def _process_deck_url(self, deck_url: str,
+                          browser: Browser,
+                          card_collection: CardCollection):
+        matching_decks = self.collection.dict['deck_id'][get_deck_id_from_url(deck_url)]
+        if matching_decks:
+            return
+
+        deck_data = Deck.from_deck_url(deck_url, browser, card_collection)
+        if deck_data:
+            self.collection.append(deck_data)
 
 
 def _get_card_playsets(browser: Browser, card_collection: CardCollection) -> typing.List[Playset]:
@@ -92,12 +193,6 @@ def _get_last_updated(browser: Browser) -> str:
     return last_updated
 
 
-def get_deck_id_from_url(url: str) -> str:
-    id_deck_type_string = _get_id_deck_type_string_from_url(url)
-    deck_id = id_deck_type_string.split("/")[0]
-    return deck_id
-
-
 def _get_is_tournament_from_url(url: str) -> bool:
     id_deck_type_string = _get_id_deck_type_string_from_url(url)
     is_tournament_string = id_deck_type_string.split("/")[1]
@@ -122,110 +217,3 @@ def _get_existing_matching_playset(playset: Playset, playsets: typing.List[Plays
         if sets_match and card_nums_match:
             return other_playset
     return None
-
-
-class DeckCollection(JsonLoadedCollection):
-    def __init__(self):
-        self.deck_search = None
-        super().__init__()
-
-    def _add_to_dict(self, entry: Deck):
-        self.dict["deck_id"][entry.deck_id].append(entry)
-        for playset in entry.card_playsets:
-            for i in range(playset.num_copies):
-                self.dict[(playset.set_num, playset.card_num)][i + 1].append(entry)
-
-    @classmethod
-    def json_entry_to_content(cls, json_entry: dict) -> Deck:
-        playsets = [Playset(**playset_dict) for playset_dict in json_entry['card_playsets']]
-        json_entry['card_playsets'] = playsets
-
-        return Deck(**json_entry)
-
-
-@dataclass(frozen=True)
-class Playset:
-    set_num: int
-    card_num: int
-    num_copies: int
-
-    def __str__(self):
-        return f"{self.num_copies}x {self.set_num}-{self.card_num}"
-
-    @classmethod
-    def from_export_text(cls, text) -> typing.Optional[Playset]:
-        numbers = [int(number) for number in re.findall(r'\d+', text)]
-        if len(numbers) == 3:
-            num_played = numbers[0]
-            set_num = numbers[1]
-            card_num = numbers[2]
-            playset = Playset(set_num, card_num, num_played)
-            return playset
-        return None
-
-
-class DeckLearner(BaseLearner):
-    def __init__(self, file_prefix: str, deck_search: DeckSearch, card_collection: CardCollection):
-        self.deck_search = deck_search
-        self.card_collection = card_collection
-
-        super().__init__(file_prefix, f"{self.deck_search.name}/decks.json", DeckCollection)
-        self.collection.deck_search = self.deck_search
-
-    def _update_collection(self):
-        with Browser() as browser:
-            self._find_new_decks(browser, self.card_collection)
-
-    def _find_new_decks(self, browser: Browser, card_collection: CardCollection):
-
-        deck_urls = self._get_deck_urls(browser)
-
-        new_deck_ids = [get_deck_id_from_url(url) for url in deck_urls]
-
-        self._prune_outdated_decks(new_deck_ids)
-
-        progress_printer = ProgressPrinter(f"Updating {self.deck_search.name} decks",
-                                           len(deck_urls), 25)
-        for deck_url in deck_urls:
-            self._process_deck_url(deck_url, browser, card_collection, progress_printer)
-
-    def _prune_outdated_decks(self, new_deck_ids: typing.List[str]):
-        pruned_collection = DeckCollection()
-        for deck in self.collection.contents:
-            if deck.deck_id in new_deck_ids:
-                pruned_collection.append(deck)
-        self.collection = pruned_collection
-
-    def _get_deck_urls(self, browser: Browser) -> typing.List[str]:
-        page = 1
-        deck_urls = []
-        while True:
-            url = f"{self.deck_search.url}&p={page}"
-            # url = f"https://eternalwarcry.com/decks?td=1&mdb=90&p={page}"
-            browser.get(url)
-
-            deck_links = browser.find_elements_by_xpath(
-                '//*[@id="body-wrapper"]/div/form[2]/div[2]/table/tbody/tr[*]/td[2]/div[1]/div/a')
-            if len(deck_links) == 0:
-                break
-
-            new_deck_urls = [deck_link.get_attribute("href") for deck_link in deck_links]
-            deck_urls += new_deck_urls
-            page += 1
-        return deck_urls
-
-    def _process_deck_url(self, deck_url: str,
-                          browser: Browser,
-                          card_collection: CardCollection,
-                          progress_printer: ProgressPrinter):
-
-        progress_printer.maybe_print()
-
-        deck_id = get_deck_id_from_url(deck_url)
-        matching_decks = self.collection.dict['deck_id'][deck_id]
-        if len(matching_decks) > 0:
-            return
-
-        deck_data = Deck.from_deck_url(deck_url, browser, card_collection)
-        if deck_data is not None:
-            self.collection.append(deck_data)

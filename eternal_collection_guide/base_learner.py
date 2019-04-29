@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from eternal_collection_guide.deck_searches import DeckSearch
+
 """Base classes and utilities for learner objects."""
 import abc
 import datetime
@@ -137,3 +139,12 @@ class BaseLearner(abc.ABC):
 
     def _save(self):
         self.json_interface.save(self.collection)
+
+
+class DeckSearchLearner(BaseLearner, abc.ABC):
+    def __init__(self, file_prefix: str,
+                 file_name: str,
+                 collection_type: typing.Type[JsonLoadedCollection],
+                 deck_search: DeckSearch):
+        super().__init__(file_prefix, file_name, collection_type)
+        self.collection.deck_search = deck_search
