@@ -29,5 +29,6 @@ class FieldHashCollection(abc.ABC):
 
 
 class JsonLoadedCollection(FieldHashCollection, abc.ABC):
-    def json_entry_to_content(self, json_entry: dict) -> CollectionContent:
-        return self.content_type.from_json_entry(json_entry)
+    @classmethod
+    def json_entry_to_content(cls, json_entry: dict) -> CollectionContent:
+        return cls.content_type.from_json_entry(json_entry)

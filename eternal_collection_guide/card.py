@@ -21,7 +21,7 @@ class Card(CollectionContent):
 
 
 class CardCollection(JsonLoadedCollection):
-    collection_type = Card
+    content_type = Card
 
     def get_cards_in_set(self, set_num: int) -> typing.List[Card]:
         if set_num == 0:
@@ -48,29 +48,28 @@ class CardCollection(JsonLoadedCollection):
         self.dict["name"][entry.name].append(entry)  # dict["name"][name]=objects
 
 
-def get_set_card_string_from_card_url(url: str) -> str:
+def get_card_num_from_card_url(url: str) -> int:
+    set_card_string = _get_set_card_string_from_card_url(url)
+    card_num = int(set_card_string.split("-")[1])
+    return card_num
+
+
+def get_set_num_from_card_url(url: str) -> int:
+    set_card_string = _get_set_card_string_from_card_url(url)
+    set_num = int(set_card_string.split("-")[0])
+    return set_num
+
+
+def _get_set_card_string_from_card_url(url: str) -> str:
     base_url = 'https://eternalwarcry.com/cards/details/'
     url = url.replace(base_url, "")
     set_card_string = url.split("/")[0]
     return set_card_string
 
 
-def get_card_num_from_card_url(url: str) -> int:
-    set_card_string = get_set_card_string_from_card_url(url)
-    card_num = int(set_card_string.split("-")[1])
-    return card_num
-
-
-def get_set_num_from_card_url(url: str) -> int:
-    set_card_string = get_set_card_string_from_card_url(url)
-    set_num = int(set_card_string.split("-")[0])
-    return set_num
-
-
 class CardLearner(BaseLearner):
     def __init__(self, file_prefix: str):
         super().__init__(file_prefix, "cards.json", CardCollection)
-        # self.progress_printer = ProgressPrinter("Updating cards", 25, 5)
 
     def _update_collection(self):
         card_json = self._get_card_json()
@@ -87,7 +86,7 @@ class CardLearner(BaseLearner):
 
     @staticmethod
     def _make_collection_from_export_entries(entries: typing.List[dict]) -> CardCollection:
-        collection = CardCollection(Card)
+        collection = CardCollection()
         for entry in entries:
             card = CardLearner._make_card_from_export_entry(entry)
             if card is not None:

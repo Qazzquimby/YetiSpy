@@ -13,8 +13,8 @@ class JsonLoadedCollectionStub(JsonLoadedCollection):
     def _add_to_dict(self, entry: any):
         pass
 
-    @staticmethod
-    def json_entry_to_content(json_entry: dict):
+    @classmethod
+    def json_entry_to_content(cls, json_entry: dict):
         return json_entry
 
 

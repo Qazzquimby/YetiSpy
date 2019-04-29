@@ -7,8 +7,8 @@ class PlaysetCollection(JsonLoadedCollection):
     def _add_to_dict(self, entry: any):
         self.dict[entry.set_num][entry.card_num].append(entry)  # dict[set_num][card_num]=objects
 
-    @staticmethod
-    def json_entry_to_content(json_entry: dict):
+    @classmethod
+    def json_entry_to_content(cls, json_entry: dict):
         pass
 
 
