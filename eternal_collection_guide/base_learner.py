@@ -116,7 +116,7 @@ class _JsonLoader:
 
 
 class BaseLearner(abc.ABC):
-    """A collection which populates itself by some method and saves its contents in Json."""
+    """A collection which populates itself by some method and saves its contents in JSON."""
 
     def __init__(self, file_prefix: str, file_name: str,
                  collection_type: typing.Type[JsonLoadedCollection]):
@@ -142,6 +142,7 @@ class BaseLearner(abc.ABC):
 
 
 class DeckSearchLearner(BaseLearner, abc.ABC):
+    """A BaseLearner that corresponds to an Eternal Warcry deck search."""
     def __init__(self, file_prefix: str,
                  file_name: str,
                  collection_type: typing.Type[JsonLoadedCollection],

@@ -1,10 +1,14 @@
+"""Content related to eternal decks"""
 from __future__ import annotations
 
+import itertools
 import re
 import typing
 from dataclasses import dataclass
 
-from eternal_collection_guide import urls
+import progiter as progiter
+
+from eternal_collection_guide import url_constants
 from eternal_collection_guide.base_learner import DeckSearchLearner
 from eternal_collection_guide.browser import Browser
 from eternal_collection_guide.card import CardCollection
@@ -14,6 +18,7 @@ from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
 
 @dataclass
 class Deck:
+    """A deck from EternalWarcry.com"""
     deck_id: str
     card_playsets: typing.List[Playset]
     archetype: str
@@ -23,6 +28,13 @@ class Deck:
 
     @classmethod
     def from_deck_url(cls, url: str, browser: Browser, card_collection: CardCollection) -> typing.Optional[Deck]:
+        """Creates a Deck from an EternalWarcry URL.
+
+        :param url: The Url for the deck.
+        :param browser: Any browser object.
+        :param card_collection: A populated CardCollection.
+        :return: The Deck object created.
+        """
         browser.get(url)
         card_playsets = _get_card_playsets(browser, card_collection)
         if len(card_playsets) == 0:
@@ -39,12 +51,24 @@ class Deck:
 
 
 def get_deck_id_from_url(url: str) -> str:
+    """Gets the ID EternalWarcry uses to identify a deck from the decks' url.
+
+    Example:
+        >>> assert get_deck_id_from_url("https://eternalwarcry.com/decks/details/rqvLRFH426s/chalice") == "rqvLRFH426s"
+        >>> assert get_deck_id_from_url("https://eternalwarcry.com/decks/details/dafg4cdEBrY/hooru") == "dafg4cdEBrY"
+    """
     id_deck_type_string = _get_id_deck_type_string_from_url(url)
     deck_id = id_deck_type_string.split("/")[0]
     return deck_id
 
 
 class DeckCollection(JsonLoadedCollection):
+    """A collection of EternalWarcry decks. May correspond to an EternalWarcry deck search.
+
+    self.dict["deck_id"][<some deck id>] = list of decks with that id.
+    self.dict[(<set_num>, <card_num>)][number of copies] = list of decks with at least that many copies of the card.
+    """
+
     def __init__(self):
         self.deck_search = None
         super().__init__()
@@ -57,14 +81,20 @@ class DeckCollection(JsonLoadedCollection):
 
     @classmethod
     def json_entry_to_content(cls, json_entry: dict) -> Deck:
+        """Constructs a Deck from a json_entry representing a deck.
+
+        :param json_entry:
+        :return:
+        """
         playsets = [Playset(**playset_dict) for playset_dict in json_entry['card_playsets']]
         json_entry['card_playsets'] = playsets
 
         return Deck(**json_entry)
 
 
-@dataclass(frozen=True)
+@dataclass
 class Playset:
+    """A quantity of a given card."""
     set_num: int
     card_num: int
     num_copies: int
@@ -74,6 +104,11 @@ class Playset:
 
     @classmethod
     def from_export_text(cls, text) -> typing.Optional[Playset]:
+        """Creates a playset from a row of a deck or collection export.
+
+        :param text: A single row of the export.
+        :return: A playset representing the card on that row.
+        """
         numbers = [int(number) for number in re.findall(r'\d+', text)]
         if len(numbers) == 3:
             num_played = numbers[0]
@@ -85,6 +120,8 @@ class Playset:
 
 
 class DeckLearner(DeckSearchLearner):
+    """Populates a DeckCollection from decks used in an EternalWarcry deck search."""
+
     def __init__(self, file_prefix: str, deck_search: DeckSearch, card_collection: CardCollection):
         self.deck_search = deck_search
         self.card_collection = card_collection
@@ -97,15 +134,17 @@ class DeckLearner(DeckSearchLearner):
             self._process_deck_urls(browser, self.card_collection, deck_urls)
 
     def _get_deck_urls(self, browser: Browser) -> typing.List[str]:
-        page = 1
-        deck_urls = []
-        while True:
-            new_deck_urls = self._get_deck_urls_on_page(browser, page)
-            if len(new_deck_urls) == 0:
-                break
-            deck_urls += new_deck_urls
-            page += 1
-        return deck_urls
+        pages_of_urls = [page_of_urls for page_of_urls in self._page_of_deck_urls_generator(browser)]
+        urls = list(itertools.chain(pages_of_urls))
+        return urls
+
+    def _page_of_deck_urls_generator(self, browser: Browser):
+        for page in itertools.count(start=1):
+            items = self._get_deck_urls_on_page(browser, page)
+            if items:
+                yield from items
+            else:
+                return
 
     def _get_deck_urls_on_page(self, browser: Browser, page: int):
         url = f"{self.deck_search.url}&p={page}"
@@ -125,7 +164,7 @@ class DeckLearner(DeckSearchLearner):
         self.collection = pruned_collection
 
     def _process_deck_urls(self, browser: Browser, card_collection: CardCollection, deck_urls: typing.List[str]):
-        for deck_url in deck_urls:
+        for deck_url in progiter.ProgIter(deck_urls, desc=f"Adding new {self.deck_search.name} decks"):
             self._process_deck_url(deck_url, browser, card_collection)
 
     def _process_deck_url(self, deck_url: str,
@@ -152,13 +191,13 @@ def _get_playsets_from_deck_export(deck_export: str, card_collection: CardCollec
     playsets = []
     for row in deck_export_rows:
         playset = _get_playset_from_deck_export_row(row, card_collection)
-
-        _add_playset(playset, playsets)
+        if playset:
+            _add_playset(playset, playsets)
 
     return playsets
 
 
-def _get_playset_from_deck_export_row(row: str, card_collection: CardCollection) -> Playset:
+def _get_playset_from_deck_export_row(row: str, card_collection: CardCollection) -> typing.Optional[Playset]:
     playset = Playset.from_export_text(row)
 
     matching_cards = card_collection.dict[playset.set_num][playset.card_num]
@@ -177,7 +216,7 @@ def _add_playset(playset, playsets):
 
 
 def _get_deck_export(browser: Browser) -> str:
-    assert browser.current_url.startswith(urls.DECK_DETAILS_BASE_URL)
+    assert browser.current_url.startswith(url_constants.DECK_DETAILS_BASE_URL)
     deck_export_text_area = browser.find_element_by_xpath('//*[@id="export-deck-text"]')
     deck_export = deck_export_text_area.get_attribute("value")
     return deck_export
@@ -200,12 +239,13 @@ def _get_is_tournament_from_url(url: str) -> bool:
 
 
 def _get_id_deck_type_string_from_url(url: str) -> str:
-    base_url = urls.DECK_DETAILS_BASE_URL
+    base_url = url_constants.DECK_DETAILS_BASE_URL
     id_deck_type_string = url.replace(base_url, "")
     return id_deck_type_string
 
 
 def _get_success(browser: Browser) -> str:
+    # fixme add assert url
     success = browser.find_element_by_xpath('//*[@id="deck-information-wrapper"]/div[2]').text
     return success
 

@@ -13,15 +13,14 @@ file_prefix = "output"
 
 if __name__ == '__main__':
     card_learner = CardLearner(file_prefix)
+    owned_cards_learner = OwnedCardsLearner(file_prefix)
     # card_learner.update())
 
     deck_searches = get_deck_searches()
     values = []
     for deck_search in deck_searches:
-        deck_learner = DeckLearner(file_prefix, deck_search)
+        deck_learner = DeckLearner(file_prefix, deck_search, card_learner.collection)
         # deck_learner.update()
-
-        owned_cards_learner = OwnedCardsLearner(file_prefix)
 
         card_play_rates = PlayRateLearner(file_prefix,
                                           card_learner.collection,

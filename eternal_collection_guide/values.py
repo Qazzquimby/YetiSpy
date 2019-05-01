@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import typing
 from collections import defaultdict
+from dataclasses import dataclass
 
 from eternal_collection_guide.base_learner import BaseLearner, JsonInterface
 from eternal_collection_guide.card import CardCollection
@@ -14,13 +15,18 @@ from eternal_collection_guide.rarities import Rarity
 from eternal_collection_guide.shiftstone import RARITY_REGULAR_ENCHANT
 
 
+@dataclass(frozen=True)
 class ValueSet:
-    def __init__(self, card_name: str, rarity: Rarity, num_owned: int, values: typing.List[float]):
-        self.card_name = card_name
-        self.rarity = rarity
-        self.num_owned = num_owned
-        self.values = values
-        self.value_per_100_shiftstone = self.values[0] * 100 / RARITY_REGULAR_ENCHANT[self.rarity]
+    """The values of each unowned copy of a card."""
+    card_name: str
+    rarity: Rarity
+    num_owned: int
+    values: typing.List[float]
+
+    @property
+    def value_per_100_shiftstone(self):
+        """Gives the effective value of crafting the card."""
+        return self.values[0] * 100 / RARITY_REGULAR_ENCHANT[self.rarity]
 
     def __float__(self):
         try:

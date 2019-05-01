@@ -1,16 +1,23 @@
+"""Related to Eternal Warcry deck searches"""
+
 import csv
 import typing
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(frozen=True)
 class DeckSearch:
+    """Represents a search for decks on EternalWarcry, with a weight representing its subjective importance."""
     name: str
     weight: float
     url: str
 
 
 def get_deck_searches() -> typing.List[DeckSearch]:
+    """Gets DeckSearch objects from the search_urls.csv file.
+
+    :return: A list of the DeckSearch objects.
+    """
     deck_searches = []
     search_urls_file_name = "search_urls.csv"
 
