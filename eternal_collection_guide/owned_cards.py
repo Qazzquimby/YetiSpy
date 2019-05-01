@@ -1,9 +1,9 @@
 from eternal_collection_guide.base_learner import BaseLearner
 from eternal_collection_guide.deck import Playset
-from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
+from eternal_collection_guide.field_hash_collection import FieldHashCollection
 
 
-class PlaysetCollection(JsonLoadedCollection):
+class PlaysetCollection(FieldHashCollection):
     def _add_to_dict(self, entry: any):
         self.dict[entry.set_num][entry.card_num].append(entry)  # dict[set_num][card_num]=objects
 

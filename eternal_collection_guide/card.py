@@ -5,7 +5,7 @@ from dataclasses import dataclass
 
 from eternal_collection_guide.base_learner import BaseLearner, CollectionContent
 from eternal_collection_guide.browser import Browser
-from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
+from eternal_collection_guide.field_hash_collection import FieldHashCollection
 from eternal_collection_guide.rarities import RARITIES
 
 
@@ -21,7 +21,7 @@ class Card(CollectionContent):
         return f"{self.name} - {self.set_num}, {self.card_num}"
 
 
-class CardCollection(JsonLoadedCollection):
+class CardCollection(FieldHashCollection):
     """A searchable collection of Cards.
 
     self.dict[<set_num>][<card_num] = a list of matching cards.

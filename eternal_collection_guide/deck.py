@@ -13,7 +13,7 @@ from eternal_collection_guide.base_learner import DeckSearchLearner
 from eternal_collection_guide.browser import Browser
 from eternal_collection_guide.card import CardCollection
 from eternal_collection_guide.deck_searches import DeckSearch
-from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
+from eternal_collection_guide.field_hash_collection import FieldHashCollection
 
 
 @dataclass
@@ -62,12 +62,13 @@ def get_deck_id_from_url(url: str) -> str:
     return deck_id
 
 
-class DeckCollection(JsonLoadedCollection):
+class DeckCollection(FieldHashCollection):
     """A collection of EternalWarcry decks. May correspond to an EternalWarcry deck search.
 
     self.dict["deck_id"][<some deck id>] = list of decks with that id.
     self.dict[(<set_num>, <card_num>)][number of copies] = list of decks with at least that many copies of the card.
     """
+    content_type = Deck
 
     def __init__(self):
         self.deck_search = None

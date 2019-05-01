@@ -1,3 +1,5 @@
+"""Collections that populate with an automatically built dict to efficiently find values."""
+
 import abc
 import collections
 import typing
@@ -6,6 +8,7 @@ from eternal_collection_guide.base_learner import CollectionContent
 
 
 class FieldHashCollection(abc.ABC):
+    """A collection CollectionContent with an automatically built dictionary for efficient searching."""
     content_type: typing.Type[CollectionContent]
 
     def __init__(self):
@@ -14,21 +17,15 @@ class FieldHashCollection(abc.ABC):
         self.updated = False
 
     @property
-    def contents(self):
+    def contents(self) -> typing.List[CollectionContent]:
         return self._contents[:]
 
     def append(self, entry: any):
         self._contents.append(entry)
         self._add_to_dict(entry)
 
-    def _add_to_dict(self, entry: any):
-        raise NotImplementedError
-
     def sort(self, key=None, reverse=False):
         self._contents = sorted(self.contents, key=key, reverse=reverse)
 
-
-class JsonLoadedCollection(FieldHashCollection, abc.ABC):
-    @classmethod
-    def json_entry_to_content(cls, json_entry: dict) -> CollectionContent:
-        return cls.content_type.from_json_entry(json_entry)
+    def _add_to_dict(self, entry: any):
+        raise NotImplementedError

@@ -1,7 +1,7 @@
 from eternal_collection_guide.base_learner import BaseLearner
 from eternal_collection_guide.card import CardCollection
 from eternal_collection_guide.deck import DeckCollection
-from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
+from eternal_collection_guide.field_hash_collection import FieldHashCollection
 
 
 class PlayRate:
@@ -17,7 +17,7 @@ class PlayRate:
             f"{self.play_rate_of_card_count[str(4)]}"
 
 
-class PlayRateCollection(JsonLoadedCollection):
+class PlayRateCollection(FieldHashCollection):
     def __init__(self):
         self.deck_search = None
         super().__init__()

@@ -11,7 +11,7 @@ import typing
 from dataclasses import dataclass
 
 if typing.TYPE_CHECKING:
-    from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
+    from eternal_collection_guide.field_hash_collection import FieldHashCollection
 
 
 @dataclass(frozen=True)
@@ -28,7 +28,7 @@ class JsonInterface:
 
     def __init__(self, file_prefix: str,
                  file_name: str,
-                 collection_type: typing.Type[JsonLoadedCollection]):
+                 collection_type: typing.Type[FieldHashCollection]):
         self.file_prefix = file_prefix
         self.file_name = file_name
         self.collection_type = collection_type
@@ -36,7 +36,7 @@ class JsonInterface:
 
         self._loader = _JsonLoader(self.path)
 
-    def load_empty(self) -> JsonLoadedCollection:
+    def load_empty(self) -> FieldHashCollection:
         """Loads an empty collection, ignoring any saved data.
 
         :return: an empty collection of the class's collection_type.
@@ -44,7 +44,7 @@ class JsonInterface:
         collection = self.collection_type()
         return collection
 
-    def load(self) -> JsonLoadedCollection:
+    def load(self) -> FieldHashCollection:
         """Loads the json collection from the saved file, if it exists.
 
         :return: The loaded collection.
@@ -53,7 +53,7 @@ class JsonInterface:
         collection = self._get_collection_from_json_entries(json_entries)
         return collection
 
-    def save(self, collection: JsonLoadedCollection):
+    def save(self, collection: FieldHashCollection):
         """Saves the given collection.
 
         :param collection: The collection to save.
@@ -69,7 +69,7 @@ class JsonInterface:
             json.dump(collection.contents, file, indent=4, sort_keys=True, default=_encode)
         print("Saved.")
 
-    def _get_collection_from_json_entries(self, json_entries: typing.List[any]) -> JsonLoadedCollection:
+    def _get_collection_from_json_entries(self, json_entries: typing.List[any]) -> FieldHashCollection:
         collection = self.collection_type()
         for json_entry in json_entries:
             content = self._json_entry_to_content(json_entry)
@@ -77,7 +77,7 @@ class JsonInterface:
         return collection
 
     def _json_entry_to_content(self, json_entry):
-        content = self.collection_type.json_entry_to_content(json_entry)
+        content = self.collection_type.content_type.from_json_entry(json_entry)
         return content
 
 
@@ -119,7 +119,7 @@ class BaseLearner(abc.ABC):
     """A collection which populates itself by some method and saves its contents in JSON."""
 
     def __init__(self, file_prefix: str, file_name: str,
-                 collection_type: typing.Type[JsonLoadedCollection]):
+                 collection_type: typing.Type[FieldHashCollection]):
         self.json_interface = JsonInterface(file_prefix, file_name, collection_type)
 
         self.collection = self._load()
@@ -145,7 +145,7 @@ class DeckSearchLearner(BaseLearner, abc.ABC):
     """A BaseLearner that corresponds to an Eternal Warcry deck search."""
     def __init__(self, file_prefix: str,
                  file_name: str,
-                 collection_type: typing.Type[JsonLoadedCollection],
+                 collection_type: typing.Type[FieldHashCollection],
                  deck_search: DeckSearch):
         super().__init__(file_prefix, file_name, collection_type)
         self.collection.deck_search = deck_search

@@ -8,7 +8,7 @@ from eternal_collection_guide.base_learner import BaseLearner, JsonInterface
 from eternal_collection_guide.card import CardCollection
 from eternal_collection_guide.deck import Playset
 from eternal_collection_guide.deck_searches import DeckSearch
-from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
+from eternal_collection_guide.field_hash_collection import FieldHashCollection
 from eternal_collection_guide.owned_cards import PlaysetCollection
 from eternal_collection_guide.play_rate import PlayRateCollection, PlayRate
 from eternal_collection_guide.rarities import Rarity
@@ -41,18 +41,15 @@ class ValueSet:
         return float(self) == float(other)
 
 
-class ValueCollection(JsonLoadedCollection):
+class ValueCollection(FieldHashCollection):
+    content_type = ValueSet
+
     def __init__(self):
         self.deck_search: typing.Optional[DeckSearch] = None
-        self._contents: ValueSet
         super().__init__()
 
     def _add_to_dict(self, entry):
         self.dict["card_name"][entry.card_name].append(entry)
-
-    @staticmethod
-    def json_entry_to_content(json_entry: dict) -> None:
-        pass
 
 
 class ValueLearner(BaseLearner):
