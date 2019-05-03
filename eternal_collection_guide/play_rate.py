@@ -1,10 +1,12 @@
-from eternal_collection_guide.base_learner import BaseLearner
+from eternal_collection_guide.base_learner import BaseLearner, JsonCompatible
 from eternal_collection_guide.card import CardCollection
 from eternal_collection_guide.deck import DeckCollection
 from eternal_collection_guide.field_hash_collection import FieldHashCollection
 
 
-class PlayRate:
+class PlayRate(JsonCompatible):
+    """The amount a quanitity of a card is used in a set of decks."""
+
     def __init__(self, set_num: int, card_num: int):
         self.set_num = set_num
         self.card_num = card_num
@@ -17,23 +19,24 @@ class PlayRate:
             f"{self.play_rate_of_card_count[str(4)]}"
 
 
-class PlayRateCollection(FieldHashCollection):
+class PlayRateCollection(FieldHashCollection[PlayRate]):
+    """A collection of PlayRates
+
+    self.dict[<set_num>][<card_num>] = list of PlayRates.
+    """
+    content_type = PlayRate
+
     def __init__(self):
-        self.deck_search = None
+        self.deck_search = None  # fixme
         super().__init__()
 
     def _add_to_dict(self, entry: any):
         self.dict[entry.set_num][entry.card_num].append(entry)
 
-    @staticmethod
-    def json_entry_to_content(json_entry: dict) -> PlayRate:
-        content = PlayRate(json_entry['set_num'],
-                           json_entry['card_num'])
-        content.play_rate_of_card_count = json_entry['play_rate_of_card_count']
-        return content
-
 
 class PlayRateLearner(BaseLearner):
+    """Populates a PlayRateCollection from an EternalWarcry deck search."""
+
     def __init__(self, file_prefix: str,
                  card_collection: CardCollection,
                  deck_collection: DeckCollection):
@@ -65,7 +68,10 @@ class PlayRateLearner(BaseLearner):
 
             num_decks = len(self.decks.contents)
             for num_played in range(1, 5):
-                play_rate.play_rate_of_card_count[str(num_played)] *= 100 / num_decks
+                try:
+                    play_rate.play_rate_of_card_count[str(num_played)] *= 100 / num_decks
+                except ZeroDivisionError:
+                    pass
 
             if play_rate.play_rate_of_card_count['1'] > 0:  # used at least once
                 self.collection.append(play_rate)

@@ -4,19 +4,18 @@ import typing
 from collections import defaultdict
 from dataclasses import dataclass
 
-from eternal_collection_guide.base_learner import BaseLearner, JsonInterface
+from eternal_collection_guide.base_learner import BaseLearner, JsonInterface, JsonCompatible
 from eternal_collection_guide.card import CardCollection
-from eternal_collection_guide.deck import Playset
 from eternal_collection_guide.deck_searches import DeckSearch
 from eternal_collection_guide.field_hash_collection import FieldHashCollection
-from eternal_collection_guide.owned_cards import PlaysetCollection
+from eternal_collection_guide.owned_cards import PlaysetCollection, Playset
 from eternal_collection_guide.play_rate import PlayRateCollection, PlayRate
 from eternal_collection_guide.rarities import Rarity
 from eternal_collection_guide.shiftstone import RARITY_REGULAR_ENCHANT
 
 
-@dataclass(frozen=True)
-class ValueSet:
+@dataclass
+class ValueSet(JsonCompatible):
     """The values of each unowned copy of a card."""
     card_name: str
     rarity: Rarity
@@ -41,11 +40,15 @@ class ValueSet:
         return float(self) == float(other)
 
 
-class ValueCollection(FieldHashCollection):
+class ValueCollection(FieldHashCollection[ValueSet]):
+    """A collection of ValueSets
+
+    self.dict["card_name"][<card_name>] = list of ValueSets
+    """
     content_type = ValueSet
 
     def __init__(self):
-        self.deck_search: typing.Optional[DeckSearch] = None
+        self.deck_search: typing.Optional[DeckSearch] = None  # fixme gross
         super().__init__()
 
     def _add_to_dict(self, entry):
@@ -53,6 +56,8 @@ class ValueCollection(FieldHashCollection):
 
 
 class ValueLearner(BaseLearner):
+    """Populates a ValueCollection"""
+
     def __init__(self, file_prefix: str,
                  owned_cards: PlaysetCollection,
                  play_rates: PlayRateCollection,

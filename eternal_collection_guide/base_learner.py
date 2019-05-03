@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+from abc import ABCMeta
+
 from eternal_collection_guide.deck_searches import DeckSearch
 
 """Base classes and utilities for learner objects."""
-import abc
 import datetime
 import json
 import os
@@ -14,17 +15,20 @@ if typing.TYPE_CHECKING:
     from eternal_collection_guide.field_hash_collection import FieldHashCollection
 
 
-@dataclass(frozen=True)
-class CollectionContent(abc.ABC):
+@dataclass
+class JsonCompatible(metaclass=ABCMeta):
+    """An object which can be loaded from JSON."""
+
     @classmethod
-    def from_json_entry(cls, entry):
+    def from_json(cls, entry: dict):
+        """Creates an instance of the object from a JSON object."""
         # noinspection PyArgumentList
-        card = cls(**entry)
-        return card
+        result = cls(**entry)
+        return result
 
 
 class JsonInterface:
-    """Facilitates saving and loading of objects to Json files."""
+    """Facilitates saving and loading of objects to JSON files."""
 
     def __init__(self, file_prefix: str,
                  file_name: str,
@@ -77,7 +81,7 @@ class JsonInterface:
         return collection
 
     def _json_entry_to_content(self, json_entry):
-        content = self.collection_type.content_type.from_json_entry(json_entry)
+        content = self.collection_type.content_type.from_json(json_entry)
         return content
 
 
@@ -115,7 +119,7 @@ class _JsonLoader:
         return json_entries
 
 
-class BaseLearner(abc.ABC):
+class BaseLearner(metaclass=ABCMeta):
     """A collection which populates itself by some method and saves its contents in JSON."""
 
     def __init__(self, file_prefix: str, file_name: str,
@@ -141,8 +145,9 @@ class BaseLearner(abc.ABC):
         self.json_interface.save(self.collection)
 
 
-class DeckSearchLearner(BaseLearner, abc.ABC):
+class DeckSearchLearner(BaseLearner, metaclass=ABCMeta):
     """A BaseLearner that corresponds to an Eternal Warcry deck search."""
+
     def __init__(self, file_prefix: str,
                  file_name: str,
                  collection_type: typing.Type[FieldHashCollection],

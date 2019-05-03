@@ -40,8 +40,8 @@ if __name__ == '__main__':
     buy_campaigns = BuyCampaigns(sets, card_learner.collection, overall_value.collection)
 
     purchase_options = buy_packs.contents + buy_campaigns.contents
-    purchase_options.append(BuyDraft())
-    purchase_options.append(BuyLeague())
+    purchase_options.append(BuyDraft(card_packs))
+    purchase_options.append(BuyLeague(card_packs))
     purchase_options = sorted(purchase_options, reverse=True)
 
     with open(f"{file_prefix}/purchases.txt", "w+") as purchase_file:

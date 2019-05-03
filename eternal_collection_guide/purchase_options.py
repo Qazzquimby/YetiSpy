@@ -1,6 +1,6 @@
-import abc
 import csv
 import typing
+from abc import ABCMeta
 
 from eternal_collection_guide.card import CardCollection
 from eternal_collection_guide.card_pack import Campaign, SetPack, CardPacks
@@ -10,7 +10,7 @@ from eternal_collection_guide.shiftstone import NUM_CARDS_IN_PACK, RARITY_REGULA
 from eternal_collection_guide.values import ValueCollection
 
 
-class BuyOption(abc.ABC):
+class BuyOption(metaclass=ABCMeta):
 
     @property
     def gold_cost(self) -> int:
@@ -43,7 +43,7 @@ class BuyOption(abc.ABC):
         return self.avg_value_per_1000_gold == other.avg_value_per_1000_gold
 
 
-class BuyOptions(abc.ABC):
+class BuyOptions(metaclass=ABCMeta):
     def __init__(self, cards: CardCollection,
                  values: ValueCollection,
                  sets: typing.List[CardSet],
@@ -106,7 +106,8 @@ class BuyCampaigns(BuyOptions):
 
 
 class BuyCampaign(BuyOption):
-    def __init__(self, set_name, set_num, cards, values):
+    def __init__(self, set_name, set_num, cards, values, card_packs):
+        self.card_packs = card_packs
         super().__init__()
         self.content = Campaign(set_name, set_num, cards, values)
 
@@ -128,6 +129,9 @@ class BuyCampaign(BuyOption):
 
 
 class BuyLeague(BuyOption):
+    def __init__(self, card_packs: CardPacks):
+        self.card_packs = card_packs
+
     @property
     def avg_gold_output(self) -> float:
         return 0
@@ -145,7 +149,7 @@ class BuyLeague(BuyOption):
         avg_value = 0
         for row in rows:
             set_num = int(row[0])
-            avg_value_of_pack = CardPacks.set_to_card_pack[set_num].avg_value
+            avg_value_of_pack = self.card_packs.set_to_card_pack[set_num].avg_value
             num_packs = int(row[1])
             avg_value += avg_value_of_pack * num_packs
 

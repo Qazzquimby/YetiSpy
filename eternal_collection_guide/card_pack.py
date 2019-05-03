@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import abc
 import typing
+from abc import ABCMeta
 
 from eternal_collection_guide.browser import Browser
 from eternal_collection_guide.card import CardCollection, Card
@@ -12,24 +12,17 @@ from eternal_collection_guide.values import ValueCollection
 
 
 class CardPacks:
-    # todo singleton is not a good method
-    initialized = False
-    set_to_card_pack: typing.Dict[int, CardPack] = None
-    draft_pack: CardPack = None
-    avg_newest_pack_value: float = None
-    avg_golden_chest_pack_value: float = None
+    """All available packs of cards in Eternal"""
 
     def __init__(self, sets: Sets, card_collection: CardCollection, value_collection: ValueCollection):
-        if not self.initialized:
-            self._sets = sets
-            self._cards = card_collection
-            self._values = value_collection
+        self._sets = sets
+        self._cards = card_collection
+        self._values = value_collection
 
-            CardPacks.set_to_card_pack = self._init_set_to_card_pack()
-            CardPacks.draft_pack = DraftPack(self._cards, self._values)
-            CardPacks.avg_newest_pack_value = self._init_avg_newest_pack_value()
-            CardPacks.avg_golden_chest_pack_value = self._init_avg_golden_chest_pack_value()
-            CardPacks.initialized = True
+        self.set_to_card_pack = self._init_set_to_card_pack()
+        self.draft_pack = DraftPack(self._cards, self._values)
+        self.avg_newest_pack_value = self._init_avg_newest_pack_value()
+        self.avg_golden_chest_pack_value = self._init_avg_golden_chest_pack_value()
 
     def _init_set_to_card_pack(self) -> typing.Dict[int, CardPack]:
         set_to_card_pack = {}
@@ -42,7 +35,7 @@ class CardPacks:
 
     def _init_avg_newest_pack_value(self):
         newest_set = self._sets.newest_core_set
-        newest_pack: CardPack = CardPacks.set_to_card_pack[newest_set.set_num]
+        newest_pack: CardPack = self.set_to_card_pack[newest_set.set_num]
         avg_value = newest_pack.avg_value
 
         return avg_value
@@ -51,7 +44,7 @@ class CardPacks:
         old_core_sets = self._sets.core_sets[:]
         old_core_sets.remove(self._sets.newest_core_set)
 
-        old_card_packs: typing.List[CardPack] = [CardPacks.set_to_card_pack[core_set.set_num] for core_set in
+        old_card_packs: typing.List[CardPack] = [self.set_to_card_pack[core_set.set_num] for core_set in
                                                  old_core_sets]
 
         summed_value = sum(card_pack.avg_value for card_pack in old_card_packs)
@@ -59,21 +52,24 @@ class CardPacks:
         return avg_value
 
 
-class CardPack(abc.ABC):
+class CardPack(metaclass=ABCMeta):
+    """A pack of cards in Eternal"""
+
     def __init__(self, name: str, card_collection: CardCollection, value_collection: ValueCollection):
         self.name = name
         self.cards = card_collection
         self.value_sets = value_collection
         self.avg_value = self._init_avg_value()
 
+    def get_cards_in_set(self) -> typing.List[Card]:
+        """Get all cards in the set the pack belongs to."""
+        raise NotImplementedError
+
     def _init_avg_value(self):
         values_in_rarity = self._get_values_in_rarity()
         avg_value_of_rarity = self._get_avg_value_of_rarity_dict(values_in_rarity)
         avg_value_of_pack = self._get_avg_value_of_pack(avg_value_of_rarity)
         return avg_value_of_pack
-
-    def get_cards_in_set(self):
-        raise NotImplementedError
 
     def _get_value_of_card_by_name(self, card_name):
         value_sets = self.value_sets.dict["card_name"][card_name]
@@ -122,6 +118,8 @@ class CardPack(abc.ABC):
 
 
 class SetPack(CardPack):
+    """A card pack for a set of cards."""
+
     def __init__(self, name: str, set_num: int, card_collection: CardCollection, value_collection: ValueCollection):
         self.set_num = set_num
         super().__init__(name, card_collection, value_collection)
@@ -132,12 +130,14 @@ class SetPack(CardPack):
 
 
 class DraftPack(CardPack):
+    """The card pack used in draft mode."""
     _cards_in_set = None
 
     def __init__(self, card_collection: CardCollection, value_collection: ValueCollection):
         super().__init__("Draft Pack", card_collection, value_collection)
 
     def get_cards_in_set(self):
+        """The cards that can be available in the draft pack."""
         if self._cards_in_set is None:
             self._init_cards_in_set()
         return self._cards_in_set
@@ -174,7 +174,8 @@ class DraftPack(CardPack):
             cards.append(card)
         return cards
 
-    def _get_card_from_element(self, element) -> Card:
+    @staticmethod
+    def _get_card_from_element(element) -> Card:
         element.find_elements_by_xpath('span')
 
         link_element = element.find_element_by_xpath('a')
@@ -199,6 +200,8 @@ class DraftPack(CardPack):
 
 
 class Campaign:
+    """A campaign in Eternal."""
+
     def __init__(self, name: str, set_num: int, card_collection: CardCollection, value_collection: ValueCollection):
         self.name = name
         self.set_num = set_num

@@ -7,13 +7,16 @@ from eternal_collection_guide.shiftstone import NUM_CARDS_IN_PACK, RARITY_REGULA
 
 class BuyDraft(BuyOption):
     """A purchase of a Draft run in Eternal."""
-    def __init__(self):
+
+    def __init__(self, card_packs: CardPacks):
+        self.card_packs = card_packs
+
         super().__init__()
 
         self._num_newest_packs = 2
         self._num_draft_packs = 2
 
-        self._avg_wins = 2.4
+        self._avg_wins = 2.4  # statistical average is ~2.8. This is slightly lower to account for collection-drafting.
         self._avg_gold_chests = self._avg_wins - 1  # only works if avg_wins between 2 and 4
         self._estimated_draft_efficiency = 1.25
 
@@ -40,9 +43,17 @@ class BuyDraft(BuyOption):
 
     @property
     def avg_value(self) -> float:
-        avg_value_of_draft_packs = self._num_draft_packs * self._estimated_draft_efficiency * CardPacks.draft_pack.avg_value
-        avg_value_of_newest_packs = self._num_newest_packs * self._estimated_draft_efficiency * CardPacks.avg_newest_pack_value
-        avg_value_of_gold_chests = self._avg_gold_chests * CardPacks.avg_golden_chest_pack_value
+        return self._value_of_draft_packs() + self._value_of_newest_packs() + self._value_of_gold_chests()
 
-        avg_value = avg_value_of_draft_packs + avg_value_of_newest_packs + avg_value_of_gold_chests
-        return avg_value
+    def _value_of_draft_packs(self):
+        value_of_draft_pack = self._estimated_draft_efficiency * self.card_packs.draft_pack.avg_value
+        value_of_draft_packs = self._num_draft_packs * value_of_draft_pack
+        return value_of_draft_packs
+
+    def _value_of_newest_packs(self):
+        value_of_newest_pack = self._estimated_draft_efficiency * self.card_packs.avg_newest_pack_value
+        value_of_newest_packs = self._num_newest_packs * value_of_newest_pack
+        return value_of_newest_packs
+
+    def _value_of_gold_chests(self):
+        return self._avg_gold_chests * self.card_packs.avg_golden_chest_pack_value

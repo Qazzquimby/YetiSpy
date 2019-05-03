@@ -2,22 +2,22 @@
 from __future__ import annotations
 
 import itertools
-import re
 import typing
 from dataclasses import dataclass
 
 import progiter as progiter
 
 from eternal_collection_guide import url_constants
-from eternal_collection_guide.base_learner import DeckSearchLearner
+from eternal_collection_guide.base_learner import DeckSearchLearner, JsonCompatible
 from eternal_collection_guide.browser import Browser
 from eternal_collection_guide.card import CardCollection
 from eternal_collection_guide.deck_searches import DeckSearch
 from eternal_collection_guide.field_hash_collection import FieldHashCollection
+from eternal_collection_guide.owned_cards import Playset
 
 
 @dataclass
-class Deck:
+class Deck(JsonCompatible):
     """A deck from EternalWarcry.com"""
     deck_id: str
     card_playsets: typing.List[Playset]
@@ -49,6 +49,18 @@ class Deck:
         deck = cls(deck_id, card_playsets, archetype, last_updated, is_tournament, success)
         return deck
 
+    @classmethod
+    def from_json(cls, entry: dict):
+        """Constructs a Deck from a json_entry representing a deck.
+
+        :param entry:
+        :return:
+        """
+        playsets = [Playset(**playset_dict) for playset_dict in entry['card_playsets']]
+        entry['card_playsets'] = playsets
+
+        return Deck(**entry)
+
 
 def get_deck_id_from_url(url: str) -> str:
     """Gets the ID EternalWarcry uses to identify a deck from the decks' url.
@@ -62,7 +74,7 @@ def get_deck_id_from_url(url: str) -> str:
     return deck_id
 
 
-class DeckCollection(FieldHashCollection):
+class DeckCollection(FieldHashCollection[Deck]):
     """A collection of EternalWarcry decks. May correspond to an EternalWarcry deck search.
 
     self.dict["deck_id"][<some deck id>] = list of decks with that id.
@@ -71,7 +83,7 @@ class DeckCollection(FieldHashCollection):
     content_type = Deck
 
     def __init__(self):
-        self.deck_search = None
+        self.deck_search = None  # fixme gross
         super().__init__()
 
     def _add_to_dict(self, entry: Deck):
@@ -79,45 +91,6 @@ class DeckCollection(FieldHashCollection):
         for playset in entry.card_playsets:
             for i in range(playset.num_copies):
                 self.dict[(playset.set_num, playset.card_num)][i + 1].append(entry)
-
-    @classmethod
-    def json_entry_to_content(cls, json_entry: dict) -> Deck:
-        """Constructs a Deck from a json_entry representing a deck.
-
-        :param json_entry:
-        :return:
-        """
-        playsets = [Playset(**playset_dict) for playset_dict in json_entry['card_playsets']]
-        json_entry['card_playsets'] = playsets
-
-        return Deck(**json_entry)
-
-
-@dataclass
-class Playset:
-    """A quantity of a given card."""
-    set_num: int
-    card_num: int
-    num_copies: int
-
-    def __str__(self):
-        return f"{self.num_copies}x {self.set_num}-{self.card_num}"
-
-    @classmethod
-    def from_export_text(cls, text) -> typing.Optional[Playset]:
-        """Creates a playset from a row of a deck or collection export.
-
-        :param text: A single row of the export.
-        :return: A playset representing the card on that row.
-        """
-        numbers = [int(number) for number in re.findall(r'\d+', text)]
-        if len(numbers) == 3:
-            num_played = numbers[0]
-            set_num = numbers[1]
-            card_num = numbers[2]
-            playset = Playset(set_num, card_num, num_played)
-            return playset
-        return None
 
 
 class DeckLearner(DeckSearchLearner):

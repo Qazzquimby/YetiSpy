@@ -3,10 +3,10 @@ from unittest import TestCase
 from parameterized import parameterized
 
 import eternal_collection_guide.card as cards
-from eternal_collection_guide.base_learner import CollectionContent
+from eternal_collection_guide.base_learner import JsonCompatible
 
 
-class CollectionContentStub(CollectionContent):
+class JsonCompatibleStub(JsonCompatible):
     pass
 
 
