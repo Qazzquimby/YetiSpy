@@ -115,7 +115,6 @@ Here is some example data for a user with an empty collection, looking to build 
 
 ## The Future
 I hope to add:
-- Add draft to purchase evaluation.
 - Automatically handling updates, rather than making the user click multiple exes.
 - Additional search parameters, such as by rating or views.
 
