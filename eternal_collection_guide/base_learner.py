@@ -123,16 +123,55 @@ class BaseLearner(metaclass=ABCMeta):
     """A collection which populates itself by some method and saves its contents in JSON."""
 
     def __init__(self, file_prefix: str, file_name: str,
-                 collection_type: typing.Type[FieldHashCollection]):
+                 collection_type: typing.Type[FieldHashCollection],
+                 max_days_before_update: int = 30,
+                 dependent_paths=None):
+        if dependent_paths is None:
+            dependent_paths = []
+
+        self._dependent_paths = dependent_paths
+
         self.json_interface = JsonInterface(file_prefix, file_name, collection_type)
+        self._max_days_before_update = max_days_before_update
 
         self.collection = self._load()
 
+        self._update_if_old()
+
     def update(self):
         """Repopulates the collection"""
+        print(f"Updating {self.json_interface.file_name}")
         self._update_collection()
         self._save()
         self.collection.updated = True
+
+    def _update_if_old(self):
+        if self._is_old():
+            self.update()
+
+    def _is_old(self):
+        if len(self.collection.contents) == 0:
+            return True
+
+        if self._days_since_last_update(self.json_interface.path) >= self._max_days_before_update:
+            return True
+
+        for dependent_path in self._dependent_paths:
+            days_since_last_update = self._days_since_last_update(dependent_path)
+            if days_since_last_update == 0:  # Dependency just updated. fixme this is a little gross. Could use flags.
+                return True
+        return False
+
+    @staticmethod
+    def _days_since_last_update(path):
+        try:
+            last_modified_time_stamp = os.path.getmtime(path)
+        except FileNotFoundError:
+            return 0
+        last_modified_time = datetime.datetime.fromtimestamp(last_modified_time_stamp)
+        time_since_last_modified = datetime.datetime.now() - last_modified_time
+        days_since_last_modified = time_since_last_modified.days
+        return days_since_last_modified
 
     def _update_collection(self):
         raise NotImplementedError
@@ -145,12 +184,22 @@ class BaseLearner(metaclass=ABCMeta):
         self.json_interface.save(self.collection)
 
 
+# noinspection PyAbstractClass
 class DeckSearchLearner(BaseLearner, metaclass=ABCMeta):
     """A BaseLearner that corresponds to an Eternal Warcry deck search."""
 
     def __init__(self, file_prefix: str,
                  file_name: str,
                  collection_type: typing.Type[FieldHashCollection],
-                 deck_search: DeckSearch):
-        super().__init__(file_prefix, file_name, collection_type)
+                 deck_search: DeckSearch,
+                 max_days_before_update: int = 30,
+                 dependent_paths=None):
+        search_urls_path = "../search_urls.csv"
+        if dependent_paths is None:
+            dependent_paths = [search_urls_path]
+        else:
+            dependent_paths += [search_urls_path]
+
+        super().__init__(file_prefix, file_name, collection_type, max_days_before_update,
+                         dependent_paths=dependent_paths)
         self.collection.deck_search = deck_search

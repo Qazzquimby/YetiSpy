@@ -19,7 +19,7 @@ def get_deck_searches() -> typing.List[DeckSearch]:
     :return: A list of the DeckSearch objects.
     """
     deck_searches = []
-    search_urls_file_name = "search_urls.csv"
+    search_urls_file_name = "../search_urls.csv"
 
     with open(search_urls_file_name, "r") as file:
         reader = csv.reader(file)

@@ -1,6 +1,6 @@
-from eternal_collection_guide.base_learner import BaseLearner, JsonCompatible
-from eternal_collection_guide.card import CardCollection
-from eternal_collection_guide.deck import DeckCollection
+from eternal_collection_guide.base_learner import JsonCompatible, DeckSearchLearner
+from eternal_collection_guide.card import CardLearner
+from eternal_collection_guide.deck import DeckLearner
 from eternal_collection_guide.field_hash_collection import FieldHashCollection
 
 
@@ -18,6 +18,18 @@ class PlayRate(JsonCompatible):
             f"{self.play_rate_of_card_count[str(3)]}, " \
             f"{self.play_rate_of_card_count[str(4)]}"
 
+    @classmethod
+    def from_json(cls, entry: dict):
+        """Constructs a Deck from a json_entry representing a deck.
+
+        :param entry:
+        :return:
+        """
+        result = cls(entry['set_num'], entry['card_num'])
+        result.play_rate_of_card_count = entry['play_rate_of_card_count']
+
+        return result
+
 
 class PlayRateCollection(FieldHashCollection[PlayRate]):
     """A collection of PlayRates
@@ -34,39 +46,35 @@ class PlayRateCollection(FieldHashCollection[PlayRate]):
         self.dict[entry.set_num][entry.card_num].append(entry)
 
 
-class PlayRateLearner(BaseLearner):
+class PlayRateLearner(DeckSearchLearner):
     """Populates a PlayRateCollection from an EternalWarcry deck search."""
 
     def __init__(self, file_prefix: str,
-                 card_collection: CardCollection,
-                 deck_collection: DeckCollection):
-        self.cards = card_collection
-        self.decks = deck_collection
+                 card_learner: CardLearner,
+                 deck_learner: DeckLearner):
+        self.cards = card_learner
+        self.decks = deck_learner
+
+        dependent_paths = [self.cards.json_interface.path,
+                           self.decks.json_interface.path]
 
         super().__init__(file_prefix, f"{self.decks.deck_search.name}/play_rates.json",
-                         PlayRateCollection)
-
-        self.collection.deck_search = self.decks.deck_search
-
-        self._update_collection()
-        self._save()
-
-    def update(self):
-        pass  # updates automatically
-
-    def _load(self) -> PlayRateCollection:
-        return self.json_interface.load_empty()  # todo properly remake
+                         PlayRateCollection,
+                         self.decks.deck_search,
+                         dependent_paths=dependent_paths)
 
     def _update_collection(self):
-        for card in self.cards.contents:
+        self.collection = self.json_interface.load_empty()
+
+        for card in self.cards.collection.contents:
             play_rate = PlayRate(card.set_num, card.card_num)
             for num_played in range(1, 5):
-                decks_with_num_played = self.decks.dict[(card.set_num, card.card_num)][num_played]
+                decks_with_num_played = self.decks.collection.dict[(card.set_num, card.card_num)][num_played]
                 num_played_play_count = len(decks_with_num_played)
                 play_rate.play_rate_of_card_count[str(num_played)] += \
                     num_played_play_count
 
-            num_decks = len(self.decks.contents)
+            num_decks = len(self.decks.collection.contents)
             for num_played in range(1, 5):
                 try:
                     play_rate.play_rate_of_card_count[str(num_played)] *= 100 / num_decks

@@ -4,12 +4,12 @@ import typing
 from collections import defaultdict
 from dataclasses import dataclass
 
-from eternal_collection_guide.base_learner import BaseLearner, JsonInterface, JsonCompatible
-from eternal_collection_guide.card import CardCollection
+from eternal_collection_guide.base_learner import JsonInterface, JsonCompatible, DeckSearchLearner
+from eternal_collection_guide.card import CardLearner
 from eternal_collection_guide.deck_searches import DeckSearch
 from eternal_collection_guide.field_hash_collection import FieldHashCollection
-from eternal_collection_guide.owned_cards import PlaysetCollection, Playset
-from eternal_collection_guide.play_rate import PlayRateCollection, PlayRate
+from eternal_collection_guide.owned_cards import Playset, OwnedCardsLearner
+from eternal_collection_guide.play_rate import PlayRate, PlayRateLearner
 from eternal_collection_guide.rarities import Rarity
 from eternal_collection_guide.shiftstone import RARITY_REGULAR_ENCHANT
 
@@ -55,30 +55,31 @@ class ValueCollection(FieldHashCollection[ValueSet]):
         self.dict["card_name"][entry.card_name].append(entry)
 
 
-class ValueLearner(BaseLearner):
+class ValueLearner(DeckSearchLearner):
     """Populates a ValueCollection"""
 
     def __init__(self, file_prefix: str,
-                 owned_cards: PlaysetCollection,
-                 play_rates: PlayRateCollection,
-                 cards: CardCollection):
+                 owned_cards: OwnedCardsLearner,
+                 play_rates: PlayRateLearner,
+                 cards: CardLearner):
         self.owned_cards = owned_cards
         self.play_rates = play_rates
         self.cards = cards
 
         self.already_seen = defaultdict(bool)
 
-        super().__init__(file_prefix, f"{self.play_rates.deck_search.name}/value.json",
-                         ValueCollection)
-        self._update_collection()  # todo make this better. Figure out how to handle autoupdate.
-        self._save()
-        self.collection.deck_search = self.play_rates.deck_search
+        dependent_paths = [self.owned_cards.json_interface.path,
+                           self.play_rates.json_interface.path,
+                           self.cards.json_interface.path]
 
-    def update(self):
-        pass  # automatic
+        super().__init__(file_prefix, f"{self.play_rates.collection.deck_search.name}/value.json",
+                         ValueCollection,
+                         self.play_rates.collection.deck_search,
+                         dependent_paths=dependent_paths)
 
     def _update_collection(self):
-        for play_rate in self.play_rates.contents:
+        self.json_interface.load_empty()
+        for play_rate in self.play_rates.collection.contents:
             self._update_value_from_play_rate(play_rate)
 
     def _update_value_from_play_rate(self, play_rate: PlayRate):
@@ -102,21 +103,18 @@ class ValueLearner(BaseLearner):
         self.collection.append(card_value)
 
     def _get_owned_playset(self, play_rate: PlayRate) -> typing.Optional[PlayRate]:
-        owned_playsets = self.owned_cards.dict[play_rate.set_num][play_rate.card_num]
+        owned_playsets = self.owned_cards.collection.dict[play_rate.set_num][play_rate.card_num]
         if len(owned_playsets) == 0:
             return None
         return owned_playsets[0]
 
     def _get_values(self, play_rate: PlayRate, owned: Playset, num_owned: int) -> ValueSet:
-        card = self.cards.dict[owned.set_num][owned.card_num][0]
+        card = self.cards.collection.dict[owned.set_num][owned.card_num][0]
 
         values = [play_rate.play_rate_of_card_count[str(card_count)] for card_count in range(num_owned + 1, 5)]
 
         values = ValueSet(card.name, card.rarity, num_owned, values)
         return values
-
-    def _load(self) -> ValueCollection:
-        return ValueCollection()
 
     def _save(self):
         self.collection.sort(reverse=True)

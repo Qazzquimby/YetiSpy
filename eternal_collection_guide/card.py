@@ -3,6 +3,8 @@ import json
 import typing
 from dataclasses import dataclass
 
+from progiter import progiter
+
 from eternal_collection_guide.base_learner import BaseLearner, JsonCompatible
 from eternal_collection_guide.browser import Browser
 from eternal_collection_guide.field_hash_collection import FieldHashCollection
@@ -83,7 +85,7 @@ class CardLearner(BaseLearner):
     """Populates a card collection from the card database at Eternal Warcry."""
 
     def __init__(self, file_prefix: str):
-        super().__init__(file_prefix, "cards.json", CardCollection)
+        super().__init__(file_prefix, "cards.json", CardCollection, max_days_before_update=30)
 
     def _update_collection(self):
         card_json = self._get_card_json()
@@ -101,7 +103,7 @@ class CardLearner(BaseLearner):
     @staticmethod
     def _make_collection_from_export_entries(entries: typing.List[dict]) -> CardCollection:
         collection = CardCollection()
-        for entry in entries:
+        for entry in progiter.ProgIter(entries):
             card = CardLearner._make_card_from_export_entry(entry)
             if card is not None:
                 collection.append(card)

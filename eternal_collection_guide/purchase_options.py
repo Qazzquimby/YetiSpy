@@ -106,8 +106,8 @@ class BuyCampaigns(BuyOptions):
 
 
 class BuyCampaign(BuyOption):
-    def __init__(self, set_name, set_num, cards, values, card_packs):
-        self.card_packs = card_packs
+    def __init__(self, set_name, set_num, cards, values):
+        # self.card_packs = card_packs
         super().__init__()
         self.content = Campaign(set_name, set_num, cards, values)
 
@@ -142,7 +142,7 @@ class BuyLeague(BuyOption):
 
     @property
     def avg_value(self) -> float:
-        with open("league.csv", "r") as league_file:
+        with open("../league.csv", "r") as league_file:
             csv_reader = csv.reader(league_file)
             rows = list(csv_reader)
 

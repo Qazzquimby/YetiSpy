@@ -34,6 +34,7 @@ class FieldHashCollection(typing.Generic[JsonCompatibleSub], metaclass=ABCMeta):
         raise NotImplementedError
 
 
+# noinspection PyAbstractClass
 class DeckSearchCollection(FieldHashCollection[JsonCompatibleSub], metaclass=ABCMeta):
     """A FieldHashCollection corresponding to an EternalWarcry deck search."""
 

@@ -10,7 +10,7 @@ import progiter as progiter
 from eternal_collection_guide import url_constants
 from eternal_collection_guide.base_learner import DeckSearchLearner, JsonCompatible
 from eternal_collection_guide.browser import Browser
-from eternal_collection_guide.card import CardCollection
+from eternal_collection_guide.card import CardCollection, CardLearner
 from eternal_collection_guide.deck_searches import DeckSearch
 from eternal_collection_guide.field_hash_collection import FieldHashCollection
 from eternal_collection_guide.owned_cards import Playset
@@ -59,7 +59,7 @@ class Deck(JsonCompatible):
         playsets = [Playset(**playset_dict) for playset_dict in entry['card_playsets']]
         entry['card_playsets'] = playsets
 
-        return Deck(**entry)
+        return cls(**entry)
 
 
 def get_deck_id_from_url(url: str) -> str:
@@ -96,16 +96,17 @@ class DeckCollection(FieldHashCollection[Deck]):
 class DeckLearner(DeckSearchLearner):
     """Populates a DeckCollection from decks used in an EternalWarcry deck search."""
 
-    def __init__(self, file_prefix: str, deck_search: DeckSearch, card_collection: CardCollection):
+    def __init__(self, file_prefix: str, deck_search: DeckSearch, card_learner: CardLearner):
         self.deck_search = deck_search
-        self.card_collection = card_collection
-        super().__init__(file_prefix, f"{self.deck_search.name}/decks.json", DeckCollection, deck_search)
+        self.cards = card_learner
+        super().__init__(file_prefix, f"{self.deck_search.name}/decks.json", DeckCollection, deck_search,
+                         max_days_before_update=3, dependent_paths=[self.cards.json_interface.path])
 
     def _update_collection(self):
         with Browser() as browser:
             deck_urls = self._get_deck_urls(browser)
             self._prune_outdated_decks(deck_urls)
-            self._process_deck_urls(browser, self.card_collection, deck_urls)
+            self._process_deck_urls(browser, self.cards.collection, deck_urls)
 
     def _get_deck_urls(self, browser: Browser) -> typing.List[str]:
         pages_of_urls = [page_of_urls for page_of_urls in self._page_of_deck_urls_generator(browser)]

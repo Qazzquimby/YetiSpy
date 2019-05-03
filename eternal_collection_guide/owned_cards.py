@@ -49,16 +49,19 @@ class OwnedCardsLearner(BaseLearner):
     """Populates a PlaysetCollection from the contents of collection.txt"""
 
     def __init__(self, file_prefix: str):
-        super().__init__(file_prefix, "owned_cards.json", PlaysetCollection)
-        self.update()  # todo improve autoupdate
+        self.collection_path = "../collection.txt"
+        super().__init__(file_prefix, "owned_cards.json", PlaysetCollection, dependent_paths=[self.collection_path])
 
     def update(self):
         self._update_collection()
-        self._save()
+        # Don't save. Inexpensive to rebuild.
+
+    def _is_old(self):
+        return True  # Inexpensive to rebuild, so always update
 
     def _update_collection(self):
         try:
-            with open("collection.txt", "r") as collection_file:
+            with open(self.collection_path, "r") as collection_file:
                 collection_text = collection_file.read()
                 collection_lines = collection_text.split("\n")
                 for line in collection_lines:
@@ -74,4 +77,4 @@ class OwnedCardsLearner(BaseLearner):
             print("collection.txt not found")
 
     def _load(self) -> PlaysetCollection:
-        return PlaysetCollection()
+        return self.json_interface.load_empty()

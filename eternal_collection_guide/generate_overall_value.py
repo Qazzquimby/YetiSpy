@@ -19,16 +19,16 @@ if __name__ == '__main__':
     deck_searches = get_deck_searches()
     values = []
     for deck_search in deck_searches:
-        deck_learner = DeckLearner(file_prefix, deck_search, card_learner.collection)
+        deck_learner = DeckLearner(file_prefix, deck_search, card_learner)
         # deck_learner.update()
 
         card_play_rates = PlayRateLearner(file_prefix,
-                                          card_learner.collection,
-                                          deck_learner.collection)
+                                          card_learner,
+                                          deck_learner)
 
-        value_learner = ValueLearner(file_prefix, owned_cards_learner.collection,
-                                     card_play_rates.collection,
-                                     card_learner.collection)
+        value_learner = ValueLearner(file_prefix, owned_cards_learner,
+                                     card_play_rates,
+                                     card_learner)
         values.append(value_learner.collection)
 
     overall_value = SummedValues(file_prefix, values)
