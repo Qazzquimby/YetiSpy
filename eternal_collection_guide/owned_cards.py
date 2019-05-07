@@ -56,6 +56,9 @@ class OwnedCardsLearner(BaseLearner):
         self._update_collection()
         # Don't save. Inexpensive to rebuild.
 
+    def _load(self) -> PlaysetCollection:
+        return self.json_interface.load_empty()
+
     def _is_old(self):
         return True  # Inexpensive to rebuild, so always update
 
@@ -75,6 +78,3 @@ class OwnedCardsLearner(BaseLearner):
                             self.collection.append(playset)
         except FileNotFoundError:
             print("collection.txt not found")
-
-    def _load(self) -> PlaysetCollection:
-        return self.json_interface.load_empty()

@@ -3,6 +3,9 @@ from __future__ import annotations
 import typing
 from abc import ABCMeta
 
+import selenium
+import selenium.common.exceptions
+
 from eternal_collection_guide.browser import Browser
 from eternal_collection_guide.card import CardCollection, Card
 from eternal_collection_guide.rarities import RARITIES
@@ -146,7 +149,9 @@ class DraftPack(CardPack):
         browser = Browser()
         browser.get("https://eternalwarcry.com/cards")
 
-        newest_draft_pack_option = browser.find_element_by_css_selector('#DraftPack > option:nth-child(2)')
+        newest_draft_pack_option = browser.safely_find(
+            lambda x: x.find_element_by_css_selector('#DraftPack > option:nth-child(2)'))
+
         search_id = newest_draft_pack_option.get_attribute("value")
 
         cards = []
@@ -165,8 +170,11 @@ class DraftPack(CardPack):
     def _get_cards_from_page(self, browser: Browser, url: str) -> typing.List[Card]:
         browser.get(url)
 
-        card_elements = browser.find_elements_by_xpath(
-            '//*[@id="body-wrapper"]/div/div/div[2]/div[2]/div[3]/div/table/tbody/tr[*]/td[1]')
+        try:
+            card_elements = browser.safely_find(lambda x: x.find_elements_by_xpath(
+                '//*[@id="body-wrapper"]/div/div/div[2]/div[2]/div[3]/div/table/tbody/tr[*]/td[1]'))
+        except selenium.common.exceptions.TimeoutException:
+            card_elements = []
 
         cards = []
         for card_element in card_elements:

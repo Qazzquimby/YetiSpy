@@ -27,6 +27,15 @@ class ValueSet(JsonCompatible):
         """Gives the effective value of crafting the card."""
         return self.values[0] * 100 / RARITY_REGULAR_ENCHANT[self.rarity]
 
+    @classmethod
+    def from_json(cls, entry: dict):
+        try:
+            entry.pop("value_per_100_shiftstone")
+        except KeyError:
+            pass
+
+        return cls(**entry)
+
     def __float__(self):
         try:
             return self.values[0]

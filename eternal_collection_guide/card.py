@@ -50,9 +50,9 @@ class CardCollection(FieldHashCollection[Card]):
         card_nums_in_set = self.dict[set_num]
         for card_num in card_nums_in_set.keys():
             new_cards = self.dict[set_num][card_num]
-            assert len(new_cards) == 1
-            card = new_cards[0]
-            cards.append(card)
+            if len(new_cards) > 0:
+                card = new_cards[0]
+                cards.append(card)
         return cards
 
     def _add_to_dict(self, entry: any):
@@ -96,7 +96,7 @@ class CardLearner(BaseLearner):
     def _get_card_json():
         with Browser() as browser:
             browser.get("https://eternalwarcry.com/content/cards/eternal-cards.json")
-            element = browser.find_element_by_xpath("/html/body/pre")
+            element = browser.safely_find(lambda x: x.find_element_by_xpath("/html/body/pre"))
             card_json = element.text
         return card_json
 

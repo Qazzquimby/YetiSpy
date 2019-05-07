@@ -6,6 +6,8 @@ import typing
 from dataclasses import dataclass
 
 import progiter as progiter
+import selenium
+from selenium.common.exceptions import NoSuchElementException
 
 from eternal_collection_guide import url_constants
 from eternal_collection_guide.base_learner import DeckSearchLearner, JsonCompatible
@@ -36,7 +38,11 @@ class Deck(JsonCompatible):
         :return: The Deck object created.
         """
         browser.get(url)
-        card_playsets = _get_card_playsets(browser, card_collection)
+        try:
+            card_playsets = _get_card_playsets(browser, card_collection)
+        except NoSuchElementException:
+            return None
+
         if len(card_playsets) == 0:
             return None
         archetype = _get_archetype(browser)
@@ -124,8 +130,12 @@ class DeckLearner(DeckSearchLearner):
     def _get_deck_urls_on_page(self, browser: Browser, page: int):
         url = f"{self.deck_search.url}&p={page}"
         browser.get(url)
-        deck_links = browser.find_elements_by_xpath(
-            '//*[@id="body-wrapper"]/div/form[2]/div[2]/table/tbody/tr[*]/td[2]/div[1]/div/a')
+        try:
+            deck_links = browser.safely_find(lambda x: x.find_elements_by_xpath(
+                '//*[@id="body-wrapper"]/div/form[2]/div[2]/table/tbody/tr[*]/td[2]/div[1]/div/a'))
+        except selenium.common.exceptions.TimeoutException:
+            deck_links = []
+
         deck_urls = [deck_link.get_attribute("href") for deck_link in deck_links]
         return deck_urls
 
@@ -155,6 +165,7 @@ class DeckLearner(DeckSearchLearner):
 
 
 def _get_card_playsets(browser: Browser, card_collection: CardCollection) -> typing.List[Playset]:
+    _assert_browser_at_deck_url(browser)
     deck_export = _get_deck_export(browser)
     playsets = _get_playsets_from_deck_export(deck_export, card_collection)
     return playsets
@@ -191,19 +202,20 @@ def _add_playset(playset, playsets):
 
 
 def _get_deck_export(browser: Browser) -> str:
-    assert browser.current_url.startswith(url_constants.DECK_DETAILS_BASE_URL)
-    deck_export_text_area = browser.find_element_by_xpath('//*[@id="export-deck-text"]')
+    _assert_browser_at_deck_url(browser)
+    deck_export_text_area = browser.safely_find(lambda x: x.find_element_by_xpath('//*[@id="export-deck-text"]'))
+
     deck_export = deck_export_text_area.get_attribute("value")
     return deck_export
 
 
 def _get_archetype(browser: Browser) -> str:
-    archetype = browser.find_element_by_xpath('//*[@id="deck-details"]/div[10]/div[2]').text
+    archetype = browser.safely_find(lambda x: x.find_element_by_xpath('//*[@id="deck-details"]/div[10]/div[2]')).text
     return archetype
 
 
 def _get_last_updated(browser: Browser) -> str:
-    last_updated = browser.find_element_by_xpath('//*[@id="deck-details"]/div[11]/div[2]').text
+    last_updated = browser.safely_find(lambda x: x.find_element_by_xpath('//*[@id="deck-details"]/div[11]/div[2]')).text
     return last_updated
 
 
@@ -214,14 +226,14 @@ def _get_is_tournament_from_url(url: str) -> bool:
 
 
 def _get_id_deck_type_string_from_url(url: str) -> str:
-    base_url = url_constants.DECK_DETAILS_BASE_URL
+    base_url = url_constants.DECK_DETAILS_BASE_URLS[0]
     id_deck_type_string = url.replace(base_url, "")
     return id_deck_type_string
 
 
 def _get_success(browser: Browser) -> str:
     # fixme add assert url
-    success = browser.find_element_by_xpath('//*[@id="deck-information-wrapper"]/div[2]').text
+    success = browser.safely_find(lambda x: x.find_element_by_xpath('//*[@id="deck-information-wrapper"]/div[2]')).text
     return success
 
 
@@ -232,3 +244,9 @@ def _get_existing_matching_playset(playset: Playset, playsets: typing.List[Plays
         if sets_match and card_nums_match:
             return other_playset
     return None
+
+
+def _assert_browser_at_deck_url(browser: Browser):
+    current_url = browser.current_url
+    match = any(current_url.startswith(base_url) for base_url in url_constants.DECK_DETAILS_BASE_URLS)
+    assert match

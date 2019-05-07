@@ -47,7 +47,8 @@ class Sets:
     def _init_sets(self):
         browser = Browser()
         browser.get('https://eternalwarcry.com/cards')
-        set_elements = browser.find_elements_by_xpath('//*[@id="CardSet"]/option')
+        set_elements = browser.safely_find(lambda x: x.find_elements_by_xpath('//*[@id="CardSet"]/option'))
+
         for set_element in set_elements:
             set_selection_string = set_element.text
             card_set = CardSet.from_set_selection_string(set_selection_string)
