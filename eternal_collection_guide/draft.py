@@ -25,6 +25,10 @@ class BuyDraft(BuyOption):
         return 5000
 
     @property
+    def gem_cost(self) -> int:
+        return 500
+
+    @property
     def avg_gold_output(self) -> float:
         silver_chest = 225
         gold_chest = 550

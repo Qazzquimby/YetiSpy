@@ -77,7 +77,7 @@ class ValueLearner(DeckSearchLearner):
 
         self.already_seen = defaultdict(bool)
 
-        dependent_paths = [self.owned_cards.json_interface.path,
+        dependent_paths = ["collection.txt",
                            self.play_rates.json_interface.path,
                            self.cards.json_interface.path]
 
@@ -87,7 +87,7 @@ class ValueLearner(DeckSearchLearner):
                          dependent_paths=dependent_paths)
 
     def _update_collection(self):
-        self.json_interface.load_empty()
+        self.collection = self.json_interface.load_empty()
         for play_rate in self.play_rates.collection.contents:
             self._update_value_from_play_rate(play_rate)
 
@@ -133,8 +133,8 @@ class ValueLearner(DeckSearchLearner):
 class SummedValues:
     def __init__(self, file_prefix, value_collections: typing.List[ValueCollection]):
         self.value_collections = value_collections
-        self.json_interface = JsonInterface(file_prefix, "overall_value.json", ValueCollection)
-        self.json_interface_by_shiftstone = JsonInterface(file_prefix, 'overall_value_by_shiftstone.json',
+        self.json_interface = JsonInterface(file_prefix, "overall_card_value.json", ValueCollection)
+        self.json_interface_by_shiftstone = JsonInterface(file_prefix, 'overall_card_value_by_shiftstone.json',
                                                           ValueCollection)
 
         self.collection = self._init_collection()

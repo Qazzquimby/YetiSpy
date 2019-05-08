@@ -17,6 +17,10 @@ class BuyOption(metaclass=ABCMeta):
         raise NotImplementedError
 
     @property
+    def gem_cost(self) -> int:
+        raise NotImplementedError
+
+    @property
     def avg_gold_output(self) -> float:
         raise NotImplementedError
 
@@ -35,6 +39,10 @@ class BuyOption(metaclass=ABCMeta):
     @property
     def avg_value_per_1000_gold(self):
         return self.avg_value * 1000 / self.effective_gold_cost
+
+    @property
+    def avg_value_per_100_gems(self):
+        return self.avg_value * 100 / self.gem_cost
 
     def __lt__(self, other):
         return self.avg_value_per_1000_gold < other.avg_value_per_1000_gold
@@ -71,6 +79,7 @@ class BuyPacks(BuyOptions):
 
 
 class BuyPack(BuyOption):
+
     def __init__(self, set_name, set_num, cards, values):
         super().__init__()
         self.content = SetPack(set_name, set_num, cards, values)
@@ -78,6 +87,10 @@ class BuyPack(BuyOption):
     @property
     def gold_cost(self) -> int:
         return 1000
+
+    @property
+    def gem_cost(self) -> int:
+        return 100
 
     @property
     def avg_gold_output(self) -> float:
@@ -114,6 +127,10 @@ class BuyCampaign(BuyOption):
     @property
     def gold_cost(self) -> int:
         return 25000
+
+    @property
+    def gem_cost(self) -> int:
+        return 1000
 
     @property
     def avg_gold_output(self) -> float:
@@ -158,3 +175,7 @@ class BuyLeague(BuyOption):
     @property
     def gold_cost(self) -> int:
         return 12500
+
+    @property
+    def gem_cost(self) -> int:
+        return 1100
