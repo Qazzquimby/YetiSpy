@@ -1,16 +1,29 @@
+from __future__ import annotations
+
 import csv
 import typing
 from abc import ABCMeta
 
-from eternal_collection_guide.card import CardCollection
-from eternal_collection_guide.card_pack import Campaign, SetPack, CardPacks
+import eternal_collection_guide.campaign
+import eternal_collection_guide.card_pack as card_pack_mod
+import eternal_collection_guide.sets
 from eternal_collection_guide.rarities import RARITIES
-from eternal_collection_guide.sets import Sets, CardSet
 from eternal_collection_guide.shiftstone import NUM_CARDS_IN_PACK, RARITY_REGULAR_DISENCHANT
-from eternal_collection_guide.values import ValueCollection
+
+# todo get rid of leading folder name in imports.
+
+if typing.TYPE_CHECKING:
+    from eternal_collection_guide.card import CardCollection
+    from eternal_collection_guide.sets import Sets, CardSet
+    from eternal_collection_guide.values import ValueCollection
 
 
 class BuyOption(metaclass=ABCMeta):
+    """Something that can be bought in Eternal."""
+
+    @property
+    def name(self) -> str:
+        raise NotImplementedError
 
     @property
     def gold_cost(self) -> int:
@@ -44,11 +57,33 @@ class BuyOption(metaclass=ABCMeta):
     def avg_value_per_100_gems(self):
         return self.avg_value * 100 / self.gem_cost
 
+    @property
+    def evaluation_string(self):
+        return f"Buy {self.name}" + self._purchase_efficiency_string()
+
+    def _purchase_efficiency_string(self):
+        return f"  -  Value per 1000 gold = {self.avg_value_per_1000_gold}" \
+            f"  -  Value per 100 gems = {self.avg_value_per_100_gems}\n"
+
     def __lt__(self, other):
         return self.avg_value_per_1000_gold < other.avg_value_per_1000_gold
 
     def __eq__(self, other):
         return self.avg_value_per_1000_gold == other.avg_value_per_1000_gold
+
+
+class BuyNamedContentOption(BuyOption, metaclass=ABCMeta):
+    """A named item that belongs to a category of things that can be bought in Eternal.
+
+    Examples include a specific card pack, or a specific campaign.
+    """
+
+    def __init__(self, content):
+        self.content = content
+
+    @property
+    def evaluation_string(self):
+        return f"Buy {self.name}: {self.content.name}" + self._purchase_efficiency_string()
 
 
 class BuyOptions(metaclass=ABCMeta):
@@ -58,7 +93,8 @@ class BuyOptions(metaclass=ABCMeta):
                  content_type: typing.Type):
         self.contents: typing.List[BuyOption] = self._init_contents(cards, values, sets, content_type)
 
-    def _init_contents(self, cards: CardCollection,
+    @staticmethod
+    def _init_contents(cards: CardCollection,
                        values: ValueCollection,
                        sets: typing.List[CardSet],
                        content_type: typing.Type):
@@ -78,11 +114,14 @@ class BuyPacks(BuyOptions):
         super().__init__(cards, values, sets, BuyPack)
 
 
-class BuyPack(BuyOption):
+class BuyPack(BuyNamedContentOption):
 
     def __init__(self, set_name, set_num, cards, values):
-        super().__init__()
-        self.content = SetPack(set_name, set_num, cards, values)
+        super().__init__(eternal_collection_guide.sets.SetPack(set_name, set_num, cards, values))
+
+    @property
+    def name(self) -> str:
+        return "Pack"
 
     @property
     def gold_cost(self) -> int:
@@ -118,11 +157,14 @@ class BuyCampaigns(BuyOptions):
         super().__init__(cards, values, sets, BuyCampaign)
 
 
-class BuyCampaign(BuyOption):
+class BuyCampaign(BuyNamedContentOption):
     def __init__(self, set_name, set_num, cards, values):
         # self.card_packs = card_packs
-        super().__init__()
-        self.content = Campaign(set_name, set_num, cards, values)
+        super().__init__(eternal_collection_guide.campaign.Campaign(set_name, set_num, cards, values))
+
+    @property
+    def name(self) -> str:
+        return "Campaign"
 
     @property
     def gold_cost(self) -> int:
@@ -146,8 +188,12 @@ class BuyCampaign(BuyOption):
 
 
 class BuyLeague(BuyOption):
-    def __init__(self, card_packs: CardPacks):
+    def __init__(self, card_packs: card_pack_mod.CardPacks):
         self.card_packs = card_packs
+
+    @property
+    def name(self):
+        return "League"
 
     @property
     def avg_gold_output(self) -> float:

@@ -5,14 +5,14 @@ from dataclasses import dataclass
 
 from progiter import progiter
 
-from eternal_collection_guide.base_learner import BaseLearner, JsonCompatible
-from eternal_collection_guide.browser import Browser
-from eternal_collection_guide.field_hash_collection import FieldHashCollection
-from eternal_collection_guide.rarities import RARITIES
+from . import base_learner
+from .browser import Browser
+from .field_hash_collection import FieldHashCollection
+from .rarities import RARITIES
 
 
 @dataclass
-class Card(JsonCompatible):
+class Card(base_learner.JsonCompatible):
     """Represents a card in Eternal"""
     set_num: int
     card_num: int
@@ -81,7 +81,7 @@ def _get_set_card_string_from_card_url(url: str) -> str:
     return set_card_string
 
 
-class CardLearner(BaseLearner):
+class CardLearner(base_learner.BaseLearner):
     """Populates a card collection from the card database at Eternal Warcry."""
 
     def __init__(self, file_prefix: str):

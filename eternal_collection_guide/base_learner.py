@@ -12,7 +12,7 @@ import typing
 from dataclasses import dataclass
 
 if typing.TYPE_CHECKING:
-    from eternal_collection_guide.field_hash_collection import FieldHashCollection
+    from .field_hash_collection import FieldHashCollection
 
 
 @dataclass
@@ -27,8 +27,8 @@ class JsonCompatible(metaclass=ABCMeta):
         return result
 
 
-class JsonInterface:
-    """Facilitates saving and loading of objects to JSON files."""
+class PersistInterface(metaclass=ABCMeta):
+    """Facilitates saving and loading objects."""
 
     def __init__(self, file_prefix: str,
                  file_name: str,
@@ -37,8 +37,6 @@ class JsonInterface:
         self.file_name = file_name
         self.collection_type = collection_type
         self.path = f"{self.file_prefix}/{self.file_name}"
-
-        self._loader = _JsonLoader(self.path)
 
     def load_empty(self) -> FieldHashCollection:
         """Loads an empty collection, ignoring any saved data.
@@ -53,15 +51,53 @@ class JsonInterface:
 
         :return: The loaded collection.
         """
-        json_entries = self._loader.load_json_entries()
-        collection = self._get_collection_from_json_entries(json_entries)
-        return collection
+        raise NotImplementedError
 
     def save(self, collection: FieldHashCollection):
         """Saves the given collection.
 
         :param collection: The collection to save.
         """
+        raise NotImplementedError
+
+
+# class SQLInterface(PersistInterface):
+#     """Facilitates saving and loading of objects to an SQL db."""
+#
+#     def load(self) -> FieldHashCollection:
+#         pass
+#
+#     def save(self, collection: FieldHashCollection):
+#         connection = self._get_connection()
+#
+#     def _get_connection(self):
+#         db_filename = f"{self.file_prefix}/db.db"
+#         connection = sqlite3.connect(db_filename)
+#         connection.execute("""
+#         CREATE TABLE IF NOT EXISTS ? (
+#             first_name TEXT,
+#             last_name  TEXT,
+#             age        FLOAT
+#         )
+#         """)
+#
+#         blah = """
+# INSERT INTO person (first_name, last_name, age)
+# VALUES (?, ?, ?)
+# """, ('chris', 'ostrouchov', 27)
+#
+#         return connection
+
+
+class JsonInterface(PersistInterface):
+    """Facilitates saving and loading of objects to JSON files."""
+
+    def load(self) -> FieldHashCollection:
+        json_entries = _JsonLoader(self.path).load_json_entries()
+        collection = self._get_collection_from_json_entries(json_entries)
+        return collection
+
+    def save(self, collection: FieldHashCollection):
         print("Saving work. Do not close program.")
 
         def _encode(obj):

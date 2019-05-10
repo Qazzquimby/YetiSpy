@@ -138,6 +138,7 @@ class SummedValues:
                                                           ValueCollection)
 
         self.collection = self._init_collection()
+        print("Getting overall values.")
         self.save()
 
     def _init_collection(self) -> ValueCollection:

@@ -2,6 +2,9 @@ import typing
 from dataclasses import dataclass
 
 from eternal_collection_guide.browser import Browser
+from eternal_collection_guide.card import CardCollection
+from eternal_collection_guide.card_pack import CardPack
+from eternal_collection_guide.values import ValueCollection
 
 
 @dataclass
@@ -38,12 +41,6 @@ class Sets:
     def newest_core_set(self):
         return max(self.core_sets)
 
-    # def avg_gold_chest_pack_value(self):
-    #     non_newest_core_sets: typing.List[CardSet] = self.core_sets[:].remove(self.newest_core_set)
-    #
-    #     card_packs = [CardPack(core_set.name, core_set.set_num) for core_set in non_newest_core_sets]
-
-
     def _init_sets(self):
         browser = Browser()
         browser.get('https://eternalwarcry.com/cards')
@@ -57,3 +54,15 @@ class Sets:
             elif 900 < card_set.set_num:
                 self.campaigns.append(card_set)
         pass
+
+
+class SetPack(CardPack):
+    """A card pack for a set of cards."""
+
+    def __init__(self, name: str, set_num: int, card_collection: CardCollection, value_collection: ValueCollection):
+        self.set_num = set_num
+        super().__init__(name, card_collection, value_collection)
+
+    def get_cards_in_set(self):
+        cards_in_set = self.cards.get_cards_in_set(self.set_num)
+        return cards_in_set
