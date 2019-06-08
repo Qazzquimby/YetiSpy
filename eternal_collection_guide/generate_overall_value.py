@@ -1,11 +1,11 @@
+from eternal_collection_guide import buy_efficiency
+from eternal_collection_guide.card import CardLearner
+from eternal_collection_guide.deck import DeckLearner
+from eternal_collection_guide.deck_searches import get_deck_searches
 from eternal_collection_guide.file_prefix import file_prefix
-from . import buy_efficiency
-from .card import CardLearner
-from .deck import DeckLearner
-from .deck_searches import get_deck_searches
-from .owned_cards import OwnedCardsLearner
-from .play_rate import PlayRateLearner
-from .values import ValueLearner, SummedValues
+from eternal_collection_guide.owned_cards import OwnedCardsLearner
+from eternal_collection_guide.play_rate import PlayRateLearner
+from eternal_collection_guide.values import ValueLearner, SummedValues
 
 if __name__ == '__main__':
     card_learner = CardLearner(file_prefix)

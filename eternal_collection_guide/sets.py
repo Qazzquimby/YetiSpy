@@ -2,9 +2,6 @@ import typing
 from dataclasses import dataclass
 
 from eternal_collection_guide.browser import Browser
-from eternal_collection_guide.card import CardCollection
-from eternal_collection_guide.card_pack import CardPack
-from eternal_collection_guide.values import ValueCollection
 
 
 @dataclass
@@ -56,13 +53,3 @@ class Sets:
         pass
 
 
-class SetPack(CardPack):
-    """A card pack for a set of cards."""
-
-    def __init__(self, name: str, set_num: int, card_collection: CardCollection, value_collection: ValueCollection):
-        self.set_num = set_num
-        super().__init__(name, card_collection, value_collection)
-
-    def get_cards_in_set(self):
-        cards_in_set = self.cards.get_cards_in_set(self.set_num)
-        return cards_in_set

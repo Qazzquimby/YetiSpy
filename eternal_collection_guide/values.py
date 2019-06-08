@@ -11,7 +11,8 @@ from eternal_collection_guide.field_hash_collection import FieldHashCollection
 from eternal_collection_guide.owned_cards import Playset, OwnedCardsLearner
 from eternal_collection_guide.play_rate import PlayRate, PlayRateLearner
 from eternal_collection_guide.rarities import Rarity
-from eternal_collection_guide.shiftstone import RARITY_REGULAR_ENCHANT
+
+IMPATIENCE = 0.5
 
 
 @dataclass
@@ -23,14 +24,27 @@ class ValueSet(JsonCompatible):
     values: typing.List[float]
 
     @property
-    def value_per_100_shiftstone(self):
-        """Gives the effective value of crafting the card."""
-        return self.values[0] * 100 / RARITY_REGULAR_ENCHANT[self.rarity]
+    def value(self):
+        try:
+            return self.values[0]
+        except IndexError:
+            return 0
+
+    def craft_efficiency(self):
+        adjusted_chance = (1 - IMPATIENCE) * (1 - self.rarity.drop_chance)
+        adjusted_cost = IMPATIENCE * (self.rarity.enchant / 3200) + (1 - IMPATIENCE)
+        craft_value = self.values[0] * (adjusted_chance + 1 / adjusted_cost)
+
+        return craft_value
+
+    def to_json(self):
+        self.craft_efficiency_value = self.craft_efficiency
+        return self
 
     @classmethod
     def from_json(cls, entry: dict):
         try:
-            entry.pop("value_per_100_shiftstone")
+            entry.pop("craft_efficiency_value")
         except KeyError:
             pass
 
@@ -134,7 +148,7 @@ class SummedValues:
     def __init__(self, file_prefix, value_collections: typing.List[ValueCollection]):
         self.value_collections = value_collections
         self.json_interface = JsonInterface(file_prefix, "overall_card_value.json", ValueCollection)
-        self.json_interface_by_shiftstone = JsonInterface(file_prefix, 'overall_card_value_by_shiftstone.json',
+        self.json_interface_by_shiftstone = JsonInterface(file_prefix, 'overall_card_value_by_craft_efficiency.json',
                                                           ValueCollection)
 
         self.collection = self._init_collection()
@@ -167,8 +181,8 @@ class SummedValues:
         self.collection.sort(reverse=True)
         self.json_interface.save(self.collection)
 
-        def get_value_per_100_shiftstone(value: ValueSet):
-            return value.value_per_100_shiftstone
+        def get_craft_efficiency(value: ValueSet):
+            return value.craft_efficiency
 
-        self.collection.sort(key=get_value_per_100_shiftstone, reverse=True)
+        self.collection.sort(key=get_craft_efficiency, reverse=True)
         self.json_interface_by_shiftstone.save(self.collection)

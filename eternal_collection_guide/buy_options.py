@@ -5,10 +5,10 @@ import typing
 from abc import ABCMeta
 
 import eternal_collection_guide.campaign
+import eternal_collection_guide.card_pack
 import eternal_collection_guide.card_pack as card_pack_mod
 import eternal_collection_guide.sets
 from eternal_collection_guide.rarities import RARITIES
-from eternal_collection_guide.shiftstone import NUM_CARDS_IN_PACK, RARITY_REGULAR_DISENCHANT
 
 # todo get rid of leading folder name in imports.
 
@@ -117,7 +117,7 @@ class BuyPacks(BuyOptions):
 class BuyPack(BuyNamedContentOption):
 
     def __init__(self, set_name, set_num, cards, values):
-        super().__init__(eternal_collection_guide.sets.SetPack(set_name, set_num, cards, values))
+        super().__init__(eternal_collection_guide.card_pack.SetPack(set_name, set_num, cards, values))
 
     @property
     def name(self) -> str:
@@ -139,8 +139,8 @@ class BuyPack(BuyNamedContentOption):
     def avg_shiftstone_output(self) -> float:
         total_shiftstone = 100  # flat value
         for rarity in RARITIES:
-            num_cards = NUM_CARDS_IN_PACK[rarity]
-            shiftstone_per_card = RARITY_REGULAR_DISENCHANT[rarity]
+            num_cards = rarity.num_in_pack
+            shiftstone_per_card = rarity.disenchant
             shiftstone_for_rarity = num_cards * shiftstone_per_card
             total_shiftstone += shiftstone_for_rarity
         return total_shiftstone

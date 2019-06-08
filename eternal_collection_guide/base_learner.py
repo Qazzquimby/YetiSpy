@@ -19,6 +19,9 @@ if typing.TYPE_CHECKING:
 class JsonCompatible(metaclass=ABCMeta):
     """An object which can be loaded from JSON."""
 
+    def to_json(self):
+        return self
+
     @classmethod
     def from_json(cls, entry: dict):
         """Creates an instance of the object from a JSON object."""
@@ -101,12 +104,14 @@ class JsonInterface(PersistInterface):
         print("Saving work. Do not close program.")
 
         def _encode(obj):
+            if isinstance(obj, JsonCompatible):
+                return obj.to_json().__dict__
             if isinstance(obj, datetime.datetime):
                 return obj.isoformat()
             return obj.__dict__
 
         with open(self.path, "w") as file:
-            json.dump(collection.contents, file, indent=4, sort_keys=True, default=_encode)
+            json.dump(collection.contents, file, indent=4, sort_keys=True, default=_encode, )
         print("Saved.")
 
     def _get_collection_from_json_entries(self, json_entries: typing.List[any]) -> FieldHashCollection:
