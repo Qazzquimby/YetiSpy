@@ -1,9 +1,8 @@
 from unittest import TestCase
 
+import infiltrate.card as cards
+from infiltrate.base_learner import JsonCompatible
 from parameterized import parameterized
-
-import eternal_collection_guide.card as cards
-from eternal_collection_guide.base_learner import JsonCompatible
 
 
 class JsonCompatibleStub(JsonCompatible):

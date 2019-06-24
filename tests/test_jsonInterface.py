@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-from eternal_collection_guide.base_learner import JsonInterface
-from eternal_collection_guide.field_hash_collection import JsonLoadedCollection
+from infiltrate.base_learner import JsonInterface
+from infiltrate.field_hash_collection import JsonLoadedCollection
 
 
 class ContentStub:
