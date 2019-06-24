@@ -84,7 +84,7 @@ class CardPack(metaclass=ABCMeta):
 
         values_in_rarity = {}
         for rarity in RARITIES:
-            values_in_rarity[rarity] = []
+            values_in_rarity[rarity.name] = []
 
         for card in cards_in_set:
             value_of_card = self._get_value_of_card_by_name(card.name)
@@ -99,18 +99,18 @@ class CardPack(metaclass=ABCMeta):
         avg_value_of_rarity = {}
         for rarity in RARITIES:
             total_value = 0
-            for value in values_in_rarity[rarity]:
+            for value in values_in_rarity[rarity.name]:
                 total_value += value
             if total_value > 0:
-                total_value /= len(values_in_rarity[rarity])
-            avg_value_of_rarity[rarity] = total_value
+                total_value /= len(values_in_rarity[rarity.name])
+            avg_value_of_rarity[rarity.name] = total_value
         return avg_value_of_rarity
 
     @staticmethod
     def _get_avg_value_of_pack(avg_value_of_rarity_dict: typing.Dict[str, float]) -> float:
         avg_value_of_pack = 0
         for rarity in RARITIES:
-            avg_value_of_rarity = avg_value_of_rarity_dict[rarity]
+            avg_value_of_rarity = avg_value_of_rarity_dict[rarity.name]
             num_in_pack = rarity.num_in_pack
             value_of_rarity_by_chance = avg_value_of_rarity * num_in_pack
             avg_value_of_pack += value_of_rarity_by_chance

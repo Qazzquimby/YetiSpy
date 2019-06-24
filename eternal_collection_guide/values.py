@@ -182,7 +182,7 @@ class SummedValues:
         self.json_interface.save(self.collection)
 
         def get_craft_efficiency(value: ValueSet):
-            return value.craft_efficiency
+            return value.value
 
         self.collection.sort(key=get_craft_efficiency, reverse=True)
         self.json_interface_by_shiftstone.save(self.collection)

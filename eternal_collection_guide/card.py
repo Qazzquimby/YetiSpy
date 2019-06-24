@@ -114,7 +114,7 @@ class CardLearner(base_learner.BaseLearner):
         try:
             if not entry["DeckBuildable"]:
                 return None
-            if entry["Rarity"].lower() not in RARITIES:
+            if entry["Rarity"].lower() not in (rarity.name for rarity in RARITIES):
                 return None
 
             content = Card(entry['SetNumber'],

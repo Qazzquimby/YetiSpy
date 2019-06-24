@@ -16,7 +16,7 @@ class Rarity:
         return self.num_in_pack / sum([r.num_in_pack for r in RARITIES])
 
 
-COMMON = Rarity(0, name="string", num_in_pack=8,
+COMMON = Rarity(0, name="common", num_in_pack=8,
                 enchant=50,
                 disenchant=1,
                 foil_enchant=800,
