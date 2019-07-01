@@ -1,6 +1,6 @@
 import typing
 
-from infiltrate import card_collections
+from infiltrate import card_collections, caches
 from infiltrate import db
 from infiltrate import models
 from infiltrate.models import rarity
@@ -9,19 +9,37 @@ from infiltrate.models.deck_search import DeckSearch, WeightedDeckSearch
 from infiltrate.models.user import User
 
 
-class CardValueDisplay:
-    def __init__(self, card_id_with_value: card_collections.CardIdWithValue):
-        card = models.card.get_card(card_id_with_value.card_id.set_num, card_id_with_value.card_id.card_num)
+@caches.mem_cache.cache("card_displays", expire=3600)
+def make_card_display(card_id: card_collections.CardId):
+    print(card_id)
+    card_display = CardDisplay(card_id)
+    return card_display
+
+
+class CardDisplay:
+    def __init__(self, card_id: card_collections.CardId):
+        card = models.card.get_card(card_id.set_num, card_id.card_num)
         self.name = card.name
         self.rarity = card.rarity
         self.image_url = card.image_url
         self.details_url = card.details_url
-        self.value = card_id_with_value.value
+
+
+class CardValueDisplay:
+    def __init__(self, card_id_with_value: card_collections.CardIdWithValue):
+        self.card: CardDisplay = make_card_display(card_id_with_value.card_id)
 
         self.count = card_id_with_value.count
+        self.value = card_id_with_value.value
 
-        cost = rarity.rarity_from_name[card.rarity].enchant
+        cost = rarity.rarity_from_name[self.card.rarity].enchant
         self.value_per_shiftstone = card_id_with_value.value * 100 / cost
+
+
+def get_displays_for_user(user: User) -> typing.List[CardValueDisplay]:
+    values = get_values_for_user(user)
+    displays = [CardValueDisplay(v) for v in values]
+    return displays
 
 
 def get_values_for_user(user: User) -> typing.List[card_collections.CardIdWithValue]:

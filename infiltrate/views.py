@@ -9,15 +9,15 @@ from infiltrate.evaluation import CardValueDisplay
 from infiltrate.models import user as user_mod
 
 
-def group_card_value_displays(displays):
+def group_card_value_displays(displays: typing.List[CardValueDisplay]):
     def get_minimum_count(card):
-        return min([c.count for c in displays if c.name == card.name])
+        return min([d.count for d in displays if d.card.name == card.name])
 
     def get_maximum_count(card):
-        return max([c.count for c in displays if c.name == card.name])
+        return max([d.count for d in displays if d.card.name == card.name])
 
-    def remove_duplicates(displays):
-        names = [c.name for c in displays]
+    def remove_duplicates(displays: typing.List[CardValueDisplay]):
+        names = [d.card.name for d in displays]
         first_indexes = set([names.index(name) for name in names])
 
         new_displays = []
@@ -28,26 +28,28 @@ def group_card_value_displays(displays):
 
     minimum_counts = {}
     maximum_counts = {}
-    for card in displays:
+    for display in displays:
+        card = display.card
         if card.name not in maximum_counts.keys():
             minimum_counts[card.name] = get_minimum_count(card)
             maximum_counts[card.name] = get_maximum_count(card)
 
     displays = remove_duplicates(displays)
-    for card in displays:
-        card.minimum = minimum_counts[card.name]
-        card.maximum = maximum_counts[card.name]
+    for display in displays:
+        card = display.card
+        display.minimum = minimum_counts[card.name]
+        display.maximum = maximum_counts[card.name]
 
     return displays
 
 
-def sort_values(values: typing.List, sort: str):
+def sort_displays(displays: typing.List, sort: str):
     if sort == "value":
-        key = lambda x: x.value
+        key = "value"
     elif sort == "craft":
-        key = "value_per_shiftstone"  # TODO this is unfinished and broken
+        key = "value_per_shiftstone"
 
-    return sorted(values, key=key, reverse=True)
+    return sorted(displays, key=lambda x: x.__dict__[key], reverse=True)
 
 
 def get_start_and_end_from_page(num_cards, page):
@@ -81,16 +83,9 @@ class CardsView(FlaskView):
         user = user_mod.User.query.filter_by(name="me").first()
 
         values = evaluation.get_values_for_user(user)
+        displays = evaluation.get_displays_for_user(user)
 
-        # sort values
-        values = sort_values(values, sort)
-
-        # filter values to current page
-
-        # make displays out of values
-
-        displays = [CardValueDisplay(v) for v in values]  # TODO EXPENSIVE
-        displays = sort_values(displays, sort)
+        displays = sort_displays(displays, sort)
 
         start, end = get_start_and_end_from_page(len(displays), page)
         displays_on_page = displays[start:end]

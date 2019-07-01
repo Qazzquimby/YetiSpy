@@ -2,11 +2,11 @@ import json
 import typing
 
 from infiltrate import browser
-from infiltrate.caches import cache
+from infiltrate import caches
 from infiltrate.models import db
 
 
-@cache.cache("card", expire="200")
+@caches.mem_cache.cache("cards", expire="800")
 def get_card(set_num: int, card_num: int):
     card = Card.query.filter_by(set_num=set_num, card_num=card_num).first()
     return card
