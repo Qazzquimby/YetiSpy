@@ -1,0 +1,61 @@
+<div id="card-values" class="pad-t pad-more ">
+    <table id="card-value" class="table vertical-align col-md-8">
+        <thead>
+        <tr class="row">
+            <th class="col-md-4 no-padding">
+                Sort by:
+            </th>
+            <th class="col-md-3 text-center btn {% if sort=="craft" %} bg-primary {% endif %}"
+                onclick="sort='craft'; page=0; updateCardTable()">
+                Crafting Efficiency ▼
+
+            </th>
+            <th class="col-md-3 text-center btn {% if sort=="value" %} bg-primary {% endif %}"
+                onclick="sort='value'; page=0; updateCardTable()">
+                Value ▼
+            </th>
+        </tr>
+        </thead>
+        {% for card in card_values %}
+            <tr class="row">
+                <td class="col-md-4 no-padding">
+
+                    <div class="row equal-height flex-center-vertically">
+                        <div class="col-md-3 no-padding">
+                            <img class="card-thumb" src="{{ card.image_url }}">
+                        </div>
+                        <div class="col-md-9">
+                            <a class="btn-text text-bold text-lg text-left
+                                                     text-{{ card.rarity.lower() }}"
+                               rel="popover"
+                               data-img="{{ card.image_url }}"
+                               data-name="{{ card.name }}"
+                               href="{{ card.details_url }}">
+                                {{ card.name }}
+                            </a>
+                        </div>
+                    </div>
+
+                </td>
+                <td class="col-md-3 text-center">
+                    <div>
+                        {{ card.value_per_shiftstone }}
+                    </div>
+
+                </td>
+                <td class="col-md-3 text-center">
+                    <div>
+                        {{ card.value }}
+                    </div>
+                </td>
+                <td class="col-md-1 text-center">
+                    {% if card.minimum != card.maximum %}
+                        <div>X{{ card.maximum-card.minimum }}</div>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+</div>

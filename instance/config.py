@@ -6,3 +6,4 @@ This also contains variables that are specific to this particular instance of yo
 For example, you might have DEBUG = False in config.py, but set DEBUG = True in instance/config.py on your local
 machine for development.
 Since this file will be read in after config.py, it will override it and set DEBUG = True."""
+

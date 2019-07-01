@@ -50,6 +50,8 @@ LEGENDARY = Rarity(name="Legendary",
                    foil_disenchant=3200)
 RARITIES = [COMMON, UNCOMMON, RARE, LEGENDARY, PROMO]
 
+rarity_from_name = {r.name: r for r in RARITIES}
+
 
 def update_rarity():
     db.session.create_all()

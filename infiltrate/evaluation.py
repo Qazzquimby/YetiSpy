@@ -1,21 +1,34 @@
 import typing
 
 from infiltrate import card_collections
+from infiltrate import db
+from infiltrate import models
+from infiltrate.models import rarity
+from infiltrate.models.card import Card
 from infiltrate.models.deck_search import DeckSearch, WeightedDeckSearch
 from infiltrate.models.user import User
 
 
+class CardValueDisplay:
+    def __init__(self, card_id_with_value: card_collections.CardIdWithValue):
+        card = models.card.get_card(card_id_with_value.card_id.set_num, card_id_with_value.card_id.card_num)
+        self.name = card.name
+        self.rarity = card.rarity
+        self.image_url = card.image_url
+        self.details_url = card.details_url
+        self.value = card_id_with_value.value
+
+        self.count = card_id_with_value.count
+
+        cost = rarity.rarity_from_name[card.rarity].enchant
+        self.value_per_shiftstone = card_id_with_value.value * 100 / cost
+
+
 def get_values_for_user(user: User) -> typing.List[card_collections.CardIdWithValue]:
     _normalize_weights(user)
-
-    values = _get_values_for_deck_searches(user)
-    return values
-
-
-def _normalize_weights(user: User):
-    total_weight = sum([search.weight for search in user.weighted_deck_searches])
-    for search in user.weighted_deck_searches:
-        search.weight = search.weight / total_weight
+    with db.session.no_autoflush:
+        values = _get_values_for_deck_searches(user)
+        return values
 
 
 def _get_values_for_deck_searches(user: User):
@@ -25,11 +38,18 @@ def _get_values_for_deck_searches(user: User):
     for card_id in value_dict.keys():
         for play_count in range(4):
             value = card_collections.CardIdWithValue(card_id=card_id, value=value_dict[card_id][play_count],
-                                                     count=play_count)
+                                                     count=play_count + 1)
             values.append(value)
 
-    values = sorted(values, key=lambda x: x.value, reverse=True)
+    # TODO normalize all values between 0-100
+
     return values
+
+
+def _normalize_weights(user: User):
+    total_weight = sum([search.weight for search in user.weighted_deck_searches])
+    for search in user.weighted_deck_searches:
+        search.weight = search.weight / total_weight
 
 
 def _get_overall_value_dict(user: User):
@@ -59,12 +79,17 @@ def _get_value_dict(user: User, weighted_search: WeightedDeckSearch):
 
 
 def _get_playrate_dict(deck_search: DeckSearch) -> typing.Dict:
+    cards = deck_search.cards
+
     playrate = card_collections.make_card_playset_dict()
-    for deck in deck_search.get_decks():
-        for card in deck.cards:
-            card_id = card_collections.CardId(set_num=card.set_num, card_num=card.card_num)
-            for num_played in range(card.num_played):
-                playrate[card_id][num_played] += 1
+    for card in cards:
+        card_id = card_collections.CardId(card_num=card.card_num, set_num=card.set_num)
+        playrate[card_id][card.count_in_deck - 1] = card.num_decks_with_count_or_less
+
+        # for card in deck.cards:
+        #     card_id = card_collections.CardId(set_num=card.set_num, card_num=card.card_num)
+        #     for num_played in range(card.num_played):
+        #         playrate[card_id][num_played] += 1
     return playrate
 
 
@@ -86,8 +111,7 @@ def _get_playrate_dict_minus_collection(user: User, playrate_dict: typing.Dict):
             adjusted_playrate_dict[card_id][num_owned] = 0
     return adjusted_playrate_dict
 
-
-if __name__ == '__main__':
-    me = User.query.filter_by(name="me").first()
-    values = get_values_for_user(me)
-    print(values)
+# if __name__ == '__main__':
+#     me = User.query.filter_by(name="me").first()
+#     values = get_values_for_user(me)
+#     print(values)
