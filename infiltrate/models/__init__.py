@@ -5,6 +5,11 @@ from infiltrate import db
 # from infiltrate.models.deck import update_all_decks
 
 db: SQLAlchemy = db
+import infiltrate.models.card
+import infiltrate.models.rarity
+import infiltrate.models.user
+import infiltrate.models.deck
+import infiltrate.models.deck_search
 
 
 def update():

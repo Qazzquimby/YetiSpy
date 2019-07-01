@@ -1,41 +1,13 @@
 import typing
 
-from infiltrate import card_collections, caches
+from infiltrate import card_collections
 from infiltrate import db
 from infiltrate import models
-from infiltrate.models import rarity
-from infiltrate.models.card import Card
-from infiltrate.models.deck_search import DeckSearch, WeightedDeckSearch
+from infiltrate.card_collections import CardValueDisplay
 from infiltrate.models.user import User
 
 
-@caches.mem_cache.cache("card_displays", expire=3600)
-def make_card_display(card_id: card_collections.CardId):
-    print(card_id)
-    card_display = CardDisplay(card_id)
-    return card_display
-
-
-class CardDisplay:
-    def __init__(self, card_id: card_collections.CardId):
-        card = models.card.get_card(card_id.set_num, card_id.card_num)
-        self.name = card.name
-        self.rarity = card.rarity
-        self.image_url = card.image_url
-        self.details_url = card.details_url
-
-
-class CardValueDisplay:
-    def __init__(self, card_id_with_value: card_collections.CardIdWithValue):
-        self.card: CardDisplay = make_card_display(card_id_with_value.card_id)
-
-        self.count = card_id_with_value.count
-        self.value = card_id_with_value.value
-
-        cost = rarity.rarity_from_name[self.card.rarity].enchant
-        self.value_per_shiftstone = card_id_with_value.value * 100 / cost
-
-
+# todo cache this in mem for short duration?
 def get_displays_for_user(user: User) -> typing.List[CardValueDisplay]:
     values = get_values_for_user(user)
     displays = [CardValueDisplay(v) for v in values]
@@ -89,14 +61,14 @@ def _get_individual_value_dicts(user: User):
     return value_dicts
 
 
-def _get_value_dict(user: User, weighted_search: WeightedDeckSearch):
+def _get_value_dict(user: User, weighted_search: models.deck_search.WeightedDeckSearch):
     playrate_dict = _get_playrate_dict(weighted_search.deck_search)
     unowned_playrate_dict = _get_playrate_dict_minus_collection(user, playrate_dict)
     value_dict = _get_value_dict_from_playrate_dict(weighted_search.weight, unowned_playrate_dict)
     return value_dict
 
 
-def _get_playrate_dict(deck_search: DeckSearch) -> typing.Dict:
+def _get_playrate_dict(deck_search: models.deck_search.DeckSearch) -> typing.Dict:
     cards = deck_search.cards
 
     playrate = card_collections.make_card_playset_dict()

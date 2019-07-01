@@ -4,9 +4,9 @@ import typing
 import flask
 from flask_classy import FlaskView
 
-from infiltrate import evaluation
-from infiltrate.evaluation import CardValueDisplay
-from infiltrate.models import user as user_mod
+from infiltrate import evaluation, card_collections
+from infiltrate.card_collections import CardValueDisplay
+from infiltrate.models import user as user_mod, card_sets
 
 
 def group_card_value_displays(displays: typing.List[CardValueDisplay]):
@@ -43,7 +43,19 @@ def group_card_value_displays(displays: typing.List[CardValueDisplay]):
     return displays
 
 
+def filter_displays(displays: typing.List[card_collections.CardValueDisplay], sort: str):
+    """Returns a list of displays filtered to match the given sort
+
+    Craft sort does not contain campaign cards
+    """
+    if sort == "craft":
+        displays = [d for d in displays[:] if not card_sets.is_campaign(d.card.set_num)]
+
+    return displays
+
+
 def sort_displays(displays: typing.List, sort: str):
+    """Returns a list of displays sorted by the given method."""
     if sort == "value":
         key = "value"
     elif sort == "craft":
@@ -62,29 +74,32 @@ def get_start_and_end_from_page(num_cards, page):
     return start, end
 
 
+SORTS = ("craft", "value")
+
+
 class CardsView(FlaskView):
     route_base = '/'
 
     def index(self):
-        # TODO Read table from ajax
-        # TODO allow searching through multiple pages of items.
-        # TODO filter out cards by set (especially campaigns)
-        # TODO update deck search cache on a schedule, nightly.
-        # TODO add loading card images https://eternalwarcry.com/images/cards/loading.png
         # TODO divide values by something proportional to #decks in search (prevent larger searches being worth more)
+        # TODO Tests :(
+        # TODO update deck search cache on a schedule, nightly.
+
         # TODO show number to buy with icons. Filled card for owned, Gold card for buy, Empty for dont
+
+        # TODO support user sign in
+
+        # TODO improve craft efficiency by taking into account drop rate
 
         return flask.render_template("card_values.html")
 
     def card_values(self, page=1, sort="craft"):
-        # TODO MAKE FAST
         page = int(page)
 
         user = user_mod.User.query.filter_by(name="me").first()
 
-        values = evaluation.get_values_for_user(user)
         displays = evaluation.get_displays_for_user(user)
-
+        displays = filter_displays(displays, sort)
         displays = sort_displays(displays, sort)
 
         start, end = get_start_and_end_from_page(len(displays), page)

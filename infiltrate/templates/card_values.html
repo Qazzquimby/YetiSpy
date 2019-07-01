@@ -12,7 +12,10 @@
         <div class="col-md-2"></div>
         <div id="content-col" class="col-md-8">
 
-            <div id="card-table" class="text-center row"></div>
+            <div id="card-table" class="text-center row">
+                <div class="space-t"></div>
+                Loading Values...
+            </div>
             <div id="card-table-pagination" class="text-center row">
                 <nav aria-label="Card values page">
                     <ul id="pagination" class="pagination">
@@ -28,7 +31,7 @@
                             </button>
                         </li>
                         <li class="pagination-info">
-                            <span id="current-page"></span>
+                            <span id="current-page">1</span>
                         </li>
                         <li class="page-item" onclick="page=page+1; updateCardTable()">
                             <button>Next</button>
