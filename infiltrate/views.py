@@ -81,9 +81,11 @@ class CardsView(FlaskView):
     route_base = '/'
 
     def index(self):
-        # TODO divide values by something proportional to #decks in search (prevent larger searches being worth more)
         # TODO Tests :(
-        # TODO update deck search cache on a schedule, nightly.
+        # TODO import collection from EW api
+        # TODO document your goddamn code.
+        # TODO search for card
+        # TODO make faster :(
 
         # TODO show number to buy with icons. Filled card for owned, Gold card for buy, Empty for dont
 

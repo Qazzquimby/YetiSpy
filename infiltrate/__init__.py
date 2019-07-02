@@ -33,11 +33,17 @@ def _register_views(app):
     CardsView.register(app)
 
 
+def _schedule_updates():
+    from infiltrate import scheduling
+    return scheduling.schedule_updates
+
+
 db = _setup_db(app)
 Bootstrap(app)
 _set_config(app, test_config=None)
 _make_instance_dir(app)
 _register_views(app)
+_schedule_updates()
 
 
 @app.teardown_request

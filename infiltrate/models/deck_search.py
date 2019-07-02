@@ -1,6 +1,8 @@
 import datetime
 import typing
 
+from progiter import progiter
+
 from infiltrate import card_collections
 from infiltrate.models import db
 from infiltrate.models.card import Card
@@ -45,7 +47,7 @@ class DeckSearch(db.Model):
         return playrate
 
     def _add_playrates(self, playrates: typing.Dict):
-        for card_id in playrates.keys():
+        for card_id in progiter.ProgIter(playrates.keys()):
             for play_count in range(4):
                 deck_search_has_card = DeckSearchHasCard(
                     decksearch_id=self.id,
@@ -68,23 +70,12 @@ class WeightedDeckSearch(db.Model):
 
 def update_deck_searches():
     # todo placeholder
-    deck_search = DeckSearch.query.filter_by(maximum_age_days=25).first()
-    if not deck_search:
-        deck_search = DeckSearch(maximum_age_days=25)
 
-    weighted = WeightedDeckSearch.query.filter_by(username="me",
-                                                  weight=10,
-                                                  name="last 25 days",
-                                                  deck_search=deck_search).first()
-    if not weighted:
-        weighted = WeightedDeckSearch(weight=10,
-                                      name="last 25 days",
-                                      deck_search=deck_search)
-        weighted = db.session.merge(weighted)
-        db.session.commit()
-
-    deck_search = weighted.deck_search
-    deck_search.update_playrates()
+    weighted_deck_searches = WeightedDeckSearch.query.filter_by(username="me").all()
+    for weighted in weighted_deck_searches:
+        print(weighted.name)
+        deck_search = weighted.deck_search
+        deck_search.update_playrates()
 
 
 def get_deck_search(deck_search: DeckSearch) -> DeckSearch:

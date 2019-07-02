@@ -1,11 +1,7 @@
-import csv
 import enum
-import os
 import typing
 import urllib.error
 from datetime import datetime
-
-from progiter import ProgIter
 
 from infiltrate import db, browser
 from infiltrate.models.card import Card, card_in_db
@@ -61,107 +57,121 @@ class Deck(db.Model):
     cards = db.relationship('DeckHasCard')
 
 
-def save_all_ids():
-    def main():
-        page = 0
-        while True:
-            ids_on_page = get_ids_from_page(page)
-            if not ids_on_page:
-                break
-            save_ids(ids_on_page)
-            page += 1
-            print(f"{page * 50 * 100 / 19325}%")
-
-    def get_ids_from_page(page: int):
-        items_per_page = 50
-        url = "https://api.eternalwarcry.com/v1/decks/SearchDecks" + \
-              f"?starting={items_per_page * page}" + \
-              f"&perpage={items_per_page}" + \
-              f"&key=e6b3bf05-2fb7-4979-baf8-92328818e3f5"
-        page_json = browser.get_content_at_url(url)
-        ids = _get_ids_from_page_json(page_json)
-
-        return ids
-
-    def _get_ids_from_page_json(page_json: typing.Dict):
-        decks = page_json['decks']
-        ids = [deck['deck_id'] for deck in decks]
-        return ids
-
-    def save_ids(ids: typing.List[str]):
-        with open(os.path.join('..', 'data', 'deck_ids.csv'), 'a+') as csv_file:
-            for deck_id in ids:
-                csv_file.write(f"{deck_id},")
-
-    main()
-
-
 def deck_in_db(deck_id: str):
     return Deck.query.filter_by(id=deck_id).first()
 
 
-def update_all_decks():
-    def update_deck_from_id(deck_id: str):
-        url = "https://api.eternalwarcry.com/v1/decks/details" + \
-              "?key=e6b3bf05-2fb7-4979-baf8-92328818e3f5" + \
-              f"&deck_id={deck_id}"
-        try:
+def get_new_warcy_ids():
+    """Return all Warcry deck IDs newer than any in the database."""
+
+    class _WarcryNewIdGetter:
+        def __call__(self):
+            return self.get_new_ids()
+
+        def get_new_ids(self):
+            new_ids = []
+            page = 0
+            while True:
+                ids_on_page = self.get_ids_from_page(page)
+                new_ids_on_page = self.remove_old_ids(ids_on_page)
+                new_ids += new_ids_on_page
+                if not new_ids_on_page:
+                    break
+
+                page += 1
+                print(page)
+            return new_ids
+
+        def get_ids_from_page(self, page: int):
+            items_per_page = 50
+            url = "https://api.eternalwarcry.com/v1/decks/SearchDecks" + \
+                  f"?starting={items_per_page * page}" + \
+                  f"&perpage={items_per_page}" + \
+                  f"&key=e6b3bf05-2fb7-4979-baf8-92328818e3f5"
             page_json = browser.get_content_at_url(url)
-        except (ConnectionError, urllib.error.HTTPError):
-            return
+            ids = self.get_ids_from_page_json(page_json)
 
-        make_deck_from_details_json(page_json)
+            return ids
 
-    def add_cards_to_deck(deck: Deck, page_json: typing.Dict):
-        cards_json = page_json["deck_cards"] + page_json["sideboard_cards"] + page_json["market_cards"]
+        def get_ids_from_page_json(self, page_json: typing.Dict):
+            decks = page_json['decks']
+            ids = [deck['deck_id'] for deck in decks]
+            return ids
 
-        for card_json in cards_json:
-            set_num = card_json["set_number"]
-            card_num = card_json["eternal_id"]
-            if card_in_db(set_num, card_num):
-                deck_has_card = DeckHasCard(
-                    deck_id=page_json["deck_id"],
-                    set_num=set_num,
-                    card_num=card_num,
-                    num_played=card_json["count"]
-                )
-                deck.cards.append(deck_has_card)
-
-    def make_deck_from_details_json(page_json: typing.Dict):
-
-        archetype = Archetype[page_json["archetype"].lower().replace(" ", "_")]
-        deck_type = DeckType[page_json["deck_type"].lower()]
-
-        deck = Deck(
-            id=page_json['deck_id'],
-            archetype=archetype,
-            date_added=datetime.strptime(page_json["date_added_full"][:19], '%Y-%m-%dT%H:%M:%S'),
-            date_updated=datetime.strptime(page_json["date_updated_full"][:19], '%Y-%m-%dT%H:%M:%S'),
-            deck_type=deck_type,
-            description=page_json["description"].encode('ascii', errors='ignore'),
-            patch=page_json["patch"],
-            username=page_json["username"],
-            views=page_json["views"],
-            rating=page_json["rating"]
-        )
-
-        add_cards_to_deck(deck, page_json)
-        db.session.merge(deck)
-        db.session.commit()
-
-    def generate_ids():
-        with open(os.path.join('..', 'data', 'deck_ids.csv'), 'r') as csv_file:
-            ids = list(csv.reader(csv_file))[0]
+        def remove_old_ids(self, ids: typing.List[str]) -> typing.List[str]:
+            new_ids = []
             for deck_id in ids:
-                yield deck_id
+                if not deck_in_db(deck_id):
+                    new_ids.append(deck_id)
+                else:
+                    break
+            return new_ids
 
-    for deck_id in ProgIter(generate_ids(), total=19350):
-        if not deck_in_db(deck_id):
-            update_deck_from_id(deck_id)
+    return _WarcryNewIdGetter()()
+
+
+def update_decks():
+    """Updates the database with all new Warcry decks"""
+
+    class _WarcyDeckUpdater:
+        def __call__(self):
+            ids = get_new_warcy_ids()
+            for deck_id in ids:
+                self.update_deck(deck_id)
+
+        def update_deck(self, deck_id: str):
+            url = "https://api.eternalwarcry.com/v1/decks/details" + \
+                  "?key=e6b3bf05-2fb7-4979-baf8-92328818e3f5" + \
+                  f"&deck_id={deck_id}"
+            try:
+                page_json = browser.get_content_at_url(url)
+            except (ConnectionError, urllib.error.HTTPError):
+                return
+
+            self.make_deck_from_details_json(page_json)
+
+        def make_deck_from_details_json(self, page_json: typing.Dict):
+
+            archetype = Archetype[page_json["archetype"].lower().replace(" ", "_")]
+            deck_type = DeckType[page_json["deck_type"].lower()]
+
+            deck = Deck(
+                id=page_json['deck_id'],
+                archetype=archetype,
+                date_added=datetime.strptime(page_json["date_added_full"][:19], '%Y-%m-%dT%H:%M:%S'),
+                date_updated=datetime.strptime(page_json["date_updated_full"][:19], '%Y-%m-%dT%H:%M:%S'),
+                deck_type=deck_type,
+                description=page_json["description"].encode('ascii', errors='ignore'),
+                patch=page_json["patch"],
+                username=page_json["username"],
+                views=page_json["views"],
+                rating=page_json["rating"]
+            )
+
+            self.add_cards_to_deck(deck, page_json)
+            db.session.merge(deck)
+            db.session.commit()
+
+        def add_cards_to_deck(self, deck: Deck, page_json: typing.Dict):
+            cards_json = page_json["deck_cards"] + page_json["sideboard_cards"] + page_json["market_cards"]
+
+            for card_json in cards_json:
+                set_num = card_json["set_number"]
+                card_num = card_json["eternal_id"]
+                if card_in_db(set_num, card_num):
+                    deck_has_card = DeckHasCard(
+                        deck_id=page_json["deck_id"],
+                        set_num=set_num,
+                        card_num=card_num,
+                        num_played=card_json["count"]
+                    )
+                    deck.cards.append(deck_has_card)
+
+    return _WarcyDeckUpdater()()
 
 
 if __name__ == '__main__':
-    update_all_decks()
+    update_decks()
 
 # def _add_deck_from_url(url: str):
 #     deck = Deck(id="someFakeId")  # , cards=[Card(set_num=0, card_num=36,)]
