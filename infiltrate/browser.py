@@ -1,3 +1,4 @@
+"""Selenium web scraping utilities"""
 import json
 import urllib.error
 import urllib.request
@@ -16,6 +17,7 @@ class Browser(selenium.webdriver.Chrome):
         super().__init__(options=options, executable_path="venv/chromedriver.exe")
 
     def safely_find(self, finder):
+        """Waits up to max_delay for the finder to find an element."""
         max_delay = 5
         element = WebDriverWait(self, max_delay).until(finder)
         return element
@@ -28,6 +30,7 @@ class Browser(selenium.webdriver.Chrome):
 
 
 def get_str_from_url_and_xpath(url: str, xpath: str):
+    """Gets the text from an element specified by the xpath at the url."""
     with Browser() as browser:
         browser.get(url)
         element = browser.safely_find(lambda x: x.find_element_by_xpath(xpath))
@@ -36,11 +39,13 @@ def get_str_from_url_and_xpath(url: str, xpath: str):
 
 
 def get_content_at_url(url: str):
+    """Returns the page at the given url as JSON"""
     request = urllib.request.Request(
         url,
         data=None,
         headers={
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.47 Safari/537.36'
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) '
+                          'Chrome/35.0.1916.47 Safari/537.36 '
         }
     )
 

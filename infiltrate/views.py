@@ -5,18 +5,23 @@ import flask
 from flask_classy import FlaskView
 
 from infiltrate import evaluation, card_collections
+from infiltrate import models
 from infiltrate.card_collections import CardValueDisplay
-from infiltrate.models import user as user_mod, card_sets
 
 
 def group_card_value_displays(displays: typing.List[CardValueDisplay]):
-    def get_minimum_count(card):
+    """Groups the card value displays in the list as a single item.
+
+     Grouped displays are given new minimum and maximum attributes representing
+    representing the cards minimum and maximum counts in the list."""
+
+    def _get_minimum_count(card):
         return min([d.count for d in displays if d.card.name == card.name])
 
-    def get_maximum_count(card):
+    def _get_maximum_count(card):
         return max([d.count for d in displays if d.card.name == card.name])
 
-    def remove_duplicates(displays: typing.List[CardValueDisplay]):
+    def _remove_duplicates(displays: typing.List[CardValueDisplay]):
         names = [d.card.name for d in displays]
         first_indexes = set([names.index(name) for name in names])
 
@@ -31,10 +36,10 @@ def group_card_value_displays(displays: typing.List[CardValueDisplay]):
     for display in displays:
         card = display.card
         if card.name not in maximum_counts.keys():
-            minimum_counts[card.name] = get_minimum_count(card)
-            maximum_counts[card.name] = get_maximum_count(card)
+            minimum_counts[card.name] = _get_minimum_count(card)
+            maximum_counts[card.name] = _get_maximum_count(card)
 
-    displays = remove_duplicates(displays)
+    displays = _remove_duplicates(displays)
     for display in displays:
         card = display.card
         display.minimum = minimum_counts[card.name]
@@ -49,7 +54,7 @@ def filter_displays(displays: typing.List[card_collections.CardValueDisplay], so
     Craft sort does not contain campaign cards
     """
     if sort == "craft":
-        displays = [d for d in displays[:] if not card_sets.is_campaign(d.card.set_num)]
+        displays = [d for d in displays[:] if not models.card_sets.is_campaign(d.card.set_num)]
 
     return displays
 
@@ -64,7 +69,8 @@ def sort_displays(displays: typing.List, sort: str):
     return sorted(displays, key=lambda x: x.__dict__[key], reverse=True)
 
 
-def get_start_and_end_from_page(num_cards, page):
+def get_start_and_end_card_indices_from_page(num_cards, page):
+    """Gets the first and last card indices to render on the given page number."""
     cards_per_page = 30
     num_pages = int(num_cards / cards_per_page)
     if page < 0:
@@ -77,18 +83,22 @@ def get_start_and_end_from_page(num_cards, page):
 SORTS = ("craft", "value")
 
 
+# noinspection PyMethodMayBeStatic
 class CardsView(FlaskView):
+    """View for the list of card values"""
     route_base = '/'
 
     def index(self):
+        """The main card values page"""
+        # TODO document your goddamn code.
         # TODO Tests :(
         # TODO import collection from EW api
-        # TODO document your goddamn code.
+
         # TODO search for card
-        # TODO make faster :(
 
         # TODO show number to buy with icons. Filled card for owned, Gold card for buy, Empty for dont
 
+        # TODO make faster
         # TODO support user sign in
 
         # TODO improve craft efficiency by taking into account drop rate
@@ -96,15 +106,16 @@ class CardsView(FlaskView):
         return flask.render_template("card_values.html")
 
     def card_values(self, page=1, sort="craft"):
+        """A table loaded into index. Not accessed by the user."""
         page = int(page)
 
-        user = user_mod.User.query.filter_by(name="me").first()
+        user = models.user.User.query.filter_by(name="me").first()
 
         displays = evaluation.get_displays_for_user(user)
         displays = filter_displays(displays, sort)
         displays = sort_displays(displays, sort)
 
-        start, end = get_start_and_end_from_page(len(displays), page)
+        start, end = get_start_and_end_card_indices_from_page(len(displays), page)
         displays_on_page = displays[start:end]
 
         displays_on_page = group_card_value_displays(displays_on_page)

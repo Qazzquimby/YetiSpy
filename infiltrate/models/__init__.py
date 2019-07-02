@@ -1,30 +1,30 @@
+"""Contains the shared db resource for all models, and the update interface.
+
+"""
 from flask_sqlalchemy import SQLAlchemy
 
-from infiltrate import db
-
-# from infiltrate.models.deck import update_all_decks
-
-db: SQLAlchemy = db
 import infiltrate.models.card
-import infiltrate.models.rarity
-import infiltrate.models.user
+import infiltrate.models.card_sets
 import infiltrate.models.deck
 import infiltrate.models.deck_search
+import infiltrate.models.rarity
+import infiltrate.models.user
+from infiltrate import db
+
+db: SQLAlchemy = db
 
 
 def update():
-    from infiltrate.models.card import update_cards
-    from infiltrate.models.rarity import update_rarity
-    from infiltrate.models.user import update_users
-    from infiltrate.models.deck import update_decks
-    from infiltrate.models.deck_search import update_deck_searches
+    """Creates and updates all db tables.
+
+    This should not normally need to be run, as ongoing updates are handled automatically."""
 
     db.create_all()
     # update_rarity()
     # update_cards()
     # update_users()
     # update_decks()
-    update_deck_searches()
+    infiltrate.models.deck_search.update_deck_searches()
 
     db.session.commit()
 

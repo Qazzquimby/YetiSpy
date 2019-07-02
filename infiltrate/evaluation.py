@@ -1,118 +1,108 @@
+"""Gets card values from a user's weighted deck searches"""
 import typing
 
+from infiltrate import caches
 from infiltrate import card_collections
 from infiltrate import db
 from infiltrate import models
-from infiltrate.card_collections import CardValueDisplay
 from infiltrate.models.user import User
 
 
-# todo cache this in mem for short duration?
-def get_displays_for_user(user: User) -> typing.List[CardValueDisplay]:
-    def main():
-        values = get_values_for_user(user)
-        displays = [CardValueDisplay(v) for v in values]
-        return displays
+class UserCardEvaluator:
+    def __init__(self, user):
+        self.user = user
+        self.values = self.get_values()
 
-    def get_values_for_user(user: User) -> typing.List[card_collections.CardIdWithValue]:
-        def main():
-            _normalize_weights(user)
-            with db.session.no_autoflush:
-                values = _get_values_for_deck_searches(user)
-                return values
+    def get_values(self):
+        self._normalize_weights()
+        with db.session.no_autoflush:
+            values = self._get_values_for_deck_searches()
+            return values
 
-        def _normalize_weights(user: User):
-            total_weight = sum([search.weight for search in user.weighted_deck_searches])
-            for search in user.weighted_deck_searches:
+    def _normalize_weights(self):
+        total_weight = sum([search.weight for search in self.user.weighted_deck_searches])
+        if not 0.8 < total_weight < 1.25:  # Bounds prevent repeated work due to rounding on later passes
+            for search in self.user.weighted_deck_searches:
                 search.weight = search.weight / total_weight
 
-        def _get_values_for_deck_searches(user: User):
-            def main():
-                value_dict = _get_overall_value_dict(user)
+    def _get_values_for_deck_searches(self):
+        value_dict = self._get_overall_value_dict()
 
-                values = []
-                for card_id in value_dict.keys():
-                    for play_count in range(4):
-                        value = card_collections.CardIdWithValue(card_id=card_id,
-                                                                 value=value_dict[card_id][play_count],
-                                                                 count=play_count + 1)
-                        values.append(value)
+        values = []
+        for card_id in value_dict.keys():
+            for play_count in range(4):
+                value = card_collections.CardIdWithValue(card_id=card_id,
+                                                         value=value_dict[card_id][play_count],
+                                                         count=play_count + 1)
+                values.append(value)
 
-                return values
+        return values
 
-            def _get_overall_value_dict(user: User):
-                def main():
-                    value_dicts = _get_individual_value_dicts(user)
-                    values = card_collections.make_card_playset_dict()
-                    for value_dict in value_dicts:
-                        for card_id in value_dict.keys():
-                            for play_count in range(4):
-                                values[card_id][play_count] += value_dict[card_id][play_count]
-                    return values
+    def _get_overall_value_dict(self):
+        value_dicts = self._get_individual_value_dicts()
+        values = card_collections.make_card_playset_dict()
+        for value_dict in value_dicts:
+            for card_id in value_dict.keys():
+                for play_count in range(4):
+                    values[card_id][play_count] += value_dict[card_id][play_count]
+        return values
 
-                def _get_individual_value_dicts(user: User):
-                    def main():
-                        value_dicts = []
-                        for weighted_search in user.weighted_deck_searches:
-                            value_dict = _get_value_dict(user, weighted_search)
+    def _get_individual_value_dicts(self):
+        value_dicts = []
+        for weighted_search in self.user.weighted_deck_searches:
+            value_dict = self._get_value_dict(weighted_search)
 
-                            value_dicts.append(value_dict)
-                        return value_dicts
+            value_dicts.append(value_dict)
+        return value_dicts
 
-                    def _get_value_dict(user: User, weighted_search: models.deck_search.WeightedDeckSearch):
-                        def main():
-                            playrate_dict = _get_playrate_dict(weighted_search.deck_search)
-                            unowned_playrate_dict = _get_playrate_dict_minus_collection(user, playrate_dict)
-                            # TODO Maybe don't remove owned cards at this step, and filter them out later instead.
-                            # That way trends of owned cards can be viewed
+    def _get_value_dict(self, weighted_search: models.deck_search.WeightedDeckSearch):
+        playrate_dict = self._get_playrate_dict(weighted_search.deck_search)
+        unowned_playrate_dict = self._get_playrate_dict_minus_collection(playrate_dict)
+        # TODO Maybe don't remove owned cards at this step, and filter them out later instead.
+        # That way trends of owned cards can be viewed
 
-                            value_dict = _get_value_dict_from_playrate_dict(weighted_search.weight,
-                                                                            unowned_playrate_dict)
-                            return value_dict
+        value_dict = self._get_value_dict_from_playrate_dict(weighted_search.weight,
+                                                             unowned_playrate_dict)
+        return value_dict
 
-                        def _get_playrate_dict(deck_search: models.deck_search.DeckSearch) -> typing.Dict:
-                            cards = deck_search.cards
+    def _get_playrate_dict(self, deck_search: models.deck_search.DeckSearch) -> typing.Dict:
+        cards = deck_search.cards
 
-                            playrate = card_collections.make_card_playset_dict()
-                            for card in cards:
-                                card_id = card_collections.CardId(card_num=card.card_num, set_num=card.set_num)
-                                playrate[card_id][card.count_in_deck - 1] \
-                                    = card.num_decks_with_count_or_less * 10_000 / len(cards)
-                                # /len(cards) hopefully normalizes by search size
-                                # *10_000 arbitrary bloat for more readable numbers
-                            return playrate
+        playrate = card_collections.make_card_playset_dict()
+        for card in cards:
+            card_id = card_collections.CardId(card_num=card.card_num, set_num=card.set_num)
+            playrate[card_id][card.count_in_deck - 1] \
+                = card.num_decks_with_count_or_less * 10_000 / len(cards)
+            # /len(cards) hopefully normalizes by search size
+            # *10_000 arbitrary bloat for more readable numbers
+        return playrate
 
-                        def _get_playrate_dict_minus_collection(user: User, playrate_dict: typing.Dict):
-                            adjusted_playrate_dict = playrate_dict.copy()
-                            for owned_card in user.cards:
-                                card_id = card_collections.CardId(card_num=owned_card.card_num,
-                                                                  set_num=owned_card.set_num)
-                                for num_owned in range(min(4, owned_card.count)):
-                                    adjusted_playrate_dict[card_id][num_owned] = 0
-                            return adjusted_playrate_dict
+    def _get_playrate_dict_minus_collection(self, playrate_dict: typing.Dict):
+        adjusted_playrate_dict = playrate_dict.copy()
+        for owned_card in self.user.cards:
+            card_id = card_collections.CardId(card_num=owned_card.card_num,
+                                              set_num=owned_card.set_num)
+            for num_owned in range(min(4, owned_card.count)):
+                adjusted_playrate_dict[card_id][num_owned] = 0
+        return adjusted_playrate_dict
 
-                        def _get_value_dict_from_playrate_dict(weight: float, playrate_dict: typing.Dict):
-                            value_dict = playrate_dict.copy()
+    def _get_value_dict_from_playrate_dict(self, weight: float, playrate_dict: typing.Dict):
+        value_dict = playrate_dict.copy()
 
-                            for key in value_dict.keys():
-                                for playrate in range(4):
-                                    value_dict[key][playrate] *= weight
+        for key in value_dict.keys():
+            for playrate in range(4):
+                value_dict[key][playrate] *= weight
 
-                            return value_dict
+        return value_dict
 
-                        return main()
 
-                    return main()
+@caches.mem_cache.cache("card_displays_for_user", expires=120)
+def get_displays_for_user(user: User) -> typing.List[card_collections.CardValueDisplay]:
+    values = get_user_values(user)
+    displays = [card_collections.CardValueDisplay(v) for v in values]
+    return displays
 
-                return main()
 
-            return main()
-
-        return main()
-
-    return main()
-
-# if __name__ == '__main__':
-#     me = User.query.filter_by(name="me").first()
-#     values = get_values_for_user(me)
-#     print(values)
+def get_user_values(user: User) -> typing.List[card_collections.CardIdWithValue]:
+    getter = UserCardEvaluator(user)
+    return getter.values

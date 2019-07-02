@@ -1,7 +1,11 @@
+"""Card Rarities"""
 from infiltrate.models import db
 
 
 class Rarity(db.Model):
+    """A table representing rarities in Eternal.
+
+    Drop rates and crafting costs correspond to rarity."""
     __tablename__ = "rarities"
     name = db.Column('Name', db.String(length=9), primary_key=True)
     num_in_pack = db.Column('NumInPack', db.Float, nullable=False)
@@ -12,6 +16,10 @@ class Rarity(db.Model):
 
     @property
     def drop_chance(self):
+        """The number of cards of a given rarity that will drop in a pack.
+
+        Integers are assured numbers. A float is a chance that the drop will appear.
+        All numbers are correct for long term average."""
         return self.num_in_pack / sum([r.num_in_pack for r in RARITIES])
 
     def __repr__(self):
@@ -51,10 +59,3 @@ LEGENDARY = Rarity(name="Legendary",
 RARITIES = [COMMON, UNCOMMON, RARE, LEGENDARY, PROMO]
 
 rarity_from_name = {r.name: r for r in RARITIES}
-
-
-def update_rarity():
-    db.session.create_all()
-    for rarity in RARITIES:
-        db.session.merge(rarity)
-    db.session.commit()

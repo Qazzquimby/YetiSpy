@@ -1,4 +1,6 @@
+"""Contains file_cache and mem_cache beaker caches."""
 from beaker.cache import CacheManager
+# noinspection PyProtectedMember
 from beaker.util import parse_cache_config_options
 
 _file_cache_opts = {

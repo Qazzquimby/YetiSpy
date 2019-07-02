@@ -4,7 +4,10 @@
 
 {% block inner_content %}
     {{ super() }}
-    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
@@ -57,7 +60,6 @@
 
         function updateCardTable() {
             console.log(page);
-            curr_page = page;
             $.get({
                 url: "/card_values/" + page + "/" + sort,
             }).done(function (data) {

@@ -48,6 +48,7 @@ _schedule_updates()
 
 @app.teardown_request
 def teardown_request(exception):
+    """Prevents bad db states by rolling back when the app closes."""
     if exception:
         db.session.rollback()
     db.session.remove()

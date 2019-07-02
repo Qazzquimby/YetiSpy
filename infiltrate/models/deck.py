@@ -1,21 +1,25 @@
+"""The Deck model and related utilities"""
 import enum
 import typing
 import urllib.error
 from datetime import datetime
 
 from infiltrate import db, browser
-from infiltrate.models.card import Card, card_in_db
+from infiltrate import models
 
 
 class DeckHasCard(db.Model):
+    """A table showing how many copies of a card a deck has"""
     deck_id = db.Column('deck_id', db.String(length=100), db.ForeignKey('decks.id'), primary_key=True)
     set_num = db.Column('set_num', db.Integer, primary_key=True)
     card_num = db.Column('card_num', db.Integer, primary_key=True)
     num_played = db.Column('num_played', db.Integer, nullable=False)
-    __table_args__ = (db.ForeignKeyConstraint([set_num, card_num], [Card.set_num, Card.card_num]), {})
+    __table_args__ = (db.ForeignKeyConstraint([set_num, card_num], [models.card.Card.set_num,
+                                                                    models.card.Card.card_num]), {})
 
 
 class DeckType(enum.Enum):
+    """Enum for deck types matching Warcry"""
     unknown = 0
     standard = 1
     draft = 2
@@ -26,6 +30,7 @@ class DeckType(enum.Enum):
 
 
 class Archetype(enum.Enum):
+    """Enum for deck archetypes matching Warcry"""
     unknown = 0
     aggro = 1
     midrange = 2
@@ -43,6 +48,7 @@ class Archetype(enum.Enum):
 
 
 class Deck(db.Model):
+    """Model representing an Eternal Deck from Warcry"""
     __tablename__ = "decks"
     id = db.Column("id", db.String(length=100), primary_key=True)
     archetype = db.Column("archetype", db.Enum(Archetype), nullable=True)
@@ -57,13 +63,15 @@ class Deck(db.Model):
     cards = db.relationship('DeckHasCard')
 
 
-def deck_in_db(deck_id: str):
+def get_deck(deck_id: str):
+    """Gets the deck matching the deck id."""
     return Deck.query.filter_by(id=deck_id).first()
 
 
 def get_new_warcy_ids():
     """Return all Warcry deck IDs newer than any in the database."""
 
+    # noinspection PyMissingOrEmptyDocstring
     class _WarcryNewIdGetter:
         def __call__(self):
             return self.get_new_ids()
@@ -93,15 +101,17 @@ def get_new_warcy_ids():
 
             return ids
 
-        def get_ids_from_page_json(self, page_json: typing.Dict):
+        @staticmethod
+        def get_ids_from_page_json(page_json: typing.Dict):
             decks = page_json['decks']
             ids = [deck['deck_id'] for deck in decks]
             return ids
 
-        def remove_old_ids(self, ids: typing.List[str]) -> typing.List[str]:
+        @staticmethod
+        def remove_old_ids(ids: typing.List[str]) -> typing.List[str]:
             new_ids = []
             for deck_id in ids:
-                if not deck_in_db(deck_id):
+                if not get_deck(deck_id):
                     new_ids.append(deck_id)
                 else:
                     break
@@ -113,6 +123,7 @@ def get_new_warcy_ids():
 def update_decks():
     """Updates the database with all new Warcry decks"""
 
+    # noinspection PyMissingOrEmptyDocstring
     class _WarcyDeckUpdater:
         def __call__(self):
             ids = get_new_warcy_ids()
@@ -152,13 +163,14 @@ def update_decks():
             db.session.merge(deck)
             db.session.commit()
 
-        def add_cards_to_deck(self, deck: Deck, page_json: typing.Dict):
+        @staticmethod
+        def add_cards_to_deck(deck: Deck, page_json: typing.Dict):
             cards_json = page_json["deck_cards"] + page_json["sideboard_cards"] + page_json["market_cards"]
 
             for card_json in cards_json:
                 set_num = card_json["set_number"]
                 card_num = card_json["eternal_id"]
-                if card_in_db(set_num, card_num):
+                if models.card.get_card(set_num, card_num):
                     deck_has_card = DeckHasCard(
                         deck_id=page_json["deck_id"],
                         set_num=set_num,
@@ -172,29 +184,3 @@ def update_decks():
 
 if __name__ == '__main__':
     update_decks()
-
-# def _add_deck_from_url(url: str):
-#     deck = Deck(id="someFakeId")  # , cards=[Card(set_num=0, card_num=36,)]
-#     db.session.merge(deck)
-#     db.session.commit()
-#
-#     connection = db.engine.connect()
-#
-#     card_playsets = [
-#         ["someFakeId", 0, 36, 4],
-#         ["someFakeId", 0, 35, 2]
-#     ]
-#
-#     for playset in card_playsets:
-#         try:
-#             add_card = deck_has_card.insert(values=playset)
-#             connection.execute(add_card)
-#         except IntegrityError:
-#             add_card = deck_has_card.update(values=playset)
-#             connection.execute(add_card)
-#
-#     db.session.commit()
-#
-#
-#
-#
