@@ -4,6 +4,7 @@ import typing
 
 from progiter import progiter
 
+import infiltrate.models.card
 from infiltrate import card_collections
 from infiltrate import models
 from infiltrate.models import db
@@ -32,6 +33,20 @@ class DeckSearch(db.Model):
         return models.deck.Deck.query.filter(
             models.deck.Deck.date_updated > datetime.datetime.now() - datetime.timedelta(days=self.maximum_age_days))
 
+    def get_playrate_dict(self) -> card_collections.PlayrateDict:
+        """Gets a PlayRateDict of [cardId][playset size] = proportional to play rate"""
+        playrate_dict = card_collections.PlayrateDict()
+        for card in self.cards:
+            card_id = infiltrate.models.card.CardId(card_num=card.card_num, set_num=card.set_num)
+
+            playrate = card.num_decks_with_count_or_less * 10_000 / len(self.cards)
+            # /len(cards) hopefully normalizes by search size
+            # *10_000 arbitrary bloat for more readable numbers
+
+            playrate_dict[card_id][card.count_in_deck - 1] = playrate
+
+        return playrate_dict
+
     def update_playrates(self):
         """Updates a cache of playrates representing the total frequency of playsets of cards in the decks.
         This cache is redundant but avoids recalculation.
@@ -48,7 +63,7 @@ class DeckSearch(db.Model):
         playrate = card_collections.make_card_playset_dict()
         for deck in self.get_decks():
             for card in deck.cards:
-                card_id = card_collections.CardId(set_num=card.set_num, card_num=card.card_num)
+                card_id = infiltrate.models.card.CardId(set_num=card.set_num, card_num=card.card_num)
                 for num_played in range(card.num_played):
                     playrate[card_id][num_played] += 1
         return playrate
@@ -76,6 +91,17 @@ class WeightedDeckSearch(db.Model):
 
     weight = db.Column("weight", db.Float)
     deck_search = db.relationship('DeckSearch', uselist=False, cascade_backrefs=False)
+
+    def get_value_dict(self) -> card_collections.ValueDict:
+        playrate_dict = self.deck_search.get_playrate_dict()
+
+        value_dict = card_collections.ValueDict()
+
+        for key in playrate_dict.keys():
+            for playrate in range(4):
+                value_dict[key][playrate] = playrate_dict[key][playrate] * self.weight
+
+        return value_dict
 
 
 def update_deck_searches():

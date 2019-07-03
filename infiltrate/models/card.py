@@ -4,6 +4,7 @@ Related to card_collections.py
 """
 import json
 import typing
+from typing import NamedTuple
 
 from infiltrate import browser
 from infiltrate import caches
@@ -57,3 +58,37 @@ def update_cards():
     card_json = _get_card_json()
     _make_cards_from_entries(card_json)
     db.session.commit()
+
+
+class CardId(NamedTuple):
+    """A key to identify a card."""
+    set_num: int
+    card_num: int
+
+
+class CardPlayset(NamedTuple):
+    """Multiple copies of a card"""
+    card_id: CardId
+    count: int
+
+
+class CardIdWithValue(NamedTuple):
+    """The value of a given count of a card.
+
+    The value is for the count-th copy of a card."""
+    card_id: CardId
+    count: int
+    value: float
+
+
+class CardDisplay:
+    """Use make_card_display to use cached creation"""
+
+    def __init__(self, card_id: CardId):
+        card = get_card(card_id.set_num, card_id.card_num)
+        self.set_num = card.set_num
+        self.card_num = card.card_num
+        self.name = card.name
+        self.rarity = card.rarity
+        self.image_url = card.image_url
+        self.details_url = card.details_url

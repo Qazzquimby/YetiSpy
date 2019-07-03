@@ -48,6 +48,10 @@ def group_card_value_displays(displays: typing.List[CardValueDisplay]):
     return displays
 
 
+# def filter_out_owned_displays(user: models.user.User, displays: typing.List[card_collections.CardValueDisplay]):
+
+
+
 def filter_displays(displays: typing.List[card_collections.CardValueDisplay], sort: str):
     """Returns a list of displays filtered to match the given sort
 
@@ -110,13 +114,17 @@ class CardsView(FlaskView):
         page = int(page)
 
         user = models.user.User.query.filter_by(name="me").first()
-
         displays = evaluation.get_displays_for_user(user)
-        displays = filter_displays(displays, sort)
+
+        # displays = filter_displays(displays, sort)
         displays = sort_displays(displays, sort)
 
         start, end = get_start_and_end_card_indices_from_page(len(displays), page)
         displays_on_page = displays[start:end]
+
+        # TODO Rather than operating on every card and then taking the needed cards
+        #   Sort all cards and then filter only the ones on the page
+        #   Get the starting index and then add the next 30 cards that match the filter
 
         displays_on_page = group_card_value_displays(displays_on_page)
 

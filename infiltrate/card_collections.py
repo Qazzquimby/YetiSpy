@@ -1,43 +1,11 @@
 """Data objects for working with cards"""
+import abc
 import typing
 from collections import defaultdict
-from typing import NamedTuple
 
-from infiltrate import models, caches
-
-
-class CardId(NamedTuple):
-    """A key to identify a card."""
-    set_num: int
-    card_num: int
-
-
-class CardPlayset(NamedTuple):
-    """Mutliple copies of a card"""
-    card_id: CardId
-    count: int
-
-
-class CardIdWithValue(NamedTuple):
-    """The value of a given count of a card.
-
-    The value is for the count-th copy of a card."""
-    card_id: CardId
-    count: int
-    value: float
-
-
-class CardDisplay:
-    """Use make_card_display to use cached creation"""
-
-    def __init__(self, card_id: CardId):
-        card = models.card.get_card(card_id.set_num, card_id.card_num)
-        self.set_num = card.set_num
-        self.card_num = card.card_num
-        self.name = card.name
-        self.rarity = card.rarity
-        self.image_url = card.image_url
-        self.details_url = card.details_url
+from infiltrate import caches
+from infiltrate import models
+from infiltrate.models.card import CardDisplay, CardId
 
 
 @caches.mem_cache.cache("card_displays", expire=3600)
@@ -50,7 +18,7 @@ def make_card_display(card_id: CardId):
 class CardValueDisplay:
     """A bundle of raw and computed values corresponding to a card, to be used in the front end."""
 
-    def __init__(self, card_id_with_value: CardIdWithValue):
+    def __init__(self, card_id_with_value: models.card.CardIdWithValue):
         self.card: CardDisplay = make_card_display(card_id_with_value.card_id)
 
         self.count = card_id_with_value.count
@@ -67,3 +35,45 @@ def make_card_playset_dict() -> typing.Dict:
         return [0] * 4
 
     return defaultdict(_values_factory)
+
+
+class PlaysetDict(abc.ABC):
+    """Dict[CardID][Playset Size] = Some value"""
+
+    def __init__(self):
+        self._dict = make_card_playset_dict()
+
+    def __getitem__(self, index):
+        return self._dict[index]
+
+    def __setitem__(self, index, value):
+        self._dict[index] = value
+
+    def keys(self):
+        """As dict.keys()"""
+        return self._dict.keys()
+
+
+class ValueDict(PlaysetDict):
+    """Dict[CardID][Playset Size] = Weighted value of that playset size"""
+
+    def __iter__(self) -> models.card.CardIdWithValue:
+        for card_id in self._dict.keys():
+            for play_count in range(4):
+                value = models.card.CardIdWithValue(card_id=card_id,
+                                                    value=self._dict[card_id][play_count],
+                                                    count=play_count + 1)
+                yield value
+
+
+class PlayrateDict(PlaysetDict):
+    """Dict[CardID][Playset Size] = Frequency of that playset size"""
+
+    def _make_value_dict(self, weight: float, ) -> ValueDict:
+        value_dict = ValueDict()
+
+        for key in value_dict.keys():
+            for playrate in range(4):
+                value_dict[key][playrate] = self[key][playrate] * weight
+
+        return value_dict
