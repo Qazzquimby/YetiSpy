@@ -4,9 +4,10 @@ import typing
 import flask
 from flask_classy import FlaskView
 
-from infiltrate import evaluation, card_collections
+import infiltrate.card_display
+from infiltrate import evaluation
 from infiltrate import models
-from infiltrate.card_collections import CardValueDisplay
+from infiltrate.card_display import CardValueDisplay
 
 
 def group_card_value_displays(displays: typing.List[CardValueDisplay]):
@@ -48,22 +49,32 @@ def group_card_value_displays(displays: typing.List[CardValueDisplay]):
     return displays
 
 
-# def filter_out_owned_displays(user: models.user.User, displays: typing.List[card_collections.CardValueDisplay]):
-
-
-
-def filter_displays(displays: typing.List[card_collections.CardValueDisplay], sort: str):
+def filter_displays(displays: typing.List[infiltrate.card_display.CardValueDisplay], user: models.user.User, sort: str):
     """Returns a list of displays filtered to match the given sort
 
     Craft sort does not contain campaign cards
     """
-    if sort == "craft":
-        displays = [d for d in displays[:] if not models.card_sets.is_campaign(d.card.set_num)]
+    filtered_displays = []
 
-    return displays
+    for display in displays:
+        if len(filtered_displays) > CARDS_PER_PAGE:
+            break
+
+        # TODO refactor this
+        if sort == "craft":
+            if models.card_sets.is_campaign(display.card.set_num):
+                continue
+
+        card_id = models.card.CardId(display.card.set_num, display.card.card_num)
+        if models.user.user_has_count_of_card(user, card_id, display.count):
+            continue
+
+        filtered_displays.append(display)
+
+    return filtered_displays
 
 
-def sort_displays(displays: typing.List, sort: str):
+def sort_displays(displays: typing.List[CardValueDisplay], sort: str):
     """Returns a list of displays sorted by the given method."""
     if sort == "value":
         key = "value"
@@ -73,15 +84,21 @@ def sort_displays(displays: typing.List, sort: str):
     return sorted(displays, key=lambda x: x.__dict__[key], reverse=True)
 
 
-def get_start_and_end_card_indices_from_page(num_cards, page):
+def get_displays_starting_on_page(displays: typing.List[CardValueDisplay], page: int):
+    start = get_start_card_indices_from_page(len(displays), page)
+    return displays[start:]
+
+
+CARDS_PER_PAGE = 30
+
+
+def get_start_card_indices_from_page(num_cards, page):
     """Gets the first and last card indices to render on the given page number."""
-    cards_per_page = 30
-    num_pages = int(num_cards / cards_per_page)
+    num_pages = int(num_cards / CARDS_PER_PAGE)
     if page < 0:
         page = num_pages + page + 1
-    start = page * cards_per_page
-    end = (page + 1) * cards_per_page
-    return start, end
+    start = page * CARDS_PER_PAGE
+    return start
 
 
 SORTS = ("craft", "value")
@@ -94,17 +111,18 @@ class CardsView(FlaskView):
 
     def index(self):
         """The main card values page"""
-        # TODO document your goddamn code.
-        # TODO Tests :(
-        # TODO import collection from EW api
-
+        # TODO Refactor views
         # TODO search for card
-
         # TODO show number to buy with icons. Filled card for owned, Gold card for buy, Empty for dont
 
         # TODO make faster
+        # TODO Tests :(
+
+        # TODO import collection from EW api
+        # TODO host on AWS
         # TODO support user sign in
 
+        # TODO figure out card sets and purchaes
         # TODO improve craft efficiency by taking into account drop rate
 
         return flask.render_template("card_values.html")
@@ -119,12 +137,9 @@ class CardsView(FlaskView):
         # displays = filter_displays(displays, sort)
         displays = sort_displays(displays, sort)
 
-        start, end = get_start_and_end_card_indices_from_page(len(displays), page)
-        displays_on_page = displays[start:end]
+        displays_starting_on_page = get_displays_starting_on_page(displays, page)
 
-        # TODO Rather than operating on every card and then taking the needed cards
-        #   Sort all cards and then filter only the ones on the page
-        #   Get the starting index and then add the next 30 cards that match the filter
+        displays_on_page = filter_displays(displays_starting_on_page, user, sort)
 
         displays_on_page = group_card_value_displays(displays_on_page)
 

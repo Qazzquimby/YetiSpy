@@ -4,6 +4,7 @@ import typing
 
 from progiter import progiter
 
+import infiltrate.card_display
 import infiltrate.models.card
 from infiltrate import card_collections
 from infiltrate import models
@@ -60,7 +61,7 @@ class DeckSearch(db.Model):
         DeckSearchHasCard.query.filter_by(decksearch_id=self.id).delete()
 
     def _get_playrates(self):
-        playrate = card_collections.make_card_playset_dict()
+        playrate = infiltrate.card_display.make_card_playset_dict()
         for deck in self.get_decks():
             for card in deck.cards:
                 card_id = infiltrate.models.card.CardId(set_num=card.set_num, card_num=card.card_num)

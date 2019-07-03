@@ -1,9 +1,7 @@
 """User account objects"""
 
-import re
 import typing
 
-import infiltrate.models.card
 from infiltrate import card_collections
 from infiltrate import models
 from infiltrate.models import db
@@ -63,6 +61,17 @@ class User(db.Model):
         return value_dicts
 
 
+def user_has_count_of_card(user: User, card_id: models.card.CardId, count: int = 1):
+    match = UserOwnsCard.query.filter_by(username=user.name,
+                                         set_num=card_id.set_num, card_num=card_id.card_num).first()
+    if match:
+        owned_count = match.count
+    else:
+        owned_count = 0
+
+    return count <= owned_count
+
+
 class _CollectionUpdater:
     def __init__(self, user: User):
         self.user = user
@@ -92,29 +101,28 @@ def update_collection(user: User, collection: typing.Dict):
     updater = _CollectionUpdater(user)
     updater(collection)
 
-
-def _temp_get_collection_from_txt():
-    # todo kill this. It won't be used in the web interface.
-    def _from_export_text(text):
-        numbers = [int(number) for number in re.findall(r'\d+', text)]
-        if len(numbers) == 3:
-            count = numbers[0]
-            set_num = numbers[1]
-            card_num = numbers[2]
-            playset = card_collections.CardPlayset(
-                infiltrate.models.card.CardId(card_num=card_num, set_num=set_num), count=count)
-
-            return playset
-        return None
-
-    with open("collection.txt") as collection_file:
-        collection_text = collection_file.read()
-        collection_lines = collection_text.split("\n")
-
-        playsets = card_collections.make_card_playset_dict()
-        for line in collection_lines:
-            if "*Premium*" not in line:
-                playset = _from_export_text(line)
-                if playset:
-                    playsets[playset.card_id] = playset.count
-    return playsets
+# def _temp_get_collection_from_txt():
+#     # todo kill this. It won't be used in the web interface.
+#     def _from_export_text(text):
+#         numbers = [int(number) for number in re.findall(r'\d+', text)]
+#         if len(numbers) == 3:
+#             count = numbers[0]
+#             set_num = numbers[1]
+#             card_num = numbers[2]
+#             playset = card_collections.CardPlayset(
+#                 infiltrate.models.card.CardId(card_num=card_num, set_num=set_num), count=count)
+#
+#             return playset
+#         return None
+#
+#     with open("collection.txt") as collection_file:
+#         collection_text = collection_file.read()
+#         collection_lines = collection_text.split("\n")
+#
+#         playsets = infiltrate.card_display.make_card_playset_dict()
+#         for line in collection_lines:
+#             if "*Premium*" not in line:
+#                 playset = _from_export_text(line)
+#                 if playset:
+#                     playsets[playset.card_id] = playset.count
+#     return playsets

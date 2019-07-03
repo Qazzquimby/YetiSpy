@@ -5,8 +5,8 @@ from beaker.util import parse_cache_config_options
 
 _file_cache_opts = {
     'cache.type': 'file',
-    'cache.data_dir': 'data/Beaker/tmp/cache/data',
-    'cache.lock_dir': 'data/Beaker/tmp/cache/lock'
+    'cache.data_dir': 'infiltrate/data/Beaker/tmp/cache/data',
+    'cache.lock_dir': 'infiltrate/data/Beaker/tmp/cache/lock'
 }
 file_cache = CacheManager(**parse_cache_config_options(_file_cache_opts))
 
