@@ -14,7 +14,7 @@ class Browser(selenium.webdriver.Chrome):
     def __init__(self):
         options = selenium.webdriver.chrome.options.Options()
         options.headless = True
-        super().__init__(options=options, executable_path="venv/chromedriver.exe")
+        super().__init__(options=options, executable_path="chromedriver.exe")
 
     def safely_find(self, finder):
         """Waits up to max_delay for the finder to find an element."""

@@ -8,7 +8,7 @@ from typing import NamedTuple
 
 from infiltrate import browser
 from infiltrate import caches
-from infiltrate.models import db
+from infiltrate import db
 
 
 @caches.mem_cache.cache("cards", expire="800")

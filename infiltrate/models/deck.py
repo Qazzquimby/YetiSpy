@@ -4,7 +4,7 @@ import typing
 import urllib.error
 from datetime import datetime
 
-from infiltrate import db, browser
+from infiltrate import app, db, browser
 from infiltrate import models
 
 
@@ -27,6 +27,7 @@ class DeckType(enum.Enum):
     forge = 4
     campaign = 5
     event = 6
+    expedition = 8
 
 
 class Archetype(enum.Enum):
@@ -77,6 +78,7 @@ def get_new_warcy_ids():
             return self.get_new_ids()
 
         def get_new_ids(self):
+            print("Getting new deck ids")
             new_ids = []
             page = 0
             while True:
@@ -87,7 +89,7 @@ def get_new_warcy_ids():
                     break
 
                 page += 1
-                print(page)
+                print(f"Pages of deck ids ready: {page}")
             return new_ids
 
         def get_ids_from_page(self, page: int):
@@ -95,7 +97,7 @@ def get_new_warcy_ids():
             url = "https://api.eternalwarcry.com/v1/decks/SearchDecks" + \
                   f"?starting={items_per_page * page}" + \
                   f"&perpage={items_per_page}" + \
-                  f"&key=e6b3bf05-2fb7-4979-baf8-92328818e3f5"
+                  f"&key={app.config['WARCRY_KEY']}"
             page_json = browser.get_content_at_url(url)
             ids = self.get_ids_from_page_json(page_json)
 
@@ -132,7 +134,7 @@ def update_decks():
 
         def update_deck(self, deck_id: str):
             url = "https://api.eternalwarcry.com/v1/decks/details" + \
-                  "?key=e6b3bf05-2fb7-4979-baf8-92328818e3f5" + \
+                  f"?key={app.config['WARCRY_KEY']}" + \
                   f"&deck_id={deck_id}"
             try:
                 page_json = browser.get_content_at_url(url)
@@ -144,7 +146,7 @@ def update_decks():
         def make_deck_from_details_json(self, page_json: typing.Dict):
 
             archetype = Archetype[page_json["archetype"].lower().replace(" ", "_")]
-            deck_type = DeckType[page_json["deck_type"].lower()]
+            deck_type = DeckType[int(page_json["deck_type"].lower())]
 
             deck = Deck(
                 id=page_json['deck_id'],
@@ -180,7 +182,3 @@ def update_decks():
                     deck.cards.append(deck_has_card)
 
     return _WarcyDeckUpdater()()
-
-
-if __name__ == '__main__':
-    update_decks()

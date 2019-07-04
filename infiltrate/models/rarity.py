@@ -1,5 +1,5 @@
 """Card Rarities"""
-from infiltrate.models import db
+from infiltrate import db
 
 
 class Rarity(db.Model):

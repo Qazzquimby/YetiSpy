@@ -7,8 +7,8 @@ from progiter import progiter
 import infiltrate.card_display
 import infiltrate.models.card
 from infiltrate import card_collections
+from infiltrate import db
 from infiltrate import models
-from infiltrate.models import db
 
 
 class DeckSearchHasCard(db.Model):
@@ -61,7 +61,7 @@ class DeckSearch(db.Model):
         DeckSearchHasCard.query.filter_by(decksearch_id=self.id).delete()
 
     def _get_playrates(self):
-        playrate = infiltrate.card_display.make_card_playset_dict()
+        playrate = infiltrate.card_collections.make_card_playset_dict()
         for deck in self.get_decks():
             for card in deck.cards:
                 card_id = infiltrate.models.card.CardId(set_num=card.set_num, card_num=card.card_num)
@@ -111,7 +111,7 @@ def update_deck_searches():
 
     weighted_deck_searches = WeightedDeckSearch.query.filter_by(username="me").all()
     for weighted in weighted_deck_searches:
-        print(weighted.name)
+        print(f"Upaditing playrate cache for {weighted.name}")
         deck_search = weighted.deck_search
         deck_search.update_playrates()
 

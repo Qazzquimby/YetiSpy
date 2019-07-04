@@ -6,7 +6,7 @@ from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, instance_relative_config=True)
-app.config.from_mapping(SECRET_KEY='dev')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 def _setup_db(app):
@@ -35,7 +35,12 @@ def _register_views(app):
 
 def _schedule_updates():
     from infiltrate import scheduling
-    return scheduling.schedule_updates
+    return scheduling.schedule_updates()
+
+
+def _update():
+    from infiltrate import models
+    models.update()
 
 
 db = _setup_db(app)
@@ -44,6 +49,9 @@ _set_config(app, test_config=None)
 _make_instance_dir(app)
 _register_views(app)
 _schedule_updates()
+
+
+# _update()
 
 
 @app.teardown_request

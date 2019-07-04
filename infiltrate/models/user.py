@@ -3,8 +3,8 @@
 import typing
 
 from infiltrate import card_collections
+from infiltrate import db
 from infiltrate import models
-from infiltrate.models import db
 
 
 class UserOwnsCard(db.Model):
