@@ -10,7 +10,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 def _setup_db(app):
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Q1a1zz22@localhost/infiltrate'
+    app.config['SQLALCHEMY_DATABASE_URI'] = app.config['DATABASE']
     return SQLAlchemy(app)
 
 
@@ -43,9 +43,9 @@ def _update():
     models.update()
 
 
+_set_config(app, test_config=None)
 db = _setup_db(app)
 Bootstrap(app)
-_set_config(app, test_config=None)
 _make_instance_dir(app)
 _register_views(app)
 _schedule_updates()

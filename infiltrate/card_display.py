@@ -1,5 +1,6 @@
 from infiltrate import caches, models
 
+
 @caches.mem_cache.cache("card_displays", expire=3600)
 def make_card_display(card_id: models.card.CardId):
     """Makes a CardValueDisplay, utilizing the cache to avoid repeated work."""

@@ -1,13 +1,5 @@
 """This is where the routes are defined."""
-# TODO search for card
-# TODO show number to buy with icons. Filled card for owned, Gold card for buy, Empty for dont
-
-# TODO make faster
-# TODO Tests :(
-
-# TODO import collection from EW api
-# TODO host on AWS
-# TODO support user sign in
+from __future__ import annotations
 
 # TODO figure out card sets and purchases
 # TODO improve craft efficiency by taking into account drop rate
@@ -17,31 +9,86 @@ import typing
 import flask
 from flask_classy import FlaskView
 
-from infiltrate import evaluation
+from infiltrate import evaluation, caches
 from infiltrate import models
 from infiltrate.card_display import CardValueDisplay
 from infiltrate.models.card import CardDisplay
 
 
+# TODO Tests :(
+# TODO search for card
+# TODO show number to buy with icons. Filled card for owned, Gold card for buy, Empty for dont
+# TODO make faster
+# TODO import collection from EW api
+# TODO host on AWS
+# TODO support user sign in
+
+
+class Filter(abc.ABC):
+    def __init__(self):
+        pass
+
+    @classmethod
+    def should_include_card(cls, display: CardValueDisplay, user: models.user.User):
+        """Should the card be filtered out."""
+        raise NotImplementedError
+
+
+class OwnershipFilter(Filter):
+    """Filters out cards based on ownership."""
+
+    @staticmethod
+    def is_owned(display: CardValueDisplay, user):
+        """Does the user own the amount of the card given by the display"""
+        card_id = models.card.CardId(display.card.set_num, display.card.card_num)
+        return models.user.user_has_count_of_card(user, card_id, display.count)
+
+
+class UnownedFilter(OwnershipFilter):
+    """Keeps only unowned cards."""
+
+    # noinspection PyMissingOrEmptyDocstring
+    @classmethod
+    def should_include_card(cls, display: CardValueDisplay, user: models.user.User):
+        return not cls.is_owned(display, user)
+
+
+class OwnedFilter(OwnershipFilter):
+    """Keeps only owned cards."""
+
+    # noinspection PyMissingOrEmptyDocstring
+    @classmethod
+    def should_include_card(cls, display: CardValueDisplay, user: models.user.User):
+        return cls.is_owned(display, user)
+
+
+class AllFilter(OwnershipFilter):
+    """Does not filter cards at all."""
+
+    # noinspection PyMissingOrEmptyDocstring
+    @classmethod
+    def should_include_card(cls, display: CardValueDisplay, user: models.user.User):
+        return True
+
+
 # noinspection PyMissingOrEmptyDocstring
-class CardDisplaySort(abc.ABC):
+class CardDisplaySort(Filter, abc.ABC):
     """A method of sorting and filtering cards displays."""
 
     def __init__(self):
-        pass
+        super().__init__()
+
+    @property
+    def default_ownership(self):
+        return UnownedFilter
 
     @staticmethod
     def sort(displays: typing.List[CardValueDisplay]):
         raise NotImplementedError
 
-    @staticmethod
-    def should_exclude_card(display: CardValueDisplay, user: models.user.User):
-        raise NotImplementedError
-
-    @staticmethod
-    def is_owned(display: CardValueDisplay, user):
-        card_id = models.card.CardId(display.card.set_num, display.card.card_num)
-        return models.user.user_has_count_of_card(user, card_id, display.count)
+    @classmethod
+    def should_include_card(cls, display: CardValueDisplay, user: models.user.User):
+        return True
 
 
 class CraftSort(CardDisplaySort):
@@ -55,12 +102,11 @@ class CraftSort(CardDisplaySort):
         """Sorts the cards by highest to lowest card value per shiftstone crafting cost."""
         return sorted(displays, key=lambda x: x.value_per_shiftstone, reverse=True)
 
-    @staticmethod
-    def should_exclude_card(display: CardValueDisplay, user: models.user.User):
+    @classmethod
+    def should_include_card(cls, display: CardValueDisplay, user: models.user.User):
         """Filters out uncraftable and owned cards."""
         is_campaign = models.card_sets.is_campaign(display.card.set_num)
-        is_owned = super().is_owned(display, user)
-        return is_campaign or is_owned
+        return not is_campaign
 
 
 class ValueSort(CardDisplaySort):
@@ -74,16 +120,10 @@ class ValueSort(CardDisplaySort):
         """Sorts cards from highest to lowest card value."""
         return sorted(displays, key=lambda x: x.value, reverse=True)
 
-    @staticmethod
-    def should_exclude_card(display: CardValueDisplay, user: models.user.User):
+    @classmethod
+    def should_include_card(cls, display: CardValueDisplay, user: models.user.User):
         """Excludes owned cards."""
-        # TODO filter owned should really be toggleable.
-        is_owned = super().is_owned(display, user)
-        return is_owned
-
-
-SORT_STR_TO_SORT = {'craft': CraftSort,
-                    'value': ValueSort}
+        return True
 
 
 class CardDisplays:
@@ -93,9 +133,16 @@ class CardDisplays:
     def __init__(self, user: models.user.User):
         self.user = user
         self.raw_displays = self.get_raw_displays()
-
         self.displays = self.raw_displays[:]
+
+        self.filtered_displays = None
+        self.is_filtered = False
+
+        self.sorted_displays = None
+        self.is_sorted = False
+
         self.sort_method = None
+        self.ownership = None
 
     def get_raw_displays(self):
         """Get all displays for a user, not sorted or filtered."""
@@ -105,12 +152,38 @@ class CardDisplays:
         """Undoes any processing such as sorting or filtering"""
         self.displays = self.raw_displays[:]
 
-    def sort(self, sort_method: typing.Type[CardDisplaySort]):
-        """Sorts displays by the given method"""
-        if self.sort_method != sort_method:  # TODO make sure comparison is working
+    def configure(self,
+                  sort_method: typing.Type[CardDisplaySort],
+                  ownership: typing.Type[OwnedFilter] = None) -> CardDisplays:
+        if not ownership:
+            self.ownership = sort_method.default_ownership
+
+        if self.sort_method != sort_method:
+            self.is_sorted = False
+            self.is_filtered = False
             self.sort_method = sort_method
-            self.displays = self.sort_method.sort(self.displays)
+
+        if self.ownership != ownership:
+            self.is_filtered = False
+            self.ownership = ownership
+        self._process_displays()
         return self
+
+    def _process_displays(self):
+        """Sorts and filters the displays"""
+        self._filter()
+        self._sort()
+
+    def _sort(self):
+        """Sorts displays by the given method"""
+        if not self.is_sorted:
+            self.displays = self.sort_method.sort(self.displays)
+            self.is_sorted = True
+
+    def _filter(self):
+        if not self.is_filtered:
+            self.displays = [d for d in self.raw_displays if self._should_include_display(d)]
+            self.is_filtered = True
 
     def get_page(self, page_num: int = 0) -> typing.List[CardValueDisplay]:
         """Gets the page of card displays, sorting by the current sort method."""
@@ -121,15 +194,13 @@ class CardDisplays:
     def _get_displays_on_page(self, page_num: int):
         start_index = self._get_start_card_index_from_page(page_num)
 
-        displays_on_page = []
-        for display in self.displays[start_index:]:
-            if not self.sort_method.should_exclude_card(display, self.user):
-                displays_on_page.append(display)
-
-            if len(displays_on_page) > self.CARDS_PER_PAGE:
-                break
-
+        displays_on_page = self.displays[start_index:start_index + self.CARDS_PER_PAGE]
         return displays_on_page
+
+    def _should_include_display(self, display: CardValueDisplay):
+        sort_include = self.sort_method.should_include_card(display, self.user)
+        own_include = self.ownership.should_include_card(display, self.user)
+        return sort_include and own_include
 
     def _get_start_card_index_from_page(self, page_num: int) -> int:
         """Gets the first and last card indices to render on the given page number."""
@@ -179,6 +250,34 @@ class CardDisplays:
         return page
 
 
+@caches.mem_cache.cache("card_displays_for_user", expires=120)
+def make_card_displays(user: models.user.User) -> CardDisplays:
+    return CardDisplays(user)
+
+
+def get_sort(sort_str):
+    """Get an OwnershipFilter from its id string."""
+    sort_str_to_sort = {'craft': CraftSort,
+                        'value': ValueSort}
+
+    sort = sort_str_to_sort.get(sort_str, None)
+    if not sort:
+        raise ValueError(f"Sort method {sort_str} not recognized. Known sorts are {sort_str_to_sort.keys()}")
+    return sort
+
+
+def get_owner(owner_str):
+    """Get an OwnershipFilter from its id string."""
+    owner_str_to_owner = {'unowned': UnownedFilter,
+                          'owned': OwnedFilter,
+                          'all': AllFilter}
+
+    sort = owner_str_to_owner.get(owner_str, None)
+    if not sort:
+        raise ValueError(f"Ownership type {owner_str} not recognized. Known types are {owner_str_to_owner.keys()}")
+    return sort
+
+
 # noinspection PyMethodMayBeStatic
 class CardsView(FlaskView):
     """View for the list of card values"""
@@ -188,16 +287,17 @@ class CardsView(FlaskView):
         """The main card values page"""
         return flask.render_template("card_values.html")
 
-    def card_values(self, page_num=1, sort_str="craft"):
+    def card_values(self, page_num=1, sort_str="craft", owner_str=None):
         """A table loaded into index. Not accessed by the user."""
         page_num = int(page_num)
-        sort = SORT_STR_TO_SORT.get(sort_str, None)
-        if not sort:
-            raise ValueError(f"Sort method {sort_str} not recognized. Known sorts are {SORT_STR_TO_SORT.keys()}")
+        sort = get_sort(sort_str)
+        if not owner_str:
+            owner = sort.default_ownership
+        else:
+            owner = get_owner(owner_str)
 
         user = models.user.User.query.filter_by(name="me").first()
-        displays = CardDisplays(user).sort(sort)
-        displays.sort(sort)
+        displays = make_card_displays(user).configure(sort, owner)
 
         page = displays.get_page(page_num)
 

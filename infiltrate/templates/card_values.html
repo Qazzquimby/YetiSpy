@@ -14,9 +14,37 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div id="content-col" class="col-md-8">
+            <div id="ownership" style="width:100%">
+                <select class="form-control"
+                        onchange="ownership=this.value; updateCardTable();">
+                    <option value="unowned">Unowned</option>
+                    <option value="owned">Owned</option>
+                    <option value="all">All</option>
+                </select>
+            </div>
+
 
             <div id="card-table" class="text-center row">
                 <div class="space-t"></div>
+                {#TODO remove duplication with header of card_values.html#}
+                <table id="card-value" class="table vertical-align col-md-8">
+                    <thead>
+                    <tr class="row">
+                        <th class="col-md-4 no-padding">
+                            Sort by:
+                        </th>
+                        <th class="col-md-3 text-center btn {% if sort=="craft" %} bg-primary {% endif %}"
+                            onclick="sort='craft'; page=0; ownership='unowned'; updateCardTable()">
+                            Crafting Efficiency ▼
+
+                        </th>
+                        <th class="col-md-3 text-center btn {% if sort=="value" %} bg-primary {% endif %}"
+                            onclick="sort='value'; page=0; ownership='unowned'; updateCardTable()">
+                            Value ▼
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
                 Loading Values...
             </div>
             <div id="card-table-pagination" class="text-center row">
@@ -57,11 +85,12 @@
     <script>
         let page = 0;
         let sort = "craft";
+        let ownership = "unowned";
 
         function updateCardTable() {
             console.log(page);
             $.get({
-                url: "/card_values/" + page + "/" + sort,
+                url: "/card_values/" + page + "/" + sort + "/" + ownership,
             }).done(function (data) {
                 console.log(data);
                 $("#card-table").html(data);
@@ -80,6 +109,7 @@
             }).fail(function (jqxhr, textStatus, error) {
                 const err = textStatus + ", " + error;
                 console.log("Request Failed: " + err);
+                $("#card-table").html("<h1>Something's gone very wrong.</h1>");
             });
         }
 

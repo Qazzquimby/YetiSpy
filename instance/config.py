@@ -10,3 +10,5 @@ ENV = 'development'
 SECRET_KEY = 'dev'
 
 WARCRY_KEY = 'e6b3bf05-2fb7-4979-baf8-92328818e3f5'
+
+DATABASE = 'mysql+pymysql://root:Q1a1zz22@localhost/infiltrate'

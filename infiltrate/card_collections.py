@@ -24,9 +24,6 @@ class PlaysetDict(abc.ABC):
     def __getitem__(self, index):
         return self._dict[index]
 
-    def __setitem__(self, index, value):
-        self._dict[index] = value
-
     def keys(self):
         """As dict.keys()"""
         return self._dict.keys()
