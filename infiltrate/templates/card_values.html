@@ -14,6 +14,10 @@
     <div class="row">
         <div class="col-md-2"></div>
         <div id="content-col" class="col-md-8">
+            <input id="card-search" type="text" class="form-control"
+                   placeholder="Name">
+            <div id="card-preview"></div>
+
             <div id="ownership" style="width:100%">
                 <select class="form-control"
                         onchange="ownership=this.value; updateCardTable();">
@@ -92,7 +96,6 @@
             $.get({
                 url: "/card_values/" + page + "/" + sort + "/" + ownership,
             }).done(function (data) {
-                console.log(data);
                 $("#card-table").html(data);
                 $("#current-page").html(page);
                 {#Show card on hover#}
@@ -114,6 +117,21 @@
         }
 
         $(document).ready(updateCardTable());
+
+        {#card search#}
+        const $card_search = document.querySelector('#card-search');
+        const $card_preview = document.querySelector('#card-preview');
+
+        const typeHandler = function (e) {
+            {#search for cards and send to front end.#}
+            {#If none found, display: none#}
+
+            $card_preview.innerHTML = e.target.value;
+        };
+
+        $card_search.addEventListener('input', typeHandler); // register for oninput
+
+
     </script>
 
 {% endblock %}

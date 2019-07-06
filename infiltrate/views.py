@@ -15,6 +15,8 @@ from infiltrate.card_display import CardValueDisplay
 from infiltrate.models.card import CardDisplay
 
 
+# TODO Remake with pandas!
+
 # TODO Tests :(
 # TODO search for card
 # TODO show number to buy with icons. Filled card for owned, Gold card for buy, Empty for dont

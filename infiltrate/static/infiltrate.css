@@ -57,6 +57,7 @@ a:hover, a:focus, a:active {
 .form-control {
     background-color: #444 !important;
     border-color: #888 !important;
+    border-radius: 0;
     color: #fff !important;
 }
 
