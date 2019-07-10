@@ -101,8 +101,6 @@ class CraftSort(CardDisplaySort):
     @staticmethod
     def sort(displays: pd.DataFrame) -> pd.DataFrame:
         """Sorts the cards by highest to lowest card value per shiftstone crafting cost."""
-        # return sorted(displays, key=lambda x: x.value_per_shiftstone, reverse=True)
-
         return displays.sort_values(by=['value_per_shiftstone'], ascending=False)
 
     @classmethod
@@ -154,7 +152,13 @@ class CardDisplays:
         displays = evaluation.get_displays_for_user(self.user)
         displays = [display.to_dict() for display in displays]
 
-        return pd.DataFrame(displays)
+        df = pd.DataFrame(displays)
+
+        return df
+
+    def _normalize_displays(self):
+        for key in ["value"]:
+            self.displays[key] = 100 * self.displays[key] / self.displays[key].max()
 
     def reset(self):
         """Undoes any processing such as sorting or filtering"""
@@ -178,6 +182,19 @@ class CardDisplays:
         self._process_displays()
         return self
 
+    def get_page(self, page_num: int = 0) -> typing.List[CardValueDisplay]:
+        """Gets the page of card displays, sorting by the current sort method."""
+        displays_on_page = self._get_displays_on_page(page_num)
+        displays_on_page = self._group_page(displays_on_page)
+        return displays_on_page
+
+    def get_card(self, card_id: models.card.CardId):
+        displays_df = self.displays[self.displays.apply(lambda x: x["set_num"] == card_id.set_num
+                                                                  and x["card_num"] == card_id.card_num, axis=1)]
+        displays = [CardValueDisplay.from_series(row) for index, row in displays_df.iterrows()]
+
+        return displays
+
     def _process_displays(self):
         """Sorts and filters the displays"""
         self._filter()
@@ -198,13 +215,8 @@ class CardDisplays:
         if not self.is_filtered:
             filtered = self.displays[self.displays.apply(lambda x: should_include(x), axis=1)]
             self.displays = filtered
+            self._normalize_displays()
             self.is_filtered = True
-
-    def get_page(self, page_num: int = 0) -> typing.List[CardValueDisplay]:
-        """Gets the page of card displays, sorting by the current sort method."""
-        displays_on_page = self._get_displays_on_page(page_num)
-        displays_on_page = self._group_page(displays_on_page)
-        return displays_on_page
 
     def _get_displays_on_page(self, page_num: int) -> typing.List[CardValueDisplay]:
         start_index = self._get_start_card_index_from_page(page_num)
@@ -316,13 +328,18 @@ class CardsView(FlaskView):
         user = models.user.User.query.filter_by(name="me").first()
         displays = make_card_displays(user).configure(sort, owner)
 
-        page = displays.get_page(page_num)
+        cards_on_page = displays.get_page(page_num)
 
-        return flask.render_template('card_values_table.html', page=page_num, sort=sort_str, card_values=page)
+        return flask.render_template('card_values_table.html', page=page_num, sort=sort_str, card_values=cards_on_page)
 
     def card_search(self, search_str='_'):
+        user = models.user.User.query.filter_by(name="me").first()
+        displays = make_card_displays(user)
+
         search_str = search_str[1:]
-
         matching_card = models.card.ALL_CARDS.get_matching_card(search_str)
-
-        return matching_card
+        if matching_card:
+            cards_on_page = displays.get_card(matching_card.id)
+            return flask.render_template('card_values_table.html', card_values=cards_on_page)
+        else:
+            return ''

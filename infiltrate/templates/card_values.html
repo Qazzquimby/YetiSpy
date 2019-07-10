@@ -114,23 +114,36 @@
             const searchStr = search.target.value;
             if (searchStr.length >= 2) {
                 const currentCardSearchId = cardSearchId;
-                $.get({
-                    url: "/card_search/" + "_" + searchStr,
-                    {#    todo fix this gross url thing. The _ is prepended because empty str breaks.#}
-                }).done(function (data) {
-                    if (currentCardSearchId === cardSearchId) {
-                        $("#card-preview").html(data);
-                        cardSearchId += 1;
-                    }
 
-                }).fail(function (jqxhr, textStatus, error) {
-                    if (currentCardSearchId === cardSearchId) {
-                        $("#card-preview").html("<h1>Something's gone very wrong.</h1>");
-                        cardSearchId += 1;
-                    }
-                    const err = textStatus + ", " + error;
-                    console.log("Request Failed: " + err);
-                });
+                setTimeout(
+                    function () {
+
+                        if (currentCardSearchId !== cardSearchId) {
+                            return;
+                        }
+                        $.get({
+                            url: "/card_search/" + "_" + searchStr,
+                            {#    todo fix this gross url thing. The _ is prepended because empty str breaks.#}
+                        }).done(function (data) {
+                            if (currentCardSearchId !== cardSearchId) {
+                                return;
+                            }
+                            $("#card-preview").html(data);
+                            cardSearchId += 1;
+
+
+                        }).fail(function (jqxhr, textStatus, error) {
+                            if (currentCardSearchId !== cardSearchId) {
+                                return;
+                            }
+                            $("#card-preview").html("<h1>Something's gone very wrong.</h1>");
+                            cardSearchId += 1;
+
+                            const err = textStatus + ", " + error;
+                            console.log("Request Failed: " + err);
+                        });
+                    }, 2000);
+
             }
         };
 

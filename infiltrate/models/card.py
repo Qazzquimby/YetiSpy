@@ -24,6 +24,10 @@ class Card(db.Model):
     image_url = db.Column("ImageUrl", db.String(length=100), unique=True, nullable=False)
     details_url = db.Column("DetailsUrl", db.String(length=100), unique=True, nullable=False)
 
+    @property
+    def id(self):
+        return CardId(set_num=self.set_num, card_num=self.card_num)
+
 
 def _get_card_json():
     card_json_str = browser.get_str_from_url_and_xpath("https://eternalwarcry.com/content/cards/eternal-cards.json",
@@ -88,13 +92,19 @@ def snake_to_str(snake):
 class AllCards:
     def __init__(self):
         raw_cards = Card.query.all()
-        self._dict = self._init_dict(raw_cards)
+        self._card_id_dict = self._init_card_id_dict(raw_cards)
+        self._name_dict = self._init_name_dict(raw_cards)
         self._autocompleter = self._init_autocompleter(raw_cards)
         pass
 
     @staticmethod
-    def _init_dict(raw_cards: typing.List[Card]) -> typing.Dict:
+    def _init_card_id_dict(raw_cards: typing.List[Card]) -> typing.Dict:
         card_dict = {CardId(set_num=card.set_num, card_num=card.card_num): card for card in raw_cards}
+        return card_dict
+
+    @staticmethod
+    def _init_name_dict(raw_cards: typing.List[Card]) -> typing.Dict:
+        card_dict = {card.name: card for card in raw_cards}
         return card_dict
 
     @staticmethod
@@ -106,14 +116,20 @@ class AllCards:
         return autocompleter
 
     def __getitem__(self, item):
-        return self._dict[item]
+        return self._card_id_dict[item]
 
-    def get_matching_card(self, search_str: str):
-        guessed_phrases = self._autocompleter.guess_full_strings([search_str.replace(" ", "")])
-        if guessed_phrases:
-            return snake_to_str(guessed_phrases[0])
+    def get_matching_card(self, search_str: str) -> typing.Optional[Card]:
+        search_term = search_str.replace(" ", "")
+        guesses = self._autocompleter.guess_full_strings([search_term])
+        if guesses:
+            card_name = snake_to_str(guesses[0])
+            try:
+                card = self._name_dict[card_name]
+            except KeyError:
+                raise KeyError(f"Card name {card_name} not found in AllCards name_dict")
+            return card
         else:
-            return ''
+            return None
 
 
 ALL_CARDS = AllCards()
