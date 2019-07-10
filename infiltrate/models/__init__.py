@@ -6,7 +6,7 @@ import infiltrate.models.card
 import infiltrate.models.card_sets
 import infiltrate.models.deck
 import infiltrate.models.deck_search
-import infiltrate.models.rarity
+import infiltrate.models.rarity as rarity
 import infiltrate.models.user
 
 

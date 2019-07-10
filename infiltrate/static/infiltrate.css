@@ -348,3 +348,8 @@ table.vertical-align > tbody > tr > td {
     width: 100%;
 }
 
+.card-count-display {
+    background: #272727;
+    border-radius: 8px;
+    padding: 5px;
+}

@@ -15,9 +15,9 @@ from infiltrate.models.card import CardDisplay
 
 
 # TODO Tests :(
-# TODO search for card
 # TODO show number to buy with icons. Filled card for owned, Gold card for buy, Empty for dont
-# TODO make faster
+
+
 # TODO import collection from EW api
 # TODO host on AWS
 # TODO support user sign in
