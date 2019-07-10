@@ -32,22 +32,7 @@
                 <div class="space-t"></div>
                 {#TODO remove duplication with header of card_values.html#}
                 <table id="card-value" class="table vertical-align col-md-8">
-                    <thead>
-                    <tr class="row">
-                        <th class="col-md-4 no-padding">
-                            Sort by:
-                        </th>
-                        <th class="col-md-3 text-center btn {% if sort=="craft" %} bg-primary {% endif %}"
-                            onclick="sort='craft'; page=0; ownership='unowned'; updateCardTable()">
-                            Crafting Efficiency ▼
-
-                        </th>
-                        <th class="col-md-3 text-center btn {% if sort=="value" %} bg-primary {% endif %}"
-                            onclick="sort='value'; page=0; ownership='unowned'; updateCardTable()">
-                            Value ▼
-                        </th>
-                    </tr>
-                    </thead>
+                    {% include 'card_values_table_header.html' %}
                 </table>
                 Loading Values...
             </div>
@@ -92,7 +77,6 @@
         let ownership = "unowned";
 
         function updateCardTable() {
-            console.log(page);
             $.get({
                 url: "/card_values/" + page + "/" + sort + "/" + ownership,
             }).done(function (data) {
@@ -102,6 +86,7 @@
                 $('*[rel=popover]').popover({
                     html: true,
                     trigger: 'hover',
+                    viewport: '#content-col',
                     content: function () {
                         return '<div class="card-tooltip-image">' +
                             '<img src="' + $(this).data('img') + '" />' +
@@ -120,16 +105,36 @@
 
         {#card search#}
         const $card_search = document.querySelector('#card-search');
-        const $card_preview = document.querySelector('#card-preview');
 
-        const typeHandler = function (e) {
+        let cardSearchId = 0;
+        const cardSearchHandler = function (search) {
             {#search for cards and send to front end.#}
             {#If none found, display: none#}
 
-            $card_preview.innerHTML = e.target.value;
+            const searchStr = search.target.value;
+            if (searchStr.length >= 2) {
+                const currentCardSearchId = cardSearchId;
+                $.get({
+                    url: "/card_search/" + "_" + searchStr,
+                    {#    todo fix this gross url thing. The _ is prepended because empty str breaks.#}
+                }).done(function (data) {
+                    if (currentCardSearchId === cardSearchId) {
+                        $("#card-preview").html(data);
+                        cardSearchId += 1;
+                    }
+
+                }).fail(function (jqxhr, textStatus, error) {
+                    if (currentCardSearchId === cardSearchId) {
+                        $("#card-preview").html("<h1>Something's gone very wrong.</h1>");
+                        cardSearchId += 1;
+                    }
+                    const err = textStatus + ", " + error;
+                    console.log("Request Failed: " + err);
+                });
+            }
         };
 
-        $card_search.addEventListener('input', typeHandler); // register for oninput
+        $card_search.addEventListener('input', cardSearchHandler); // register for oninput
 
 
     </script>

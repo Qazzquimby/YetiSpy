@@ -2,7 +2,7 @@
 
 import typing
 
-from infiltrate import card_collections
+from infiltrate import card_collections, caches
 from infiltrate import db
 from infiltrate import models
 
@@ -61,12 +61,34 @@ class User(db.Model):
         return value_dicts
 
 
+@caches.mem_cache.cache("ownership", expires=5 * 60)
+def get_ownership_cache(user: User):
+    return UserOwnershipCache(user)
+
+
+class UserOwnershipCache:
+    def __init__(self, user: User):
+        self._dict = self._init_dict(user)
+
+    @staticmethod
+    def _init_dict(user):
+        # TODO this is redundant with AllCards class
+        raw_ownership = UserOwnsCard.query.filter_by(username=user.name).all()
+        own_dict = {models.card.CardId(set_num=own.set_num, card_num=own.card_num): own
+                    for own in raw_ownership}
+        return own_dict
+
+    def __getitem__(self, item):
+        return self._dict[item]
+
+
 def user_has_count_of_card(user: User, card_id: models.card.CardId, count: int = 1):
-    match = UserOwnsCard.query.filter_by(username=user.name,
-                                         set_num=card_id.set_num, card_num=card_id.card_num).first()
-    if match:
+    cache = get_ownership_cache(user)
+
+    try:
+        match = cache[card_id]
         owned_count = match.count
-    else:
+    except KeyError:
         owned_count = 0
 
     return count <= owned_count

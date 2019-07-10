@@ -1,12 +1,11 @@
 """This is where the routes are defined."""
 from __future__ import annotations
 
-# TODO figure out card sets and purchases
-# TODO improve craft efficiency by taking into account drop rate
-import abc
 import typing
+from abc import ABC
 
 import flask
+import pandas as pd
 from flask_classy import FlaskView
 
 from infiltrate import evaluation, caches
@@ -14,8 +13,6 @@ from infiltrate import models
 from infiltrate.card_display import CardValueDisplay
 from infiltrate.models.card import CardDisplay
 
-
-# TODO Remake with pandas!
 
 # TODO Tests :(
 # TODO search for card
@@ -25,22 +22,24 @@ from infiltrate.models.card import CardDisplay
 # TODO host on AWS
 # TODO support user sign in
 
+# TODO figure out card sets and purchases
+# TODO improve craft efficiency by taking into account drop rate
 
-class Filter(abc.ABC):
+class Filter(ABC):
     def __init__(self):
         pass
 
     @classmethod
-    def should_include_card(cls, display: CardValueDisplay, user: models.user.User):
+    def should_include_card(cls, display: CardValueDisplay, user: models.user.User) -> bool:
         """Should the card be filtered out."""
         raise NotImplementedError
 
 
-class OwnershipFilter(Filter):
+class OwnershipFilter(Filter, ABC):
     """Filters out cards based on ownership."""
 
     @staticmethod
-    def is_owned(display: CardValueDisplay, user):
+    def is_owned(display: CardValueDisplay, user) -> bool:
         """Does the user own the amount of the card given by the display"""
         card_id = models.card.CardId(display.card.set_num, display.card.card_num)
         return models.user.user_has_count_of_card(user, card_id, display.count)
@@ -51,7 +50,7 @@ class UnownedFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def should_include_card(cls, display: CardValueDisplay, user: models.user.User):
+    def should_include_card(cls, display: CardValueDisplay, user: models.user.User) -> bool:
         return not cls.is_owned(display, user)
 
 
@@ -60,7 +59,7 @@ class OwnedFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def should_include_card(cls, display: CardValueDisplay, user: models.user.User):
+    def should_include_card(cls, display: CardValueDisplay, user: models.user.User) -> bool:
         return cls.is_owned(display, user)
 
 
@@ -69,27 +68,27 @@ class AllFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def should_include_card(cls, display: CardValueDisplay, user: models.user.User):
+    def should_include_card(cls, display: CardValueDisplay, user: models.user.User) -> bool:
         return True
 
 
 # noinspection PyMissingOrEmptyDocstring
-class CardDisplaySort(Filter, abc.ABC):
+class CardDisplaySort(Filter, ABC):
     """A method of sorting and filtering cards displays."""
 
     def __init__(self):
         super().__init__()
 
     @property
-    def default_ownership(self):
+    def default_ownership(self) -> typing.Type[OwnershipFilter]:
         return UnownedFilter
 
     @staticmethod
-    def sort(displays: typing.List[CardValueDisplay]):
+    def sort(displays: pd.DataFrame) -> pd.DataFrame:
         raise NotImplementedError
 
     @classmethod
-    def should_include_card(cls, display: CardValueDisplay, user: models.user.User):
+    def should_include_card(cls, display: CardValueDisplay, user: models.user.User) -> bool:
         return True
 
 
@@ -100,13 +99,16 @@ class CraftSort(CardDisplaySort):
         super().__init__()
 
     @staticmethod
-    def sort(displays: typing.List[CardValueDisplay]):
+    def sort(displays: pd.DataFrame) -> pd.DataFrame:
         """Sorts the cards by highest to lowest card value per shiftstone crafting cost."""
-        return sorted(displays, key=lambda x: x.value_per_shiftstone, reverse=True)
+        # return sorted(displays, key=lambda x: x.value_per_shiftstone, reverse=True)
+
+        return displays.sort_values(by=['value_per_shiftstone'], ascending=False)
 
     @classmethod
-    def should_include_card(cls, display: CardValueDisplay, user: models.user.User):
+    def should_include_card(cls, display: CardValueDisplay, user: models.user.User) -> bool:
         """Filters out uncraftable and owned cards."""
+
         is_campaign = models.card_sets.is_campaign(display.card.set_num)
         return not is_campaign
 
@@ -118,12 +120,13 @@ class ValueSort(CardDisplaySort):
         super().__init__()
 
     @staticmethod
-    def sort(displays: typing.List[CardValueDisplay]):
+    def sort(displays: pd.DataFrame) -> pd.DataFrame:
         """Sorts cards from highest to lowest card value."""
-        return sorted(displays, key=lambda x: x.value, reverse=True)
+        # return sorted(displays, key=lambda x: x.value, reverse=True)
+        return displays.sort_values(by=['value'], ascending=False)
 
     @classmethod
-    def should_include_card(cls, display: CardValueDisplay, user: models.user.User):
+    def should_include_card(cls, display: CardValueDisplay, user: models.user.User) -> bool:
         """Excludes owned cards."""
         return True
 
@@ -134,29 +137,33 @@ class CardDisplays:
 
     def __init__(self, user: models.user.User):
         self.user = user
-        self.raw_displays = self.get_raw_displays()
-        self.displays = self.raw_displays[:]
+        self.raw_displays: pd.DataFrame = self.get_raw_displays()
+        self.displays: pd.DataFrame = self.raw_displays[:]
 
-        self.filtered_displays = None
+        self.filtered_displays: typing.Optional[pd.DataFrame] = None
         self.is_filtered = False
 
-        self.sorted_displays = None
+        self.sorted_displays: typing.Optional[pd.DataFrame] = None
         self.is_sorted = False
 
-        self.sort_method = None
-        self.ownership = None
+        self.sort_method: typing.Optional[CardDisplaySort] = None
+        self.ownership: typing.Optional[OwnershipFilter] = None
 
     def get_raw_displays(self):
         """Get all displays for a user, not sorted or filtered."""
-        return evaluation.get_displays_for_user(self.user)
+        displays = evaluation.get_displays_for_user(self.user)
+        displays = [display.to_dict() for display in displays]
+
+        return pd.DataFrame(displays)
 
     def reset(self):
         """Undoes any processing such as sorting or filtering"""
-        self.displays = self.raw_displays[:]
+        self.displays: pd.DataFrame = self.raw_displays.copy()
 
     def configure(self,
                   sort_method: typing.Type[CardDisplaySort],
                   ownership: typing.Type[OwnedFilter] = None) -> CardDisplays:
+        """Sets sort method and ownership filter, and updates displays to match."""
         if not ownership:
             self.ownership = sort_method.default_ownership
 
@@ -183,8 +190,14 @@ class CardDisplays:
             self.is_sorted = True
 
     def _filter(self):
+
+        def should_include(series: pd.Series):
+            display = CardValueDisplay.from_series(series)
+            return self._should_include_display(display)
+
         if not self.is_filtered:
-            self.displays = [d for d in self.raw_displays if self._should_include_display(d)]
+            filtered = self.displays[self.displays.apply(lambda x: should_include(x), axis=1)]
+            self.displays = filtered
             self.is_filtered = True
 
     def get_page(self, page_num: int = 0) -> typing.List[CardValueDisplay]:
@@ -193,10 +206,12 @@ class CardDisplays:
         displays_on_page = self._group_page(displays_on_page)
         return displays_on_page
 
-    def _get_displays_on_page(self, page_num: int):
+    def _get_displays_on_page(self, page_num: int) -> typing.List[CardValueDisplay]:
         start_index = self._get_start_card_index_from_page(page_num)
+        displays_on_page_df: pd.DataFrame = self.displays[start_index:start_index + self.CARDS_PER_PAGE]
 
-        displays_on_page = self.displays[start_index:start_index + self.CARDS_PER_PAGE]
+        displays_on_page = [CardValueDisplay.from_series(row) for index, row in displays_on_page_df.iterrows()]
+
         return displays_on_page
 
     def _should_include_display(self, display: CardValueDisplay):
@@ -303,4 +318,11 @@ class CardsView(FlaskView):
 
         page = displays.get_page(page_num)
 
-        return flask.render_template('card_table.html', page=page_num, sort=sort_str, card_values=page)
+        return flask.render_template('card_values_table.html', page=page_num, sort=sort_str, card_values=page)
+
+    def card_search(self, search_str='_'):
+        search_str = search_str[1:]
+
+        matching_card = models.card.ALL_CARDS.get_matching_card(search_str)
+
+        return matching_card

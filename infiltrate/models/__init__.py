@@ -2,7 +2,6 @@
 
 """
 import infiltrate
-
 import infiltrate.models.card
 import infiltrate.models.card_sets
 import infiltrate.models.deck

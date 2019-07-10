@@ -4,18 +4,14 @@ Related to card_collections.py
 """
 import json
 import typing
+from dataclasses import dataclass
 from typing import NamedTuple
 
+from finisher import DictStorageAutoCompleter
+
 from infiltrate import browser
-from infiltrate import caches
 from infiltrate import db
-
-
-@caches.mem_cache.cache("cards", expire="800")
-def get_card(set_num: int, card_num: int):
-    """Gets a card with given set_num and card_num"""
-    card = Card.query.filter_by(set_num=set_num, card_num=card_num).first()
-    return card
+from infiltrate import models
 
 
 class Card(db.Model):
@@ -81,14 +77,64 @@ class CardIdWithValue(NamedTuple):
     value: float
 
 
+def str_to_snake(string: str):
+    return string.replace(" ", "_")
+
+
+def snake_to_str(snake):
+    return snake.replace("_", " ")
+
+
+class AllCards:
+    def __init__(self):
+        raw_cards = Card.query.all()
+        self._dict = self._init_dict(raw_cards)
+        self._autocompleter = self._init_autocompleter(raw_cards)
+        pass
+
+    @staticmethod
+    def _init_dict(raw_cards: typing.List[Card]) -> typing.Dict:
+        card_dict = {CardId(set_num=card.set_num, card_num=card.card_num): card for card in raw_cards}
+        return card_dict
+
+    @staticmethod
+    def _init_autocompleter(raw_cards: typing.List[Card]) -> DictStorageAutoCompleter:
+        autocompleter = DictStorageAutoCompleter({})
+
+        card_names = [str_to_snake(card.name) for card in raw_cards]
+        autocompleter.train_from_strings(card_names)
+        return autocompleter
+
+    def __getitem__(self, item):
+        return self._dict[item]
+
+    def get_matching_card(self, search_str: str):
+        guessed_phrases = self._autocompleter.guess_full_strings([search_str.replace(" ", "")])
+        if guessed_phrases:
+            return snake_to_str(guessed_phrases[0])
+        else:
+            return ''
+
+
+ALL_CARDS = AllCards()
+
+
+@dataclass
 class CardDisplay:
     """Use make_card_display to use cached creation"""
+    set_num: int
+    card_num: int
+    name: str
+    rarity: models.rarity.Rarity
+    image_url: str
+    details_url: str
 
-    def __init__(self, card_id: CardId):
-        card = get_card(card_id.set_num, card_id.card_num)
-        self.set_num = card.set_num
-        self.card_num = card.card_num
-        self.name = card.name
-        self.rarity = card.rarity
-        self.image_url = card.image_url
-        self.details_url = card.details_url
+    @classmethod
+    def from_card_id(cls, card_id: CardId):
+        """Makes a CardDisplay from a CardId."""
+        card = ALL_CARDS[card_id.set_num, card_id.card_num]
+        return cls(set_num=card.set_num, card_num=card.card_num, name=card.name, rarity=card.rarity,
+                   image_url=card.image_url, details_url=card.details_url)
+
+    def to_dict(self):
+        return self.__dict__
