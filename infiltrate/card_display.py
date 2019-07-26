@@ -5,6 +5,9 @@ import numpy as np
 from infiltrate import caches, models
 
 
+# Todo clean up this mess
+
+
 @caches.mem_cache.cache("card_displays", expire=3600)
 def make_card_display(card_id: models.card.CardId) -> models.card.CardDisplay:
     # TODO depreciate

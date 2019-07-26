@@ -14,3 +14,9 @@ _mem_cache_opts = {
     'cache.type': 'memory'
 }
 mem_cache = CacheManager(**parse_cache_config_options(_mem_cache_opts))
+
+
+def invalidate():
+    from beaker.cache import cache_managers
+    for _cache in cache_managers.values():
+        _cache.clear()

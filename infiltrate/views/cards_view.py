@@ -14,18 +14,21 @@ from infiltrate.card_display import CardValueDisplay
 from infiltrate.models.card import CardDisplay
 
 
-# TODO Tests :(
-# TODO show number to buy with icons. Filled card for owned, Gold card for buy, Empty for dont
+# TODO Force update API
 
+# TODO support user sign in
+# TODO Tests :(
 
 # TODO import collection from EW api
 # TODO host on AWS
-# TODO support user sign in
+
 
 # TODO figure out card sets and purchases
 # TODO improve craft efficiency by taking into account drop rate
 
 class Filter(ABC):
+    """ABC for methods of filtering cards to be displayed."""
+
     def __init__(self):
         pass
 

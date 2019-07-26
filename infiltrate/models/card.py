@@ -116,7 +116,7 @@ class AllCards:
         return autocompleter
 
     def __getitem__(self, item):
-        return self._card_id_dict[item]
+        return self._card_id_dict.get(item, None)
 
     def get_matching_card(self, search_str: str) -> typing.Optional[Card]:
         search_term = search_str.replace(" ", "")

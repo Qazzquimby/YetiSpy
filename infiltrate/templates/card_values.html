@@ -106,43 +106,40 @@
         {#card search#}
         const $card_search = document.querySelector('#card-search');
 
-        let cardSearchId = 0;
+        let lastSearch = '';
         const cardSearchHandler = function (search) {
             {#search for cards and send to front end.#}
             {#If none found, display: none#}
 
             const searchStr = search.target.value;
             if (searchStr.length >= 2) {
-                const currentCardSearchId = cardSearchId;
+                if (searchStr.length >= lastSearch.length || !lastSearch.startsWith(searchStr)) {
+                    {#console.log("setting searchStr " + searchStr + " over lastSearch " +#}
+                    {#    lastSearch);#}
+                    lastSearch = searchStr;
+                    setTimeout(
+                        function () {
+                            if (searchStr.length >= lastSearch.length || !lastSearch.startsWith(searchStr)) {
+                                {#console.log("running " + searchStr);#}
+                                $.get({
+                                    url: "/card_search/" + "_" + searchStr,
+                                    {#    todo fix this gross url thing. The _ is prepended because empty str breaks.#}
+                                }).done(function (data) {
+                                    if (searchStr.length >= lastSearch.length || !lastSearch
+                                        .startsWith(searchStr)) {
+                                        {#console.log("using " + searchStr + " lastSearch " + lastSearch);#}
 
-                setTimeout(
-                    function () {
-
-                        if (currentCardSearchId !== cardSearchId) {
-                            return;
-                        }
-                        $.get({
-                            url: "/card_search/" + "_" + searchStr,
-                            {#    todo fix this gross url thing. The _ is prepended because empty str breaks.#}
-                        }).done(function (data) {
-                            if (currentCardSearchId !== cardSearchId) {
-                                return;
+                                        $("#card-preview").html(data);
+                                    }
+                                }).fail(function (jqxhr, textStatus, error) {
+                                    $("#card-preview").html("<h1>Something's gone very wrong.</h1>");
+                                    const err = textStatus + ", " + error;
+                                    console.log("Request Failed: " + err);
+                                });
                             }
-                            $("#card-preview").html(data);
-                            cardSearchId += 1;
+                        }, 200);
+                }
 
-
-                        }).fail(function (jqxhr, textStatus, error) {
-                            if (currentCardSearchId !== cardSearchId) {
-                                return;
-                            }
-                            $("#card-preview").html("<h1>Something's gone very wrong.</h1>");
-                            cardSearchId += 1;
-
-                            const err = textStatus + ", " + error;
-                            console.log("Request Failed: " + err);
-                        });
-                    }, 2000);
 
             }
         };

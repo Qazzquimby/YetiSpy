@@ -146,7 +146,10 @@ def update_decks():
         def make_deck_from_details_json(self, page_json: typing.Dict):
 
             archetype = Archetype[page_json["archetype"].lower().replace(" ", "_")]
-            deck_type = DeckType[int(page_json["deck_type"].lower())]
+            try:
+                deck_type = DeckType.__dict__[page_json["deck_type"].lower().replace(" ", "_")]
+            except:
+                deck_type = DeckType[int(page_json["deck_type"])]
 
             deck = Deck(
                 id=page_json['deck_id'],
@@ -172,7 +175,8 @@ def update_decks():
             for card_json in cards_json:
                 set_num = card_json["set_number"]
                 card_num = card_json["eternal_id"]
-                if models.card.get_card(set_num, card_num):
+                card_id = models.card.CardId(set_num, card_num)
+                if models.card.ALL_CARDS[card_id]:
                     deck_has_card = DeckHasCard(
                         deck_id=page_json["deck_id"],
                         set_num=set_num,

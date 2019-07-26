@@ -1,12 +1,12 @@
 """Contains the shared db resource for all models, and the update interface.
 
 """
-import infiltrate
+
 import infiltrate.models.card
 import infiltrate.models.card_sets
 import infiltrate.models.deck
 import infiltrate.models.deck_search
-import infiltrate.models.rarity as rarity
+import infiltrate.models.rarity
 import infiltrate.models.user
 
 
@@ -23,7 +23,3 @@ def update():
     infiltrate.models.deck_search.update_deck_searches()
 
     infiltrate.db.session.commit()
-
-
-if __name__ == '__main__':
-    update()
