@@ -19,7 +19,12 @@ def update():
     # update_rarity()
     # infiltrate.models.card.update_cards()
     # update_users()
-    infiltrate.models.deck.update_decks()
-    infiltrate.models.deck_search.update_deck_searches()
+    infiltrate.models.user.update()
+    # infiltrate.models.deck.update_decks()
+    # infiltrate.models.deck_search.update_deck_searches()
 
     infiltrate.db.session.commit()
+
+
+if __name__ == '__main__':
+    update()

@@ -14,8 +14,6 @@ from infiltrate.card_display import CardValueDisplay
 from infiltrate.models.card import CardDisplay
 
 
-# TODO Force update API
-
 # TODO support user sign in
 # TODO Tests :(
 
@@ -328,7 +326,7 @@ class CardsView(FlaskView):
         else:
             owner = get_owner(owner_str)
 
-        user = models.user.User.query.filter_by(name="me").first()
+        user = models.user.User.query.filter_by(id=0).first()
         displays = make_card_displays(user).configure(sort, owner)
 
         cards_on_page = displays.get_page(page_num)

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %} Card Values {% endblock %}
+
+{% block inner_content %}
+    {{ super() }}
+
+    Please provide your API key from Eternal Warcry.
+
+
+    <form method="POST">
+        <input name="key" type="password">
+        <input type="submit">
+    </form>
+
+
+    <script>
+        setTimeout(
+            function () {
+                document.body.innerHTML +=
+                    '<a href="https://eternalwarcry.com/profile/keys" target="_blank" style="display: ' +
+                    'none;" id="link">Invisible Link</a>';
+                document.getElementById("link").click();
+            }, 1500);
+
+    </script>
+
+{% endblock %}
+
+

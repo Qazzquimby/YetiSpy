@@ -1,5 +1,5 @@
 """User account objects"""
-
+import re
 import typing
 
 from infiltrate import card_collections, caches
@@ -9,7 +9,7 @@ from infiltrate import models
 
 class UserOwnsCard(db.Model):
     """Table representing card playset ownership."""
-    username = db.Column('username', db.String(length=20), db.ForeignKey('users.name'), primary_key=True)
+    user_id = db.Column('user_id', db.Integer(), db.ForeignKey('users.id'), primary_key=True)
     set_num = db.Column('set_num', db.Integer, primary_key=True)
     card_num = db.Column('card_num', db.Integer, primary_key=True)
     count = db.Column('count', db.Integer, nullable=False)
@@ -20,7 +20,7 @@ class UserOwnsCard(db.Model):
 class User(db.Model):
     """Model representing a user."""
     __tablename__ = "users"
-    name = db.Column("name", db.String(length=20), primary_key=True)
+    id = db.Column("id", db.Integer(), primary_key=True)
     weighted_deck_searches: typing.List[models.deck_search.WeightedDeckSearch] \
         = db.relationship("WeightedDeckSearch", cascade_backrefs=False)
     cards = db.relationship("UserOwnsCard")
@@ -73,7 +73,7 @@ class UserOwnershipCache:
     @staticmethod
     def _init_dict(user):
         # TODO this is redundant with AllCards class
-        raw_ownership = UserOwnsCard.query.filter_by(username=user.name).all()
+        raw_ownership = UserOwnsCard.query.filter_by(user_id=user.id).all()
         own_dict = {models.card.CardId(set_num=own.set_num, card_num=own.card_num): own
                     for own in raw_ownership}
         return own_dict
@@ -103,12 +103,12 @@ class _CollectionUpdater:
         self._add_new_collection(collection)
 
     def _remove_old_collection(self):
-        UserOwnsCard.query.filter_by(username=self.user.name).delete()
+        UserOwnsCard.query.filter_by(user_id=self.user.id).delete()
 
     def _add_new_collection(self, collection: typing.Dict):
         for card_id in collection.keys():
             user_owns_card = UserOwnsCard(
-                username=self.user.name,
+                user_id=self.user.id,
                 set_num=card_id.set_num,
                 card_num=card_id.card_num,
                 count=collection[card_id]
@@ -118,33 +118,41 @@ class _CollectionUpdater:
         db.session.commit()
 
 
+def update():
+    # TODO TEMP for dev version only
+    user = models.user.User.query.filter_by(id=0).first()
+    update_collection(user, _temp_get_collection_from_txt())
+
+
 def update_collection(user: User, collection: typing.Dict):
     """Replaces a user's old collection in the db with their new collection."""
     updater = _CollectionUpdater(user)
     updater(collection)
 
-# def _temp_get_collection_from_txt():
-#     # todo kill this. It won't be used in the web interface.
-#     def _from_export_text(text):
-#         numbers = [int(number) for number in re.findall(r'\d+', text)]
-#         if len(numbers) == 3:
-#             count = numbers[0]
-#             set_num = numbers[1]
-#             card_num = numbers[2]
-#             playset = card_collections.CardPlayset(
-#                 infiltrate.models.card.CardId(card_num=card_num, set_num=set_num), count=count)
-#
-#             return playset
-#         return None
-#
-#     with open("collection.txt") as collection_file:
-#         collection_text = collection_file.read()
-#         collection_lines = collection_text.split("\n")
-#
-#         playsets = infiltrate.card_display.make_card_playset_dict()
-#         for line in collection_lines:
-#             if "*Premium*" not in line:
-#                 playset = _from_export_text(line)
-#                 if playset:
-#                     playsets[playset.card_id] = playset.count
-#     return playsets
+
+def _temp_get_collection_from_txt():
+    # todo kill this. It won't be used in the web interface.
+    def _from_export_text(text):
+        numbers = [int(number) for number in re.findall(r'\d+', text)]
+        if len(numbers) == 3:
+            count = numbers[0]
+            set_num = numbers[1]
+            card_num = numbers[2]
+            playset = models.card.CardPlayset(
+                models.card.CardId(card_num=card_num, set_num=set_num), count=count)
+
+            return playset
+        return None
+
+    with open("infiltrate\data\collection.txt") as collection_file:
+        collection_text = collection_file.read()
+        collection_lines = collection_text.split("\n")
+
+        playsets = card_collections.make_card_playset_dict()
+        for line in collection_lines:
+            if "*Premium*" not in line:
+                playset = _from_export_text(line)
+                if playset:
+                    playsets[playset.card_id] = playset.count
+
+    return playsets

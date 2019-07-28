@@ -27,6 +27,7 @@ class DeckType(enum.Enum):
     forge = 4
     campaign = 5
     event = 6
+    _ = 7
     expedition = 8
 
 
@@ -149,6 +150,7 @@ def update_decks():
             try:
                 deck_type = DeckType.__dict__[page_json["deck_type"].lower().replace(" ", "_")]
             except:
+
                 deck_type = DeckType[int(page_json["deck_type"])]
 
             deck = Deck(

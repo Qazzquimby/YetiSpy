@@ -7,11 +7,11 @@ For example, you might have DEBUG = False in config.py, but set DEBUG = True in 
 machine for development.
 Since this file will be read in after config.py, it will override it and set DEBUG = True."""
 ENV = 'development'
-SECRET_KEY = 'dev'
+SECRET_KEY = '2vA4DQVQskiOpRM7qB20mKrDdlt868H5'
 
 WARCRY_KEY = 'e6b3bf05-2fb7-4979-baf8-92328818e3f5'
 
 UPDATE_KEY = 'teH9sWmTv0mqs4tmeAHRKfB9Pme9Z0nl'
 
 DATABASE = 'mysql+pymysql://root:Q1a1zz22@localhost/infiltrate'
-
+# IF DATABASE CHANGES, ALSO UPDATE ALEBMIC.INI

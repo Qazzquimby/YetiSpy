@@ -87,7 +87,7 @@ class WeightedDeckSearch(db.Model):
 
     Allows users to personalize their recommendations."""
     deck_search_id = db.Column(db.Integer, db.ForeignKey('deck_searches.id'), primary_key=True)
-    username = db.Column(db.String(length=20), db.ForeignKey("users.name"))
+    user_id = db.Column(db.String(length=20), db.ForeignKey("users.id"))
     name = db.Column("name", db.String(length=20), primary_key=True)
 
     weight = db.Column("weight", db.Float)
@@ -109,7 +109,7 @@ def update_deck_searches():
     """Update the playrate caches of all deck searches."""
     # todo placeholder
 
-    weighted_deck_searches = WeightedDeckSearch.query.filter_by(username="me").all()
+    weighted_deck_searches = WeightedDeckSearch.query.filter_by(user_id=0).all()
     for weighted in weighted_deck_searches:
         print(f"Upaditing playrate cache for {weighted.name}")
         deck_search = weighted.deck_search
