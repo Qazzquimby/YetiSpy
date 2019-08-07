@@ -91,7 +91,7 @@ def snake_to_str(snake):
 
 class AllCards:
     def __init__(self):
-        raw_cards = Card.query.all()
+        raw_cards: typing.List[Card] = Card.query.all()
         self._card_id_dict = self._init_card_id_dict(raw_cards)
         self._name_dict = self._init_name_dict(raw_cards)
         self._autocompleter = self._init_autocompleter(raw_cards)
@@ -117,6 +117,9 @@ class AllCards:
 
     def __getitem__(self, item):
         return self._card_id_dict.get(item, None)
+
+    def __iter__(self):
+        return self._card_id_dict.values().__iter__()
 
     def get_matching_card(self, search_str: str) -> typing.Optional[Card]:
         search_term = search_str.replace(" ", "")

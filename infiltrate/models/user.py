@@ -2,9 +2,13 @@
 import re
 import typing
 
-from infiltrate import card_collections, caches
+import flask
+import sqlalchemy_utils
+
+from infiltrate import card_collections, caches, cookies
 from infiltrate import db
 from infiltrate import models
+from infiltrate.views.account_view import AuthenticationException
 
 
 class UserOwnsCard(db.Model):
@@ -20,9 +24,11 @@ class UserOwnsCard(db.Model):
 class User(db.Model):
     """Model representing a user."""
     __tablename__ = "users"
-    id = db.Column("id", db.Integer(), primary_key=True)
-    weighted_deck_searches: typing.List[models.deck_search.WeightedDeckSearch] \
-        = db.relationship("WeightedDeckSearch", cascade_backrefs=False)
+    id = db.Column("id", db.Integer(), primary_key=True, autoincrement=True)
+    name = db.Column("name", db.String(length=40))
+    weighted_deck_searches: typing.List[models.deck_search.WeightedDeckSearch] = db.relationship("WeightedDeckSearch",
+                                                                                                 cascade_backrefs=False)
+    key = db.Column('key', sqlalchemy_utils.PasswordType(schemes=['pbkdf2_sha512']))
     cards = db.relationship("UserOwnsCard")
 
     def normalize_weights(self):
@@ -44,6 +50,10 @@ class User(db.Model):
         """Gets a ValueDict for a user based on all their weighted deck searches."""
         values = card_collections.ValueDict()
 
+        for card in models.card.ALL_CARDS:
+            for play_count in range(4):
+                values[card.id][play_count] += 0
+
         value_dicts = self._get_individual_value_dicts()
         for value_dict in value_dicts:
             for card_id in value_dict.keys():
@@ -59,6 +69,22 @@ class User(db.Model):
 
             value_dicts.append(value_dict)
         return value_dicts
+
+
+def get_by_cookie():
+    user_id = flask.request.cookies.get(cookies.ID)
+    if not user_id:
+        flask.redirect("/login")
+    user = models.user.get_by_id(user_id)
+    if user:
+        return user
+    else:
+        raise AuthenticationException
+
+
+def get_by_id(user_id: str):
+    user = User.query.filter_by(id=user_id).first()
+    return user
 
 
 @caches.mem_cache.cache("ownership", expires=5 * 60)

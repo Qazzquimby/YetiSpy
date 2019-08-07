@@ -12,17 +12,16 @@ from infiltrate import evaluation, caches
 from infiltrate import models
 from infiltrate.card_display import CardValueDisplay
 from infiltrate.models.card import CardDisplay
+# TODO figure out card sets and purchases
+# TODO improve craft efficiency by taking into account drop rate
+from infiltrate.views.account_view import AuthenticationException
 
 
 # TODO support user sign in
 # TODO Tests :(
-
 # TODO import collection from EW api
 # TODO host on AWS
 
-
-# TODO figure out card sets and purchases
-# TODO improve craft efficiency by taking into account drop rate
 
 class Filter(ABC):
     """ABC for methods of filtering cards to be displayed."""
@@ -159,7 +158,8 @@ class CardDisplays:
 
     def _normalize_displays(self):
         for key in ["value"]:
-            self.displays[key] = 100 * self.displays[key] / self.displays[key].max()
+            key_max = max(self.displays[key].max(), 1)
+            self.displays[key] = 100 * self.displays[key] / key_max
 
     def reset(self):
         """Undoes any processing such as sorting or filtering"""
@@ -318,23 +318,30 @@ class CardsView(FlaskView):
         return flask.render_template("card_values.html")
 
     def card_values(self, page_num=1, sort_str="craft", owner_str=None):
-        """A table loaded into index. Not accessed by the user."""
+        """A table loaded into the card values page."""
+        try:
+            user = models.user.get_by_cookie()
+        except AuthenticationException:
+            return flask.abort(401)
+
         page_num = int(page_num)
         sort = get_sort(sort_str)
         if not owner_str:
-            owner = sort.default_ownership
+            ownership = sort.default_ownership
         else:
-            owner = get_owner(owner_str)
+            ownership = get_owner(owner_str)
 
-        user = models.user.User.query.filter_by(id=0).first()
-        displays = make_card_displays(user).configure(sort, owner)
+        displays = make_card_displays(user).configure(sort, ownership)
 
         cards_on_page = displays.get_page(page_num)
 
         return flask.render_template('card_values_table.html', page=page_num, sort=sort_str, card_values=cards_on_page)
 
     def card_search(self, search_str='_'):
-        user = models.user.User.query.filter_by(name="me").first()
+        try:
+            user = models.user.get_by_cookie()
+        except AuthenticationException:
+            return flask.redirect("/login")
         displays = make_card_displays(user)
 
         search_str = search_str[1:]
