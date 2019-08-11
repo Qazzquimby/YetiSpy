@@ -4,8 +4,9 @@ import typing
 import urllib.error
 from datetime import datetime
 
-from infiltrate import app, db, browser
-from infiltrate import models
+import browser
+import models.card
+from infiltrate import app, db
 
 
 class DeckHasCard(db.Model):
@@ -149,8 +150,7 @@ def update_decks():
             archetype = Archetype[page_json["archetype"].lower().replace(" ", "_")]
             try:
                 deck_type = DeckType.__dict__[page_json["deck_type"].lower().replace(" ", "_")]
-            except:
-
+            except KeyError:  # not sure this is the right exception
                 deck_type = DeckType[int(page_json["deck_type"])]
 
             deck = Deck(

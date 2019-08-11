@@ -4,11 +4,10 @@ import typing
 
 from progiter import progiter
 
-import infiltrate.card_display
-import infiltrate.models.card
-from infiltrate import card_collections
+import card_collections
+import models.card
+import models.deck
 from infiltrate import db
-from infiltrate import models
 
 
 class DeckSearchHasCard(db.Model):
@@ -38,7 +37,7 @@ class DeckSearch(db.Model):
         """Gets a PlayRateDict of [cardId][playset size] = proportional to play rate"""
         playrate_dict = card_collections.PlayrateDict()
         for card in self.cards:
-            card_id = infiltrate.models.card.CardId(card_num=card.card_num, set_num=card.set_num)
+            card_id = models.card.CardId(card_num=card.card_num, set_num=card.set_num)
 
             playrate = card.num_decks_with_count_or_less * 10_000 / len(self.cards)
             # /len(cards) hopefully normalizes by search size
@@ -61,10 +60,10 @@ class DeckSearch(db.Model):
         DeckSearchHasCard.query.filter_by(decksearch_id=self.id).delete()
 
     def _get_playrates(self):
-        playrate = infiltrate.card_collections.make_card_playset_dict()
+        playrate = card_collections.make_card_playset_dict()
         for deck in self.get_decks():
             for card in deck.cards:
-                card_id = infiltrate.models.card.CardId(set_num=card.set_num, card_num=card.card_num)
+                card_id = models.card.CardId(set_num=card.set_num, card_num=card.card_num)
                 for num_played in range(card.num_played):
                     playrate[card_id][num_played] += 1
         return playrate

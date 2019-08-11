@@ -3,7 +3,7 @@ import abc
 import typing
 from collections import defaultdict
 
-from infiltrate import models
+import models.card
 
 
 def make_card_playset_dict() -> typing.Dict:

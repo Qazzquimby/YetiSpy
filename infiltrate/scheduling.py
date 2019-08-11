@@ -4,7 +4,9 @@ import atexit
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
-from infiltrate import models
+import models.card
+import models.deck
+import models.deck_search
 
 
 def schedule_updates():

@@ -2,8 +2,11 @@
 
 from flask_classy import FlaskView
 
+import caches
+import models.card
+import models.deck
+import models.deck_search
 from infiltrate import app
-from infiltrate import models, caches
 
 NO_KEY_GIVEN = "no_key_given"
 

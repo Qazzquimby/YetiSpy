@@ -9,9 +9,9 @@ from typing import NamedTuple
 
 from finisher import DictStorageAutoCompleter
 
-from infiltrate import browser
+import browser
+import models.rarity
 from infiltrate import db
-from infiltrate import models
 
 
 class Card(db.Model):

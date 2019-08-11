@@ -1,7 +1,9 @@
+"""Timing diagnostics"""
 import time
 
 
 def timer(function, name=None):
+    """Times the given function and prints the results."""
     if not name:
         name = function
     print(f"profiling {name}")

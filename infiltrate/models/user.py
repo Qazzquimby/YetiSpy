@@ -5,10 +5,13 @@ import typing
 import flask
 import sqlalchemy_utils
 
-from infiltrate import card_collections, caches, cookies
+import caches
+import card_collections
+import cookies
+import models.card
+import models.deck_search
 from infiltrate import db
-from infiltrate import models
-from infiltrate.views.account_view import AuthenticationException
+from views.account_view import AuthenticationException
 
 
 class UserOwnsCard(db.Model):
@@ -75,7 +78,7 @@ def get_by_cookie():
     user_id = flask.request.cookies.get(cookies.ID)
     if not user_id:
         flask.redirect("/login")
-    user = models.user.get_by_id(user_id)
+    user = get_by_id(user_id)
     if user:
         return user
     else:
@@ -146,7 +149,7 @@ class _CollectionUpdater:
 
 def update():
     # TODO TEMP for dev version only
-    user = models.user.User.query.filter_by(id=0).first()
+    user = User.query.filter_by(id=0).first()
     update_collection(user, _temp_get_collection_from_txt())
 
 
@@ -170,7 +173,7 @@ def _temp_get_collection_from_txt():
             return playset
         return None
 
-    with open("infiltrate\data\collection.txt") as collection_file:
+    with open(r"infiltrate\data\collection.txt") as collection_file:
         collection_text = collection_file.read()
         collection_lines = collection_text.split("\n")
 

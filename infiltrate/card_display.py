@@ -1,11 +1,11 @@
+"""Front end display of cards."""
 from dataclasses import dataclass
 
 import numpy as np
 
-from infiltrate import caches, models
-
-
-# Todo clean up this mess
+import caches
+import models.card
+import models.rarity
 
 
 @caches.mem_cache.cache("card_displays", expire=3600)
@@ -14,37 +14,6 @@ def make_card_display(card_id: models.card.CardId) -> models.card.CardDisplay:
     """Makes a CardDisplay, utilizing the cache to avoid repeated work."""
     card_display = models.card.CardDisplay.from_card_id(card_id)
     return card_display
-
-
-# def make_card_displays(card_ids: typing.List[models.card.CardId]) -> typing.List[models.card.CardDisplay]:
-#     """Makes a batch of CardDisplays, to avoid multiple DB queries."""
-#     cards = models.card.Card.query.all()  # todo ????
-#
-#     # card_display = models.card.CardDisplay.from_card_id(card_id)
-#     return card_display
-
-
-#     @dataclass
-# class CardDisplay:
-#     """Use make_card_display to use cached creation"""
-#     set_num: int
-#     card_num: int
-#     name: str
-#     rarity: models.rarity.Rarity
-#     image_url: str
-#     details_url: str
-#
-#     @classmethod
-#     def from_card_id(cls, card_id: CardId):
-#         """Makes a CardDisplay from a CardId.
-#
-#         This requires a db query and shouldn't be done many times."""
-#         card = get_card(card_id.set_num, card_id.card_num)
-#         return cls(set_num=card.set_num, card_num=card.card_num, name=card.name, rarity=card.rarity,
-#                    image_url=card.image_url, details_url=card.details_url)
-#
-#     def to_dict(self):
-#         return self.__dict__
 
 
 @dataclass
@@ -56,6 +25,7 @@ class CardValueDisplay:
 
     @property
     def value_per_shiftstone(self):
+        """The card's value, per 100 shiftstone in it's crafting cost."""
         cost = models.rarity.rarity_from_name[self.card.rarity].enchant
         return self.value * 100 / cost
 
@@ -63,6 +33,7 @@ class CardValueDisplay:
         return f"{self.card.name}, {self.count}"
 
     def to_dict(self):
+        """a dict representation of the object"""
         self_dict = self.__dict__.copy()
         self_dict["value_per_shiftstone"] = self.value_per_shiftstone
         self_dict.pop('card')
@@ -80,6 +51,7 @@ class CardValueDisplay:
 
     @classmethod
     def from_series(cls, series):
+        """Creates a CardValueDisplay from a pandas series."""
         card = models.card.CardDisplay(set_num=series.set_num, card_num=series.card_num,
                                        name=series.values[np.where(series.index == 'name')[0][0]],
                                        rarity=series.rarity, image_url=series.image_url,
@@ -87,9 +59,3 @@ class CardValueDisplay:
         count = series.values[np.where(series.index == 'count')[0][0]]  # Gross. "count" is overwritten by a method.
         value = series.value
         return cls(card, count, value)
-
-    # @classmethod
-    # def from_card_id_with_value_bulk(cls, card_id_with_values: typing.List[models.card.CardIdWithValue]):
-    #     cards = make_card_displays([c.card_id for c in card_id_with_values])
-    #     counts = [c.count for c in card_id_with_values]
-    #     values = [c.value for c in card_id_with_values]

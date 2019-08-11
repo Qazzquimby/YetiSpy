@@ -9,7 +9,9 @@ import requests
 from flask_classy import FlaskView
 from werkzeug.exceptions import BadRequestKeyError
 
-from infiltrate import models, db, cookies
+import cookies
+import models.user
+from infiltrate import db
 
 
 # TODO change key field to password type so that it can be queried by
