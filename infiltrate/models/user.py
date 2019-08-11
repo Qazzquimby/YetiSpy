@@ -1,16 +1,17 @@
 """User account objects"""
-import re
 import typing
 
 import flask
 import sqlalchemy_utils
+from sqlalchemy_utils.types.encrypted.encrypted_type import FernetEngine
 
+import browser
 import caches
 import card_collections
 import cookies
 import models.card
 import models.deck_search
-from infiltrate import db
+from infiltrate import app, db
 from views.account_view import AuthenticationException
 
 
@@ -31,23 +32,25 @@ class User(db.Model):
     name = db.Column("name", db.String(length=40))
     weighted_deck_searches: typing.List[models.deck_search.WeightedDeckSearch] = db.relationship("WeightedDeckSearch",
                                                                                                  cascade_backrefs=False)
-    key = db.Column('key', sqlalchemy_utils.PasswordType(schemes=['pbkdf2_sha512']))
+    # key = db.Column('key', sqlalchemy_utils.PasswordType(schemes=['pbkdf2_sha512']))
+    key = db.Column('key', sqlalchemy_utils.EncryptedType(db.String(50),
+                                                          app.config["SECRET_KEY"],
+                                                          FernetEngine))
+
     cards = db.relationship("UserOwnsCard")
 
-    def normalize_weights(self):
-        """Ensures that a user's saved weights are approximately normalized to 1.
+    def update_collection(self):
+        """Replaces a user's old collection in the db with their new collection."""
+        updater = _CollectionUpdater(self)  # TODO split into smaller classes
+        collection = self._get_new_collection()
+        updater(collection)
 
-        This prevents weight sizes from inflating values."""
-        total_weight = sum([search.weight for search in self.weighted_deck_searches])
-        if not 0.9 < total_weight < 1.10:  # Bounds prevent repeated work due to rounding on later passes
-            for search in self.weighted_deck_searches:
-                search.weight = search.weight / total_weight
-
-    def add_weighted_deck_search(self):
-        """Adds a weighted deck search to the user's table"""
-        # TODO placeholder
-        self.user.normalize_weights()
-        # TODO the rest
+    def _get_new_collection(self) -> typing.Dict[models.card.CardId, int]:
+        url = f"https://api.eternalwarcry.com/v1/useraccounts/collection?key={self.key}"
+        response = browser.obj_from_url(url)
+        cards = response["cards"]
+        collection = card_collections.make_collection_from_ew_export(cards)
+        return collection
 
     def get_overall_value_dict(self) -> card_collections.ValueDict:
         """Gets a ValueDict for a user based on all their weighted deck searches."""
@@ -73,16 +76,35 @@ class User(db.Model):
             value_dicts.append(value_dict)
         return value_dicts
 
+    def add_weighted_deck_searches(self, searches: typing.List[models.deck_search.WeightedDeckSearch]):
+        """Adds a weighted deck search to the user's table"""
+        for search in searches:
+            self._add_weighted_deck_search(search)
+        self._normalize_deck_search_weights()
+        db.session.commit()
 
-def get_by_cookie():
+    def _add_weighted_deck_search(self, search: models.deck_search.WeightedDeckSearch):
+        self.weighted_deck_searches.append(search)
+        db.session.add(search)
+
+    def _normalize_deck_search_weights(self):
+        """Ensures that a user's saved weights are approximately normalized to 1.
+        This prevents weight sizes from inflating values."""
+        total_weight = sum([search.weight for search in self.weighted_deck_searches])
+        if not 0.9 < total_weight < 1.10:  # Bounds prevent repeated work due to rounding on later passes
+            for search in self.weighted_deck_searches:
+                search.weight = search.weight / total_weight
+
+
+def get_by_cookie() -> typing.Optional[User]:
     user_id = flask.request.cookies.get(cookies.ID)
     if not user_id:
-        flask.redirect("/login")
+        return None
     user = get_by_id(user_id)
     if user:
         return user
     else:
-        raise AuthenticationException
+        raise AuthenticationException  # User in cookie is not found in db
 
 
 def get_by_id(user_id: str):
@@ -145,43 +167,3 @@ class _CollectionUpdater:
             self.user.cards.append(user_owns_card)
             db.session.add(user_owns_card)
         db.session.commit()
-
-
-def update():
-    # TODO TEMP for dev version only
-    user = User.query.filter_by(id=0).first()
-    update_collection(user, _temp_get_collection_from_txt())
-
-
-def update_collection(user: User, collection: typing.Dict):
-    """Replaces a user's old collection in the db with their new collection."""
-    updater = _CollectionUpdater(user)
-    updater(collection)
-
-
-def _temp_get_collection_from_txt():
-    # todo kill this. It won't be used in the web interface.
-    def _from_export_text(text):
-        numbers = [int(number) for number in re.findall(r'\d+', text)]
-        if len(numbers) == 3:
-            count = numbers[0]
-            set_num = numbers[1]
-            card_num = numbers[2]
-            playset = models.card.CardPlayset(
-                models.card.CardId(card_num=card_num, set_num=set_num), count=count)
-
-            return playset
-        return None
-
-    with open(r"infiltrate\data\collection.txt") as collection_file:
-        collection_text = collection_file.read()
-        collection_lines = collection_text.split("\n")
-
-        playsets = card_collections.make_card_playset_dict()
-        for line in collection_lines:
-            if "*Premium*" not in line:
-                playset = _from_export_text(line)
-                if playset:
-                    playsets[playset.card_id] = playset.count
-
-    return playsets

@@ -15,6 +15,16 @@ def make_card_playset_dict() -> typing.Dict:
     return defaultdict(_values_factory)
 
 
+# TODO replace all these special dicts with proper type hints?
+
+def make_collection_from_ew_export(cards: typing.List[typing.Dict[str, int]]) -> typing.Dict[models.card.CardId, int]:
+    collection: typing.Dict[models.card.CardId, int] = {}
+    for card in cards:
+        card_id = models.card.CardId(set_num=card["set"], card_num=card["card_number"])
+        collection[card_id] = card["count"]
+    return collection
+
+
 class PlaysetDict(abc.ABC):
     """Dict[CardID][Playset Size] = Some value"""
 

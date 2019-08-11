@@ -38,7 +38,7 @@ def get_str_from_url_and_xpath(url: str, xpath: str):
     return result
 
 
-def get_content_at_url(url: str):
+def obj_from_url(url: str):
     """Returns the page at the given url as JSON"""
     request = urllib.request.Request(
         url,
@@ -60,3 +60,8 @@ def get_content_at_url(url: str):
     if page_json is None:
         raise ConnectionError(f"Got no content from {url}")
     return page_json
+
+    # response = requests.get(url)
+    # if response.status_code == 500: todo implement error test
+    #     raise BadKeyException
+    # response_json = json.loads(response.text)

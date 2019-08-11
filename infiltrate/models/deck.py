@@ -100,7 +100,7 @@ def get_new_warcy_ids():
                   f"?starting={items_per_page * page}" + \
                   f"&perpage={items_per_page}" + \
                   f"&key={app.config['WARCRY_KEY']}"
-            page_json = browser.get_content_at_url(url)
+            page_json = browser.obj_from_url(url)
             ids = self.get_ids_from_page_json(page_json)
 
             return ids
@@ -139,7 +139,7 @@ def update_decks():
                   f"?key={app.config['WARCRY_KEY']}" + \
                   f"&deck_id={deck_id}"
             try:
-                page_json = browser.get_content_at_url(url)
+                page_json = browser.obj_from_url(url)
             except (ConnectionError, urllib.error.HTTPError):
                 return
 

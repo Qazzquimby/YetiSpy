@@ -322,6 +322,12 @@ class CardsView(FlaskView):
 
     def index(self):
         """The main card values page"""
+        # TODO remove collection updating to somewhere less frequent
+        user = models.user.get_by_cookie()
+        if not user:
+            return flask.redirect("/login")
+        user.update_collection()
+
         return flask.render_template("card_values.html")
 
     def card_values(self, page_num=1, sort_str="craft", owner_str=None):

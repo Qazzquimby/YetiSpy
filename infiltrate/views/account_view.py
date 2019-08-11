@@ -1,15 +1,15 @@
 """This is where the routes are defined."""
 from __future__ import annotations
 
-import json
 import typing
 
 import flask
-import requests
 from flask_classy import FlaskView
 from werkzeug.exceptions import BadRequestKeyError
 
+import browser
 import cookies
+import models.deck_search
 import models.user
 from infiltrate import db
 
@@ -51,23 +51,20 @@ def get_username(key: str):
 def get_username_from_key(key: str):
     url = "https://api.eternalwarcry.com/v1/useraccounts/profile" + \
           f"?key={key}"
-    response = requests.get(url)
-    if response.status_code == 500:
-        raise BadKeyException
-    response_json = json.loads(response.text)
-    username = response_json["username"]
+    response = browser.obj_from_url(url)
+    username = response["username"]
     return username
 
 
 def get_user_id(username: str, key: str) -> int:
-    user = get_user_id_if_exists(username, key)
+    user = get_user_if_exists(username, key)
     if not user:
         user = make_new_user(username, key)
     user_id = user.id
     return user_id
 
 
-def get_user_id_if_exists(username: str, key: str) -> typing.Optional[models.user.User]:
+def get_user_if_exists(username: str, key: str) -> typing.Optional[models.user.User]:
     existing_users_with_username = models.user.User.query.filter_by(name=username).all()
     matching_users = [user for user in existing_users_with_username if user.key == key]
     assert len(matching_users) in (0, 1)
@@ -81,7 +78,28 @@ def make_new_user(user_name: str, key: str):
     new_user = models.user.User(name=user_name, key=key)
     db.session.merge(new_user)
     db.session.commit()
-    return get_user_id_if_exists(user_name, key)
+
+    new_user = get_user_if_exists(new_user.name, new_user.key)
+    add_default_weighted_deck_searches(new_user)
+    db.session.commit()
+
+    return get_user_if_exists(user_name, key)
+
+
+def add_default_weighted_deck_searches(user: models.user.User):
+    searches = get_default_weighted_deck_searches(user)
+    user.add_weighted_deck_searches(searches)
+
+
+def get_default_weighted_deck_searches(user: models.user.User):
+    searches = [models.deck_search.WeightedDeckSearch(
+        deck_search_id=1, user_id=user.id, name="Last 10 days", weight=100),
+        models.deck_search.WeightedDeckSearch(
+            deck_search_id=16, user_id=user.id, name="Last 30 days", weight=33),
+        models.deck_search.WeightedDeckSearch(
+            deck_search_id=2, user_id=user.id, name="Last 90 days", weight=10),
+    ]
+    return searches
 
 
 def login(response, user_id: int, username: str, remember_me: bool):
