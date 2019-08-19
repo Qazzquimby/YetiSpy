@@ -17,9 +17,7 @@
                     </a>
                 </li>
                 <li>
-                    <a>
-                        <span class="hidden-sm">Blah 1</span>
-                    </a>
+                    <a href="#" data-toggle="modal" data-target="#updateCollectionModal">Update Collection</a>
                 </li>
             </ul>
             <div class="pull-right">
@@ -37,7 +35,6 @@
                 </ul>
             {% endif %}
         {% endwith %}
-
     </div>
     <div class="space-t hidden-xs"></div>
 {% endblock %}
@@ -46,6 +43,7 @@
     {{ super() }}
     <div id="body-wrapper">
         <div class="container">
+            {% include "update_collection.html" %}
             {% block inner_content %}{% endblock %}
         </div>
     </div>
@@ -60,4 +58,6 @@
 {% endblock %}
 
 {% block scripts %}
+    {{ super() }}
+
 {% endblock %}

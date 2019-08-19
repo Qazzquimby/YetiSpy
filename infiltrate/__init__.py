@@ -29,12 +29,14 @@ def _make_instance_dir(app):
 
 
 def _register_views(app):
-    from infiltrate.views.cards_view import CardsView
+    from views.card_values import CardsView
     from infiltrate.views.update_api import UpdateAPI
-    from infiltrate.views.account_view import LoginView
+    from infiltrate.views.login import LoginView
+    from infiltrate.views.update_collection import UpdateCollectionView
     CardsView.register(app)
     LoginView.register(app)
     UpdateAPI.register(app)
+    UpdateCollectionView.register(app)
 
 
 def _schedule_updates():

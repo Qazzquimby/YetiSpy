@@ -106,11 +106,9 @@ class WeightedDeckSearch(db.Model):
 
 def update_deck_searches():
     """Update the playrate caches of all deck searches."""
-    # todo placeholder
-
-    weighted_deck_searches = WeightedDeckSearch.query.filter_by(user_id=0).all()
+    weighted_deck_searches = WeightedDeckSearch.query.all()
     for weighted in weighted_deck_searches:
-        print(f"Upaditing playrate cache for {weighted.name}")
+        print(f"Updating playrate cache for {weighted.name}")
         deck_search = weighted.deck_search
         deck_search.update_playrates()
 

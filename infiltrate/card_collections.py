@@ -15,8 +15,6 @@ def make_card_playset_dict() -> typing.Dict:
     return defaultdict(_values_factory)
 
 
-# TODO replace all these special dicts with proper type hints?
-
 def make_collection_from_ew_export(cards: typing.List[typing.Dict[str, int]]) -> typing.Dict[models.card.CardId, int]:
     collection: typing.Dict[models.card.CardId, int] = {}
     for card in cards:
@@ -49,6 +47,12 @@ class ValueDict(PlaysetDict):
                                                     value=self._dict[card_id][play_count],
                                                     count=play_count + 1)
                 yield value
+
+    def add(self, other):
+        """Adds another ValueDict to this one. Modifies in place."""
+        for card_id in other.keys():
+            for play_count in range(4):
+                self[card_id][play_count] += other[card_id][play_count]
 
 
 class PlayrateDict(PlaysetDict):

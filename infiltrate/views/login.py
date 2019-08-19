@@ -14,7 +14,8 @@ import models.user
 from infiltrate import db
 
 
-# TODO change key field to password type so that it can be queried by
+# TODO IMPORTANT authentication is currently not secure. The user can fake a cookie for any id to log in with that id.
+
 
 class BadKeyException(Exception):
     """The given key is not recognized by Eternal Warcry"""
@@ -120,26 +121,17 @@ class LoginView(FlaskView):
     """View for the list of card values"""
 
     def index(self):
-        # import datetime
-        # response.set_cookie(name, value, expires=datetime.datetime.now() + datetime.timedelta(days=30))
-
         return flask.render_template('login.html')
 
     def post(self):
         key = flask.request.form['key']
-        # given_username = flask.request.form['username']
-        sign_up = get_sign_up()
         remember_me = get_remember_me()
 
         username = get_username(key)
-        # if username_for_key != given_username:
-        #     print("bad")
-
         user_id = get_user_id(username, key)
 
         response = flask.redirect('/')
         login(response, user_id=user_id, username=username, remember_me=remember_me)
-
         return response
 
 
