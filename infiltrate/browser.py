@@ -1,11 +1,24 @@
 """Selenium web scraping utilities"""
 import json
+import pathlib
+import sys
 import urllib.error
 import urllib.request
 
 import selenium
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
+from webdrivermanager import ChromeDriverManager
+
+current_dir = str(pathlib.Path.cwd())
+sys.path.append(current_dir)
+
+"""
+from webdriver_manager.chrome import ChromeDriverManager
+
+driver = webdriver.Chrome(ChromeDriverManager().install())
+
+"""
 
 
 class Browser(selenium.webdriver.Chrome):
@@ -14,7 +27,10 @@ class Browser(selenium.webdriver.Chrome):
     def __init__(self):
         options = selenium.webdriver.chrome.options.Options()
         options.headless = True
-        super().__init__(options=options, executable_path="chromedriver.exe")
+
+        driver, _ = ChromeDriverManager(download_root=current_dir,
+                                        link_path=current_dir).download_and_install()  # Will use existing version if up to date.
+        super().__init__(driver, options=options)
 
     def safely_find(self, finder):
         """Waits up to max_delay for the finder to find an element."""

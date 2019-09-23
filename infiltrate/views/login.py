@@ -1,6 +1,4 @@
 """This is where the routes are defined."""
-from __future__ import annotations
-
 import typing
 
 import flask
@@ -10,11 +8,10 @@ from werkzeug.exceptions import BadRequestKeyError
 import browser
 import cookies
 import models.deck_search
-import models.user
+import models.user as models_user
 from infiltrate import db
-
-
 # TODO IMPORTANT authentication is currently not secure. The user can fake a cookie for any id to log in with that id.
+from models.user import User, get_by_id
 
 
 class BadKeyException(Exception):
@@ -65,8 +62,8 @@ def get_user_id(username: str, key: str) -> int:
     return user_id
 
 
-def get_user_if_exists(username: str, key: str) -> typing.Optional[models.user.User]:
-    existing_users_with_username = models.user.User.query.filter_by(name=username).all()
+def get_user_if_exists(username: str, key: str) -> typing.Optional[models_user.User]:
+    existing_users_with_username = models_user.User.query.filter_by(name=username).all()
     matching_users = [user for user in existing_users_with_username if user.key == key]
     assert len(matching_users) in (0, 1)
     if matching_users:
@@ -76,7 +73,7 @@ def get_user_if_exists(username: str, key: str) -> typing.Optional[models.user.U
 
 
 def make_new_user(user_name: str, key: str):
-    new_user = models.user.User(name=user_name, key=key)
+    new_user = models_user.User(name=user_name, key=key)
     db.session.merge(new_user)
     db.session.commit()
 
@@ -87,16 +84,17 @@ def make_new_user(user_name: str, key: str):
     return get_user_if_exists(user_name, key)
 
 
-def add_default_weighted_deck_searches(user: models.user.User):
+def add_default_weighted_deck_searches(user: models_user.User):
     searches = get_default_weighted_deck_searches(user)
     user.add_weighted_deck_searches(searches)
 
 
-def get_default_weighted_deck_searches(user: models.user.User):
+def get_default_weighted_deck_searches(user: models_user.User):
+    # TODO move this stuff to deck searches. It's duplication.
     searches = [models.deck_search.WeightedDeckSearch(
         deck_search_id=1, user_id=user.id, name="Last 10 days", weight=100),
         models.deck_search.WeightedDeckSearch(
-            deck_search_id=16, user_id=user.id, name="Last 30 days", weight=33),
+            deck_search_id=3, user_id=user.id, name="Last 30 days", weight=33),
         models.deck_search.WeightedDeckSearch(
             deck_search_id=2, user_id=user.id, name="Last 90 days", weight=10),
     ]
@@ -160,3 +158,14 @@ httponly – disallow JavaScript to access the cookie. This is an extension to t
 
 samesite – Limits the scope of the cookie such that it will only be attached to requests if those requests are “same-site”.
 """
+
+
+def get_by_cookie() -> typing.Optional[User]:
+    user_id = flask.request.cookies.get(cookies.ID)
+    if not user_id:
+        return None
+    user = get_by_id(user_id)
+    if user:
+        return user
+    else:
+        raise AuthenticationException  # User in cookie is not found in db

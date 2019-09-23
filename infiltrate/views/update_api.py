@@ -6,7 +6,7 @@ import caches
 import models.card
 import models.deck
 import models.deck_search
-from infiltrate import app
+from infiltrate import application
 
 NO_KEY_GIVEN = "no_key_given"
 
@@ -17,7 +17,7 @@ NO_KEY_GIVEN = "no_key_given"
 class UpdateAPI(FlaskView):
     """View for the list of card values"""
     route_base = '/secret_update'
-    key = app.config['UPDATE_KEY']
+    key = application.config['UPDATE_KEY']
 
     def update_all(self, key=NO_KEY_GIVEN):
         if key == self.key:

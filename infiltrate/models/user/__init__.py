@@ -1,19 +1,16 @@
 """User account objects"""
-from __future__ import annotations
 
 import typing
 
-import flask
+import pandas as pd
 import sqlalchemy_utils
 from sqlalchemy_utils.types.encrypted.encrypted_type import FernetEngine
 
-import card_display
-import cookies
 import evaluation
+import models.card
 import models.deck_search
-from infiltrate import app, db
+from infiltrate import application, db
 from models.user.collection import CollectionUpdater, UserOwnershipCache
-from views.login import AuthenticationException
 
 
 class User(db.Model):
@@ -24,7 +21,7 @@ class User(db.Model):
     weighted_deck_searches: typing.List[models.deck_search.WeightedDeckSearch] = db.relationship("WeightedDeckSearch",
                                                                                                  cascade_backrefs=False)
     key = db.Column('key', sqlalchemy_utils.EncryptedType(db.String(50),
-                                                          app.config["SECRET_KEY"],
+                                                          application.config["SECRET_KEY"],
                                                           FernetEngine))
 
     cards = db.relationship("UserOwnsCard")
@@ -33,14 +30,17 @@ class User(db.Model):
         """Replaces a user's old collection in the db with their new collection."""
         CollectionUpdater(self)()
 
-    def get_displays(self) -> typing.List[card_display.CardValueDisplay]:
-        values = self.get_values()
-        displays = [card_display.CardValueDisplay.from_card_id_with_value(v) for v in values]
-        return displays
+    # def get_displays(self) -> pd.DataFrame:
+    #     values = self.get_values()
+    #     cards = models.card.ALL_CARDS[:]
+    #     displays = cards.join(values)
+    #     return displays
 
-    def get_values(self) -> typing.List[cards.CardIdWithValue]:
-        value_dict = evaluation.GetOverallValueDict(self.weighted_deck_searches)()
-        values = list(value_dict)
+    def get_values(self) -> pd.DataFrame:
+        """Get a dataframe of card values for the user"""
+        # If this needs to be faster, change from making 1 sql call per weighted deck search to 1 call
+        #   and passing the information.
+        values = evaluation.GetCardValueDataframe(self.weighted_deck_searches)()
         return values
 
     def add_weighted_deck_searches(self, searches: typing.List[models.deck_search.WeightedDeckSearch]):
@@ -58,17 +58,6 @@ class User(db.Model):
         if not 0.9 < total_weight < 1.10:  # Bounds prevent repeated work due to rounding on later passes
             for search in self.weighted_deck_searches:
                 search.weight = search.weight / total_weight
-
-
-def get_by_cookie() -> typing.Optional[User]:
-    user_id = flask.request.cookies.get(cookies.ID)
-    if not user_id:
-        return None
-    user = get_by_id(user_id)
-    if user:
-        return user
-    else:
-        raise AuthenticationException  # User in cookie is not found in db
 
 
 def get_by_id(user_id: str):

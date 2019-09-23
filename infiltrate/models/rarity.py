@@ -59,3 +59,12 @@ LEGENDARY = Rarity(name="Legendary",
 RARITIES = [COMMON, UNCOMMON, RARE, LEGENDARY, PROMO]
 
 rarity_from_name = {r.name: r for r in RARITIES}
+
+
+def create_rarities():
+    for rarity in RARITIES:
+        db.session.merge(rarity)
+    db.session.commit()
+
+
+create_rarities()

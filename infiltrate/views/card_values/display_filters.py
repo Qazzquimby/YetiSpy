@@ -3,10 +3,17 @@ from abc import ABC
 
 import pandas as pd
 
-import card_display
 import models.card
 import models.card_sets
 import models.user
+
+
+def display_set_num(display: pd.Series) -> int:
+    return display['set_num']
+
+
+def display_card_num(display: pd.Series) -> int:
+    return display['card_num']
 
 
 class Filter(ABC):
@@ -16,7 +23,7 @@ class Filter(ABC):
         pass
 
     @classmethod
-    def should_include_card(cls, display: card_display.CardValueDisplay, user: models.user.User) -> bool:
+    def should_include_card(cls, display: pd.Series, user: models.user.User) -> bool:
         """Should the card be filtered out."""
         raise NotImplementedError
 
@@ -25,10 +32,11 @@ class OwnershipFilter(Filter, ABC):
     """Filters out cards based on ownership."""
 
     @staticmethod
-    def is_owned(display: card_display.CardValueDisplay, user) -> bool:
+    def is_owned(display: pd.Series, user: models.user.User) -> bool:
         """Does the user own the amount of the card given by the display"""
-        card_id = models.card.CardId(display.card.set_num, display.card.card_num)
-        return models.user.collection.user_has_count_of_card(user, card_id, display.count)
+        # TODO feel like this is going to be slow. Profile it.
+        card_id = models.card.CardId(display_set_num(display), display_card_num(display))
+        return models.user.collection.user_has_count_of_card(user, card_id, display['count_in_deck'])
 
 
 class UnownedFilter(OwnershipFilter):
@@ -36,7 +44,7 @@ class UnownedFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def should_include_card(cls, display: card_display.CardValueDisplay, user: models.user.User) -> bool:
+    def should_include_card(cls, display: pd.Series, user: models.user.User) -> bool:
         return not cls.is_owned(display, user)
 
 
@@ -45,7 +53,7 @@ class OwnedFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def should_include_card(cls, display: card_display.CardValueDisplay, user: models.user.User) -> bool:
+    def should_include_card(cls, display: pd.Series, user: models.user.User) -> bool:
         return cls.is_owned(display, user)
 
 
@@ -54,7 +62,7 @@ class AllFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def should_include_card(cls, display: card_display.CardValueDisplay, user: models.user.User) -> bool:
+    def should_include_card(cls, display: pd.Series, user: models.user.User) -> bool:
         return True
 
 
@@ -73,7 +81,7 @@ class CardDisplaySort(Filter, ABC):
         raise NotImplementedError
 
     @classmethod
-    def should_include_card(cls, display: card_display.CardValueDisplay, user: models.user.User) -> bool:
+    def should_include_card(cls, display: pd.Series, user: models.user.User) -> bool:
         return True
 
 
@@ -89,10 +97,9 @@ class CraftSort(CardDisplaySort):
         return displays.sort_values(by=['value_per_shiftstone'], ascending=False)
 
     @classmethod
-    def should_include_card(cls, display: card_display.CardValueDisplay, user: models.user.User) -> bool:
+    def should_include_card(cls, display: pd.Series, user: models.user.User) -> bool:
         """Filters out uncraftable and owned cards."""
-
-        is_campaign = models.card_sets.is_campaign(display.card.set_num)
+        is_campaign = models.card_sets.is_campaign(display_set_num(display))
         return not is_campaign
 
 
@@ -109,7 +116,7 @@ class ValueSort(CardDisplaySort):
         return displays.sort_values(by=['value'], ascending=False)
 
     @classmethod
-    def should_include_card(cls, display: card_display.CardValueDisplay, user: models.user.User) -> bool:
+    def should_include_card(cls, display: pd.Series, user: models.user.User) -> bool:
         """Excludes owned cards."""
         return True
 

@@ -42,7 +42,7 @@
             </div>
             <div class="modal-footer">
                 <span id="spinner" class="loader text-primary"
-                      style="display: none;"></span>
+                      style="display: none; align-self: center;"></span>
                 <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -88,7 +88,7 @@ syncCardsForm.submit(function (e) {
 });
 
 function onSuccess() {
-  //TODO it might be necessary to delete the user's first.
+  //TODO Maybe. it might be necessary to delete the user's first.
   $('#import-cards-success').css("display", "block");
   setTimeout(function () {
     location.reload();

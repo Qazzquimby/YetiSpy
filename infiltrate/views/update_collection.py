@@ -1,15 +1,12 @@
 """This is where the routes are defined."""
-from __future__ import annotations
-
 import flask
 import requests
 from flask_classy import FlaskView
 
-import models.deck_search
-import models.user
-
-
 # noinspection PyMethodMayBeStatic
+import views.login
+
+
 class UpdateCollectionView(FlaskView):
     """View in which a user may update their collection."""
 
@@ -17,7 +14,7 @@ class UpdateCollectionView(FlaskView):
         return flask.render_template('update_collection.html')
 
     def post(self):
-        user = models.user.get_by_cookie()
+        user = views.login.get_by_cookie()
 
         try:
             card_import = flask.request.form["import-cards-text"]

@@ -3,6 +3,9 @@ import abc
 import typing
 from collections import defaultdict
 
+import pandas as pd
+
+import evaluation
 import models.card
 
 
@@ -66,3 +69,10 @@ class PlayrateDict(PlaysetDict):
                 value_dict[key][playrate] = self[key][playrate] * weight
 
         return value_dict
+
+
+def make_playrate_df():
+    playrate_df = pd.DataFrame(index=models.card.ALL_CARDS.index)
+    for col_name in evaluation.COUNT_X_PLAYRATE_STRS:
+        playrate_df[col_name] = 0
+    return playrate_df

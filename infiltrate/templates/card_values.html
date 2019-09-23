@@ -30,7 +30,6 @@
 
             <div id="card-table" class="text-center row">
                 <div class="space-t"></div>
-                {#TODO remove duplication with header of card_values.html#}
                 <table id="card-value" class="table vertical-align col-md-8">
                     {% include 'card_values_table_header.html' %}
                 </table>
@@ -128,7 +127,7 @@
                 {#console.log("running " + searchStr);#}
                 $.get({
                   url: "/card_search/" + "_" + searchStr,
-                  {#    todo fix this gross url thing. The _ is prepended because empty str breaks.#}
+                  {#    todo low prio fix this gross url thing. The _ is prepended because empty str breaks.#}
                 }).done(function (data) {
                   if (searchStr.length >= lastSearch.length || !lastSearch
                     .startsWith(searchStr)) {

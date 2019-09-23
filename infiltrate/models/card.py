@@ -4,9 +4,13 @@ Related to card_collections.py
 """
 import json
 import typing
-from dataclasses import dataclass
 from typing import NamedTuple
 
+import pandas as pd
+import sqlalchemy.exc
+import sqlalchemy.orm
+import sqlalchemy.orm.exc
+from dataclasses import dataclass
 from finisher import DictStorageAutoCompleter
 
 import browser
@@ -26,7 +30,11 @@ class Card(db.Model):
 
     @property
     def id(self):
-        return CardId(set_num=self.set_num, card_num=self.card_num)
+        try:
+            return CardId(set_num=self.set_num, card_num=self.card_num)
+        except sqlalchemy.orm.exc.DetachedInstanceError as e:
+            print("Detached Instance Error!", self, self.__dict__)
+            raise e
 
 
 def _get_card_json():
@@ -89,7 +97,7 @@ def snake_to_str(snake):
     return snake.replace("_", " ")
 
 
-class AllCards:
+class AllCardsDict:
     def __init__(self):
         raw_cards: typing.List[Card] = Card.query.all()
         self._card_id_dict = self._init_card_id_dict(raw_cards)
@@ -135,7 +143,49 @@ class AllCards:
             return None
 
 
-ALL_CARDS = AllCards()
+class AllCardsDataframe:
+    def __init__(self):
+
+        session = db.engine.raw_connection()  # sqlalchemy.orm.Session(db)
+        cards_df = pd.read_sql_query("SELECT * from cards", session)
+        cards_df.rename(columns={'SetNumber': 'set_num',
+                                 'EternalID': 'card_num',
+                                 'Name': 'name',
+                                 'Rarity': 'rarity',
+                                 'ImageUrl': 'image_url',
+                                 "DetailsUrl": 'details_url'},
+                        inplace=True)
+
+        self.df = cards_df
+
+    @staticmethod
+    def _init_autocompleter(raw_cards: typing.List[Card]) -> DictStorageAutoCompleter:
+        # TODO update. This is broken and for dicts
+        autocompleter = DictStorageAutoCompleter({})
+
+        card_names = [str_to_snake(card.name) for card in raw_cards]
+        autocompleter.train_from_strings(card_names)
+        return autocompleter
+
+    def get_matching_card(self, search_str: str) -> typing.Optional[Card]:
+        # TODO update. broken and for dicts
+        search_term = search_str.replace(" ", "")
+        guesses = self._autocompleter.guess_full_strings([search_term])
+        if guesses:
+            card_name = snake_to_str(guesses[0])
+            try:
+                card = self._name_dict[card_name]
+            except KeyError:
+                raise KeyError(f"Card name {card_name} not found in AllCards name_dict")
+            return card
+        else:
+            return None
+
+
+try:
+    ALL_CARDS = AllCardsDataframe().df
+except sqlalchemy.exc.ProgrammingError:
+    print("CARDS TABLE NOT FOUND")
 
 
 @dataclass

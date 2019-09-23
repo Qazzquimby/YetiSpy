@@ -1,5 +1,4 @@
 """The cards a user owns"""
-from __future__ import annotations
 
 import typing
 
@@ -19,7 +18,7 @@ if typing.TYPE_CHECKING:
 class CollectionUpdater:
     """Updates the given user's collection to match their Eternal Warcry collection."""
 
-    def __init__(self, user: User):
+    def __init__(self, user: 'User'):
         self.user = user
 
     def __call__(self):
@@ -57,7 +56,7 @@ class CollectionUpdater:
 
 
 class UserOwnershipCache:
-    def __init__(self, user: User):
+    def __init__(self, user: 'User'):
         self._dict = self._init_dict(user)
 
     @staticmethod
@@ -72,11 +71,11 @@ class UserOwnershipCache:
 
 
 @caches.mem_cache.cache("ownership", expires=5 * 60)
-def get_ownership_cache(user: User):
+def get_ownership_cache(user: 'User'):
     return UserOwnershipCache(user)
 
 
-def user_has_count_of_card(user: User, card_id: models.card.CardId, count: int = 1):
+def user_has_count_of_card(user: 'User', card_id: models.card.CardId, count: int = 1):
     cache = get_ownership_cache(user)
 
     try:

@@ -2,6 +2,8 @@
 import datetime
 import typing
 
+import dataclasses
+import pandas as pd
 from progiter import progiter
 
 import card_collections
@@ -20,13 +22,44 @@ class DeckSearchHasCard(db.Model):
     __table_args__ = (db.ForeignKeyConstraint((set_num, card_num), [models.card.Card.set_num,
                                                                     models.card.Card.card_num]), {})
 
+    @staticmethod
+    def as_df(decksearch_id: int):
+        session = db.engine.raw_connection()
+        query = f"""SELECT *
+FROM deck_search_has_card
+WHERE decksearch_id = {decksearch_id}"""
+        df = pd.read_sql_query(query, session)
+        del df['decksearch_id']
+
+        # def multi_index_pivot(df, columns=None, values=None):
+        #     # https://github.com/pandas-dev/pandas/issues/23955
+        #     names = list(df.index.names)
+        #     df = df.reset_index()
+        #     list_index = df[names].values
+        #     tuples_index = [tuple(i) for i in list_index]  # hashable
+        #     df = df.assign(tuples_index=tuples_index)
+        #     df = df.pivot(index="tuples_index", columns=columns, values=values)
+        #     tuples_index = df.index  # reduced
+        #     index = pd.MultiIndex.from_tuples(tuples_index, names=names)
+        #     df.index = index
+        #     return df
+        # This moves all num_decks_with_count_or_less to a single row for each card.
+        # df = multi_index_pivot(df, columns='count_in_deck', values='num_decks_with_count_or_less')
+        # fixme remove
+        # df.rename(columns={x: evaluation.num_decks_with_count_x_or_less(x)
+        #                    for x in range(1, 5)},
+        #           inplace=True)
+        # df.fillna(0)
+
+        return df
+
 
 class DeckSearch(db.Model):
     """A table for a set of parameters to filter the list of all decks"""
     __tablename__ = "deck_searches"
     id = db.Column(db.Integer, primary_key=True)
     maximum_age_days = db.Column("maximum_age_days", db.Integer())
-    cards = db.relationship('DeckSearchHasCard')
+    cards: typing.List[DeckSearchHasCard] = db.relationship('DeckSearchHasCard')
 
     def get_decks(self):
         """Returns all decks belonging to the deck search"""
@@ -46,6 +79,21 @@ class DeckSearch(db.Model):
             playrate_dict[card_id][card.count_in_deck - 1] = playrate
 
         return playrate_dict
+
+    def get_playrate_df(self) -> pd.DataFrame:
+        """Gets a dataframe of card playrates.
+        Playrate is roughly play count / total play count"""
+        playrate_df = DeckSearchHasCard.as_df(decksearch_id=self.id)
+
+        NUM_DECKS_STR = 'num_decks_with_count_or_less'
+        PLAYRATE_STR = 'playrate'
+
+        playrate_df[NUM_DECKS_STR] = playrate_df[NUM_DECKS_STR] * 10_000 / len(models.card.ALL_CARDS)
+        # *10_000 arbitrary bloat for more readable numbers
+        # /len(cards) hopefully normalizes by search size
+        playrate_df.rename(columns={NUM_DECKS_STR: PLAYRATE_STR}, inplace=True)
+
+        return playrate_df
 
     def update_playrates(self):
         """Updates a cache of playrates representing the total frequency of playsets of cards in the decks.
@@ -81,6 +129,29 @@ class DeckSearch(db.Model):
                 db.session.commit()
 
 
+def create_deck_searches():
+    # Todo at some point users may be able to make their own deck searches.
+
+    @dataclasses.dataclass
+    class _DeckSearchCreate:  # TODO maybe make this cleaner while merging with the create_weighted_deck_searches stuff in login
+        id: int
+        maximum_age_days: int
+
+    current_initial_deck_searches = [
+        _DeckSearchCreate(id=1, maximum_age_days=10),
+        _DeckSearchCreate(id=2, maximum_age_days=90),
+        _DeckSearchCreate(id=3, maximum_age_days=30)
+    ]
+    deck_searches = (DeckSearch(id=search.id, maximum_age_days=search.maximum_age_days)
+                     for search in current_initial_deck_searches)
+    for search in deck_searches:
+        db.session.merge(search)
+    db.session.commit()
+
+
+create_deck_searches()
+
+
 class WeightedDeckSearch(db.Model):
     """A DeckSearch with a user given weight for its relative importance.
 
@@ -90,7 +161,7 @@ class WeightedDeckSearch(db.Model):
     name = db.Column("name", db.String(length=20), primary_key=True)
 
     weight = db.Column("weight", db.Float)
-    deck_search = db.relationship('DeckSearch', uselist=False, cascade_backrefs=False)
+    deck_search: DeckSearch = db.relationship('DeckSearch', uselist=False, cascade_backrefs=False)
 
     def get_value_dict(self) -> card_collections.ValueDict:
         playrate_dict = self.deck_search.get_playrate_dict()
@@ -102,6 +173,12 @@ class WeightedDeckSearch(db.Model):
                 value_dict[key][playrate] = playrate_dict[key][playrate] * self.weight
 
         return value_dict
+
+    def get_value_df(self) -> pd.DataFrame:
+        df = self.deck_search.get_playrate_df()
+        df['playrate'] *= self.weight
+        df.rename(columns={'playrate': 'value'}, inplace=True)
+        return df
 
 
 def update_deck_searches():

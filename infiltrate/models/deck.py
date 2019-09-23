@@ -6,7 +6,7 @@ from datetime import datetime
 
 import browser
 import models.card
-from infiltrate import app, db
+from infiltrate import application, db
 
 
 class DeckHasCard(db.Model):
@@ -99,7 +99,7 @@ def get_new_warcy_ids():
             url = "https://api.eternalwarcry.com/v1/decks/SearchDecks" + \
                   f"?starting={items_per_page * page}" + \
                   f"&perpage={items_per_page}" + \
-                  f"&key={app.config['WARCRY_KEY']}"
+                  f"&key={application.config['WARCRY_KEY']}"
             page_json = browser.obj_from_url(url)
             ids = self.get_ids_from_page_json(page_json)
 
@@ -136,7 +136,7 @@ def update_decks():
 
         def update_deck(self, deck_id: str):
             url = "https://api.eternalwarcry.com/v1/decks/details" + \
-                  f"?key={app.config['WARCRY_KEY']}" + \
+                  f"?key={application.config['WARCRY_KEY']}" + \
                   f"&deck_id={deck_id}"
             try:
                 page_json = browser.obj_from_url(url)

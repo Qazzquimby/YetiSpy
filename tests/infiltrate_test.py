@@ -8,9 +8,9 @@ import infiltrate
 
 @pytest.fixture
 def client():
-    db_fd, infiltrate.app.config['DATABASE'] = tempfile.mkstemp()
-    infiltrate.app.config['TESTING'] = True
-    test_client = infiltrate.app.test_client()
+    db_fd, infiltrate.application.config['DATABASE'] = tempfile.mkstemp()
+    infiltrate.application.config['TESTING'] = True
+    test_client = infiltrate.application.test_client()
 
     # with infiltrate.app.app_context():
     #     infiltrate.init_db()
@@ -18,7 +18,7 @@ def client():
     yield test_client
 
     os.close(db_fd)
-    os.unlink(infiltrate.app.config['DATABASE'])
+    os.unlink(infiltrate.application.config['DATABASE'])
 
 
 def test_playset_dict_create(client):

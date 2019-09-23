@@ -5,13 +5,19 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__, instance_relative_config=True)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# sys.path.insert(0, os.path.join(os.path.dirname(__file__), "lib"))
+# sys.path.append(".")
+
+application = Flask(__name__, instance_relative_config=True)
+application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 def _setup_db(app):
     app.config['SQLALCHEMY_DATABASE_URI'] = app.config['DATABASE']
-    return SQLAlchemy(app)
+    database = SQLAlchemy(app, session_options={
+        'expire_on_commit': False  # Fixes DetachedInstanceError
+    })
+    return database
 
 
 def _set_config(app, test_config):
@@ -29,7 +35,7 @@ def _make_instance_dir(app):
 
 
 def _register_views(app):
-    from views.card_values import CardsView
+    from infiltrate.views.card_values import CardsView
     from infiltrate.views.update_api import UpdateAPI
     from infiltrate.views.login import LoginView
     from infiltrate.views.update_collection import UpdateCollectionView
@@ -49,18 +55,18 @@ def _update():
     models.update()
 
 
-_set_config(app, test_config=None)
-db = _setup_db(app)
-Bootstrap(app)
-_make_instance_dir(app)
-_register_views(app)
+_set_config(application, test_config=None)
+db = _setup_db(application)
+Bootstrap(application)
+_make_instance_dir(application)
+_register_views(application)
 _schedule_updates()
 
 
 # _update()
 
 
-@app.teardown_request
+@application.teardown_request
 def teardown_request(exception):
     """Prevents bad db states by rolling back when the app closes."""
     if exception:
