@@ -1,6 +1,7 @@
 import typing
 from abc import ABC
 
+import numpy as np
 import pandas as pd
 
 import models.card
@@ -8,12 +9,11 @@ import models.card_sets
 import models.user
 
 
-def display_set_num(display: pd.Series) -> int:
-    return display['set_num']
-
-
-def display_card_num(display: pd.Series) -> int:
-    return display['card_num']
+def is_owned(display: pd.Series, user: models.user.User) -> bool:
+    """Does the user own the amount of the card given by the display"""
+    # TODO This is going to be slow.
+    card_id = models.card.CardId(display['set_num'], display['card_num'])
+    return models.user.collection.user_has_count_of_card(user, card_id, display['count_in_deck'])
 
 
 class Filter(ABC):
@@ -23,7 +23,7 @@ class Filter(ABC):
         pass
 
     @classmethod
-    def should_include_card(cls, display: pd.Series, user: models.user.User) -> bool:
+    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> bool:
         """Should the card be filtered out."""
         raise NotImplementedError
 
@@ -31,21 +31,15 @@ class Filter(ABC):
 class OwnershipFilter(Filter, ABC):
     """Filters out cards based on ownership."""
 
-    @staticmethod
-    def is_owned(display: pd.Series, user: models.user.User) -> bool:
-        """Does the user own the amount of the card given by the display"""
-        # TODO feel like this is going to be slow. Profile it.
-        card_id = models.card.CardId(display_set_num(display), display_card_num(display))
-        return models.user.collection.user_has_count_of_card(user, card_id, display['count_in_deck'])
-
 
 class UnownedFilter(OwnershipFilter):
     """Keeps only unowned cards."""
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def should_include_card(cls, display: pd.Series, user: models.user.User) -> bool:
-        return not cls.is_owned(display, user)
+    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
+        filtered = cards[cards['is_owned'] == False]
+        return filtered
 
 
 class OwnedFilter(OwnershipFilter):
@@ -53,8 +47,9 @@ class OwnedFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def should_include_card(cls, display: pd.Series, user: models.user.User) -> bool:
-        return cls.is_owned(display, user)
+    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
+        filtered = cards[cards[['is_owned'] == True]]
+        return filtered
 
 
 class AllFilter(OwnershipFilter):
@@ -62,8 +57,8 @@ class AllFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def should_include_card(cls, display: pd.Series, user: models.user.User) -> bool:
-        return True
+    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
+        return cards
 
 
 class CardDisplaySort(Filter, ABC):
@@ -81,8 +76,8 @@ class CardDisplaySort(Filter, ABC):
         raise NotImplementedError
 
     @classmethod
-    def should_include_card(cls, display: pd.Series, user: models.user.User) -> bool:
-        return True
+    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
+        return cards
 
 
 class CraftSort(CardDisplaySort):
@@ -97,10 +92,10 @@ class CraftSort(CardDisplaySort):
         return displays.sort_values(by=['value_per_shiftstone'], ascending=False)
 
     @classmethod
-    def should_include_card(cls, display: pd.Series, user: models.user.User) -> bool:
-        """Filters out uncraftable and owned cards."""
-        is_campaign = models.card_sets.is_campaign(display_set_num(display))
-        return not is_campaign
+    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
+        """Filters out uncraftable."""
+        filtered = cards[np.logical_not(models.card_sets.is_campaign(cards['set_num']))]
+        return filtered
 
 
 class ValueSort(CardDisplaySort):
@@ -116,9 +111,9 @@ class ValueSort(CardDisplaySort):
         return displays.sort_values(by=['value'], ascending=False)
 
     @classmethod
-    def should_include_card(cls, display: pd.Series, user: models.user.User) -> bool:
+    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
         """Excludes owned cards."""
-        return True
+        return cards
 
 
 def get_sort(sort_str):

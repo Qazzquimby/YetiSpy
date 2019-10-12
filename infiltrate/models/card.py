@@ -6,6 +6,7 @@ import json
 import typing
 from typing import NamedTuple
 
+import fuzzymatcher
 import pandas as pd
 import sqlalchemy.exc
 import sqlalchemy.orm
@@ -143,9 +144,25 @@ class AllCardsDict:
             return None
 
 
+def get_matching_card(cards_df: pd.DataFrame, search_str: str) -> pd.Series:
+    search_df = pd.DataFrame({'name': [search_str]})
+    matches = fuzzymatcher.fuzzy_left_join(search_df, cards_df, left_on="name", right_on="name")
+    return matches
+    # search_term = search_str.replace(" ", "")
+    # guesses = self._autocompleter.guess_full_strings([search_term])
+    # if guesses:
+    #     card_name = snake_to_str(guesses[0])
+    #     try:
+    #         card = self._name_dict[card_name]
+    #     except KeyError:
+    #         raise KeyError(f"Card name {card_name} not found in AllCards name_dict")
+    #     return card
+    # else:
+    #     return None
+
+
 class AllCardsDataframe:
     def __init__(self):
-
         session = db.engine.raw_connection()  # sqlalchemy.orm.Session(db)
         cards_df = pd.read_sql_query("SELECT * from cards", session)
         cards_df.rename(columns={'SetNumber': 'set_num',
@@ -166,20 +183,6 @@ class AllCardsDataframe:
         card_names = [str_to_snake(card.name) for card in raw_cards]
         autocompleter.train_from_strings(card_names)
         return autocompleter
-
-    def get_matching_card(self, search_str: str) -> typing.Optional[Card]:
-        # TODO update. broken and for dicts
-        search_term = search_str.replace(" ", "")
-        guesses = self._autocompleter.guess_full_strings([search_term])
-        if guesses:
-            card_name = snake_to_str(guesses[0])
-            try:
-                card = self._name_dict[card_name]
-            except KeyError:
-                raise KeyError(f"Card name {card_name} not found in AllCards name_dict")
-            return card
-        else:
-            return None
 
 
 try:

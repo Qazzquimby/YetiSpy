@@ -45,9 +45,7 @@ class CardsView(FlaskView):
         displays = make_card_displays(user)
         profiling.end_timer("make_card_displays")
 
-        profiling.start_timer("configure")
-        displays = displays.configure(sort, ownership)  # todo make fast
-        profiling.end_timer("configure")
+        displays = displays.configure(sort, ownership)
 
         cards_on_page = displays.get_page(page_num)
 
@@ -62,7 +60,7 @@ class CardsView(FlaskView):
         displays = make_card_displays(user)
 
         search_str = search_str[1:]
-        matching_card = models.card.ALL_CARDS.get_matching_card(search_str)
+        matching_card = models.card.get_matching_card(displays.value_info, search_str)
         if matching_card:
             cards_on_page = displays.get_card(matching_card.id)
             return flask.render_template('card_values_table.html', card_values=cards_on_page)

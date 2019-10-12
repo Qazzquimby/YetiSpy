@@ -1,18 +1,19 @@
 """This is where the routes are defined."""
 import typing
 
+import numpy as np
 import pandas as pd
 
 import caches
 # TODO figure out card sets and purchases
 # TODO improve craft efficiency by taking into account drop rate
-import card_display
 import models.card
 import models.card_sets
 import models.rarity
 import models.user
 import models.user.collection
-from views.card_values.display_filters import CardDisplaySort, OwnedFilter, OwnershipFilter
+import profiling
+from views.card_values import display_filters
 
 
 # TODO Tests :(
@@ -34,18 +35,14 @@ class CardDisplays:
         self.user = user
         self.raw_value_info: pd.DataFrame = self.get_value_info()
         self.value_info: pd.DataFrame = self.raw_value_info[:]
-
-        self.filtered_displays: typing.Optional[pd.DataFrame] = None
         self.is_filtered = False
-
-        self.sorted_displays: typing.Optional[pd.DataFrame] = None
         self.is_sorted = False
 
-        self._sort_method: typing.Optional[CardDisplaySort] = None
-        self._ownership: typing.Optional[OwnershipFilter] = None
+        self._sort_method: typing.Optional[display_filters.CardDisplaySort] = None
+        self._ownership: typing.Optional[display_filters.OwnershipFilter] = None
 
     @property
-    def sort_method(self) -> typing.Optional[CardDisplaySort]:
+    def sort_method(self) -> typing.Optional[display_filters.CardDisplaySort]:
         return self._sort_method
 
     @sort_method.setter
@@ -56,7 +53,7 @@ class CardDisplays:
             self._sort_method = value
 
     @property
-    def ownership(self) -> typing.Optional[OwnershipFilter]:
+    def ownership(self) -> typing.Optional[display_filters.OwnershipFilter]:
         return self._ownership
 
     @ownership.setter
@@ -73,12 +70,13 @@ class CardDisplays:
         all_cards = models.card.ALL_CARDS
 
         values = values.set_index(['set_num', 'card_num']).join(all_cards.set_index(['set_num', 'card_num']))
-
-        # Todo this is gross duplication.
         values['value_per_shiftstone'] = get_value_per_shiftstone(values['rarity'], values['value'])
-
         values.reset_index(inplace=True)
-        # TODO Add ownership?
+
+        profiling.start_timer("create is_owned column")
+        values['is_owned'] = values.apply(lambda x: display_filters.is_owned(x, self.user), axis=1)  # todo speed
+        profiling.end_timer("create is_owned column")
+
         return values
 
     def get_page(self, page_num: int = 0) -> pd.DataFrame:
@@ -86,18 +84,19 @@ class CardDisplays:
         displays_on_page = CardDisplayPage(self.value_info, page_num=page_num)()
         return displays_on_page
 
-    def get_card(self, card_id: models.card.CardId):
+    def get_card(self, card_id: models.card.CardId) -> pd.DataFrame:
         """Gets all displays matching the given card id (1 display for each playset size)."""
-        displays_df = self.value_info[self.value_info.apply(lambda x:
-                                                            x["set_num"] == card_id.set_num
-                                                            and x["card_num"] == card_id.card_num, axis=1)]
-        displays = [card_display.CardValueDisplay.from_series(row) for index, row in displays_df.iterrows()]
+        # displays_df = self.value_info[self.value_info.apply(lambda x:
+        #                                                     x["set_num"] == card_id.set_num
+        #                                                     and x["card_num"] == card_id.card_num, axis=1)]
+        displays_df = self.value_info[np.logical_and(self.value_info['set_num'] == card_id.set_num,
+                                                     self.value_info['card_num'] == card_id.card_num)]
 
-        return displays
+        return displays_df
 
     def configure(self,
-                  sort_method: typing.Type[CardDisplaySort],
-                  ownership: typing.Type[OwnedFilter] = None) -> 'CardDisplays':
+                  sort_method: typing.Type[display_filters.CardDisplaySort],
+                  ownership: typing.Type[display_filters.OwnedFilter] = None) -> 'CardDisplays':
         """Sets sort method and ownership filter, and updates displays to match."""
         if not ownership:
             self.ownership = sort_method.default_ownership
@@ -117,20 +116,16 @@ class CardDisplays:
         """The card display represented by the series should not be filtered out."""
 
         if not self.is_filtered:
-            filtered = self.raw_value_info[self.raw_value_info.apply(lambda x: self._should_include_display(x), axis=1)]
-            # filtered = displays[displays.apply(lambda x: should_include(x), axis=1)]
+            filtered = self.raw_value_info
+            filtered = self.sort_method.filter(filtered, self.user)
+            filtered = self.ownership.filter(filtered, self.user)
+
             self.value_info = filtered
             self._normalize_displays()
             self.is_filtered = True
 
-    def _should_include_display(self, display: pd.Series):
-        sort_include = self.sort_method.should_include_card(display, self.user)
-        own_include = self.ownership.should_include_card(display, self.user)
-        return sort_include and own_include
-
     def _normalize_displays(self):
         max_value = max(self.value_info['value'].max(), 1)
-        # self.value_info['value'] = 100 * self.value_info['value'] / max_value
         self.value_info = self.value_info.assign(value=lambda x: 100 * x['value'] / max_value)
 
     def _sort(self):
