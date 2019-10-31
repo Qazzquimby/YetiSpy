@@ -5,7 +5,7 @@ import models.card
 import models.user
 import profiling
 import views.login
-from views.card_values.card_displays import make_card_displays
+from views.card_values.card_displays import CardDisplayPage, make_card_displays
 from views.card_values.display_filters import get_owner, get_sort
 from views.login import AuthenticationException
 
@@ -60,9 +60,11 @@ class CardsView(FlaskView):
         displays = make_card_displays(user)
 
         search_str = search_str[1:]
-        matching_card = models.card.get_matching_card(displays.value_info, search_str)
-        if matching_card:
-            cards_on_page = displays.get_card(matching_card.id)
-            return flask.render_template('card_values_table.html', card_values=cards_on_page)
+        search_str = search_str.lower()
+        matching_card_df = models.card.get_matching_card(displays.value_info, search_str)
+        if len(matching_card_df) > 0:
+            cards_in_search = matching_card_df
+            displays = CardDisplayPage.format_ungrouped_page(cards_in_search)
+            return flask.render_template('card_values_table.html', card_values=displays)
         else:
             return ''

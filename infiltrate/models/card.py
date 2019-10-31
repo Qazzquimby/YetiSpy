@@ -6,12 +6,12 @@ import json
 import typing
 from typing import NamedTuple
 
-import fuzzymatcher
 import pandas as pd
 import sqlalchemy.exc
 import sqlalchemy.orm
 import sqlalchemy.orm.exc
 from dataclasses import dataclass
+from fast_autocomplete import AutoComplete
 from finisher import DictStorageAutoCompleter
 
 import browser
@@ -144,24 +144,54 @@ class AllCardsDict:
             return None
 
 
-def get_matching_card(cards_df: pd.DataFrame, search_str: str) -> pd.Series:
-    search_df = pd.DataFrame({'name': [search_str]})
-    matches = fuzzymatcher.fuzzy_left_join(search_df, cards_df, left_on="name", right_on="name")
-    return matches
-    # search_term = search_str.replace(" ", "")
-    # guesses = self._autocompleter.guess_full_strings([search_term])
-    # if guesses:
-    #     card_name = snake_to_str(guesses[0])
-    #     try:
-    #         card = self._name_dict[card_name]
-    #     except KeyError:
-    #         raise KeyError(f"Card name {card_name} not found in AllCards name_dict")
-    #     return card
-    # else:
-    #     return None
+class _CardAutoCompleter:
+    def __init__(self, cards_df: pd.DataFrame):
+        self.cards = cards_df
+        self.completer = self._init_autocompleter(cards_df)
+
+    def match(self, search: str) -> pd.DataFrame:
+        name = self._match_name(search)
+        cards = self.cards[self.cards['name'].str.lower() == name]
+        return cards
+
+    def _match_name(self, search: str) -> typing.Optional[str]:
+        """Return the closest matching card name to the search string"""
+        try:
+            result = self.completer.search(word=search, max_cost=3, size=1)[0][0]
+            return result
+        except IndexError:
+            return None
+
+    def _init_autocompleter(self, df: pd.DataFrame):
+        words = self._get_words(df)
+        words = {word: {} for word in words}
+        completer = AutoComplete(words=words)
+        return completer
+
+    def _get_words(self, df: pd.DataFrame):
+        names = df['name']
+        return names
 
 
-class AllCardsDataframe:
+class _AllCardAutoCompleter(_CardAutoCompleter):
+    """Handles autocompleting searches to card names from ALL_CARDS"""
+    # TODO make this update when the card database updates
+    # TODO totally untested
+    completer: AutoComplete = None
+
+    def __init__(self):
+        if self.completer is None:
+            super().__init__(ALL_CARDS)
+
+
+def get_matching_card(card_df: pd.DataFrame, search_str: str) -> pd.DataFrame:
+    """Return rows from the card_df with card names best matching the search_str."""
+    matcher = _CardAutoCompleter(card_df)
+    match = matcher.match(search_str)
+    return match
+
+
+class _AllCardsDataframe:
     def __init__(self):
         session = db.engine.raw_connection()  # sqlalchemy.orm.Session(db)
         cards_df = pd.read_sql_query("SELECT * from cards", session)
@@ -175,20 +205,16 @@ class AllCardsDataframe:
 
         self.df = cards_df
 
-    @staticmethod
-    def _init_autocompleter(raw_cards: typing.List[Card]) -> DictStorageAutoCompleter:
-        # TODO update. This is broken and for dicts
-        autocompleter = DictStorageAutoCompleter({})
 
-        card_names = [str_to_snake(card.name) for card in raw_cards]
-        autocompleter.train_from_strings(card_names)
-        return autocompleter
+def init_all_card_df():
+    """Create a card dataframe for all cards in the database."""
+    try:
+        return _AllCardsDataframe().df
+    except sqlalchemy.exc.ProgrammingError:
+        print("CARDS TABLE NOT FOUND")
 
 
-try:
-    ALL_CARDS = AllCardsDataframe().df
-except sqlalchemy.exc.ProgrammingError:
-    print("CARDS TABLE NOT FOUND")
+ALL_CARDS = init_all_card_df()
 
 
 @dataclass

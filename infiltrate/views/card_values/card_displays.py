@@ -180,6 +180,25 @@ class CardDisplayPage:
 
         return page
 
+    @staticmethod
+    def format_ungrouped_page(page: pd.DataFrame) -> pd.DataFrame:
+        """Formats a page for presentation without grouping it."""
+        # TODO this is pretty gross, and duplicates _group_page
+        min_count = page.groupby(['set_num', 'card_num', 'count_in_deck'])[
+            'count_in_deck', 'value', 'value_per_shiftstone'].min()
+        max_count = page.groupby(['set_num', 'card_num', 'count_in_deck'])[
+            'count_in_deck', 'value', 'value_per_shiftstone'].max()
+        page.set_index(['set_num', 'card_num'], inplace=True)
+        page = page.join(min_count, rsuffix='_min')
+        page = page.join(max_count, rsuffix='_max')
+        del page['count_in_deck']
+        del page['value']
+        del page['value_per_shiftstone']
+        page.reset_index(inplace=True)
+        page.drop_duplicates(subset=['set_num', 'card_num', 'count_in_deck'], inplace=True)
+
+        return page
+
 
 @caches.mem_cache.cache("card_displays_for_user", expires=120)
 def make_card_displays(user: models.user.User) -> CardDisplays:
