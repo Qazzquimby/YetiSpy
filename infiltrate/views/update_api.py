@@ -12,6 +12,8 @@ NO_KEY_GIVEN = "no_key_given"
 
 
 # TODO INVALIDATE ALL CACHES. Otherwise they're out of date.
+# Local run api is http://127.0.0.1:5000/secret_update/update_all/KEY
+
 
 # noinspection PyMethodMayBeStatic
 class UpdateAPI(FlaskView):
@@ -19,31 +21,31 @@ class UpdateAPI(FlaskView):
     route_base = '/secret_update'
     key = application.config['UPDATE_KEY']
 
+    def refuse_bad_key(self, key):
+        if key != self.key:
+            return "Bad Key"
+
     def update_all(self, key=NO_KEY_GIVEN):
-        if key == self.key:
-            self.update_cards(key)
-            self.update_decks(key)
-            self.update_deck_searches(key)
-            return "Updated All"
-        return "Bad Key"
+        self.refuse_bad_key(key)
+        self.update_cards(key)
+        self.update_decks(key)
+        self.update_deck_searches(key)
+        return "Updated All"
 
     def update_cards(self, key=NO_KEY_GIVEN):
-        if key == self.key:
-            models.card.update_cards()
-            caches.invalidate()
-            return "Updated Cards"
-        return "Bad Key"
+        self.refuse_bad_key(key)
+        models.card.update_cards()
+        caches.invalidate()
+        return "Updated Cards"
 
     def update_decks(self, key=NO_KEY_GIVEN):
-        if key == self.key:
-            models.deck.update_decks()
-            caches.invalidate()
-            return "Updated Decks"
-        return "Bad Key"
+        self.refuse_bad_key(key)
+        models.deck.update_decks()
+        caches.invalidate()
+        return "Updated Decks"
 
     def update_deck_searches(self, key=NO_KEY_GIVEN):
-        if key == self.key:
-            models.deck_search.update_deck_searches()
-            caches.invalidate()
-            return "Updated Deck Searches"
-        return "Bad Key"
+        self.refuse_bad_key(key)
+        models.deck_search.update_deck_searches()
+        caches.invalidate()
+        return "Updated Deck Searches"

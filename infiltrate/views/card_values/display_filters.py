@@ -48,7 +48,7 @@ class OwnedFilter(OwnershipFilter):
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
     def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
-        filtered = cards[cards[['is_owned'] == True]]
+        filtered = cards[cards['is_owned'] == True]
         return filtered
 
 

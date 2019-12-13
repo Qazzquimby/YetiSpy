@@ -48,11 +48,13 @@ class CollectionUpdater:
                 self.user.cards.append(user_owns_card)
                 db.session.add(user_owns_card)
             db.session.commit()
-        except sqlalchemy.exc.IntegrityError:
+        except sqlalchemy.exc.IntegrityError as e:
             if retry:
                 db.session.rollback()
                 models.card.update_cards()  # Missing cards used by Eternal Warcry can cause this error.
                 self._add_new_collection(collection, retry=False)
+            else:
+                raise e
 
 
 class UserOwnershipCache:

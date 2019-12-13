@@ -37,7 +37,7 @@ class GetCardValueDataframe:
         return value_dfs
 
 
-class GetOverallValueDict:
+class GetOverallValueDict:  # UNUSED
     """Callable to get a user's value dict (card playsets to values) given their weighted deck searches."""
 
     def __init__(self, weighted_deck_searches):

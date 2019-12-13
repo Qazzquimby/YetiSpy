@@ -1,6 +1,7 @@
 """Handles creating the flask app"""
 import os
 
+import flask
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
@@ -43,6 +44,24 @@ def _register_views(app):
     LoginView.register(app)
     UpdateAPI.register(app)
     UpdateCollectionView.register(app)
+
+    # Temporary dev page to see all routes
+    @app.route("/site_map")
+    def site_map():
+        def has_no_empty_params(rule):
+            defaults = rule.defaults if rule.defaults is not None else ()
+            arguments = rule.arguments if rule.arguments is not None else ()
+            return len(defaults) >= len(arguments)
+
+        links = []
+        for rule in app.url_map.iter_rules():
+            # Filter out rules we can't navigate to in a browser
+            # and rules that require parameters
+            if "GET" in rule.methods and has_no_empty_params(rule):
+                url = flask.url_for(rule.endpoint, **(rule.defaults or {}))
+                links.append((url, rule.endpoint))
+        print(links)
+        return 'See backend console log.'
 
 
 def _schedule_updates():

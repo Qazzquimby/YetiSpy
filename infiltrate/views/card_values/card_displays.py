@@ -5,8 +5,8 @@ import numpy as np
 import pandas as pd
 
 import caches
-# TODO figure out card sets and purchases
 # TODO improve craft efficiency by taking into account drop rate
+# TODO figure out card sets and purchases
 import models.card
 import models.card_sets
 import models.rarity

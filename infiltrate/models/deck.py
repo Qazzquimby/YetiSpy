@@ -30,6 +30,7 @@ class DeckType(enum.Enum):
     event = 6
     _ = 7
     expedition = 8
+    other = 9
 
 
 class Archetype(enum.Enum):
@@ -151,7 +152,7 @@ def update_decks():
             try:
                 deck_type = DeckType.__dict__[page_json["deck_type"].lower().replace(" ", "_")]
             except KeyError:  # not sure this is the right exception
-                deck_type = DeckType[int(page_json["deck_type"])]
+                deck_type = DeckType(int(page_json["deck_type"]))
 
             deck = Deck(
                 id=page_json['deck_id'],
@@ -178,7 +179,7 @@ def update_decks():
                 set_num = card_json["set_number"]
                 card_num = card_json["eternal_id"]
                 card_id = models.card.CardId(set_num, card_num)
-                if models.card.ALL_CARDS[card_id]:
+                if models.card.card_exists(card_id):
                     deck_has_card = DeckHasCard(
                         deck_id=page_json["deck_id"],
                         set_num=set_num,

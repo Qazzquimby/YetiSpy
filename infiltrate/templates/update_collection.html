@@ -20,7 +20,7 @@
                     <textarea id="import-cards-text" name="import-cards-text" class="form-control" rows="6"></textarea>
                     <div id="import-cards-error" class="alert-danger" style="display: none">
                         Eternal Warcry returned an error when updating your collection.<br>
-                        Either there's something wrong with your input, or Warcry is down right now.
+                        Something is either wrong with your input, this site, or Eternal Warcry.
                     </div>
                     <div class="text-right">
                         <button id="import-cards-action" type="submit" class="btn btn-primary">
@@ -88,7 +88,6 @@ syncCardsForm.submit(function (e) {
 });
 
 function onSuccess() {
-  //TODO Maybe. it might be necessary to delete the user's first.
   $('#import-cards-success').css("display", "block");
   setTimeout(function () {
     location.reload();

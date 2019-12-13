@@ -31,26 +31,6 @@ WHERE decksearch_id = {decksearch_id}"""
         df = pd.read_sql_query(query, session)
         del df['decksearch_id']
 
-        # def multi_index_pivot(df, columns=None, values=None):
-        #     # https://github.com/pandas-dev/pandas/issues/23955
-        #     names = list(df.index.names)
-        #     df = df.reset_index()
-        #     list_index = df[names].values
-        #     tuples_index = [tuple(i) for i in list_index]  # hashable
-        #     df = df.assign(tuples_index=tuples_index)
-        #     df = df.pivot(index="tuples_index", columns=columns, values=values)
-        #     tuples_index = df.index  # reduced
-        #     index = pd.MultiIndex.from_tuples(tuples_index, names=names)
-        #     df.index = index
-        #     return df
-        # This moves all num_decks_with_count_or_less to a single row for each card.
-        # df = multi_index_pivot(df, columns='count_in_deck', values='num_decks_with_count_or_less')
-        # fixme remove
-        # df.rename(columns={x: evaluation.num_decks_with_count_x_or_less(x)
-        #                    for x in range(1, 5)},
-        #           inplace=True)
-        # df.fillna(0)
-
         return df
 
 
@@ -63,8 +43,10 @@ class DeckSearch(db.Model):
 
     def get_decks(self):
         """Returns all decks belonging to the deck search"""
-        return models.deck.Deck.query.filter(
-            models.deck.Deck.date_updated > datetime.datetime.now() - datetime.timedelta(days=self.maximum_age_days))
+        time_to_update = datetime.datetime.now() - datetime.timedelta(days=self.maximum_age_days)
+        is_past_time_to_update = models.deck.Deck.date_updated > time_to_update
+        decks = models.deck.Deck.query.filter(is_past_time_to_update)
+        return decks
 
     def get_playrate_dict(self) -> card_collections.PlayrateDict:
         """Gets a PlayRateDict of [cardId][playset size] = proportional to play rate"""
@@ -112,7 +94,7 @@ class DeckSearch(db.Model):
         for deck in self.get_decks():
             for card in deck.cards:
                 card_id = models.card.CardId(set_num=card.set_num, card_num=card.card_num)
-                for num_played in range(card.num_played):
+                for num_played in range(min(card.num_played, 4)):
                     playrate[card_id][num_played] += 1
         return playrate
 
@@ -177,7 +159,7 @@ class WeightedDeckSearch(db.Model):
     def get_value_df(self) -> pd.DataFrame:
         df = self.deck_search.get_playrate_df()
         df['playrate'] *= self.weight
-        df.rename(columns={'playrate': 'value'}, inplace=True)
+        df = df.rename(columns={'playrate': 'value'})
         return df
 
 

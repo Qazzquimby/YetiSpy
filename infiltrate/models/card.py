@@ -42,12 +42,19 @@ def _get_card_json():
     card_json_str = browser.get_str_from_url_and_xpath("https://eternalwarcry.com/content/cards/eternal-cards.json",
                                                        "/html/body/pre")
     card_json = json.loads(card_json_str)
+
     return card_json
 
 
+
 def _make_cards_from_entries(entries: typing.List[dict]):
+    seen_ids = set()
     for entry in entries:
-        _make_card_from_entry(entry)
+        if 'EternalID' in entry.keys():
+            card_id = models.card.CardId(set_num=entry['SetNumber'], card_num=entry['EternalID'])
+            if card_id not in seen_ids:
+                _make_card_from_entry(entry)
+                seen_ids.add(card_id)
 
 
 def _make_card_from_entry(entry: dict) -> typing.Optional[Card]:
@@ -59,7 +66,11 @@ def _make_card_from_entry(entry: dict) -> typing.Optional[Card]:
                 rarity=entry["Rarity"],
                 image_url=entry["ImageUrl"],
                 details_url=entry["DetailsUrl"])
-    db.session.merge(card)
+    try:
+        db.session.merge(card)
+    except sqlalchemy.exc.IntegrityError:
+        pass
+    #     db.session.rollback()
 
 
 def update_cards():
@@ -215,6 +226,13 @@ def init_all_card_df():
 
 
 ALL_CARDS = init_all_card_df()
+
+
+def card_exists(card_id: CardId):
+    matching_card = models.card.ALL_CARDS.loc[
+        (models.card.ALL_CARDS['set_num'] == card_id.set_num) & (models.card.ALL_CARDS['card_num'] == card_id.card_num)
+        ]
+    return len(matching_card) > 0
 
 
 @dataclass

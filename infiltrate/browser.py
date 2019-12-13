@@ -29,7 +29,8 @@ class Browser(selenium.webdriver.Chrome):
         options.headless = True
 
         driver, _ = ChromeDriverManager(download_root=current_dir,
-                                        link_path=current_dir).download_and_install()  # Will use existing version if up to date.
+                                        link_path=current_dir).download_and_install()  # Todo readd. Right now it comlains about file format downloaded.  # Will use existing version if up to date.
+
         super().__init__(driver, options=options)
 
     def safely_find(self, finder):
