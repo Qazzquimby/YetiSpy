@@ -7,6 +7,7 @@ from flask_classy import FlaskView
 import views.login
 
 
+# noinspection PyMethodMayBeStatic
 class UpdateCollectionView(FlaskView):
     """View in which a user may update their collection."""
 

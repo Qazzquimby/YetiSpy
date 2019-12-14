@@ -28,8 +28,8 @@ class Browser(selenium.webdriver.Chrome):
         options = selenium.webdriver.chrome.options.Options()
         options.headless = True
 
-        driver, _ = ChromeDriverManager(download_root=current_dir,
-                                        link_path=current_dir).download_and_install()  # Todo readd. Right now it comlains about file format downloaded.  # Will use existing version if up to date.
+        manager = ChromeDriverManager(download_root=current_dir, link_path=current_dir)
+        driver, _ = manager.download_and_install()
 
         super().__init__(driver, options=options)
 

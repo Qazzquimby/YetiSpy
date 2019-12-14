@@ -9,8 +9,19 @@ from flask_sqlalchemy import SQLAlchemy
 # sys.path.insert(0, os.path.join(os.path.dirname(__file__), "lib"))
 # sys.path.append(".")
 
+
 application = Flask(__name__, instance_relative_config=True)
 application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
+def _set_config(app, test_config):
+    if test_config:
+        app.config.update(test_config)
+    else:
+        app.config.from_pyfile('config.py', silent=True)
+
+
+_set_config(application, test_config=None)
 
 
 def _setup_db(app):
@@ -21,11 +32,14 @@ def _setup_db(app):
     return database
 
 
-def _set_config(app, test_config):
-    if test_config:
-        app.config.update(test_config)
-    else:
-        app.config.from_pyfile('config.py', silent=True)
+db = _setup_db(application)
+
+
+def setup_application(app):
+    Bootstrap(app)
+    _make_instance_dir(app)
+    _register_views(app)
+    _schedule_updates()
 
 
 def _make_instance_dir(app):
@@ -72,17 +86,6 @@ def _schedule_updates():
 def _update():
     from infiltrate import models
     models.update()
-
-
-_set_config(application, test_config=None)
-db = _setup_db(application)
-Bootstrap(application)
-_make_instance_dir(application)
-_register_views(application)
-_schedule_updates()
-
-
-# _update()
 
 
 @application.teardown_request

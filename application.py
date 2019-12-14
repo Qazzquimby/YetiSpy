@@ -9,7 +9,7 @@ import threading
 import webbrowser
 
 sys.path.append("/opt/python/current/app/infiltrate")
-from infiltrate import application
+from infiltrate import application, setup_application
 
 
 def open_in_browser():
@@ -18,5 +18,6 @@ def open_in_browser():
 
 
 if __name__ == '__main__':
+    setup_application(application)
     open_in_browser()
     application.run(debug=True, use_debugger=False, use_reloader=False)

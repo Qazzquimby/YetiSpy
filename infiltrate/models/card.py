@@ -12,9 +12,9 @@ import sqlalchemy.orm
 import sqlalchemy.orm.exc
 from dataclasses import dataclass
 from fast_autocomplete import AutoComplete
-from finisher import DictStorageAutoCompleter
 
 import browser
+import df_types
 import models.rarity
 from infiltrate import db
 
@@ -31,11 +31,18 @@ class Card(db.Model):
 
     @property
     def id(self):
+        """Returns the CardId for the Card."""
         try:
-            return CardId(set_num=self.set_num, card_num=self.card_num)
+            card_id = CardId(set_num=self.set_num, card_num=self.card_num)
         except sqlalchemy.orm.exc.DetachedInstanceError as e:
             print("Detached Instance Error!", self, self.__dict__)
             raise e
+        return card_id
+
+
+Card_DF = df_types.make_dataframe_type(
+    df_types.get_columns_for_model(Card)
+)
 
 
 def _get_card_json():
@@ -44,7 +51,6 @@ def _get_card_json():
     card_json = json.loads(card_json_str)
 
     return card_json
-
 
 
 def _make_cards_from_entries(entries: typing.List[dict]):
@@ -102,65 +108,22 @@ class CardIdWithValue(NamedTuple):
 
 
 def str_to_snake(string: str):
+    """Replaces spaces with _s in string."""
     return string.replace(" ", "_")
 
 
 def snake_to_str(snake):
+    """Replaces _s with spaces in string."""
     return snake.replace("_", " ")
 
 
-class AllCardsDict:
-    def __init__(self):
-        raw_cards: typing.List[Card] = Card.query.all()
-        self._card_id_dict = self._init_card_id_dict(raw_cards)
-        self._name_dict = self._init_name_dict(raw_cards)
-        self._autocompleter = self._init_autocompleter(raw_cards)
-        pass
-
-    @staticmethod
-    def _init_card_id_dict(raw_cards: typing.List[Card]) -> typing.Dict:
-        card_dict = {CardId(set_num=card.set_num, card_num=card.card_num): card for card in raw_cards}
-        return card_dict
-
-    @staticmethod
-    def _init_name_dict(raw_cards: typing.List[Card]) -> typing.Dict:
-        card_dict = {card.name: card for card in raw_cards}
-        return card_dict
-
-    @staticmethod
-    def _init_autocompleter(raw_cards: typing.List[Card]) -> DictStorageAutoCompleter:
-        autocompleter = DictStorageAutoCompleter({})
-
-        card_names = [str_to_snake(card.name) for card in raw_cards]
-        autocompleter.train_from_strings(card_names)
-        return autocompleter
-
-    def __getitem__(self, item):
-        return self._card_id_dict.get(item, None)
-
-    def __iter__(self):
-        return self._card_id_dict.values().__iter__()
-
-    def get_matching_card(self, search_str: str) -> typing.Optional[Card]:
-        search_term = search_str.replace(" ", "")
-        guesses = self._autocompleter.guess_full_strings([search_term])
-        if guesses:
-            card_name = snake_to_str(guesses[0])
-            try:
-                card = self._name_dict[card_name]
-            except KeyError:
-                raise KeyError(f"Card name {card_name} not found in AllCards name_dict")
-            return card
-        else:
-            return None
-
-
 class _CardAutoCompleter:
-    def __init__(self, cards_df: pd.DataFrame):
+    def __init__(self, cards_df: Card_DF):
         self.cards = cards_df
         self.completer = self._init_autocompleter(cards_df)
 
-    def match(self, search: str) -> pd.DataFrame:
+    def get_cards_matching_search(self, search: str) -> Card_DF:
+        """Returns cards with the name best matching the search string."""
         name = self._match_name(search)
         cards = self.cards[self.cards['name'].str.lower() == name]
         return cards
@@ -173,13 +136,14 @@ class _CardAutoCompleter:
         except IndexError:
             return None
 
-    def _init_autocompleter(self, df: pd.DataFrame):
+    def _init_autocompleter(self, df: Card_DF):
         words = self._get_words(df)
         words = {word: {} for word in words}
         completer = AutoComplete(words=words)
         return completer
 
-    def _get_words(self, df: pd.DataFrame):
+    @staticmethod
+    def _get_words(df: Card_DF):
         names = df['name']
         return names
 
@@ -195,10 +159,10 @@ class _AllCardAutoCompleter(_CardAutoCompleter):
             super().__init__(ALL_CARDS)
 
 
-def get_matching_card(card_df: pd.DataFrame, search_str: str) -> pd.DataFrame:
+def get_matching_card(card_df: Card_DF, search_str: str) -> Card_DF:
     """Return rows from the card_df with card names best matching the search_str."""
     matcher = _CardAutoCompleter(card_df)
-    match = matcher.match(search_str)
+    match = matcher.get_cards_matching_search(search_str)
     return match
 
 

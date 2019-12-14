@@ -7,6 +7,7 @@ import pandas as pd
 from progiter import progiter
 
 import card_collections
+import df_types
 import models.card
 import models.deck
 from infiltrate import db
@@ -23,7 +24,7 @@ class DeckSearchHasCard(db.Model):
                                                                     models.card.Card.card_num]), {})
 
     @staticmethod
-    def as_df(decksearch_id: int):
+    def as_df(decksearch_id: int) -> 'DeckSearchHasCard_DF':
         session = db.engine.raw_connection()
         query = f"""SELECT *
 FROM deck_search_has_card
@@ -32,6 +33,20 @@ WHERE decksearch_id = {decksearch_id}"""
         del df['decksearch_id']
 
         return df
+
+
+DeckSearchHasCard_DF = df_types.make_dataframe_type(
+    df_types.get_columns_for_model(DeckSearchHasCard)
+)
+
+NUM_DECKS_COL_STR = 'num_decks_with_count_or_less'
+PLAYRATE_COL_STR = 'playrate'
+VALUE_COL_STR = 'value'
+
+PlayRate_DF = df_types.make_dataframe_type(
+    [e for e in df_types.get_columns_for_model(DeckSearchHasCard) if not e == NUM_DECKS_COL_STR]
+    + [PLAYRATE_COL_STR]
+)
 
 
 class DeckSearch(db.Model):
@@ -62,18 +77,16 @@ class DeckSearch(db.Model):
 
         return playrate_dict
 
-    def get_playrate_df(self) -> pd.DataFrame:
+    def get_playrate_df(self) -> PlayRate_DF:
         """Gets a dataframe of card playrates.
         Playrate is roughly play count / total play count"""
-        playrate_df = DeckSearchHasCard.as_df(decksearch_id=self.id)
+        playrate_df: DeckSearchHasCard_DF = DeckSearchHasCard.as_df(decksearch_id=self.id)
 
-        NUM_DECKS_STR = 'num_decks_with_count_or_less'
-        PLAYRATE_STR = 'playrate'
-
-        playrate_df[NUM_DECKS_STR] = playrate_df[NUM_DECKS_STR] * 10_000 / len(models.card.ALL_CARDS)
+        playrate_df[NUM_DECKS_COL_STR] = playrate_df[NUM_DECKS_COL_STR] * 10_000 / len(models.card.ALL_CARDS)
         # *10_000 arbitrary bloat for more readable numbers
         # /len(cards) hopefully normalizes by search size
-        playrate_df.rename(columns={NUM_DECKS_STR: PLAYRATE_STR}, inplace=True)
+
+        playrate_df.rename(columns={NUM_DECKS_COL_STR: PLAYRATE_COL_STR}, inplace=True)
 
         return playrate_df
 
@@ -113,9 +126,10 @@ class DeckSearch(db.Model):
 
 def create_deck_searches():
     # Todo at some point users may be able to make their own deck searches.
+    # TODO maybe make this cleaner while merging with the create_weighted_deck_searches stuff in login
 
     @dataclasses.dataclass
-    class _DeckSearchCreate:  # TODO maybe make this cleaner while merging with the create_weighted_deck_searches stuff in login
+    class _DeckSearchCreate:
         id: int
         maximum_age_days: int
 
@@ -133,6 +147,10 @@ def create_deck_searches():
 
 create_deck_searches()
 
+DeckSearchValue_DF = df_types.make_dataframe_type(
+    [e for e in df_types.get_columns_from_dataframe_type(PlayRate_DF) if e != PLAYRATE_COL_STR]
+    + [VALUE_COL_STR])
+
 
 class WeightedDeckSearch(db.Model):
     """A DeckSearch with a user given weight for its relative importance.
@@ -146,7 +164,7 @@ class WeightedDeckSearch(db.Model):
     deck_search: DeckSearch = db.relationship('DeckSearch', uselist=False, cascade_backrefs=False)
 
     def get_value_dict(self) -> card_collections.ValueDict:
-        playrate_dict = self.deck_search.get_playrate_dict()
+        playrate_dict: PlayRate_DF = self.deck_search.get_playrate_dict()
 
         value_dict = card_collections.ValueDict()
 
@@ -156,10 +174,10 @@ class WeightedDeckSearch(db.Model):
 
         return value_dict
 
-    def get_value_df(self) -> pd.DataFrame:
+    def get_value_df(self) -> DeckSearchValue_DF:
         df = self.deck_search.get_playrate_df()
-        df['playrate'] *= self.weight
-        df = df.rename(columns={'playrate': 'value'})
+        df[PLAYRATE_COL_STR] *= self.weight
+        df = df.rename(columns={PLAYRATE_COL_STR: VALUE_COL_STR})
         return df
 
 

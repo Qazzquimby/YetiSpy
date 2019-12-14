@@ -15,13 +15,19 @@ if typing.TYPE_CHECKING:
     from models.user import User
 
 
-class CollectionUpdater:
+def update_collection(user: 'User'):
+    updater = _CollectionUpdater(user)
+    updater.run()
+
+
+class _CollectionUpdater:
     """Updates the given user's collection to match their Eternal Warcry collection."""
 
     def __init__(self, user: 'User'):
         self.user = user
 
-    def __call__(self):
+    def run(self):
+        """Updates the given user's collection to match their Eternal Warcry collection."""
         self._remove_old_collection()
         collection = self._get_new_collection()
         self._add_new_collection(collection)
@@ -58,6 +64,7 @@ class CollectionUpdater:
 
 
 class UserOwnershipCache:
+    """Cache for cards owned by each user."""
     def __init__(self, user: 'User'):
         self._dict = self._init_dict(user)
 

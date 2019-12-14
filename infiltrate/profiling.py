@@ -24,11 +24,13 @@ PRINT_TIMINGS = True
 
 
 def start_timer(name: str):
+    """Begins a timer keyed to the given name."""
     start_time = time.time()
     _start_times[name] = start_time
 
 
 def end_timer(name: str):
+    """Ends the timer keyed to the given name. That name must have a running timer."""
     end_time = time.time()
     try:
         start_time = _start_times[name]

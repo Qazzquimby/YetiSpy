@@ -1,4 +1,5 @@
 """The Deck model and related utilities"""
+import csv
 import enum
 import typing
 import urllib.error
@@ -72,57 +73,60 @@ def get_deck(deck_id: str):
     return Deck.query.filter_by(id=deck_id).first()
 
 
-def get_new_warcy_ids():
+# noinspection PyMissingOrEmptyDocstring
+class _WarcryNewIdGetter:
+    def get_new_ids(self):
+        print("Getting new deck ids")
+        new_ids = []
+        page = 0
+        while True:
+            ids_on_page = self.get_ids_from_page(page)
+            new_ids_on_page = self.remove_old_ids(ids_on_page)
+            new_ids += new_ids_on_page
+            # if not new_ids_on_page: #TODO READD
+            #     break
+            if not ids_on_page:  # TODO REMOVE
+                break
+
+            page += 1
+            print(f"Pages of deck ids ready: {page}")
+        return new_ids
+
+    def get_ids_from_page(self, page: int):
+        items_per_page = 50
+        url = "https://api.eternalwarcry.com/v1/decks/SearchDecks" + \
+              f"?starting={items_per_page * page}" + \
+              f"&perpage={items_per_page}" + \
+              f"&key={application.config['WARCRY_KEY']}"
+        page_json = browser.obj_from_url(url)
+        ids = self.get_ids_from_page_json(page_json)
+
+        return ids
+
+    @staticmethod
+    def get_ids_from_page_json(page_json: typing.Dict):
+        decks = page_json['decks']
+        ids = [deck['deck_id'] for deck in decks]
+        return ids
+
+    @staticmethod
+    def remove_old_ids(ids: typing.List[str]) -> typing.List[str]:
+        new_ids = []
+        for deck_id in ids:
+            if not get_deck(deck_id):
+                new_ids.append(deck_id)
+            else:
+                break
+        return new_ids
+
+
+def get_new_warcry_ids():
     """Return all Warcry deck IDs newer than any in the database."""
 
-    # noinspection PyMissingOrEmptyDocstring
-    class _WarcryNewIdGetter:
-        def __call__(self):
-            return self.get_new_ids()
+    id_getter = _WarcryNewIdGetter()
+    ids = id_getter.get_new_ids()
 
-        def get_new_ids(self):
-            print("Getting new deck ids")
-            new_ids = []
-            page = 0
-            while True:
-                ids_on_page = self.get_ids_from_page(page)
-                new_ids_on_page = self.remove_old_ids(ids_on_page)
-                new_ids += new_ids_on_page
-                if not new_ids_on_page:
-                    break
-
-                page += 1
-                print(f"Pages of deck ids ready: {page}")
-            return new_ids
-
-        def get_ids_from_page(self, page: int):
-            items_per_page = 50
-            url = "https://api.eternalwarcry.com/v1/decks/SearchDecks" + \
-                  f"?starting={items_per_page * page}" + \
-                  f"&perpage={items_per_page}" + \
-                  f"&key={application.config['WARCRY_KEY']}"
-            page_json = browser.obj_from_url(url)
-            ids = self.get_ids_from_page_json(page_json)
-
-            return ids
-
-        @staticmethod
-        def get_ids_from_page_json(page_json: typing.Dict):
-            decks = page_json['decks']
-            ids = [deck['deck_id'] for deck in decks]
-            return ids
-
-        @staticmethod
-        def remove_old_ids(ids: typing.List[str]) -> typing.List[str]:
-            new_ids = []
-            for deck_id in ids:
-                if not get_deck(deck_id):
-                    new_ids.append(deck_id)
-                else:
-                    break
-            return new_ids
-
-    return _WarcryNewIdGetter()()
+    return ids
 
 
 def update_decks():
@@ -130,10 +134,17 @@ def update_decks():
 
     # noinspection PyMissingOrEmptyDocstring
     class _WarcyDeckUpdater:
-        def __call__(self):
-            ids = get_new_warcy_ids()
-            for deck_id in ids:
-                self.update_deck(deck_id)
+        # todo add logging. Add logging to everything in general.
+        def run(self):
+            # ids = get_new_warcry_ids() #todo readd
+
+            with open('infiltrate/data/deck_ids.csv') as deck_ids:
+                reader = csv.reader(deck_ids)
+                ids = list(reader)[0]
+            for i, deck_id in enumerate(ids):
+                if i > 17500:
+                    print(f'Updating deck {i} of {len(ids)}')
+                    self.update_deck(deck_id)
 
         def update_deck(self, deck_id: str):
             url = "https://api.eternalwarcry.com/v1/decks/details" + \
@@ -188,4 +199,5 @@ def update_decks():
                     )
                     deck.cards.append(deck_has_card)
 
-    return _WarcyDeckUpdater()()
+    updater = _WarcyDeckUpdater()
+    updater.run()

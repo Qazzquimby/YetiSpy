@@ -2,15 +2,13 @@
 
 import typing
 
-import pandas as pd
 import sqlalchemy_utils
 from sqlalchemy_utils.types.encrypted.encrypted_type import FernetEngine
 
 import evaluation
-import models.card
 import models.deck_search
 from infiltrate import application, db
-from models.user.collection import CollectionUpdater, UserOwnershipCache
+from models.user.collection import UserOwnershipCache, _CollectionUpdater
 
 
 class User(db.Model):
@@ -28,7 +26,8 @@ class User(db.Model):
 
     def update_collection(self):
         """Replaces a user's old collection in the db with their new collection."""
-        CollectionUpdater(self)()
+        updater = _CollectionUpdater(self)
+        updater.run()
 
     # def get_displays(self) -> pd.DataFrame:
     #     values = self.get_values()
@@ -36,11 +35,12 @@ class User(db.Model):
     #     displays = cards.join(values)
     #     return displays
 
-    def get_values(self) -> pd.DataFrame:
+    def get_values(self) -> models.deck_search.DeckSearchValue_DF:
         """Get a dataframe of card values for the user"""
         # If this needs to be faster, change from making 1 sql call per weighted deck search to 1 call
         #   and passing the information.
-        values = evaluation.GetCardValueDataframe(self.weighted_deck_searches)()
+        getter = evaluation.CardValueDataframeGetter(self.weighted_deck_searches)
+        values = getter.get_cards_values_df()
         return values
 
     def add_weighted_deck_searches(self, searches: typing.List[models.deck_search.WeightedDeckSearch]):
