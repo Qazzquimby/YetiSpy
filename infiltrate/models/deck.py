@@ -1,5 +1,4 @@
 """The Deck model and related utilities"""
-import csv
 import enum
 import typing
 import urllib.error
@@ -134,17 +133,12 @@ def update_decks():
 
     # noinspection PyMissingOrEmptyDocstring
     class _WarcyDeckUpdater:
-        # todo add logging. Add logging to everything in general.
         def run(self):
-            # ids = get_new_warcry_ids() #todo readd
+            ids = get_new_warcry_ids()
 
-            with open('infiltrate/data/deck_ids.csv') as deck_ids:
-                reader = csv.reader(deck_ids)
-                ids = list(reader)[0]
             for i, deck_id in enumerate(ids):
-                if i > 17500:
-                    print(f'Updating deck {i} of {len(ids)}')
-                    self.update_deck(deck_id)
+                print(f'Updating deck {i} of {len(ids)}')
+                self.update_deck(deck_id)
 
         def update_deck(self, deck_id: str):
             url = "https://api.eternalwarcry.com/v1/decks/details" + \

@@ -13,7 +13,8 @@ def get_columns_for_model(model) -> typing.List[str]:
 
 
 def get_columns_from_dataframe_type(df_type: functools.partial) -> typing.List[str]:
-    pass
+    columns = df_type.keywords['columns']
+    return columns
 
 
 def make_dataframe_type(columns: typing.List[str]) -> functools.partial:

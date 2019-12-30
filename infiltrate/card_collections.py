@@ -16,7 +16,6 @@ def make_card_playset_dict() -> typing.Dict:
 
 
 def make_collection_from_ew_export(cards: typing.List[typing.Dict[str, int]]) -> typing.Dict[models.card.CardId, int]:
-    # collection: typing.Dict[models.card.CardId, int] = {}
     collection = defaultdict(int)
     for card in cards:
         card_id = models.card.CardId(set_num=card["set"], card_num=card["card_number"])
