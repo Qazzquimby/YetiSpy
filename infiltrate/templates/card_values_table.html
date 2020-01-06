@@ -18,7 +18,7 @@
                             <a class="btn-text text-bold text-lg text-left
                                                      text-{{ display['rarity'].lower() }}"
                                rel="popover"
-                               data-img="{{ display['image_url'] }}"
+                               data-content="<img src={{ display['image_url'] }}/>"
                                data-name="{{ display['name'] }}"
                                href="{{ display['details_url'] }}">
                                 {{ display['name'] }}
@@ -27,15 +27,19 @@
                     </div>
 
                 </td>
-                <td class="col-md-3 text-center">
+                <td class="col-md-2 text-center">
                     <div>
                         {{ '%0.2f' % display['value_per_shiftstone_max'] }}
                     </div>
-
                 </td>
-                <td class="col-md-3 text-center">
+                <td class="col-md-2 text-center">
                     <div>
                         {{ '%0.2f' % display['value_max'] }}
+                    </div>
+                </td>
+                <td class="col-md-2 text-center">
+                    <div>
+                        {{ '%0.2f' % display['findability'] }}
                     </div>
                 </td>
                 <td class="col-md-2 text-center">

@@ -4,6 +4,7 @@ from flask_classy import FlaskView
 import models.card
 import models.user
 import profiling
+import views.globals
 import views.login
 from views.card_values.card_displays import CardDisplayPage, make_card_displays
 from views.card_values.display_filters import get_owner, get_sort
@@ -42,7 +43,8 @@ class CardsView(FlaskView):
             ownership = get_owner(owner_str)
 
         profiling.start_timer("make_card_displays")
-        displays = make_card_displays(user)
+        all_cards = views.globals.all_cards
+        displays = make_card_displays(user, all_cards)
         profiling.end_timer("make_card_displays")
 
         displays = displays.configure(sort, ownership)

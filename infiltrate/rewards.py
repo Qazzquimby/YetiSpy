@@ -1,6 +1,7 @@
 import collections
 import typing
 
+import caches
 import models.card
 import models.card_sets
 import models.rarity
@@ -14,7 +15,7 @@ class CardClass:
                  is_premium=False):
         self.sets = sets
         if self.sets is None:
-            self.sets = models.card_sets.get_sets()
+            self.sets = models.card_sets.get_main_sets()
 
         self.rarities = rarities
         if self.rarities is None:
@@ -26,9 +27,18 @@ class CardClass:
     def num_cards(self) -> int:
         """The total number of cards in the pool."""
         session = models.card.db.session
+
+        sets = self.sets
+        try:
+            sets = [v.item() for v in sets]
+        except AttributeError:
+            pass
+
+        rarities = [r.name for r in self.rarities]
+
         count = (session.query(models.card.Card)
-                 .filter(models.card.Card.set_num.in_(self.sets))
-                 .filter(models.card.Card.rarity.in_(self.rarities))
+                 .filter(models.card.Card.set_num.in_(sets))
+                 .filter(models.card.Card.rarity.in_(rarities))
                  .count())
         return count
 
@@ -64,54 +74,11 @@ class CardClassWithAmountPerWeek:
     def chance_of_specific_card_drop_per_week(self) -> float:
         """The probability of a specific card from the pool being found in a week."""
         num_cards = self.card_class.num_cards
-        chance = self.amount_per_week / num_cards
-        return chance
+        one_chance = 1 / num_cards
 
-
-# class DropSource:
-#     """A stream of rewards that grant the given drop rates."""
-#
-#     def __init__(self, card_class_rates: typing.List[CardClassWithAmount]):
-#         self.card_class_rates = card_class_rates
-#
-#
-# class DropSourceWithRate:
-#     def __init__(self, drop_source: DropSource, rate: float):
-#         self.drop_source = drop_source
-#         self.rate = rate
-
-# @property
-# def chance_of_specific_card_drop_per_week(self) -> float:
-#     """The probabilitiy of a specific card from the pool being found in a week."""
-#     num_cards = self.card_class.num_cards
-#     chance = self.rate / num_cards
-#     return chance
-
-#
-# class PlayerDrops:
-#     def __init__(self, drop_source_rates: typing.List[DropSourceWithRate]):
-#         self.drop_source_rates = drop_source_rates
-#
-#     @property
-#     def card_class_rates(self) -> typing.List[CardClassWithAmount]:
-#         new_card_class_rates_dict = collections.defaultdict(int)
-#
-#         for drop_source_rate in self.drop_source_rates:
-#             rate = drop_source_rate.rate
-#
-#             drops_card_class_rates = drop_source_rate.drop_source.card_class_rates
-#             for drops_card_class_rate in drops_card_class_rates:
-#                 drops_card_class = drops_card_class_rate.card_class
-#
-#                 drops_rate = drops_card_class_rate.rate
-#                 combined_rate = rate * drops_rate
-#
-#                 new_card_class_rates_dict[drops_card_class] += combined_rate
-#
-#         new_card_class_rates = [CardClassWithAmount(card_class, new_card_class_rates_dict[card_class])
-#                                 for card_class in new_card_class_rates_dict.keys()]
-#
-#         return new_card_class_rates
+        chance_of_none = (1 - one_chance) ** self.amount_per_week
+        chance_of_at_least_one = 1 - chance_of_none
+        return chance_of_at_least_one
 
 
 class PlayerRewards:  # TODO Make into model to persist
@@ -125,7 +92,8 @@ class PlayerRewards:  # TODO Make into model to persist
 
         self.rewards_with_rates = self.get_rewards_per_week()
 
-        self.drop_rates = self.get_card_classes_with_amounts_per_week()
+        # This could be its own object PlayerDrops
+        self.card_classes_with_amounts_per_week = self.get_card_classes_with_amounts_per_week()
 
     def get_rewards_per_week(self):
         rewards_with_rates = []
@@ -133,11 +101,17 @@ class PlayerRewards:  # TODO Make into model to persist
 
         ranked_silvers = min(3, self.ranked_wins_per_day // 3) * 7
 
-        ranked_bronzes = (self.ranked_wins_per_day - ranked_silvers) * 7
-        unranked_bronzes = (self.unranked_wins_per_day) * 7
+        ranked_bronzes = (self.ranked_wins_per_day * 7) - ranked_silvers
+        unranked_bronzes = self.unranked_wins_per_day * 7
 
         rewards_with_rates.append(RewardWithDropsPerWeek(BRONZE_CHEST, ranked_bronzes + unranked_bronzes))
         rewards_with_rates.append(RewardWithDropsPerWeek(SILVER_CHEST, ranked_silvers))
+
+        # TODO add draft info
+        # Draft pack pools can be found here https://eternalwarcry.com/cards/download
+
+        # TODO Get avg chests from quests
+        # TODO Get base chest drops, and reroll chest drops
 
         return rewards_with_rates
 
@@ -152,8 +126,32 @@ class PlayerRewards:  # TODO Make into model to persist
                 card_class = card_class_with_amount.card_class
                 amount = card_class_with_amount.amount
                 card_classes_with_amounts_per_week_dict[card_class] += amount * drops_per_week
-        card_classes_with_amounts_per_week = list(card_classes_with_amounts_per_week_dict)
+        card_classes_with_amounts_per_week = (
+            [CardClassWithAmountPerWeek(card_class=key, amount_per_week=card_classes_with_amounts_per_week_dict[key])
+             for key in card_classes_with_amounts_per_week_dict.keys()])
+
         return card_classes_with_amounts_per_week
+
+    @caches.mem_cache.cache(f"player_rewards_findabilities", expires=120)
+    def get_chance_of_specific_card_drop_in_a_week(self, rarity: models.rarity.Rarity, set_num: int):
+        chances = []
+        for card_class_with_amount in self.card_classes_with_amounts_per_week:
+            rarity_match = rarity in card_class_with_amount.card_class.rarities
+            set_match = set_num in card_class_with_amount.card_class.sets
+            if rarity_match and set_match:
+                chance = card_class_with_amount.chance_of_specific_card_drop_per_week
+                chances.append(chance)
+        chance_of_at_least_one = get_chance_of_at_least_one(chances)
+        return chance_of_at_least_one
+
+
+def get_chance_of_at_least_one(probabilities):
+    chance_of_none = 1
+    for prob in probabilities:
+        inverse = 1 - prob
+        chance_of_none *= inverse
+    chance_of_at_least_one = 1 - chance_of_none
+    return chance_of_at_least_one
 
 
 class Reward:
@@ -221,14 +219,47 @@ FIRST_WIN_OF_THE_DAY = Reward(card_classes_with_amounts=get_card_classes_with_am
     [models.card_sets.get_newest_main_set()]
 ))
 
-if __name__ == '__main__':
-    player_rewards = PlayerRewards(first_wins_per_week=7,
-                                   drafts_per_week=0,
-                                   ranked_wins_per_day=0,
-                                   unranked_wins_per_day=1)
+DEFAULT_PLAYER = PlayerRewards(first_wins_per_week=6.3,
+                               drafts_per_week=0.3,
+                               ranked_wins_per_day=3.5,
+                               unranked_wins_per_day=0)
 
-    # Get the chance of finding Granite Coin
-    card_set = 6
-    card_rarity = models.rarity.COMMON
-
-    print('debug')
+#
+# if __name__ == '__main__':
+#     #How often do you get your first win of the day? 6.7, 5, 7
+#     # How many wins do you get on the average day? 3, 4
+#     # Do you reroll silver chest quests? Yes, Yes, Yes
+#     # How often do your quests overflow (you end the day with 3 quests)? 0, 1.5
+#     # How many times do you draft per week? 1, 0, 0
+#
+#
+#     player_rewards = PlayerRewards(first_wins_per_week=7,
+#                                    drafts_per_week=0,
+#                                    ranked_wins_per_day=0,
+#                                    unranked_wins_per_day=1)
+#
+#     # Get the chance of finding Granite Coin
+#     card_set = 6
+#     card_rarity = models.rarity.COMMON
+#     chance = player_rewards.get_chance_of_specific_card_drop_in_a_week(rarity=card_rarity, card_set=card_set)
+#     print(chance)
+#
+#     # Get the chance of finding Granite Monument
+#     card_set = 1
+#     card_rarity = models.rarity.UNCOMMON
+#     chance = player_rewards.get_chance_of_specific_card_drop_in_a_week(rarity=card_rarity, card_set=card_set)
+#     print(chance)
+#
+#     # Get the chance of finding
+#     card_set = 7
+#     card_rarity = models.rarity.COMMON
+#     chance = player_rewards.get_chance_of_specific_card_drop_in_a_week(rarity=card_rarity, card_set=card_set)
+#     print(chance)
+#
+#     # Get the chance of finding Emblem of Shavka
+#     card_set = 7
+#     card_rarity = models.rarity.RARE
+#     chance = player_rewards.get_chance_of_specific_card_drop_in_a_week(rarity=card_rarity, card_set=card_set)
+#     print(chance)
+#
+#     print('debug')

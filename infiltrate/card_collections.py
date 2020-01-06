@@ -1,4 +1,4 @@
-"""Data objects for working with cards"""
+"""Data objects for working with groups of cards"""
 import abc
 import typing
 from collections import defaultdict

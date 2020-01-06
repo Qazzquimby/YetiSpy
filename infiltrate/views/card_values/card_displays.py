@@ -13,6 +13,7 @@ import models.rarity
 import models.user
 import models.user.collection
 import profiling
+import rewards
 from views.card_values import display_filters
 
 
@@ -27,13 +28,24 @@ def get_value_per_shiftstone(rarity_str: str, value: float):
     return value_per_shiftstone
 
 
+@pd.np.vectorize
+def get_findability(rarity_str: str, set_num: int):
+    # todo cost could be calculated once per card rather than once per count
+    player = rewards.DEFAULT_PLAYER  # TODO allow custom player profiles to override this.
+    player: rewards.PlayerRewards
+
+    rarity = models.rarity.rarity_from_name[rarity_str]
+    findability = player.get_chance_of_specific_card_drop_in_a_week(rarity=rarity, set_num=set_num)
+    return findability
+
+
 class CardDisplays:
     """Handles sorting and filtering a list of CardValueDisplay to serve."""
     CARDS_PER_PAGE = 30
 
-    def __init__(self, user: models.user.User):
+    def __init__(self, user: models.user.User, all_cards: models.card.AllCards):
         self.user = user
-        self.raw_value_info: pd.DataFrame = self.get_value_info()
+        self.raw_value_info: pd.DataFrame = self.get_value_info(all_cards)
         self.value_info: pd.DataFrame = self.raw_value_info[:]
         self.is_filtered = False
         self.is_sorted = False
@@ -62,16 +74,22 @@ class CardDisplays:
             self.is_filtered = False
             self._ownership = value
 
-    def get_value_info(self):
+    def get_value_info(self, all_cards: models.card.AllCards):
         """Get all displays for a user, not sorted or filtered."""
         values: pd.DataFrame = self.user.get_values()
         if len(values) == 0:
             print("get_raw_values, no values found")
-        all_cards = models.card.ALL_CARDS
-
-        values = values.set_index(['set_num', 'card_num']).join(all_cards.set_index(['set_num', 'card_num']))
+        values = values.set_index(['set_num', 'card_num']).join(all_cards.df.set_index(['set_num', 'card_num']))
         values['value_per_shiftstone'] = get_value_per_shiftstone(values['rarity'], values['value'])
-        values.reset_index(inplace=True)
+        values = values.reset_index()
+
+        # FINDABILITY todo make this work to different degrees based on player preference.
+        card_classes = values[['set_num', 'rarity']].drop_duplicates()
+        card_classes['findability'] = get_findability(card_classes['rarity'], card_classes['set_num'])
+        values = (values.set_index(['set_num', 'rarity'])
+                  .join(card_classes.set_index(['set_num', 'rarity']))
+                  .reset_index())
+        values['value_per_shiftstone'] *= 1 - values['findability']
 
         profiling.start_timer("create is_owned column")
         values['is_owned'] = values.apply(lambda x: display_filters.is_owned(x, self.user), axis=1)  # todo speed
@@ -86,9 +104,6 @@ class CardDisplays:
 
     def get_card(self, card_id: models.card.CardId) -> pd.DataFrame:
         """Gets all displays matching the given card id (1 display for each playset size)."""
-        # displays_df = self.value_info[self.value_info.apply(lambda x:
-        #                                                     x["set_num"] == card_id.set_num
-        #                                                     and x["card_num"] == card_id.card_num, axis=1)]
         displays_df = self.value_info[np.logical_and(self.value_info['set_num'] == card_id.set_num,
                                                      self.value_info['card_num'] == card_id.card_num)]
 
@@ -131,11 +146,12 @@ class CardDisplays:
     def _sort(self):
         """Sorts displays by the given method"""
         if not self.is_sorted:
-            self.value_info = self.sort_method.sort(self.value_info)
+            sort_method = self.sort_method
+            self.value_info = sort_method.sort(self.value_info)
             self.is_sorted = True
 
 
-class CardDisplayPage:
+class CardDisplayPage:  # TODO get rid of the __call__ system
     """Call for the card displays to be displayed at the given page."""
 
     def __init__(self, value_info, page_num, cards_per_page=30):
@@ -169,16 +185,26 @@ class CardDisplayPage:
         representing the cards minimum and maximum counts in the list."""
         min_count = page.groupby(['set_num', 'card_num'])['count_in_deck', 'value', 'value_per_shiftstone'].min()
         max_count = page.groupby(['set_num', 'card_num'])['count_in_deck', 'value', 'value_per_shiftstone'].max()
-        page.set_index(['set_num', 'card_num'], inplace=True)
-        page = page.join(min_count, rsuffix='_min')
-        page = page.join(max_count, rsuffix='_max')
-        del page['count_in_deck']
-        del page['value']
-        del page['value_per_shiftstone']
-        page.reset_index(inplace=True)
-        page.drop_duplicates(subset=['set_num', 'card_num'], inplace=True)
+        reindexed = page.set_index(['set_num', 'card_num'])
+        reindexed_deduplicate = reindexed[~reindexed.index.duplicated(keep='first')]
 
-        return page
+        min_page = reindexed.join(min_count, rsuffix='_min')
+        min_max_page = min_page.join(max_count, rsuffix='_max')
+        del min_max_page['count_in_deck']
+        del min_max_page['value']
+        del min_max_page['value_per_shiftstone']
+        min_max_dropped_duplicates = min_max_page.drop_duplicates()
+
+        original_index = reindexed_deduplicate.index
+        try:
+            original_order = min_max_dropped_duplicates.reindex(index=original_index)
+        except ValueError:
+            print("debug")
+
+        original_index = original_order.reset_index()
+        no_duplicates = original_index.drop_duplicates(subset=['set_num', 'card_num'])
+
+        return no_duplicates
 
     @staticmethod
     def format_ungrouped_page(page: pd.DataFrame) -> pd.DataFrame:
@@ -201,6 +227,6 @@ class CardDisplayPage:
 
 
 @caches.mem_cache.cache("card_displays_for_user", expires=120)
-def make_card_displays(user: models.user.User) -> CardDisplays:
+def make_card_displays(user: models.user.User, all_cards: models.card.AllCards) -> CardDisplays:
     """Makes the cards for a user, cached for immediate reuse."""
-    return CardDisplays(user)
+    return CardDisplays(user, all_cards)

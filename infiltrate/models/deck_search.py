@@ -82,7 +82,7 @@ class DeckSearch(db.Model):
         Playrate is roughly play count / total play count"""
         playrate_df: DeckSearchHasCard_DF = DeckSearchHasCard.as_df(decksearch_id=self.id)
 
-        playrate_df[NUM_DECKS_COL_STR] = playrate_df[NUM_DECKS_COL_STR] * 10_000 / len(models.card.ALL_CARDS)
+        playrate_df[NUM_DECKS_COL_STR] = playrate_df[NUM_DECKS_COL_STR] * 10_000 / len(self.cards)
         # *10_000 arbitrary bloat for more readable numbers
         # /len(cards) hopefully normalizes by search size
 

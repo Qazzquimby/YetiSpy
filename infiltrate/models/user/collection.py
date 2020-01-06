@@ -37,6 +37,7 @@ class _CollectionUpdater:
         response = browser.obj_from_url(url)
         cards = response["cards"]
         collection = card_collections.make_collection_from_ew_export(cards)
+        # TODO IMPORTANT This needs to invalidate the caches for card values and user_ownership_cache.
         return collection
 
     def _remove_old_collection(self):
@@ -65,6 +66,7 @@ class _CollectionUpdater:
 
 class UserOwnershipCache:
     """Cache for cards owned by each user."""
+
     def __init__(self, user: 'User'):
         self._dict = self._init_dict(user)
 

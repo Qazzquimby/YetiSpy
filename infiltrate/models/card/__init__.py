@@ -117,10 +117,39 @@ def snake_to_str(snake):
     return snake.replace("_", " ")
 
 
+class AllCards:
+    def __init__(self):
+        session = db.engine.raw_connection()  # sqlalchemy.orm.Session(db)
+        cards_df = pd.read_sql_query("SELECT * from cards", session)
+        cards_df.rename(columns={'SetNumber': 'set_num',
+                                 'EternalID': 'card_num',
+                                 'Name': 'name',
+                                 'Rarity': 'rarity',
+                                 'ImageUrl': 'image_url',
+                                 "DetailsUrl": 'details_url'},
+                        inplace=True)
+
+        self.df = cards_df
+
+    def get_card(self, card_id: CardId):
+        """Return the row matching the card id."""
+        card = self.df[card_id.set_num, card_id.card_num]
+        return card
+
+    def card_exists(self, card_id: CardId):
+        """Return if the card_id is found in the AllCards."""
+        matching_card = self.df.loc[(
+                (self.df['set_num'] == card_id.set_num)
+                & (self.df['card_num'] == card_id.card_num)
+        )]
+        does_exist = len(matching_card) > 0
+        return does_exist
+
+
 class _CardAutoCompleter:
-    def __init__(self, cards_df: Card_DF):
-        self.cards = cards_df
-        self.completer = self._init_autocompleter(cards_df)
+    def __init__(self, all_cards: AllCards):
+        self.cards = all_cards.df
+        self.completer = self._init_autocompleter(self.cards)
 
     def get_cards_matching_search(self, search: str) -> Card_DF:
         """Returns cards with the name best matching the search string."""
@@ -154,9 +183,9 @@ class _AllCardAutoCompleter(_CardAutoCompleter):
     # TODO totally untested
     completer: AutoComplete = None
 
-    def __init__(self):
+    def __init__(self, all_cards: AllCards):
         if self.completer is None:
-            super().__init__(ALL_CARDS)
+            super().__init__(all_cards)
 
 
 def get_matching_card(card_df: Card_DF, search_str: str) -> Card_DF:
@@ -164,39 +193,6 @@ def get_matching_card(card_df: Card_DF, search_str: str) -> Card_DF:
     matcher = _CardAutoCompleter(card_df)
     match = matcher.get_cards_matching_search(search_str)
     return match
-
-
-class _AllCardsDataframe:
-    def __init__(self):
-        session = db.engine.raw_connection()  # sqlalchemy.orm.Session(db)
-        cards_df = pd.read_sql_query("SELECT * from cards", session)
-        cards_df.rename(columns={'SetNumber': 'set_num',
-                                 'EternalID': 'card_num',
-                                 'Name': 'name',
-                                 'Rarity': 'rarity',
-                                 'ImageUrl': 'image_url',
-                                 "DetailsUrl": 'details_url'},
-                        inplace=True)
-
-        self.df = cards_df
-
-
-def init_all_card_df():
-    """Create a card dataframe for all cards in the database."""
-    try:
-        return _AllCardsDataframe().df
-    except sqlalchemy.exc.ProgrammingError:
-        print("CARDS TABLE NOT FOUND")
-
-
-ALL_CARDS = init_all_card_df()
-
-
-def card_exists(card_id: CardId):
-    matching_card = models.card.ALL_CARDS.loc[
-        (models.card.ALL_CARDS['set_num'] == card_id.set_num) & (models.card.ALL_CARDS['card_num'] == card_id.card_num)
-        ]
-    return len(matching_card) > 0
 
 
 @dataclass
@@ -210,9 +206,9 @@ class CardDisplay:
     details_url: str
 
     @classmethod
-    def from_card_id(cls, card_id: CardId):
+    def from_card_id(cls, all_cards: AllCards, card_id: CardId):
         """Makes a CardDisplay from a CardId."""
-        card = ALL_CARDS[card_id.set_num, card_id.card_num]
+        card = all_cards.get_card(card_id)
         return cls(set_num=card.set_num, card_num=card.card_num, name=card.name, rarity=card.rarity,
                    image_url=card.image_url, details_url=card.details_url)
 

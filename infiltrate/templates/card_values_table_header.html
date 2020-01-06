@@ -3,14 +3,17 @@
     <th class="col-md-4 no-padding">
         Sort by:
     </th>
-    <th class="col-md-3 text-center btn {% if sort=="craft" %} bg-primary {% endif %}"
+    <th class="col-md-2 text-center btn {% if sort=="craft" %} bg-primary {% endif %}"
         onclick="sort='craft'; page=0; ownership='unowned'; updateCardTable()">
         Crafting Efficiency ▼
 
     </th>
-    <th class="col-md-3 text-center btn {% if sort=="value" %} bg-primary {% endif %}"
+    <th class="col-md-2 text-center btn {% if sort=="value" %} bg-primary {% endif %}"
         onclick="sort='value'; page=0; ownership='unowned'; updateCardTable()">
         Value ▼
+    </th>
+    <th class="col-md-2 text-center">
+        Findability
     </th>
 </tr>
 </thead>

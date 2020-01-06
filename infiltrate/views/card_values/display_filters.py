@@ -89,7 +89,8 @@ class CraftSort(CardDisplaySort):
     @staticmethod
     def sort(displays: pd.DataFrame) -> pd.DataFrame:
         """Sorts the cards by highest to lowest card value per shiftstone crafting cost."""
-        return displays.sort_values(by=['value_per_shiftstone'], ascending=False)
+        sorted = displays.sort_values(by=['value_per_shiftstone'], ascending=False)
+        return sorted
 
     @classmethod
     def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
@@ -107,8 +108,8 @@ class ValueSort(CardDisplaySort):
     @staticmethod
     def sort(displays: pd.DataFrame) -> pd.DataFrame:
         """Sorts cards from highest to lowest card value."""
-        # return sorted(displays, key=lambda x: x.value, reverse=True)
-        return displays.sort_values(by=['value'], ascending=False)
+        sorted = displays.sort_values(by=['value'], ascending=False)
+        return sorted
 
     @classmethod
     def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
