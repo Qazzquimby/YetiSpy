@@ -3,7 +3,7 @@ from unittest import TestCase
 import pandas as pd
 
 import models.deck_search
-from evaluation import CardValueDataframeGetter
+from evaluation import _CardValueDataframeGetter
 
 
 class TestCardValueDataframeGetter(TestCase):
@@ -26,7 +26,7 @@ class TestCardValueDataframeGetter(TestCase):
                  }
             )
         ]
-        sut = CardValueDataframeGetter
+        sut = _CardValueDataframeGetter
 
         summed_df = sut._merge_value_dfs(deck_search_value_dfs)
         self.assertTrue(summed_df['value'].equals(pd.Series([3, 7, 5, 6])))

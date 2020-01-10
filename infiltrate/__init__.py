@@ -50,7 +50,7 @@ def _make_instance_dir(app):
 
 
 def _register_views(app):
-    from infiltrate.views.card_values import CardsView
+    from views.card_values.cards_view import CardsView
     from infiltrate.views.update_api import UpdateAPI
     from infiltrate.views.login import LoginView
     from infiltrate.views.update_collection import UpdateCollectionView

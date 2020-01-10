@@ -8,11 +8,10 @@ import caches
 # TODO improve craft efficiency by taking into account drop rate
 # TODO figure out card sets and purchases
 import models.card
-import models.card_sets
+import models.card_set
 import models.rarity
 import models.user
 import models.user.collection
-import profiling
 import rewards
 from views.card_values import display_filters
 
@@ -29,13 +28,13 @@ def get_value_per_shiftstone(rarity_str: str, value: float):
 
 
 @pd.np.vectorize
-def get_findability(rarity_str: str, set_num: int):
+def get_findability(rarity_str: str, set_num: models.card_set.CardSet):
     # todo cost could be calculated once per card rather than once per count
     player = rewards.DEFAULT_PLAYER  # TODO allow custom player profiles to override this.
     player: rewards.PlayerRewards
 
     rarity = models.rarity.rarity_from_name[rarity_str]
-    findability = player.get_chance_of_specific_card_drop_in_a_week(rarity=rarity, set_num=set_num)
+    findability = player.get_chance_of_specific_card_drop_in_a_week(rarity=rarity, card_set=set_num)
     return findability
 
 
@@ -71,6 +70,7 @@ class CardDisplays:
     @ownership.setter
     def ownership(self, value):
         if self._ownership != value:
+            self.is_sorted = False
             self.is_filtered = False
             self._ownership = value
 
@@ -85,16 +85,14 @@ class CardDisplays:
 
         # FINDABILITY todo make this work to different degrees based on player preference.
         card_classes = values[['set_num', 'rarity']].drop_duplicates()
-        card_classes['findability'] = get_findability(card_classes['rarity'], card_classes['set_num'])
+
+        card_set = np.vectorize(models.card_set.get_set_from_set_num)(card_classes['set_num'])
+        card_classes['findability'] = get_findability(card_classes['rarity'], card_set)
         values = (values.set_index(['set_num', 'rarity'])
                   .join(card_classes.set_index(['set_num', 'rarity']))
                   .reset_index())
         values['value_per_shiftstone'] *= 1 - values['findability']
-
-        profiling.start_timer("create is_owned column")
-        values['is_owned'] = values.apply(lambda x: display_filters.is_owned(x, self.user), axis=1)  # todo speed
-        profiling.end_timer("create is_owned column")
-
+        values = display_filters.create_is_owned_column(values, self.user)
         return values
 
     def get_page(self, page_num: int = 0) -> pd.DataFrame:
@@ -136,12 +134,13 @@ class CardDisplays:
             filtered = self.ownership.filter(filtered, self.user)
 
             self.value_info = filtered
-            self._normalize_displays()
+            # self._normalize_displays()
             self.is_filtered = True
 
-    def _normalize_displays(self):
-        max_value = max(self.value_info['value'].max(), 1)
-        self.value_info = self.value_info.assign(value=lambda x: 100 * x['value'] / max_value)
+    # def _normalize_displays(self):
+    #     # todo I'm putting normalization much earlier so that purchases will correlate. This should be removed.
+    #     max_value = max(self.value_info['value'].max(), 1)
+    #     self.value_info = self.value_info.assign(value=lambda x: 100 * x['value'] / max_value)
 
     def _sort(self):
         """Sorts displays by the given method"""
@@ -178,7 +177,7 @@ class CardDisplayPage:  # TODO get rid of the __call__ system
         return start
 
     @staticmethod
-    def _group_page(page: pd.DataFrame) -> pd.DataFrame:
+    def _group_page(page: pd.DataFrame) -> pd.DataFrame:  # todo make less disgusting
         """Groups the card value displays in the list as a single item.
 
          Grouped displays are given new minimum and maximum attributes representing
@@ -195,11 +194,10 @@ class CardDisplayPage:  # TODO get rid of the __call__ system
         del min_max_page['value_per_shiftstone']
         min_max_dropped_duplicates = min_max_page.drop_duplicates()
 
+        min_max_dropped_index_duplicates = min_max_dropped_duplicates[
+            ~min_max_dropped_duplicates.index.duplicated(keep='first')]
         original_index = reindexed_deduplicate.index
-        try:
-            original_order = min_max_dropped_duplicates.reindex(index=original_index)
-        except ValueError:
-            print("debug")
+        original_order = min_max_dropped_index_duplicates.reindex(index=original_index)
 
         original_index = original_order.reset_index()
         no_duplicates = original_index.drop_duplicates(subset=['set_num', 'card_num'])

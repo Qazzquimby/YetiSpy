@@ -196,3 +196,15 @@ def make_weighted_deck_search(deck_search: DeckSearch, weight: float, name: str)
     db.session.merge(deck_search)
     db.session.commit()
     return weighted_deck_search
+
+
+def get_default_weighted_deck_searches(user_id: int):
+    """Generates the standard weighted deck searches, and gives them the user_id."""
+    searches = [models.deck_search.WeightedDeckSearch(
+        deck_search_id=1, user_id=user_id, name="Last 10 days", weight=0.7),
+        models.deck_search.WeightedDeckSearch(
+            deck_search_id=3, user_id=user_id, name="Last 30 days", weight=0.23),
+        models.deck_search.WeightedDeckSearch(
+            deck_search_id=2, user_id=user_id, name="Last 90 days", weight=0.07),
+    ]
+    return searches

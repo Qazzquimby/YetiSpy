@@ -2,16 +2,15 @@ import flask
 from flask_classy import FlaskView
 
 import models.card
-import models.user
 import profiling
+import views.card_values.card_displays
+import views.card_values.display_filters
 import views.globals
 import views.login
-from views.card_values.card_displays import CardDisplayPage, make_card_displays
-from views.card_values.display_filters import get_owner, get_sort
+# from views.card_values import get_sort, get_owner, make_card_displays, CardDisplayPage
 from views.login import AuthenticationException
 
 
-# noinspection PyMethodMayBeStatic
 class CardsView(FlaskView):
     """View for the list of card values"""
     route_base = '/'
@@ -36,15 +35,15 @@ class CardsView(FlaskView):
             return flask.abort(401)
 
         page_num = int(page_num)
-        sort = get_sort(sort_str)
+        sort = views.card_values.display_filters.get_sort(sort_str)
         if not owner_str:
             ownership = sort.default_ownership
         else:
-            ownership = get_owner(owner_str)
+            ownership = views.card_values.display_filters.get_owner(owner_str)
 
         profiling.start_timer("make_card_displays")
         all_cards = views.globals.all_cards
-        displays = make_card_displays(user, all_cards)
+        displays = views.card_values.card_displays.make_card_displays(user, all_cards)
         profiling.end_timer("make_card_displays")
 
         displays = displays.configure(sort, ownership)
@@ -59,14 +58,14 @@ class CardsView(FlaskView):
             user = views.login.get_by_cookie()
         except AuthenticationException:
             return flask.redirect("/login")
-        displays = make_card_displays(user)
+        displays = views.card_values.card_displays.make_card_displays(user)
 
         search_str = search_str[1:]
         search_str = search_str.lower()
         matching_card_df = models.card.get_matching_card(displays.value_info, search_str)
         if len(matching_card_df) > 0:
             cards_in_search = matching_card_df
-            displays = CardDisplayPage.format_ungrouped_page(cards_in_search)
+            displays = views.card_values.card_displays.CardDisplayPage.format_ungrouped_page(cards_in_search)
             return flask.render_template('card_values_table.html', card_values=displays)
         else:
             return ''
