@@ -7,14 +7,6 @@ import pandas as pd
 import models.card
 import models.card_set
 import models.user
-import profiling
-
-
-def is_owned(display: pd.Series, user: models.user.User) -> bool:
-    """Does the user own the amount of the card given by the display"""
-    # TODO This is going to be slow.
-    card_id = models.card.CardId(display['set_num'], display['card_num'])
-    return models.user.collection.user_has_count_of_card(user, card_id, display['count_in_deck'])
 
 
 class Filter(ABC):
@@ -139,11 +131,3 @@ def get_owner(owner_str):
     if not sort:
         raise ValueError(f"Ownership type {owner_str} not recognized. Known types are {owner_str_to_owner.keys()}")
     return sort
-
-
-def create_is_owned_column(df: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
-    profiling.start_timer("create is_owned column")
-    new_df = df.copy()
-    new_df['is_owned'] = df.apply(lambda x: is_owned(x, user), axis=1)  # todo speed
-    profiling.end_timer("create is_owned column")
-    return new_df

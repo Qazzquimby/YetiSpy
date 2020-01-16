@@ -10,12 +10,12 @@ import models.rarity
 class CardClass:
     """A pool of cards from which drops are chosen."""
 
-    def __init__(self, sets: typing.Optional[typing.List[int]] = None,
+    def __init__(self, sets: typing.Optional[typing.List[models.card_set.CardSet]] = None,
                  rarities: typing.Optional[typing.List[models.rarity.Rarity]] = None,
                  is_premium=False):
         self.sets = sets
         if self.sets is None:
-            self.sets = models.card_set.get_main_set_nums()
+            self.sets = models.card_set.get_sets_from_set_nums(models.card_set.get_main_set_nums())
 
         self.rarities = rarities
         if self.rarities is None:
@@ -36,8 +36,9 @@ class CardClass:
 
         rarities = [r.name for r in self.rarities]
 
+        set_nums = models.card_set.get_set_nums_from_sets(sets)
         count = (session.query(models.card.Card)
-                 .filter(models.card.Card.set_num.in_(sets))
+                 .filter(models.card.Card.set_num.in_(set_nums))
                  .filter(models.card.Card.rarity.in_(rarities))
                  .count())
         return count
@@ -59,8 +60,8 @@ class CardClassWithAmount:
     """The number of card drops from the Card Class per reward."""
 
     def __init__(self, card_class: CardClass, amount: float = 1):
-        self.card_class = card_class
-        self.amount = amount
+        self.card_class: CardClass = card_class
+        self.amount: float = amount
 
 
 class CardClassWithAmountPerWeek:
@@ -139,7 +140,10 @@ class PlayerRewards:  # TODO Make into model to persist
         chances = []
         for card_class_with_amount in self.card_classes_with_amounts_per_week:
             rarity_match = rarity in card_class_with_amount.card_class.rarities
-            set_match = not set(card_set.set_nums).isdisjoint(card_class_with_amount.card_class.sets)
+
+            set_nums = models.card_set.get_set_nums_from_sets(card_class_with_amount.card_class.sets)
+
+            set_match = not set(card_set.set_nums).isdisjoint(set_nums)
             if rarity_match and set_match:
                 chance = card_class_with_amount.chance_of_specific_card_drop_per_week
                 chances.append(chance)
@@ -157,7 +161,9 @@ def get_chance_of_at_least_one(probabilities):
 
 
 class Reward:
-    def __init__(self, card_classes_with_amounts=None, gold=0, shiftstone=0):
+    def __init__(self, card_classes_with_amounts: typing.Optional[typing.List[CardClassWithAmount]] = None,
+                 gold: int = 0,
+                 shiftstone: int = 0):
         self.card_classes_with_amounts = card_classes_with_amounts
         if self.card_classes_with_amounts is None:
             self.card_classes_with_amounts = []
@@ -173,7 +179,7 @@ class Reward:
         return is_equal
 
 
-def get_card_classes_with_amounts_for_sets(sets):
+def get_card_classes_with_amounts_for_sets(sets: typing.List[models.card_set.CardSet]):
     card_classes_with_amounts = [
         CardClassWithAmount(card_class=CardClass(rarities=[rarity],
                                                  sets=sets),
@@ -215,17 +221,19 @@ SILVER_CHEST = Reward(gold=225,
                       ])
 GOLD_CHEST = Reward(gold=495,
                     card_classes_with_amounts=get_card_classes_with_amounts_for_sets(
-                        models.card_set.get_old_main_sets()))
+                        models.card_set.get_sets_from_set_nums(models.card_set.get_old_main_set_nums())
+                    ))
 
 DIAMOND_CHEST = Reward(gold=1850,
                        card_classes_with_amounts=(
                                get_card_classes_with_amounts_for_sets(
-                                   models.card_set.get_old_main_sets())
-                               + [CardClass(rarities=models.rarity.UNCOMMON, is_premium=True)]
+                                   models.card_set.get_sets_from_set_nums(models.card_set.get_old_main_set_nums())
+                               )
+                               + [CardClassWithAmount(CardClass(rarities=[models.rarity.UNCOMMON], is_premium=True))]
                        ))
 
 FIRST_WIN_OF_THE_DAY = Reward(card_classes_with_amounts=get_card_classes_with_amounts_for_sets(
-    [models.card_set.get_newest_main_set()]
+    models.card_set.get_sets_from_set_nums([models.card_set.get_newest_main_set_num()])
 ))
 
 DEFAULT_PLAYER = PlayerRewards(first_wins_per_week=6.3,
@@ -249,24 +257,24 @@ if __name__ == '__main__':
     card_set = models.card_set.CardSet(6)
     card_rarity = models.rarity.COMMON
     chance = player_rewards.get_chance_of_specific_card_drop_in_a_week(rarity=card_rarity, card_set=card_set)
-    print(chance)
+    print(f'common 6 {chance}')
 
     # Get the chance of finding Granite Monument
     card_set = models.card_set.CardSet([0, 1])
     card_rarity = models.rarity.UNCOMMON
     chance = player_rewards.get_chance_of_specific_card_drop_in_a_week(rarity=card_rarity, card_set=card_set)
-    print(chance)
+    print(f'uncommon 1 {chance}')
 
     # Get the chance of finding
     card_set = models.card_set.CardSet(7)
     card_rarity = models.rarity.COMMON
     chance = player_rewards.get_chance_of_specific_card_drop_in_a_week(rarity=card_rarity, card_set=card_set)
-    print(chance)
+    print(f'common 7 {chance}')
 
     # Get the chance of finding Emblem of Shavka
     card_set = models.card_set.CardSet(7)
     card_rarity = models.rarity.RARE
     chance = player_rewards.get_chance_of_specific_card_drop_in_a_week(rarity=card_rarity, card_set=card_set)
-    print(chance)
+    print(f'rare 7 {chance}')
 
     print('debug')

@@ -45,6 +45,13 @@ def get_sets_from_set_nums(set_nums: typing.List[int]) -> typing.List[CardSet]:
     return card_sets
 
 
+def get_set_nums_from_sets(sets: typing.List[CardSet]) -> typing.List[int]:
+    set_nums = list(set([set_num for card_set in sets
+                         for set_num in card_set.set_nums]))
+    set_nums = [int(set_num) for set_num in set_nums]
+    return set_nums
+
+
 # def get_sets() -> typing.List[CardSet]:
 #     """Return all card sets."""
 #     set_nums = get_set_nums()
@@ -64,14 +71,14 @@ def get_campaign_set_nums():
     return campaign_sets
 
 
-def get_newest_main_set():
+def get_newest_main_set_num():
     """Gets the newest droppable pack."""
     main_sets = get_main_set_nums()
     newest_main_set = main_sets[-1]
     return newest_main_set
 
 
-def get_old_main_sets():
+def get_old_main_set_nums():
     """Gets droppable packs that are not the newest set."""
     main_sets = get_main_set_nums()
     newest_main_set = main_sets[:-1]

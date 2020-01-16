@@ -12,6 +12,7 @@ import models.card_set
 import models.rarity
 import models.user
 import models.user.collection
+import models.user.user_owns_card
 import rewards
 from views.card_values import display_filters
 
@@ -92,7 +93,7 @@ class CardDisplays:
                   .join(card_classes.set_index(['set_num', 'rarity']))
                   .reset_index())
         values['value_per_shiftstone'] *= 1 - values['findability']
-        values = display_filters.create_is_owned_column(values, self.user)
+        values = models.user.user_owns_card.create_is_owned_column(values, self.user)
         return values
 
     def get_page(self, page_num: int = 0) -> pd.DataFrame:
