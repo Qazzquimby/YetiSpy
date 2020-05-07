@@ -24,7 +24,7 @@ cryptography==2.7
 cssselect==1.0.3
 dataclasses==0.6
 decorator==4.4.0
-Django==1.11.20
+Django==1.11.28
 django-embed-video==1.2.0
 docutils==0.15.2
 dominate==2.3.5
