@@ -19,9 +19,9 @@ class DeckHasCard(db.Model):
     card_num = db.Column('card_num', db.Integer, primary_key=True)
     num_played = db.Column('num_played', db.Integer, nullable=False)
     __table_args__ = (
-    db.ForeignKeyConstraint([set_num, card_num], [models.card.Card.set_num,
-                                                  models.card.Card.card_num]),
-    {})
+        db.ForeignKeyConstraint([set_num, card_num], [models.card.Card.set_num,
+                                                      models.card.Card.card_num]),
+        {})
 
 
 class DeckType(enum.Enum):
@@ -158,19 +158,24 @@ def update_decks():
 
         def make_deck_from_details_json(self, page_json: typing.Dict):
 
-            archetype = Archetype[page_json["archetype"].lower().replace(" ", "_")]
+            archetype = Archetype[
+                page_json["archetype"].lower().replace(" ", "_")]
             try:
-                deck_type = DeckType.__dict__[page_json["deck_type"].lower().replace(" ", "_")]
+                deck_type = DeckType.__dict__[
+                    page_json["deck_type"].lower().replace(" ", "_")]
             except KeyError:  # not sure this is the right exception
                 deck_type = DeckType(int(page_json["deck_type"]))
 
             deck = Deck(
                 id=page_json['deck_id'],
                 archetype=archetype,
-                date_added=datetime.strptime(page_json["date_added_full"][:19], '%Y-%m-%dT%H:%M:%S'),
-                date_updated=datetime.strptime(page_json["date_updated_full"][:19], '%Y-%m-%dT%H:%M:%S'),
+                date_added=datetime.strptime(page_json["date_added_full"][:19],
+                                             '%Y-%m-%dT%H:%M:%S'),
+                date_updated=datetime.strptime(
+                    page_json["date_updated_full"][:19], '%Y-%m-%dT%H:%M:%S'),
                 deck_type=deck_type,
-                description=page_json["description"].encode('ascii', errors='ignore'),
+                description=page_json["description"].encode('ascii',
+                                                            errors='ignore'),
                 patch=page_json["patch"],
                 username=page_json["username"],
                 views=page_json["views"],
@@ -183,7 +188,8 @@ def update_decks():
 
         @staticmethod
         def add_cards_to_deck(deck: Deck, page_json: typing.Dict):
-            cards_json = page_json["deck_cards"] + page_json["sideboard_cards"] + page_json["market_cards"]
+            cards_json = page_json["deck_cards"] + page_json[
+                "sideboard_cards"] + page_json["market_cards"]
 
             for card_json in cards_json:
                 set_num = card_json["set_number"]

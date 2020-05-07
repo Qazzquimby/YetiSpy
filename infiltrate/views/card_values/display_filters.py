@@ -30,7 +30,8 @@ class UnownedFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
+    def filter(cls, cards: pd.DataFrame,
+               user: models.user.User) -> pd.DataFrame:
         filtered = cards[cards['is_owned'] == False]
         return filtered
 
@@ -40,7 +41,8 @@ class OwnedFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
+    def filter(cls, cards: pd.DataFrame,
+               user: models.user.User) -> pd.DataFrame:
         filtered = cards[cards['is_owned'] == True]
         return filtered
 
@@ -50,7 +52,8 @@ class AllFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
+    def filter(cls, cards: pd.DataFrame,
+               user: models.user.User) -> pd.DataFrame:
         return cards
 
 
@@ -69,7 +72,8 @@ class CardDisplaySort(Filter, ABC):
         raise NotImplementedError
 
     @classmethod
-    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
+    def filter(cls, cards: pd.DataFrame,
+               user: models.user.User) -> pd.DataFrame:
         return cards
 
 
@@ -110,7 +114,8 @@ class ValueSort(CardDisplaySort):
         return sorted
 
     @classmethod
-    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
+    def filter(cls, cards: pd.DataFrame,
+               user: models.user.User) -> pd.DataFrame:
         """Excludes owned cards."""
         return cards
 
@@ -122,7 +127,8 @@ def get_sort(sort_str):
 
     sort = sort_str_to_sort.get(sort_str, None)
     if not sort:
-        raise ValueError(f"Sort method {sort_str} not recognized. Known sorts are {sort_str_to_sort.keys()}")
+        raise ValueError(
+            f"Sort method {sort_str} not recognized. Known sorts are {sort_str_to_sort.keys()}")
     return sort
 
 
@@ -134,5 +140,6 @@ def get_owner(owner_str):
 
     sort = owner_str_to_owner.get(owner_str, None)
     if not sort:
-        raise ValueError(f"Ownership type {owner_str} not recognized. Known types are {owner_str_to_owner.keys()}")
+        raise ValueError(
+            f"Ownership type {owner_str} not recognized. Known types are {owner_str_to_owner.keys()}")
     return sort

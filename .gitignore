@@ -1,0 +1,14 @@
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+/chrome/
+/.ebextensions/
+/alembic/
+/instance/
+/chromedriver.exe
+/pylintrc
+/.ebignore
+/venv37/
+/.idea
