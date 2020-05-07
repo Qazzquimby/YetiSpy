@@ -30,6 +30,7 @@ docutils==0.15.2
 dominate==2.3.5
 easy-thumbnails==2.6
 Eel==0.10.4
+fast-autocomplete==0.6.0
 finisher==0.1.11
 Flask==1.0.3
 Flask-Bootstrap==3.3.7.1

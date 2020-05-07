@@ -3,7 +3,7 @@ from unittest import TestCase
 import pandas as pd
 
 import models.deck_search
-from evaluation import _CardValueDataframeGetter
+from value_frames import _CardValueDataframeGetter
 
 
 class TestCardValueDataframeGetter(TestCase):

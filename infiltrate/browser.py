@@ -1,7 +1,7 @@
 """Selenium web scraping utilities"""
 import json
-import pathlib
 import sys
+import typing
 import urllib.error
 import urllib.request
 
@@ -10,7 +10,10 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from webdrivermanager import ChromeDriverManager
 
-current_dir = str(pathlib.Path.cwd())
+# current_dir = str(pathlib.Path.cwd())
+current_dir = r'C:\Users\User\PycharmProjects\eternalCardEvaluator'
+# todo in production change back to current_dir = str(pathlib.Path.cwd())
+
 sys.path.append(current_dir)
 
 """
@@ -28,7 +31,8 @@ class Browser(selenium.webdriver.Chrome):
         options = selenium.webdriver.chrome.options.Options()
         options.headless = True
 
-        manager = ChromeDriverManager(download_root=current_dir, link_path=current_dir)
+        manager = ChromeDriverManager(download_root=current_dir,
+                                      link_path=current_dir)
         driver, _ = manager.download_and_install()
 
         super().__init__(driver, options=options)
@@ -46,8 +50,18 @@ class Browser(selenium.webdriver.Chrome):
         self.close()
 
 
-def get_str_from_url_and_xpath(url: str, xpath: str):
-    """Gets the text from an element specified by the xpath at the url."""
+def get_strs_from_url_and_xpath(url: str, xpath: str) -> typing.List[str]:
+    """Get a list of elements found at the xpath at the url."""
+    with Browser() as browser:
+        browser.get(url)
+        elements = browser.safely_find(
+            lambda x: x.find_elements_by_xpath(xpath))
+        texts = [element.text for element in elements]
+    return texts
+
+
+def get_str_from_url_and_xpath(url: str, xpath: str) -> str:
+    """Get the text from an element specified by the xpath at the url."""
     with Browser() as browser:
         browser.get(url)
         element = browser.safely_find(lambda x: x.find_element_by_xpath(xpath))

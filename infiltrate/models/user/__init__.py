@@ -5,10 +5,10 @@ import typing
 import sqlalchemy_utils
 from sqlalchemy_utils.types.encrypted.encrypted_type import FernetEngine
 
-import evaluation
 import models.deck_search
 import models.user.collection
 import models.user.user_owns_card
+import value_frames
 from infiltrate import application, db
 
 
@@ -34,7 +34,7 @@ class User(db.Model):
         """Get a dataframe of card values for the user"""
         # If this needs to be faster, change from making 1 sql call per weighted deck search to 1 call
         #   and passing the information.
-        values = evaluation.get_cards_values_df(self.weighted_deck_searches)
+        values = value_frames.get_cards_values_df(self.weighted_deck_searches)
         return values
 
     def add_weighted_deck_searches(self, searches: typing.List[models.deck_search.WeightedDeckSearch]):

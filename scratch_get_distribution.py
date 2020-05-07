@@ -2,35 +2,18 @@ import collections
 
 all_num_parents = [1, 2, 4, 7, 11, 16, 22, 28, 28]
 
-# def chance_of_exactly_x_events(x: int, events: typing.List[typing.Tuple[float, int]]) -> float:
-#     chance = 1
-#     for event_type in events:
-#         num_events = event_type[1]
-#         chance_of_event = event_type[0]
-#         for _ in range(num_events):
-#             multiplier = chance_of_event * x + (1 - chance_of_event)
-#             chance *= multiplier
-#     return chance
-
-# def get_coefs(ps):
-#     coefs = [1]
-#     for p in ps:
-#         coefs.append(0)
-#         for i in range(len(coefs) - 1, 0, -1):
-#             coefs[i] = coefs[i] * (1 - p) + coefs[i - 1] * p
-#         coefs[0] *= 1 - p
-#     return coefs
-
 import random
 
-max_losses = 3
-max_wins = 7
+MAX_DRAFT_LOSSES = 3
+MAX_DRAFT_WINS = 7
+
+MAX_LEAGUE_GAMES = 40
 
 
 def num_wins_in_random_draft() -> int:
     wins = 0
     losses = 0
-    while wins < max_wins and losses < max_losses:
+    while wins < MAX_DRAFT_WINS and losses < MAX_DRAFT_LOSSES:
         wins_round = random.randint(0, 1)
         if wins_round:
             wins += 1
@@ -39,27 +22,43 @@ def num_wins_in_random_draft() -> int:
     return wins
 
 
-if __name__ == '__main__':
-    events = []
-    for i, num_parents in enumerate(all_num_parents):
-        event = 1.0 / 2 ** (i + 1)
-        # events_with_probability = (event, num_parents)
-        # events.append(events_with_probability)
-        events += [event] * num_parents
+def num_wins_in_random_league() -> int:
+    wins = 0
+    games = 0
+    while games < MAX_LEAGUE_GAMES:
+        wins_round = random.randint(0, 1)
+        if wins_round:
+            wins += 1
+        games += 1
+    return wins
 
-    num_drafts = 10_000_000
 
+def print_iteration(iteration: int):
+    if iteration % 1_000 == 0:
+        print(iteration)
+
+
+def simulate_event(iterations: int, win_func):
     win_counter = collections.defaultdict(int)
-    for draft_i in range(num_drafts):
-        if draft_i % 1_000 == 0:
-            print(draft_i)
-        wins = num_wins_in_random_draft()
+    for draft_i in range(iterations):
+        print_iteration(draft_i)
+        wins = win_func()
         win_counter[wins] += 1
 
     total_wins = sum(win_counter.values())
     for win_count in win_counter.keys():
         fraction = win_counter[win_count] / total_wins
         print(f'{win_count} - {fraction}')
+
+
+if __name__ == '__main__':
+    # events = []
+    # for i, num_parents in enumerate(all_num_parents):
+    #     event = 1.0 / 2 ** (i + 1)
+    #     events += [event] * num_parents
+
+    # simulate_event(10_000_000, num_wins_in_random_draft)
+    simulate_event(10_000_000, num_wins_in_random_league)
 
     print('debug')
 

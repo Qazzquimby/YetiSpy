@@ -6,17 +6,22 @@ from datetime import datetime
 
 import browser
 import models.card
-from infiltrate import application, db  # todo replace application with config injection
+import views.globals
+from infiltrate import application, \
+    db  # todo replace application with config injection
 
 
 class DeckHasCard(db.Model):
     """A table showing how many copies of a card a deck has"""
-    deck_id = db.Column('deck_id', db.String(length=100), db.ForeignKey('decks.id'), primary_key=True)
+    deck_id = db.Column('deck_id', db.String(length=100),
+                        db.ForeignKey('decks.id'), primary_key=True)
     set_num = db.Column('set_num', db.Integer, primary_key=True)
     card_num = db.Column('card_num', db.Integer, primary_key=True)
     num_played = db.Column('num_played', db.Integer, nullable=False)
-    __table_args__ = (db.ForeignKeyConstraint([set_num, card_num], [models.card.Card.set_num,
-                                                                    models.card.Card.card_num]), {})
+    __table_args__ = (
+    db.ForeignKeyConstraint([set_num, card_num], [models.card.Card.set_num,
+                                                  models.card.Card.card_num]),
+    {})
 
 
 class DeckType(enum.Enum):
@@ -184,7 +189,9 @@ def update_decks():
                 set_num = card_json["set_number"]
                 card_num = card_json["eternal_id"]
                 card_id = models.card.CardId(set_num, card_num)
-                if models.card.card_exists(card_id):
+
+                # todo better to pass all_cards to this than use the global
+                if views.globals.all_cards.card_exists(card_id):
                     deck_has_card = DeckHasCard(
                         deck_id=page_json["deck_id"],
                         set_num=set_num,

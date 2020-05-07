@@ -1,8 +1,9 @@
 """Timing diagnostics"""
 import time
+import typing
 
 
-def timer(function, args=None, name=None):
+def timer(function: typing.Callable, args=None, name=None):
     """Times the given function and prints the results."""
     if args is None:
         args = {}
@@ -30,7 +31,8 @@ def start_timer(name: str):
 
 
 def end_timer(name: str):
-    """Ends the timer keyed to the given name. That name must have a running timer."""
+    """Ends the timer keyed to the given name.
+    That name must have a running timer."""
     end_time = time.time()
     try:
         start_time = _start_times[name]

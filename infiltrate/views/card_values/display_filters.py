@@ -81,14 +81,19 @@ class CraftSort(CardDisplaySort):
 
     @staticmethod
     def sort(displays: pd.DataFrame) -> pd.DataFrame:
-        """Sorts the cards by highest to lowest card value per shiftstone crafting cost."""
-        sorted = displays.sort_values(by=['value_per_shiftstone'], ascending=False)
+        """Sorts the cards by highest to lowest card value
+         per shiftstone crafting cost."""
+        sorted = displays.sort_values(by=['value_per_shiftstone'],
+                                      ascending=False)
         return sorted
 
     @classmethod
-    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
+    def filter(cls, cards: pd.DataFrame, user: models.user.User
+               ) -> pd.DataFrame:
         """Filters out uncraftable."""
-        filtered = cards[np.logical_not(models.card_set.is_campaign(cards['set_num']))]
+        filtered = cards[
+            np.logical_not(
+                models.card_set.set_num_is_campaign(cards['set_num']))]
         return filtered
 
 

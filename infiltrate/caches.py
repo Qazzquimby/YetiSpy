@@ -21,7 +21,8 @@ mem_cache = CacheManager(**parse_cache_config_options(_mem_cache_opts))
 
 
 def invalidate():
-    """Kill all the caches. Used after major updates to depended data, like the card list."""
+    """Kill all the caches.
+    Used after major updates to depended data, like the card list."""
     from beaker.cache import cache_managers
     for _cache in cache_managers.values():
         _cache.clear()

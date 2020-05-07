@@ -6,10 +6,6 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 
-# sys.path.insert(0, os.path.join(os.path.dirname(__file__), "lib"))
-# sys.path.append(".")
-
-
 application = Flask(__name__, instance_relative_config=True)
 application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -84,8 +80,8 @@ def _schedule_updates():
 
 
 def _update():
-    from infiltrate import models
-    models.update()
+    import infiltrate.models
+    infiltrate.models.update()
 
 
 @application.teardown_request

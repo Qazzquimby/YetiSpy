@@ -7,7 +7,8 @@ import models.card
 
 
 def make_card_playset_dict() -> typing.Dict:
-    """Makes a default dict commonly used as CardId -> (list of 4 values corresponding to card counts)"""
+    """Makes a dict representing card playsets
+     CardId -> (list of 4 values corresponding to card counts)"""
 
     def _values_factory():
         return [0] * 4
@@ -15,10 +16,14 @@ def make_card_playset_dict() -> typing.Dict:
     return defaultdict(_values_factory)
 
 
-def make_collection_from_ew_export(cards: typing.List[typing.Dict[str, int]]) -> typing.Dict[models.card.CardId, int]:
+def make_collection_from_ew_export(
+        cards: typing.List[typing.Dict[str, int]]
+) -> typing.Dict[models.card.CardId, int]:
+    """Gets card ownership from the Eternal Warcry export format."""
     collection = defaultdict(int)
     for card in cards:
-        card_id = models.card.CardId(set_num=card["set"], card_num=card["card_number"])
+        card_id = models.card.CardId(set_num=card["set"],
+                                     card_num=card["card_number"])
         collection[card_id] += card["count"]
     return collection
 
@@ -44,7 +49,8 @@ class ValueDict(PlaysetDict):
         for card_id in self._dict.keys():
             for play_count in range(4):
                 value = models.card.CardIdWithValue(card_id=card_id,
-                                                    value=self._dict[card_id][play_count],
+                                                    value=self._dict[card_id][
+                                                        play_count],
                                                     count=play_count + 1)
                 yield value
 
