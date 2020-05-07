@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %} Card Values {% endblock %}
+
+{% block inner_content %}
+    {{ super() }}
+
+    Please provide your Eternal Warcry username and API key from <a id="warcry-link">your Eternal Warcry profile.</a>
+
+
+    <form method="POST">
+        <label for="key">API Key</label>
+        <input id="key" name="key" autocomplete="current-password" type="password">
+
+        <label for="remember">Remember me</label>
+        <input id="remember" name="remember" type="checkbox">
+
+        <input type="submit" class="btn btn-default">
+    </form>
+
+
+    <script>
+    document.getElementById("warcry-link").onclick = function () {
+      window.open("https://eternalwarcry.com/profile/keys",
+        'targetWindow',
+        'toolbar=no,location = no, status = no, menubar = no, scrollbars = yes, resizable = yes, width = SomeSize, height = SomeSize');
+    };
+
+    </script>
+
+{% endblock %}
+
+

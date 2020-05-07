@@ -1,0 +1,75 @@
+<div id="card-values" class="pad-t pad-more ">
+    <table id="card-value" class="table vertical-align col-md-8">
+        {% include 'card_values_table_header.html' %}
+        {% if card_values.empty %}
+            <h> No cards found.</h>
+        {% endif %}
+        {% for _, display in card_values.iterrows() %}
+            <tr class="row">
+                <td class="col-md-4 no-padding">
+
+                    <div class="row equal-height flex-center-vertically">
+                        <div class="col-md-3 no-padding">
+                            <img class="card-thumb"
+                                 src="{{ display['image_url'] }}"
+                                 alt="{{ display['name'] }}">
+                        </div>
+                        <div class="col-md-9">
+                            <a class="btn-text text-bold text-lg text-left
+                                                     text-{{ display['rarity'].lower() }}"
+                               rel="popover"
+                               data-content="<img src={{ display['image_url'] }}/>"
+                               data-name="{{ display['name'] }}"
+                               href="{{ display['details_url'] }}">
+                                {{ display['name'] }}
+                            </a>
+                        </div>
+                    </div>
+
+                </td>
+                <td class="col-md-2 text-center">
+                    <div>
+                        {{ '%0.2f' % display['value_per_shiftstone_max'] }}
+                    </div>
+                </td>
+                <td class="col-md-2 text-center">
+                    <div>
+                        {{ '%0.2f' % display['value_max'] }}
+                    </div>
+                </td>
+                <td class="col-md-2 text-center">
+                    <div>
+                        {{ '%0.2f' % display['findability'] }}
+                    </div>
+                </td>
+                <td class="col-md-2 text-center">
+                    <div class="card-count-display">
+                        {% set ns = namespace(minimum = 0, maximum = 0) %}
+                        {% if display['count_in_deck_min'] != display['count_in_deck_max'] %}
+                            {% set ns.minimum = display['count_in_deck_min'] %}
+                            {% set ns.maximum = display['count_in_deck_max'] %}
+
+                        {% else %}
+                            {% set ns.minimum = display['count_in_deck_max'] %}
+                            {% set ns.maximum = display['count_in_deck_max'] %}
+                        {% endif %}
+
+                        {% for owned in range(1, ns.minimum) %}
+                            <img src="../static/images/owned_card.png" width="16" height="25"/>
+                        {% endfor %}
+                        {% for owned in range(ns.minimum, ns.maximum+1) %}
+                            <img src="../static/images/current_card.png" width="16"
+                                 height="25"/>
+                        {% endfor %}
+                        {% for owned in range(ns.maximum, 4) %}
+                            <img src="../static/images/unowned_card.png" width="16"
+                                 height="25"/>
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+</div>
