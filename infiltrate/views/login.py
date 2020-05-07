@@ -64,7 +64,8 @@ def get_user_id(username: str, key: str) -> int:
 
 def get_user_if_exists(username: str, key: str) -> typing.Optional[User]:
     existing_users_with_username = User.query.filter_by(name=username).all()
-    matching_users = [user for user in existing_users_with_username if user.key == key]
+    matching_users = [user for user in existing_users_with_username if
+                      user.key == key]
     assert len(matching_users) in (0, 1)
     if matching_users:
         return matching_users[0]
@@ -117,7 +118,8 @@ class LoginView(FlaskView):
         user_id = get_user_id(username, key)
 
         response = flask.redirect('/')
-        login(response, user_id=user_id, username=username, remember_me=remember_me)
+        login(response, user_id=user_id, username=username,
+              remember_me=remember_me)
         return response
 
 

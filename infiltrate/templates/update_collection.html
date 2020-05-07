@@ -1,29 +1,40 @@
-<div class="modal in" id="updateCollectionModal" tabindex="-1" role="dialog" aria-labelledby="updateCollectionLabel"
+<div class="modal in" id="updateCollectionModal" tabindex="-1" role="dialog"
+     aria-labelledby="updateCollectionLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="updateCollectionLabel">Update Collection</h4>
+                <h4 class="modal-title" id="updateCollectionLabel">Update
+                    Collection</h4>
             </div>
             <div class="modal-body">
-                Update your collection to allow Eternal Infiltrate to make better recommendations.<br>
-                <div id="import-cards-success" class="alert-success" style="display: none">
+                Update your collection to allow Eternal Infiltrate to make
+                better recommendations.<br>
+                <div id="import-cards-success" class="alert-success"
+                     style="display: none">
                     <h3>The page will now reload.</h3>
                 </div>
-                In Eternal -> Cards -> My Collection, click "Export Collection" and paste into the box below.<br>
+                In Eternal -> Cards -> My Collection, click "Export Collection"
+                and paste into the box below.<br>
                 This will update your Eternal Warcry collection as well!
                 <form id="import-cards-form">
                     <label for="import-cards-text"></label>
-                    <textarea id="import-cards-text" name="import-cards-text" class="form-control" rows="6"></textarea>
-                    <div id="import-cards-error" class="alert-danger" style="display: none">
-                        Eternal Warcry returned an error when updating your collection.<br>
-                        Something is either wrong with your input, this site, or Eternal Warcry.
+                    <textarea id="import-cards-text" name="import-cards-text"
+                              class="form-control" rows="6"></textarea>
+                    <div id="import-cards-error" class="alert-danger"
+                         style="display: none">
+                        Eternal Warcry returned an error when updating your
+                        collection.<br>
+                        Something is either wrong with your input, this site,
+                        or Eternal Warcry.
                     </div>
                     <div class="text-right">
-                        <button id="import-cards-action" type="submit" class="btn btn-primary">
+                        <button id="import-cards-action" type="submit"
+                                class="btn btn-primary">
                             Import
                         </button>
                     </div>
@@ -31,10 +42,12 @@
                 <hr>
                 <div class="row">
                     <div class="col-sm-10">
-                        Or set your Infiltrate collection to be equal to your Warcry collection.
+                        Or set your Infiltrate collection to be equal to your
+                        Warcry collection.
                     </div>
                     <form id="sync-cards-form" class="col-sm-2 text-right">
-                        <button id="sync-cards-action" type="submit" class="btn btn-primary">
+                        <button id="sync-cards-action" type="submit"
+                                class="btn btn-primary">
                             Sync
                         </button>
                     </form>
@@ -43,7 +56,9 @@
             <div class="modal-footer">
                 <span id="spinner" class="loader text-primary"
                       style="display: none; align-self: center;"></span>
-                <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-link"
+                        data-dismiss="modal">Close
+                </button>
             </div>
         </div>
     </div>
@@ -51,48 +66,48 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
-const importCardsForm = $('#import-cards-form');
-importCardsForm.submit(function (e) {
-  e.preventDefault();
-  console.log("submitting");
-  $("#spinner").show();
-  $.ajax({
-    url: '{{url_for("UpdateCollectionView:post")}}',
-    type: 'post',
-    data: importCardsForm.serialize(),
-    success: function () {
-      $("#spinner").hide();
-      onSuccess();
-    },
-    error: function () {
-      $("#import-spinner").hide();
-      $('#import-cards-error').css("display", "block");
+    const importCardsForm = $('#import-cards-form');
+    importCardsForm.submit(function (e) {
+        e.preventDefault();
+        console.log("submitting");
+        $("#spinner").show();
+        $.ajax({
+            url: '{{url_for("UpdateCollectionView:post")}}',
+            type: 'post',
+            data: importCardsForm.serialize(),
+            success: function () {
+                $("#spinner").hide();
+                onSuccess();
+            },
+            error: function () {
+                $("#import-spinner").hide();
+                $('#import-cards-error').css("display", "block");
+            }
+        });
+    });
+
+    const syncCardsForm = $('#sync-cards-form');
+    syncCardsForm.submit(function (e) {
+        e.preventDefault();
+        console.log("submitting");
+        $("#sync-spinner").show();
+        $.ajax({
+            url: '{{url_for("UpdateCollectionView:post")}}',
+            type: 'post',
+            data: syncCardsForm.serialize(),
+            success: function () {
+                $("#sync-spinner").hide();
+                onSuccess();
+            },
+        });
+    });
+
+    function onSuccess() {
+        $('#import-cards-success').css("display", "block");
+        setTimeout(function () {
+            location.reload();
+        }, 2000);
     }
-  });
-});
-
-const syncCardsForm = $('#sync-cards-form');
-syncCardsForm.submit(function (e) {
-  e.preventDefault();
-  console.log("submitting");
-  $("#sync-spinner").show();
-  $.ajax({
-    url: '{{url_for("UpdateCollectionView:post")}}',
-    type: 'post',
-    data: syncCardsForm.serialize(),
-    success: function () {
-      $("#sync-spinner").hide();
-      onSuccess();
-    },
-  });
-});
-
-function onSuccess() {
-  $('#import-cards-success').css("display", "block");
-  setTimeout(function () {
-    location.reload();
-  }, 2000);
-}
 
 
 </script>

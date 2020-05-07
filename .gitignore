@@ -1,5 +1,7 @@
 /.ebextensions/
-/.elasticbeanstalk/
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
 /.pytest_cache/
 /alembic/
 /chrome/
@@ -9,3 +11,9 @@
 /chromedriver.exe
 /pylintrc
 /scratch_get_distribution.py
+/.idea
+/instance/
+
+
+
+

@@ -52,10 +52,12 @@
                         <li class="pagination-info">
                             <span id="current-page">1</span>
                         </li>
-                        <li class="page-item" onclick="page=page+1; updateCardTable()">
+                        <li class="page-item"
+                            onclick="page=page+1; updateCardTable()">
                             <button>Next</button>
                         </li>
-                        <li class="page-item" onclick="page=-1; updateCardTable()">
+                        <li class="page-item"
+                            onclick="page=-1; updateCardTable()">
                             <button>Last</button>
                         </li>
                     </ul>
@@ -71,84 +73,84 @@
 {% block scripts %}
     {{ super() }}
     <script>
-    let page = 0;
-    let sort = "craft";
-    let ownership = "unowned";
+        let page = 0;
+        let sort = "craft";
+        let ownership = "unowned";
 
-    function updateCardTable() {
-      $.get({
-        url: "/card_values/" + page + "/" + sort + "/" + ownership,
-      }).done(function (data) {
-        $("#card-table").html(data);
-        $("#current-page").html(page);
-        {#Show card on hover#}
-        $('*[rel=popover]').popover({
-          html: true,
-          trigger: 'hover',
-          viewport: '#content-col',
-          content: function () {
-            return '<div class="card-tooltip-image">' +
-              '<img src="' + $(this).data('img') + '" />' +
-              '<div>' + $(this).data("name") + '</div>' +
-              '</div>';
-          }
-        });
-      }).fail(function (jqxhr, textStatus, error) {
-        const err = jqxhr.status + ", " + textStatus + ", " + error;
-        console.log("Request Failed: " + err);
-        if (jqxhr.status === 401) {
-          window.location.replace("/login");
-        } else {
-          $("#card-table").html("<h1>Something's gone very wrong.</h1>");
-        }
-
-      });
-    }
-
-    $(document).ready(updateCardTable());
-
-    {#card search#}
-    const $card_search = document.querySelector('#card-search');
-
-    let lastSearch = '';
-    const cardSearchHandler = function (search) {
-      {#search for cards and send to front end.#}
-      {#If none found, display: none#}
-
-      const searchStr = search.target.value;
-      if (searchStr.length >= 2) {
-        if (searchStr.length >= lastSearch.length || !lastSearch.startsWith(searchStr)) {
-          {#console.log("setting searchStr " + searchStr + " over lastSearch " +#}
-          {#    lastSearch);#}
-          lastSearch = searchStr;
-          setTimeout(
-            function () {
-              if (searchStr.length >= lastSearch.length || !lastSearch.startsWith(searchStr)) {
-                {#console.log("running " + searchStr);#}
-                $.get({
-                  url: "/card_search/" + "_" + searchStr,
-                  {#    todo low prio fix this gross url thing. The _ is prepended because empty str breaks.#}
-                }).done(function (data) {
-                  if (searchStr.length >= lastSearch.length || !lastSearch
-                    .startsWith(searchStr)) {
-                    {#console.log("using " + searchStr + " lastSearch " + lastSearch);#}
-
-                    $("#card-preview").html(data);
-                  }
-                }).fail(function (jqxhr, textStatus, error) {
-                  $("#card-preview").html("<h1>Something's gone very wrong.</h1>");
-                  const err = textStatus + ", " + error;
-                  console.log("Request Failed: " + err);
+        function updateCardTable() {
+            $.get({
+                url: "/card_values/" + page + "/" + sort + "/" + ownership,
+            }).done(function (data) {
+                $("#card-table").html(data);
+                $("#current-page").html(page);
+                {#Show card on hover#}
+                $('*[rel=popover]').popover({
+                    html: true,
+                    trigger: 'hover',
+                    viewport: '#content-col',
+                    content: function () {
+                        return '<div class="card-tooltip-image">' +
+                            '<img src="' + $(this).data('img') + '" />' +
+                            '<div>' + $(this).data("name") + '</div>' +
+                            '</div>';
+                    }
                 });
-              }
-            }, 200);
+            }).fail(function (jqxhr, textStatus, error) {
+                const err = jqxhr.status + ", " + textStatus + ", " + error;
+                console.log("Request Failed: " + err);
+                if (jqxhr.status === 401) {
+                    window.location.replace("/login");
+                } else {
+                    $("#card-table").html("<h1>Something's gone very wrong.</h1>");
+                }
+
+            });
         }
 
+        $(document).ready(updateCardTable());
 
-      }
-    };
+        {#card search#}
+        const $card_search = document.querySelector('#card-search');
 
-    $card_search.addEventListener('input', cardSearchHandler); // register for oninput
+        let lastSearch = '';
+        const cardSearchHandler = function (search) {
+            {#search for cards and send to front end.#}
+            {#If none found, display: none#}
+
+            const searchStr = search.target.value;
+            if (searchStr.length >= 2) {
+                if (searchStr.length >= lastSearch.length || !lastSearch.startsWith(searchStr)) {
+                    {#console.log("setting searchStr " + searchStr + " over lastSearch " +#}
+                    {#    lastSearch);#}
+                    lastSearch = searchStr;
+                    setTimeout(
+                        function () {
+                            if (searchStr.length >= lastSearch.length || !lastSearch.startsWith(searchStr)) {
+                                {#console.log("running " + searchStr);#}
+                                $.get({
+                                    url: "/card_search/" + "_" + searchStr,
+                                    {#    todo low prio fix this gross url thing. The _ is prepended because empty str breaks.#}
+                                }).done(function (data) {
+                                    if (searchStr.length >= lastSearch.length || !lastSearch
+                                        .startsWith(searchStr)) {
+                                        {#console.log("using " + searchStr + " lastSearch " + lastSearch);#}
+
+                                        $("#card-preview").html(data);
+                                    }
+                                }).fail(function (jqxhr, textStatus, error) {
+                                    $("#card-preview").html("<h1>Something's gone very wrong.</h1>");
+                                    const err = textStatus + ", " + error;
+                                    console.log("Request Failed: " + err);
+                                });
+                            }
+                        }, 200);
+                }
+
+
+            }
+        };
+
+        $card_search.addEventListener('input', cardSearchHandler); // register for oninput
 
 
     </script>

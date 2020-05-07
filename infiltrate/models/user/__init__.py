@@ -17,10 +17,13 @@ class User(db.Model):
     __tablename__ = "users"
     id = db.Column("id", db.Integer(), primary_key=True, autoincrement=True)
     name = db.Column("name", db.String(length=40))
-    weighted_deck_searches: typing.List[models.deck_search.WeightedDeckSearch] = db.relationship("WeightedDeckSearch",
-                                                                                                 cascade_backrefs=False)
+    weighted_deck_searches: typing.List[
+        models.deck_search.WeightedDeckSearch] = db.relationship(
+        "WeightedDeckSearch",
+        cascade_backrefs=False)
     key = db.Column('key', sqlalchemy_utils.EncryptedType(db.String(50),
-                                                          application.config["SECRET_KEY"],
+                                                          application.config[
+                                                              "SECRET_KEY"],
                                                           FernetEngine))
 
     cards = db.relationship("UserOwnsCard")
@@ -37,7 +40,8 @@ class User(db.Model):
         values = value_frames.get_cards_values_df(self.weighted_deck_searches)
         return values
 
-    def add_weighted_deck_searches(self, searches: typing.List[models.deck_search.WeightedDeckSearch]):
+    def add_weighted_deck_searches(self, searches: typing.List[
+        models.deck_search.WeightedDeckSearch]):
         """Adds a weighted deck search to the user's table"""
         for search in searches:
             self.weighted_deck_searches.append(search)
@@ -48,7 +52,8 @@ class User(db.Model):
     def _normalize_deck_search_weights(self):
         """Ensures that a user's saved weights are approximately normalized to 1.
         This prevents weight sizes from inflating values."""
-        total_weight = sum([search.weight for search in self.weighted_deck_searches])
+        total_weight = sum(
+            [search.weight for search in self.weighted_deck_searches])
         if not 0.9 < total_weight < 1.10:  # Bounds prevent repeated work due to rounding on later passes
             for search in self.weighted_deck_searches:
                 search.weight = search.weight / total_weight
