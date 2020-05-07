@@ -12,3 +12,4 @@
 /.ebignore
 /venv37/
 /.idea
+/infiltrate/data/Beaker/tmp/
