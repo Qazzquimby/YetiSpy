@@ -1,0 +1,11 @@
+/.ebextensions/
+/.elasticbeanstalk/
+/.pytest_cache/
+/alembic/
+/chrome/
+/infiltrate/data/Beaker/tmp/
+/venv37/
+/.ebignore
+/chromedriver.exe
+/pylintrc
+/scratch_get_distribution.py
