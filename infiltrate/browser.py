@@ -26,16 +26,15 @@ driver = webdriver.Chrome(ChromeDriverManager().install())
 
 class Browser(selenium.webdriver.Chrome):
     """Context wrapper for selenium Chrome browser."""
+    driver, _ = ChromeDriverManager(download_root=current_dir,
+                                    link_path=current_dir) \
+        .download_and_install()
 
     def __init__(self):
         options = selenium.webdriver.chrome.options.Options()
         options.headless = True
 
-        manager = ChromeDriverManager(download_root=current_dir,
-                                      link_path=current_dir)
-        driver, _ = manager.download_and_install()
-
-        super().__init__(driver, options=options)
+        super().__init__(self.driver, options=options)
 
     def safely_find(self, finder):
         """Waits up to max_delay for the finder to find an element."""
