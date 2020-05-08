@@ -35,7 +35,7 @@ class PurchaseEvaluator(abc.ABC):
         raise NotImplementedError
 
     def _make_row(self, name, value) -> PurchaseRow:
-        row = (name, self.cost, value, value / self.cost)
+        row = (name, self.cost, value, 1000 * value / self.cost)
         return row
 
 
@@ -92,11 +92,50 @@ class CampaignEvaluator(PurchaseEvaluator):
         return rows
 
 
-class DraftEvaluator(PurchaseEvaluator):
-    """Evaluates a single draft"""
+class DraftEvaluator(PurchaseEvaluator, abc.ABC):
+    """ABC for evaluating drafts."""
 
     def __init__(self, card_data):
         super().__init__(card_data, cost=5_000)
+
+    def _get_packs_value(self):
+        newest_set = models.card_set.get_newest_main_set()
+        newest_pack_value = rewards.CARD_PACKS[newest_set].get_value(
+            self.card_data)
+        draft_pack_value = rewards.DRAFT_PACK.get_value(self.card_data)
+        value = 2 * newest_pack_value + 2 * draft_pack_value
+        return value
+
+
+class LoseAllGamesDraftEvaluator(DraftEvaluator):
+
+    def get_values(self) -> float:
+        return self._get_packs_value()
+
+    def get_df_rows(self) -> t.List[PurchaseRow]:
+        draft_value = self.get_values()
+        return [self._make_row('Lose All Games Draft', draft_value)]
+
+
+class AverageDraftEvaluator(DraftEvaluator):
+    """Evaluates a single where the player has an average win rate."""
+
+    def get_values(self) -> float:
+        packs_value = self._get_packs_value()
+
+        average_wins_value = self._get_average_wins_value()
+
+        value = packs_value + average_wins_value
+        return value
+
+    def _get_average_wins_value(self) -> float:
+        average_win_value = 0
+        for chance, win_rewards in self._get_win_chances_and_rewards():
+            win_value = sum([reward.get_value(self.card_data)
+                             for reward in win_rewards])
+
+            average_win_value += win_value * chance
+        return average_win_value
 
     def _get_win_chances_and_rewards(
             self) -> t.Iterator[t.Tuple[float, t.List[rewards.Reward]]]:
@@ -134,31 +173,9 @@ class DraftEvaluator(PurchaseEvaluator):
                              3 * [rewards.DIAMOND_CHEST], ]
         return zip(chances_of_n_wins, rewards_of_n_wins)
 
-    def _get_average_wins_value(self) -> float:
-        average_win_value = 0
-        for chance, win_rewards in self._get_win_chances_and_rewards():
-            win_value = sum([reward.get_value(self.card_data)
-                             for reward in win_rewards])
-
-            average_win_value += win_value * chance
-        return average_win_value
-
-    def get_values(self) -> float:
-        newest_set = models.card_set.get_newest_main_set()
-        newest_pack_value = rewards.CARD_PACKS[newest_set].get_value(
-            self.card_data)
-        draft_pack_value = rewards.DRAFT_PACK.get_value(self.card_data)
-
-        average_wins_value = self._get_average_wins_value()
-
-        value = (2 * newest_pack_value
-                 + 2 * draft_pack_value
-                 + average_wins_value)
-        return value
-
     def get_df_rows(self) -> t.List[PurchaseRow]:
         draft_value = self.get_values()
-        return [self._make_row('Draft', draft_value)]
+        return [self._make_row('Average Draft', draft_value)]
 
 
 class LeagueEvaluator(PurchaseEvaluator, abc.ABC):
@@ -360,7 +377,8 @@ class _PurchasesValueDataframeGetter:
         self.purchase_evaluators = [
             PackEvaluator(self.card_data),
             CampaignEvaluator(self.card_data),
-            DraftEvaluator(self.card_data),
+            AverageDraftEvaluator(self.card_data),
+            LoseAllGamesDraftEvaluator(self.card_data),
             FirstLeagueEvaluator(self.card_data),
             AdditionalLeagueEvaluator(self.card_data)
         ]
