@@ -114,21 +114,11 @@ class DraftPackCardClass(CardClass):
         return hash_value
 
     def get_value(self, card_data) -> float:
-        # Assume you only find the next copy of a card.
-        # todo pretty sure its wrong.
         cards_in_draft_pack_and_rarity = card_data[
             np.logical_and(card_data['is_in_draft_pack'] == True,
                            card_data['rarity'] == self.rarity.name)]
         value = get_value(cards_in_draft_pack_and_rarity)
         return value
-        # unowned_cards_in_pool = all_cards_in_pool[
-        #     all_cards_in_pool['is_owned'] == False]
-        # try:
-        #     average_value = sum(unowned_cards_in_pool['value']) / len(
-        #         all_cards_in_pool)
-        #     return average_value
-        # except ZeroDivisionError:
-        #     return 0
 
 
 class CardClassWithAmount:
