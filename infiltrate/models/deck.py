@@ -87,9 +87,7 @@ class _WarcryNewIdGetter:
             ids_on_page = self.get_ids_from_page(page)
             new_ids_on_page = self.remove_old_ids(ids_on_page)
             new_ids += new_ids_on_page
-            # if not new_ids_on_page: #TODO READD
-            #     break
-            if not ids_on_page:  # TODO REMOVE
+            if not ids_on_page:  # todo this may need testing.
                 break
 
             page += 1
