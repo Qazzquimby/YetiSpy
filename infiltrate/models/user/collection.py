@@ -79,8 +79,8 @@ class UserOwnershipCache:
 
     @staticmethod
     def _init_dict(user):
-        raw_ownership = models.user.user_owns_card.UserOwnsCard.query \
-            .filter_by(user_id=user.id).all()
+        raw_ownership = (models.user.user_owns_card.UserOwnsCard.query
+                         .filter_by(user_id=user.id).all())
         own_dict = {models.card.CardId(set_num=own.set_num,
                                        card_num=own.card_num): own
                     for own in raw_ownership}

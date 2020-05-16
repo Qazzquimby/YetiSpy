@@ -7,8 +7,8 @@ from datetime import datetime
 import browser
 import models.card
 import views.globals
-from infiltrate import application, \
-    db  # todo replace application with config injection
+# todo replace application with config injection
+from infiltrate import application, db
 
 
 class DeckHasCard(db.Model):
