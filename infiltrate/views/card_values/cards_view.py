@@ -2,6 +2,7 @@ import flask
 from flask_classy import FlaskView
 
 import models.card
+import models.card.completion
 import profiling
 import views.card_values.card_displays as card_displays
 import views.card_values.display_filters as display_filters
@@ -65,8 +66,9 @@ class CardsView(FlaskView):
 
         search_str = search_str[1:]
         search_str = search_str.lower()
-        matching_card_df = models.card.get_matching_card(displays.value_info,
-                                                         search_str)
+        matching_card_df = models.card.completion.get_matching_card(
+            displays.value_info,
+            search_str)
         if len(matching_card_df) > 0:
             cards_in_search = matching_card_df
             displays = card_displays.CardDisplayPage \

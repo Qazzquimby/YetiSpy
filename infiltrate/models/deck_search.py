@@ -73,19 +73,6 @@ class DeckSearch(db.Model):
         decks = models.deck.Deck.query.filter(is_past_time_to_update)
         return decks
 
-    def get_playrate_dict(self) -> card_collections.PlayrateDict:
-        """Gets a PlayRateDict of [cardId][playset size] -> play rate score"""
-        playrate_dict = card_collections.PlayrateDict()
-        for card in self.cards:
-            card_id = models.card.CardId(card_num=card.card_num,
-                                         set_num=card.set_num)
-
-            playrate = card.num_decks_with_count_or_less * 10_000 / len(
-                self.cards)
-            playrate_dict[card_id][card.count_in_deck - 1] = playrate
-
-        return playrate_dict
-
     def get_playrate_df(self) -> PlayRate_DF:
         """Gets a dataframe of card playrates.
         Playrate is roughly play count / total play count"""
@@ -184,18 +171,6 @@ class WeightedDeckSearch(db.Model):
     weight = db.Column("weight", db.Float)
     deck_search: DeckSearch = db.relationship('DeckSearch', uselist=False,
                                               cascade_backrefs=False)
-
-    def get_value_dict(self) -> card_collections.ValueDict:
-        playrate_dict: PlayRate_DF = self.deck_search.get_playrate_dict()
-
-        value_dict = card_collections.ValueDict()
-
-        for key in playrate_dict.keys():
-            for playrate in range(4):
-                value_dict[key][playrate] = playrate_dict[key][
-                                                playrate] * self.weight
-
-        return value_dict
 
     def get_value_df(self) -> DeckSearchValue_DF:
         df = self.deck_search.get_playrate_df()

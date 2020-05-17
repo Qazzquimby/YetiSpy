@@ -6,6 +6,8 @@ from models.card import Card, CardId
 
 
 def update_draft_pack_contents():
+    """Sets the is_in_draft_pack column of the cards table
+    to match Eternal Warcry readings."""
     draft_card_ids = _get_draft_pack_card_ids()
     Card.query.update({"is_in_draft_pack": False})
 
