@@ -8,7 +8,7 @@ import browser
 import caches
 import card_collections
 import models.card
-import models.user.user_owns_card
+import models.user.owns_card
 from infiltrate import db
 
 if typing.TYPE_CHECKING:
@@ -45,13 +45,14 @@ class _CollectionUpdater:
         return collection
 
     def _remove_old_collection(self):
-        models.user.user_owns_card.UserOwnsCard \
-            .query.filter_by(user_id=self.user.id).delete()
+        (models.user.owns_card.UserOwnsCard
+         .query.filter_by(user_id=self.user.id)
+         .delete())
 
     def _add_new_collection(self, collection: typing.Dict, retry=True):
         try:
             for card_id in collection.keys():
-                user_owns_card = models.user.user_owns_card.UserOwnsCard(
+                user_owns_card = models.user.owns_card.UserOwnsCard(
                     user_id=self.user.id,
                     set_num=card_id.set_num,
                     card_num=card_id.card_num,
@@ -79,7 +80,7 @@ class UserOwnershipCache:
 
     @staticmethod
     def _init_dict(user):
-        raw_ownership = (models.user.user_owns_card.UserOwnsCard.query
+        raw_ownership = (models.user.owns_card.UserOwnsCard.query
                          .filter_by(user_id=user.id).all())
         own_dict = {models.card.CardId(set_num=own.set_num,
                                        card_num=own.card_num): own
@@ -95,7 +96,8 @@ def get_ownership_cache(user: 'User'):
     return UserOwnershipCache(user)
 
 
-def user_has_count_of_card(user: 'User', card_id: models.card.CardId,
+def user_has_count_of_card(user: 'User',
+                           card_id: models.card.CardId,
                            count: int = 1):
     cache = get_ownership_cache(user)
 

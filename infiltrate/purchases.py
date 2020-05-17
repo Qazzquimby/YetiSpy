@@ -408,7 +408,7 @@ class _PurchasesValueDataframeGetter:
             ['set_num', 'card_num']).join(
             all_cards.df.set_index(['set_num', 'card_num'])).reset_index()
 
-        card_data = models.user.user_owns_card.create_is_owned_column(
+        card_data = models.user.owns_card.create_is_owned_column(
             card_data, self.user)
 
         return card_data

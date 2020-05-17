@@ -9,7 +9,7 @@ import models.card
 import models.card_set
 import models.rarity
 import models.user
-import models.user.user_owns_card as user_owns_card
+import models.user.owns_card as user_owns_card
 import rewards
 from views.card_values import display_filters
 

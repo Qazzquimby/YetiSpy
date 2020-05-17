@@ -7,7 +7,7 @@ from sqlalchemy_utils.types.encrypted.encrypted_type import FernetEngine
 
 import models.deck_search
 import models.user.collection
-import models.user.user_owns_card
+import models.user.owns_card
 import value_frames
 from infiltrate import application, db
 
