@@ -79,11 +79,6 @@ def _schedule_updates():
     return scheduling.schedule_updates()
 
 
-def _update():
-    import infiltrate.models
-    infiltrate.models.update()
-
-
 @application.teardown_request
 def teardown_request(exception):
     """Prevents bad db states by rolling back when the app closes."""

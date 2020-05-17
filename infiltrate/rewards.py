@@ -32,10 +32,6 @@ class CardClass:
         session = models.card.db.session
 
         sets = self.sets
-        try:
-            sets = [v.item() for v in sets]
-        except AttributeError:
-            pass
 
         set_nums = models.card_set.get_set_nums_from_sets(sets)
         count = (session.query(models.card.Card)
@@ -66,7 +62,7 @@ class CardClass:
                            card_set: models.card_set.CardSet
                            ) -> float:
         cards_in_set_and_rarity = card_data[
-            np.logical_and(card_data['set_num'].isin(card_set.set_nums),
+            np.logical_and(card_data['set_num'] == card_set.set_num,
                            card_data['rarity'] == self.rarity.name)]
 
         value = get_value(cards_in_set_and_rarity)
@@ -78,8 +74,7 @@ def get_value(card_pool):
     findable_cards = unowned_cards.drop_duplicates(['set_num', 'card_num'])
 
     try:
-        average_value = (
-                sum(findable_cards['value']) * 4 / len(card_pool))
+        average_value = (sum(findable_cards['value']) * 4 / len(card_pool))
         return average_value
     except ZeroDivisionError:
         return 0
@@ -226,10 +221,10 @@ class PlayerRewards:  # TODO Make into model to persist
             set_nums = models.card_set.get_set_nums_from_sets(
                 card_class_with_amount.card_class.sets)
 
-            set_match = not set(card_set.set_nums).isdisjoint(set_nums)
+            set_match = card_set.set_num in set_nums
             if rarity_match and set_match:
-                chance = card_class_with_amount \
-                    .chance_of_specific_card_drop_per_week
+                chance = (card_class_with_amount
+                          .chance_of_specific_card_drop_per_week)
                 chances.append(chance)
         chance_of_at_least_one = get_chance_of_at_least_one(chances)
         return chance_of_at_least_one
@@ -351,38 +346,38 @@ DEFAULT_PLAYER_REWARD_RATE = PlayerRewards(first_wins_per_week=6.3,
                                            ranked_wins_per_day=3.5,
                                            unranked_wins_per_day=0)
 
-if __name__ == '__main__':
-    player_rewards = PlayerRewards(first_wins_per_week=7,
-                                   drafts_per_week=0,
-                                   ranked_wins_per_day=0,
-                                   unranked_wins_per_day=1)
-
-    # Get the chance of finding Granite Coin
-    card_set = models.card_set.CardSet(6)
-    card_rarity = models.rarity.COMMON
-    chance = player_rewards.get_chance_of_specific_card_drop_in_a_week(
-        rarity=card_rarity, card_set=card_set)
-    print(f'common 6 {chance}')
-
-    # Get the chance of finding Granite Monument
-    card_set = models.card_set.CardSet([0, 1])
-    card_rarity = models.rarity.UNCOMMON
-    chance = player_rewards.get_chance_of_specific_card_drop_in_a_week(
-        rarity=card_rarity, card_set=card_set)
-    print(f'uncommon 1 {chance}')
-
-    # Get the chance of finding
-    card_set = models.card_set.CardSet(7)
-    card_rarity = models.rarity.COMMON
-    chance = player_rewards.get_chance_of_specific_card_drop_in_a_week(
-        rarity=card_rarity, card_set=card_set)
-    print(f'common 7 {chance}')
-
-    # Get the chance of finding Emblem of Shavka
-    card_set = models.card_set.CardSet(7)
-    card_rarity = models.rarity.RARE
-    chance = player_rewards.get_chance_of_specific_card_drop_in_a_week(
-        rarity=card_rarity, card_set=card_set)
-    print(f'rare 7 {chance}')
-
-    print('debug')
+# if __name__ == '__main__':
+#     player_rewards = PlayerRewards(first_wins_per_week=7,
+#                                    drafts_per_week=0,
+#                                    ranked_wins_per_day=0,
+#                                    unranked_wins_per_day=1)
+#
+#     # Get the chance of finding Granite Coin
+#     card_set = models.card_set.CardSet(6)
+#     card_rarity = models.rarity.COMMON
+#     chance = player_rewards.get_chance_of_specific_card_drop_in_a_week(
+#         rarity=card_rarity, card_set=card_set)
+#     print(f'common 6 {chance}')
+#
+#     # Get the chance of finding Granite Monument
+#     card_set = models.card_set.CardSet(1)
+#     card_rarity = models.rarity.UNCOMMON
+#     chance = player_rewards.get_chance_of_specific_card_drop_in_a_week(
+#         rarity=card_rarity, card_set=card_set)
+#     print(f'uncommon 1 {chance}')
+#
+#     # Get the chance of finding
+#     card_set = models.card_set.CardSet(7)
+#     card_rarity = models.rarity.COMMON
+#     chance = player_rewards.get_chance_of_specific_card_drop_in_a_week(
+#         rarity=card_rarity, card_set=card_set)
+#     print(f'common 7 {chance}')
+#
+#     # Get the chance of finding Emblem of Shavka
+#     card_set = models.card_set.CardSet(7)
+#     card_rarity = models.rarity.RARE
+#     chance = player_rewards.get_chance_of_specific_card_drop_in_a_week(
+#         rarity=card_rarity, card_set=card_set)
+#     print(f'rare 7 {chance}')
+#
+#     print('debug')

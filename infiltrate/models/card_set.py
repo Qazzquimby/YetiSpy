@@ -8,7 +8,7 @@ from infiltrate import db
 
 
 class CardSetName(db.Model):
-    """A table showing how many copies of a card a deck has"""
+    """A table matching set numbers and names"""
     set_num = db.Column('set_num', db.Integer, primary_key=True)
     name = db.Column('name', db.String(length=100))
 
@@ -48,63 +48,57 @@ def update():
 class CardSet:
     """A set of cards from a single release."""
 
-    def __init__(self, set_num: typing.Union[int, typing.Iterable[int]]):
-        try:
-            # noinspection PyUnresolvedReferences
-            set_num = set_num[0]
-        except (TypeError, IndexError):
-            pass
-        if set_num in (0, 1):
-            self.set_nums = [0, 1]
-        else:
-            self.set_nums = [set_num]
+    def __init__(self, set_num: int):
+        self.set_num = set_num
+        if self.set_num == 0:
+            self.set_num = 1
+
+    @classmethod
+    @caches.mem_cache.cache("get_set_from_name")
+    def from_name(cls, name: str) -> "CardSet":
+        """Constructs a CardSet matching the given name."""
+        row = CardSetName.query.filter(CardSetName.name == name).first()
+        set_num = row.set_num
+        card_set = cls(set_num)
+        return card_set
 
     @property
-    def name(self):
+    def name(self) -> str:
         """The text name of the set."""
-        return _get_set_name(self.set_nums[0])
+        return self.name_from_num(self.set_num)
+
+    @classmethod
+    @caches.mem_cache.cache("get_set_name")
+    def name_from_num(cls, set_num: int):
+        """The text name of the set corresponding to the set num."""
+        name = CardSetName.query.filter(
+            CardSetName.set_num == set_num).first().name
+        return name
 
     @property
-    def is_campaign(self):
+    def is_campaign(self) -> bool:
         """Is the set a campaign rather than a pack"""
-        return set_num_is_campaign(self.set_nums[0])
+        return self.is_campaign_from_num(self.set_num)
+
+    @classmethod
+    def is_campaign_from_num(cls, set_num: int):
+        """Is the set matching the set num a campagin rather than a pack."""
+        return 1000 < set_num
 
     def __str__(self):
-        return str(self.set_nums)
+        return str(self.set_num)
 
     def __eq__(self, other):
         if isinstance(other, CardSet):
-            return self.set_nums == other.set_nums
+            return self.set_num == other.set_num
         return NotImplemented
 
     def __hash__(self):
-        return hash(tuple(self.set_nums))
-
-
-@caches.mem_cache.cache("get_set_name")
-def _get_set_name(set_num: int) -> str:
-    name = CardSetName.query.filter(
-        CardSetName.set_num == set_num).first().name
-    return name
-
-
-@caches.mem_cache.cache("get_set_from_name")
-def get_set_from_name(name: int) -> CardSet:
-    rows = CardSetName.query.filter(CardSetName.name == name).all()
-    set_nums = [row.set_num for row in rows]
-    card_set = CardSet(set_nums)
-    return card_set
-
-
-def set_num_is_campaign(set_num: int):
-    """Return if the card set belongs to a campaign"""
-    return 1000 < set_num
+        return hash(self.set_num)
 
 
 def get_set_nums_from_sets(sets: typing.List[CardSet]) -> typing.List[int]:
-    set_nums = list(set([set_num for card_set in sets
-                         for set_num in card_set.set_nums]))
-    set_nums = [int(set_num) for set_num in set_nums]
+    set_nums = [card_set.set_num for card_set in sets]
     return set_nums
 
 

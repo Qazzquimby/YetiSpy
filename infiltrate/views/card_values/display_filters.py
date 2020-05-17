@@ -97,7 +97,8 @@ class CraftSort(CardDisplaySort):
         """Filters out uncraftable."""
         filtered = cards[
             np.logical_not(
-                models.card_set.set_num_is_campaign(cards['set_num']))]
+                models.card_set.CardSet.is_campaign_from_num(
+                    cards['set_num']))]
         return filtered
 
 

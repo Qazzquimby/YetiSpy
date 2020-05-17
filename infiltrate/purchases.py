@@ -45,7 +45,7 @@ class PackEvaluator(PurchaseEvaluator):
     def __init__(self, card_data):
         super().__init__(card_data, cost=1_000)
 
-    def get_values(self) -> dict:
+    def get_values(self) -> t.Dict[models.card_set.CardSet, int]:
         values = {card_set: card_pack.get_value(self.card_data) for
                   card_set, card_pack in rewards.CARD_PACKS.items()}
         return values
@@ -53,10 +53,8 @@ class PackEvaluator(PurchaseEvaluator):
     def get_df_rows(self) -> t.List[PurchaseRow]:
         pack_values = self.get_values()
 
-        rows = []
-        for card_set in pack_values.keys():
-            name = models.card_set._get_set_name(card_set.set_nums[0])
-            rows.append(self._make_row(name, pack_values[card_set]))
+        rows = [self._make_row(card_set.name, pack_values[card_set])
+                for card_set in pack_values.keys()]
         return rows
 
 
@@ -74,7 +72,7 @@ class CampaignEvaluator(PurchaseEvaluator):
         for card_set in card_sets:
             cards_in_pool = card_data[
                 np.logical_and(
-                    card_data['set_num'].isin(card_set.set_nums),
+                    card_data['set_num'] == card_set.set_num,
                     card_data['is_owned'] == False)
             ]
             value_for_pool = sum(cards_in_pool['value'])
@@ -87,7 +85,7 @@ class CampaignEvaluator(PurchaseEvaluator):
 
         rows = []
         for card_set in campaign_values.keys():
-            name = models.card_set._get_set_name(card_set.set_nums[0])
+            name = models.card_set.CardSet._get_set_name(card_set.set_nums[0])
             rows.append(self._make_row(name, campaign_values[card_set]))
         return rows
 
@@ -358,7 +356,7 @@ def get_league_packs() -> t.Dict[models.card_set.CardSet, int]:
         set_name_counter[set_name] += num_packs
 
     card_set_counter = {
-        models.card_set.get_set_from_name(set_name): set_name_counter[set_name]
+        models.card_set.CardSet.from_name(set_name): set_name_counter[set_name]
         for set_name in set_name_counter.keys()}
 
     return card_set_counter
