@@ -4,7 +4,6 @@ Related to card_collections.py
 """
 import json
 import typing
-from dataclasses import dataclass
 from typing import NamedTuple
 
 import pandas as pd
@@ -17,6 +16,7 @@ import browser
 import df_types
 import models.rarity
 from infiltrate import db
+from models.card.draft import update_draft_pack_contents
 
 
 class Card(db.Model):
@@ -98,34 +98,19 @@ class CardId(NamedTuple):
     card_num: int
 
 
-class CardPlayset(NamedTuple):
-    """Multiple copies of a card"""
-    card_id: CardId
-    count: int
-
-
 class CardIdWithValue(NamedTuple):
     """The value of a given count of a card.
 
     The value is for the count-th copy of a card."""
+    # todo this and everything using it can probably die.
     card_id: CardId
     count: int
     value: float
 
 
-def str_to_snake(string: str):
-    """Replaces spaces with _s in string."""
-    return string.replace(" ", "_")
-
-
-def snake_to_str(snake):
-    """Replaces _s with spaces in string."""
-    return snake.replace("_", " ")
-
-
 class AllCards:
     def __init__(self):
-        session = db.engine.raw_connection()  # sqlalchemy.orm.Session(db)
+        session = db.engine.raw_connection()
         cards_df = pd.read_sql_query("SELECT * from cards", session)
         cards_df.rename(columns={'SetNumber': 'set_num',
                                  'EternalID': 'card_num',
@@ -185,6 +170,14 @@ class _CardAutoCompleter:
         return names
 
 
+def get_matching_card(card_df: Card_DF, search_str: str) -> Card_DF:
+    """Return rows from the card_df with card names best matching
+     the search."""
+    matcher = _CardAutoCompleter(card_df)
+    match = matcher.get_cards_matching_search(search_str)
+    return match
+
+
 class _AllCardAutoCompleter(_CardAutoCompleter):
     """Handles autocompleting searches to card names from ALL_CARDS"""
     # TODO make this update when the card database updates
@@ -194,61 +187,6 @@ class _AllCardAutoCompleter(_CardAutoCompleter):
     def __init__(self, all_cards: AllCards):
         if self.completer is None:
             super().__init__(all_cards)
-
-
-def get_matching_card(card_df: Card_DF, search_str: str) -> Card_DF:
-    """Return rows from the card_df with card names best matching the search_str."""
-    matcher = _CardAutoCompleter(card_df)
-    match = matcher.get_cards_matching_search(search_str)
-    return match
-
-
-@dataclass
-class CardDisplay:
-    """Use make_card_display to use cached creation"""
-    set_num: int
-    card_num: int
-    name: str
-    rarity: models.rarity.Rarity
-    image_url: str
-    details_url: str
-
-    @classmethod
-    def from_card_id(cls, all_cards: AllCards, card_id: CardId):
-        """Makes a CardDisplay from a CardId."""
-        card = all_cards.get_card(card_id)
-        return cls(set_num=card.set_num, card_num=card.card_num,
-                   name=card.name, rarity=card.rarity,
-                   image_url=card.image_url, details_url=card.details_url)
-
-    def to_dict(self):
-        return self.__dict__
-
-
-def get_draft_pack_card_ids() -> typing.List[CardId]:
-    file_name_selector = '//*[@id="body-wrapper"]/div/div/div[2]/div/a[last()]'
-    file_name = browser.get_str_from_url_and_xpath(
-        'https://eternalwarcry.com/cards/download',
-        file_name_selector)
-    draft_pack_url = f'https://eternalwarcry.com/content/draftpacks/{file_name}'
-    newest_draft_pack = browser.obj_from_url(draft_pack_url)
-    card_ids = []
-    for card in newest_draft_pack:
-        card_id = CardId(set_num=card['SetNumber'], card_num=card['EternalID'])
-        card_ids.append(card_id)
-    return card_ids
-
-
-def update_draft_pack_contents():
-    draft_card_ids = get_draft_pack_card_ids()
-    Card.query.update({"is_in_draft_pack": False})
-
-    for card_id in draft_card_ids:
-        (Card.query
-         .filter(Card.set_num == card_id.set_num,
-                 Card.card_num == card_id.card_num)
-         .update({"is_in_draft_pack": True}))
-    db.session.commit()
 
 
 if __name__ == '__main__':

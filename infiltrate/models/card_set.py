@@ -52,7 +52,7 @@ class CardSet:
         try:
             # noinspection PyUnresolvedReferences
             set_num = set_num[0]
-        except TypeError:
+        except (TypeError, IndexError):
             pass
         if set_num in (0, 1):
             self.set_nums = [0, 1]

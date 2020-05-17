@@ -7,12 +7,19 @@ import models.deck_search
 import models.rarity
 
 
+def get_cards_values_df(weighted_deck_searches: typing.List[
+    models.deck_search.WeightedDeckSearch]
+                        ) -> models.deck_search.DeckSearchValue_DF:
+    getter = _CardValueDataframeGetter(weighted_deck_searches)
+    return getter.get_cards_values_df()
+
+
 class _CardValueDataframeGetter:
     """Helper class used by get_cards_values_df."""
 
-    def __init__(
-            self, weighted_deck_searches: typing.List[
-                models.deck_search.WeightedDeckSearch]):
+    def __init__(self,
+                 weighted_deck_searches: typing.List[
+                     models.deck_search.WeightedDeckSearch]):
         self.weighted_deck_searches = weighted_deck_searches
 
     def get_cards_values_df(self) -> models.deck_search.DeckSearchValue_DF:
@@ -45,36 +52,23 @@ class _CardValueDataframeGetter:
         return normalized
 
 
-def get_cards_values_df(weighted_deck_searches: typing.List[
-    models.deck_search.WeightedDeckSearch]
-                        ) -> models.deck_search.DeckSearchValue_DF:
-    getter = _CardValueDataframeGetter(weighted_deck_searches)
-    df = getter.get_cards_values_df()
-    return df
-
-
-def get_purchases_values_df(
-        card_values_df: models.deck_search.DeckSearchValue_DF, user):
-    from purchases import _PurchasesValueDataframeGetter
-    getter = _PurchasesValueDataframeGetter(card_values_df, user)
-    df = getter.get_purchase_values_df()
-    return df
-
-
 if __name__ == '__main__':
     import sqlalchemy.orm.session
     import infiltrate
     import models.user
 
-    weighted_deck_searches = \
-        models.deck_search.get_default_weighted_deck_searches(-1)
+    weighted_deck_searches = (
+        models.deck_search.get_default_weighted_deck_searches(-1))
+
     [sqlalchemy.orm.session.make_transient_to_detached(s)
      for s in weighted_deck_searches]
+
     [infiltrate.db.session.add(s) for s in weighted_deck_searches]
 
     card_values = get_cards_values_df(weighted_deck_searches)
     user = models.user.get_by_id(22)
+    from purchases import get_purchase_values
 
-    purchase_values = get_purchases_values_df(card_values, user=user)
+    purchase_values = get_purchase_values(card_values, user)
 
     print('debug')

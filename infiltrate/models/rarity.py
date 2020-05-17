@@ -4,6 +4,8 @@ import typing
 from infiltrate import db
 
 
+# todo this doesnt need to be a table im pretty sure
+
 class Rarity(db.Model):
     """A table representing rarities in Eternal.
 

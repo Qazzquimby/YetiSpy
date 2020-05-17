@@ -56,8 +56,8 @@ class CardClass:
         return hash_value
 
     def get_value(self, card_data) -> float:
-        set_values = [self._get_value_for_set(card_data, card_set) for card_set
-                      in self.sets]
+        set_values = [self._get_value_for_set(card_data, card_set)
+                      for card_set in self.sets]
 
         avg_set_value = sum(set_values) / len(set_values)
         return avg_set_value
@@ -78,8 +78,8 @@ def get_value(card_pool):
     findable_cards = unowned_cards.drop_duplicates(['set_num', 'card_num'])
 
     try:
-        average_value = \
-            sum(findable_cards['value']) * 4 / len(card_pool)
+        average_value = (
+                sum(findable_cards['value']) * 4 / len(card_pool))
         return average_value
     except ZeroDivisionError:
         return 0
@@ -221,7 +221,7 @@ class PlayerRewards:  # TODO Make into model to persist
             card_set: models.card_set.CardSet):
         chances = []
         for card_class_with_amount in self.card_classes_with_amounts_per_week:
-            rarity_match = rarity in card_class_with_amount.card_class.rarity
+            rarity_match = rarity == card_class_with_amount.card_class.rarity
 
             set_nums = models.card_set.get_set_nums_from_sets(
                 card_class_with_amount.card_class.sets)
@@ -277,7 +277,6 @@ class Reward:
 
     def get_value(self, card_data) -> float:
         total_value = 0
-        # todo get value of gold and shiftstone
 
         for card_class_with_amount in self.card_class_amounts:
             value_for_card_class = card_class_with_amount.get_value(card_data)

@@ -194,13 +194,13 @@ class CardDisplayPage:
 
         Grouped displays are given new minimum and maximum attributes
         representing the cards minimum and maximum counts in the list."""
-        min_count = page.groupby(['set_num', 'card_num'])[
-            'count_in_deck', 'value', 'value_per_shiftstone'].min()
-        max_count = page.groupby(['set_num', 'card_num'])[
-            'count_in_deck', 'value', 'value_per_shiftstone'].max()
+
+        grouped = (page.groupby(['set_num', 'card_num'])[
+            'count_in_deck', 'value', 'value_per_shiftstone'])
+        min_count = grouped.min()
+        max_count = grouped.max()
+
         reindexed = page.set_index(['set_num', 'card_num'])
-        reindexed_deduplicate = reindexed[
-            ~reindexed.index.duplicated(keep='first')]
 
         min_page = reindexed.join(min_count, rsuffix='_min')
         min_max_page = min_page.join(max_count, rsuffix='_max')
@@ -211,6 +211,9 @@ class CardDisplayPage:
 
         min_max_dropped_index_duplicates = min_max_dropped_duplicates[
             ~min_max_dropped_duplicates.index.duplicated(keep='first')]
+
+        reindexed_deduplicate = reindexed[
+            ~reindexed.index.duplicated(keep='first')]
         original_index = reindexed_deduplicate.index
         original_order = min_max_dropped_index_duplicates.reindex(
             index=original_index)

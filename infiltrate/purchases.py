@@ -364,6 +364,14 @@ def get_league_packs() -> t.Dict[models.card_set.CardSet, int]:
     return card_set_counter
 
 
+def get_purchase_values(
+        card_values_df: models.deck_search.DeckSearchValue_DF,
+        user: models.user.User
+) -> models.deck_search.DeckSearchValue_DF:
+    getter = _PurchasesValueDataframeGetter(card_values_df, user)
+    return getter.get_purchase_values_df()
+
+
 class _PurchasesValueDataframeGetter:
     """Helper class used by get_purchase_values_df."""
 

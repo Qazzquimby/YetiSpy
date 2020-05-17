@@ -3,6 +3,8 @@ from beaker.cache import CacheManager
 # noinspection PyProtectedMember
 from beaker.util import parse_cache_config_options
 
+# todo replace beaker with bolton caches. This is unfriendly and overkill.
+
 ENABLE = False
 
 _file_cache_opts = {

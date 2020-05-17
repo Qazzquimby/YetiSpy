@@ -5,6 +5,8 @@ import typing
 import pandas as pd
 
 
+# todo use dataenforce to handle this.
+
 # noinspection PyUnresolvedReferences,PyProtectedMember
 def get_columns_for_model(model) -> typing.List[str]:
     """Creates a dataframe type with columns matching the model's columns."""
