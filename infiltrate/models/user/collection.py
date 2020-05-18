@@ -35,8 +35,8 @@ class _CollectionUpdater:
         self._add_new_collection(collection)
 
     def _get_new_collection(self) -> typing.Dict[models.card.CardId, int]:
-        url = f"https://api.eternalwarcry.com/v1/useraccounts/collection" \
-              f"?key={self.user.key}"
+        url = (f"https://api.eternalwarcry.com/v1/useraccounts/collection"
+               f"?key={self.user.key}")
         response = browser.obj_from_url(url)
         cards = response["cards"]
         collection = card_collections.make_collection_from_ew_export(cards)
@@ -98,7 +98,8 @@ def get_ownership_cache(user: 'User'):
 
 def user_has_count_of_card(user: 'User',
                            card_id: models.card.CardId,
-                           count: int = 1):
+                           count: int = 1) -> bool:
+    """Return if a user has at least count cards."""
     cache = get_ownership_cache(user)
 
     try:

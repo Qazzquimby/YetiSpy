@@ -151,8 +151,6 @@ def create_deck_searches():
     db.session.commit()
 
 
-create_deck_searches()
-
 DeckSearchValue_DF = df_types.make_dataframe_type(
     [e for e in df_types.get_columns_from_dataframe_type(PlayRate_DF) if
      e != PLAYRATE_COL_STR]
@@ -188,11 +186,13 @@ def update_deck_searches():
         deck_search.update_playrates()
 
 
-def make_weighted_deck_search(deck_search: DeckSearch, weight: float,
+def make_weighted_deck_search(deck_search: DeckSearch,
+                              weight: float,
                               name: str):
     """Creates a weighted deck search."""
     weighted_deck_search = WeightedDeckSearch(deck_search=deck_search,
-                                              name=name, weight=weight)
+                                              name=name,
+                                              weight=weight)
     db.session.merge(deck_search)
     db.session.commit()
     return weighted_deck_search

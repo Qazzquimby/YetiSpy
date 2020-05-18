@@ -29,19 +29,21 @@ class User(db.Model):
     cards = db.relationship("UserOwnsCard")
 
     def update_collection(self):
-        """Replaces a user's old collection in the db with their new collection."""
+        """Replaces a user's old collection in the db
+        with their new collection."""
         updater = models.user.collection._CollectionUpdater(self)
         updater.run()
 
     def get_values(self) -> models.deck_search.DeckSearchValue_DF:
         """Get a dataframe of card values for the user"""
-        # If this needs to be faster, change from making 1 sql call per weighted deck search to 1 call
-        #   and passing the information.
+        # If this needs to be faster, change from making 1 sql call per
+        #   weighted deck search to 1 call and passing the information.
         values = value_frames.get_cards_values_df(self.weighted_deck_searches)
         return values
 
-    def add_weighted_deck_searches(self, searches: typing.List[
-        models.deck_search.WeightedDeckSearch]):
+    def add_weighted_deck_searches(self,
+                                   searches: typing.List[
+                                       models.deck_search.WeightedDeckSearch]):
         """Adds a weighted deck search to the user's table"""
         for search in searches:
             self.weighted_deck_searches.append(search)
@@ -50,11 +52,13 @@ class User(db.Model):
         db.session.commit()
 
     def _normalize_deck_search_weights(self):
-        """Ensures that a user's saved weights are approximately normalized to 1.
+        """Ensures that a user's saved weights are approximately normalized
+        to 1.
         This prevents weight sizes from inflating values."""
         total_weight = sum(
             [search.weight for search in self.weighted_deck_searches])
-        if not 0.9 < total_weight < 1.10:  # Bounds prevent repeated work due to rounding on later passes
+        # Bounds prevent repeated work due to rounding on later passes
+        if not 0.9 < total_weight < 1.10:
             for search in self.weighted_deck_searches:
                 search.weight = search.weight / total_weight
 

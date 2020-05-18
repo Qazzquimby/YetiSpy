@@ -7,9 +7,12 @@ import models.deck_search
 import models.rarity
 
 
-def get_cards_values_df(weighted_deck_searches: typing.List[
-    models.deck_search.WeightedDeckSearch]
-                        ) -> models.deck_search.DeckSearchValue_DF:
+def get_cards_values_df(
+        weighted_deck_searches: typing.List[
+            models.deck_search.WeightedDeckSearch]
+) -> models.deck_search.DeckSearchValue_DF:
+    """Gets a dataframe of all cards with values for a user
+    based on all their weighted deck searches."""
     getter = _CardValueDataframeGetter(weighted_deck_searches)
     return getter.get_cards_values_df()
 
