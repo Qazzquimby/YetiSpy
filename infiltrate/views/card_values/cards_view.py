@@ -13,7 +13,8 @@ from views.login import AuthenticationException
 
 class CardsView(FlaskView):
     """View for the list of card values"""
-    route_base = '/'
+
+    route_base = "/"
 
     def index(self):
         """The main card values page"""
@@ -50,12 +51,14 @@ class CardsView(FlaskView):
 
         cards_on_page = displays.get_page(page_num)
 
-        return flask.render_template('card_values_table.html',
-                                     page=page_num,
-                                     sort=sort_str,
-                                     card_values=cards_on_page)
+        return flask.render_template(
+            "card_values_table.html",
+            page=page_num,
+            sort=sort_str,
+            card_values=cards_on_page,
+        )
 
-    def card_search(self, search_str='_'):
+    def card_search(self, search_str="_"):
         """Searches for cards with names matching the search string,
         by the method used in AllCards"""
         try:
@@ -67,13 +70,13 @@ class CardsView(FlaskView):
         search_str = search_str[1:]
         search_str = search_str.lower()
         matching_card_df = models.card.completion.get_matching_card(
-            displays.value_info,
-            search_str)
+            displays.value_info, search_str
+        )
         if len(matching_card_df) > 0:
             cards_in_search = matching_card_df
-            displays = card_displays.CardDisplayPage \
-                .format_ungrouped_page(cards_in_search)
-            return flask.render_template('card_values_table.html',
-                                         card_values=displays)
+            displays = card_displays.CardDisplayPage.format_ungrouped_page(
+                cards_in_search
+            )
+            return flask.render_template("card_values_table.html", card_values=displays)
         else:
-            return ''
+            return ""

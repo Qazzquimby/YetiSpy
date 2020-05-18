@@ -7,26 +7,31 @@ from datetime import datetime
 import browser
 import models.card
 import views.globals
+
 # todo replace application with config injection
 from infiltrate import application, db
 
 
 class DeckHasCard(db.Model):
     """A table showing how many copies of a card a deck has"""
-    deck_id = db.Column('deck_id', db.String(length=100),
-                        db.ForeignKey('decks.id'), primary_key=True)
-    set_num = db.Column('set_num', db.Integer, primary_key=True)
-    card_num = db.Column('card_num', db.Integer, primary_key=True)
-    num_played = db.Column('num_played', db.Integer, nullable=False)
+
+    deck_id = db.Column(
+        "deck_id", db.String(length=100), db.ForeignKey("decks.id"), primary_key=True
+    )
+    set_num = db.Column("set_num", db.Integer, primary_key=True)
+    card_num = db.Column("card_num", db.Integer, primary_key=True)
+    num_played = db.Column("num_played", db.Integer, nullable=False)
     __table_args__ = (
-        db.ForeignKeyConstraint([set_num, card_num],
-                                [models.card.Card.set_num,
-                                 models.card.Card.card_num]),
-        {})
+        db.ForeignKeyConstraint(
+            [set_num, card_num], [models.card.Card.set_num, models.card.Card.card_num]
+        ),
+        {},
+    )
 
 
 class DeckType(enum.Enum):
     """Enum for deck types matching Warcry"""
+
     unknown = 0
     standard = 1
     draft = 2
@@ -41,6 +46,7 @@ class DeckType(enum.Enum):
 
 class Archetype(enum.Enum):
     """Enum for deck archetypes matching Warcry"""
+
     unknown = 0
     aggro = 1
     midrange = 2
@@ -59,6 +65,7 @@ class Archetype(enum.Enum):
 
 class Deck(db.Model):
     """Model representing an Eternal Deck from Warcry"""
+
     __tablename__ = "decks"
     id = db.Column("id", db.String(length=100), primary_key=True)
     archetype = db.Column("archetype", db.Enum(Archetype), nullable=True)
@@ -70,7 +77,7 @@ class Deck(db.Model):
     username = db.Column("username", db.String(length=30))
     views = db.Column("views", db.Integer)
     rating = db.Column("rating", db.Integer)
-    cards = db.relationship('DeckHasCard')
+    cards = db.relationship("DeckHasCard")
 
 
 def get_deck(deck_id: str):
@@ -97,10 +104,12 @@ class _WarcryNewIdGetter:
 
     def get_ids_from_page(self, page: int):
         items_per_page = 50
-        url = "https://api.eternalwarcry.com/v1/decks/SearchDecks" + \
-              f"?starting={items_per_page * page}" + \
-              f"&perpage={items_per_page}" + \
-              f"&key={application.config['WARCRY_KEY']}"
+        url = (
+            "https://api.eternalwarcry.com/v1/decks/SearchDecks"
+            + f"?starting={items_per_page * page}"
+            + f"&perpage={items_per_page}"
+            + f"&key={application.config['WARCRY_KEY']}"
+        )
         page_json = browser.obj_from_url(url)
         ids = self.get_ids_from_page_json(page_json)
 
@@ -108,8 +117,8 @@ class _WarcryNewIdGetter:
 
     @staticmethod
     def get_ids_from_page_json(page_json: typing.Dict):
-        decks = page_json['decks']
-        ids = [deck['deck_id'] for deck in decks]
+        decks = page_json["decks"]
+        ids = [deck["deck_id"] for deck in decks]
         return ids
 
     @staticmethod
@@ -141,13 +150,15 @@ def update_decks():
             ids = get_new_warcry_ids()
 
             for i, deck_id in enumerate(ids):
-                print(f'Updating deck {i} of {len(ids)}')
+                print(f"Updating deck {i} of {len(ids)}")
                 self.update_deck(deck_id)
 
         def update_deck(self, deck_id: str):
-            url = "https://api.eternalwarcry.com/v1/decks/details" + \
-                  f"?key={application.config['WARCRY_KEY']}" + \
-                  f"&deck_id={deck_id}"
+            url = (
+                "https://api.eternalwarcry.com/v1/decks/details"
+                + f"?key={application.config['WARCRY_KEY']}"
+                + f"&deck_id={deck_id}"
+            )
             try:
                 page_json = browser.obj_from_url(url)
             except (ConnectionError, urllib.error.HTTPError):
@@ -157,28 +168,29 @@ def update_decks():
 
         def make_deck_from_details_json(self, page_json: typing.Dict):
 
-            archetype = Archetype[
-                page_json["archetype"].lower().replace(" ", "_")]
+            archetype = Archetype[page_json["archetype"].lower().replace(" ", "_")]
             try:
                 deck_type = DeckType.__dict__[
-                    page_json["deck_type"].lower().replace(" ", "_")]
+                    page_json["deck_type"].lower().replace(" ", "_")
+                ]
             except KeyError:  # not sure this is the right exception
                 deck_type = DeckType(int(page_json["deck_type"]))
 
             deck = Deck(
-                id=page_json['deck_id'],
+                id=page_json["deck_id"],
                 archetype=archetype,
-                date_added=datetime.strptime(page_json["date_added_full"][:19],
-                                             '%Y-%m-%dT%H:%M:%S'),
+                date_added=datetime.strptime(
+                    page_json["date_added_full"][:19], "%Y-%m-%dT%H:%M:%S"
+                ),
                 date_updated=datetime.strptime(
-                    page_json["date_updated_full"][:19], '%Y-%m-%dT%H:%M:%S'),
+                    page_json["date_updated_full"][:19], "%Y-%m-%dT%H:%M:%S"
+                ),
                 deck_type=deck_type,
-                description=page_json["description"].encode('ascii',
-                                                            errors='ignore'),
+                description=page_json["description"].encode("ascii", errors="ignore"),
                 patch=page_json["patch"],
                 username=page_json["username"],
                 views=page_json["views"],
-                rating=page_json["rating"]
+                rating=page_json["rating"],
             )
 
             self.add_cards_to_deck(deck, page_json)
@@ -187,8 +199,11 @@ def update_decks():
 
         @staticmethod
         def add_cards_to_deck(deck: Deck, page_json: typing.Dict):
-            cards_json = page_json["deck_cards"] + page_json[
-                "sideboard_cards"] + page_json["market_cards"]
+            cards_json = (
+                page_json["deck_cards"]
+                + page_json["sideboard_cards"]
+                + page_json["market_cards"]
+            )
 
             for card_json in cards_json:
                 set_num = card_json["set_number"]
@@ -201,7 +216,7 @@ def update_decks():
                         deck_id=page_json["deck_id"],
                         set_num=set_num,
                         card_num=card_num,
-                        num_played=card_json["count"]
+                        num_played=card_json["count"],
                     )
                     deck.cards.append(deck_has_card)
 

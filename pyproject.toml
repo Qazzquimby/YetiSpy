@@ -7,10 +7,10 @@ authors = [
 ]
 license = "MIT"
 readme = "README.md"
-python = "^3.6"
+python = "^3.7"
 
 [tool.black]
-py36 = true
+target-version = ['py37']
 include = '\.pyi?$'
 exclude = '''
 /(
@@ -23,8 +23,4 @@ exclude = '''
   | buck-out
   | build
   | dist
-
-  # The following are specific to Black, you probably don't want those.
-  | blib2to3
-  | tests/data
-)/
+)/'''

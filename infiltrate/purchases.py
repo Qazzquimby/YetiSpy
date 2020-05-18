@@ -4,7 +4,6 @@ import collections
 import re
 import typing as t
 
-import numpy as np
 import pandas as pd
 
 import browser
@@ -46,15 +45,19 @@ class PackEvaluator(PurchaseEvaluator):
         super().__init__(card_data, cost=1_000)
 
     def get_values(self) -> t.Dict[models.card_set.CardSet, int]:
-        values = {card_set: card_pack.get_value(self.card_data) for
-                  card_set, card_pack in rewards.CARD_PACKS.items()}
+        values = {
+            card_set: card_pack.get_value(self.card_data)
+            for card_set, card_pack in rewards.CARD_PACKS.items()
+        }
         return values
 
     def get_df_rows(self) -> t.List[PurchaseRow]:
         pack_values = self.get_values()
 
-        rows = [self._make_row(card_set.name, pack_values[card_set])
-                for card_set in pack_values.keys()]
+        rows = [
+            self._make_row(card_set.name, pack_values[card_set])
+            for card_set in pack_values.keys()
+        ]
         return rows
 
 
@@ -70,12 +73,17 @@ class CampaignEvaluator(PurchaseEvaluator):
         values = collections.defaultdict(int)
 
         for card_set in card_sets:
-            cards_in_pool = card_data[
-                np.logical_and(
-                    card_data['set_num'] == card_set.set_num,
-                    card_data['is_owned'] == False)
-            ]
-            value_for_pool = sum(cards_in_pool['value'])
+            # cards_in_pool = card_data[
+            #     np.logical_and(
+            #         card_data["set_num"] == card_set.set_num,
+            #         card_data["is_owned"] == False,
+            #     )
+            # ]
+            cards_in_pool = card_data.query(
+                "set_num == @card_set.set_num " "and is_owned == False"
+            )
+
+            value_for_pool = sum(cards_in_pool["value"])
             values[card_set] += value_for_pool
 
         return values
@@ -98,21 +106,19 @@ class DraftEvaluator(PurchaseEvaluator, abc.ABC):
 
     def _get_packs_value(self):
         newest_set = models.card_set.get_newest_main_set()
-        newest_pack_value = rewards.CARD_PACKS[newest_set].get_value(
-            self.card_data)
+        newest_pack_value = rewards.CARD_PACKS[newest_set].get_value(self.card_data)
         draft_pack_value = rewards.DRAFT_PACK.get_value(self.card_data)
         value = 2 * newest_pack_value + 2 * draft_pack_value
         return value
 
 
 class LoseAllGamesDraftEvaluator(DraftEvaluator):
-
     def get_values(self) -> float:
         return self._get_packs_value()
 
     def get_df_rows(self) -> t.List[PurchaseRow]:
         draft_value = self.get_values()
-        return [self._make_row('Lose All Games Draft', draft_value)]
+        return [self._make_row("Lose All Games Draft", draft_value)]
 
 
 class AverageDraftEvaluator(DraftEvaluator):
@@ -129,14 +135,16 @@ class AverageDraftEvaluator(DraftEvaluator):
     def _get_average_wins_value(self) -> float:
         average_win_value = 0
         for chance, win_rewards in self._get_win_chances_and_rewards():
-            win_value = sum([reward.get_value(self.card_data)
-                             for reward in win_rewards])
+            win_value = sum(
+                [reward.get_value(self.card_data) for reward in win_rewards]
+            )
 
             average_win_value += win_value * chance
         return average_win_value
 
     def _get_win_chances_and_rewards(
-            self) -> t.Iterator[t.Tuple[float, t.List[rewards.Reward]]]:
+        self,
+    ) -> t.Iterator[t.Tuple[float, t.List[rewards.Reward]]]:
         """
         0 - 0.1249783 - 2 Silver Chests
         1 - 0.1875412 - 3 Silver Chests
@@ -148,32 +156,32 @@ class AverageDraftEvaluator(DraftEvaluator):
         7 - 0.0897475 - 3 Diamond Chests
         """
 
-        chances_of_n_wins = [0.1249783,
-                             0.1875412,
-                             0.1874744,
-                             0.1562196,
-                             0.1171667,
-                             0.0821073,
-                             0.0547650,
-                             0.0897475, ]
+        chances_of_n_wins = [
+            0.1249783,
+            0.1875412,
+            0.1874744,
+            0.1562196,
+            0.1171667,
+            0.0821073,
+            0.0547650,
+            0.0897475,
+        ]
 
-        rewards_of_n_wins = [2 * [rewards.SILVER_CHEST],
-                             3 * [rewards.SILVER_CHEST],
-                             2 * [rewards.SILVER_CHEST]
-                             + 1 * [rewards.GOLD_CHEST],
-                             1 * [rewards.SILVER_CHEST]
-                             + 2 * [rewards.GOLD_CHEST],
-                             3 * [rewards.GOLD_CHEST],
-                             2 * [rewards.GOLD_CHEST]
-                             + 1 * [rewards.DIAMOND_CHEST],
-                             1 * [rewards.GOLD_CHEST]
-                             + 2 * [rewards.DIAMOND_CHEST],
-                             3 * [rewards.DIAMOND_CHEST], ]
+        rewards_of_n_wins = [
+            2 * [rewards.SILVER_CHEST],
+            3 * [rewards.SILVER_CHEST],
+            2 * [rewards.SILVER_CHEST] + 1 * [rewards.GOLD_CHEST],
+            1 * [rewards.SILVER_CHEST] + 2 * [rewards.GOLD_CHEST],
+            3 * [rewards.GOLD_CHEST],
+            2 * [rewards.GOLD_CHEST] + 1 * [rewards.DIAMOND_CHEST],
+            1 * [rewards.GOLD_CHEST] + 2 * [rewards.DIAMOND_CHEST],
+            3 * [rewards.DIAMOND_CHEST],
+        ]
         return zip(chances_of_n_wins, rewards_of_n_wins)
 
     def get_df_rows(self) -> t.List[PurchaseRow]:
         draft_value = self.get_values()
-        return [self._make_row('Average Draft', draft_value)]
+        return [self._make_row("Average Draft", draft_value)]
 
 
 class LeagueEvaluator(PurchaseEvaluator, abc.ABC):
@@ -252,65 +260,130 @@ Top 1000 has been at 21 wins, top 500 at 25 wins and top 100 at 30 wins
         """
 
         average_win_value = 0
-        chances_of_rank = [4.4e-06,
-                           1.95e-05,
-                           7.08e-05,
-                           0.0010323,
-                           0.0758747,
-                           0.3602328,
-                           0.5627655, ]
+        chances_of_rank = [
+            4.4e-06,
+            1.95e-05,
+            7.08e-05,
+            0.0010323,
+            0.0758747,
+            0.3602328,
+            0.5627655,
+        ]
 
         rewards_of_rank = [
-            20 * [rewards.Reward(
-                card_classes=rewards.get_pack_contents_for_sets(
-                    [models.card_set.get_newest_main_set()]
-                ))]
-            + [rewards.Reward(card_classes=[
-                rewards.CardClass(rarity=models.rarity.LEGENDARY,
-                                  is_premium=True)])],
-            17 * [rewards.Reward(
-                card_classes=rewards.get_pack_contents_for_sets(
-                    [models.card_set.get_newest_main_set()]
-                ))]
-            + [rewards.Reward(card_classes=[
-                rewards.CardClass(rarity=models.rarity.LEGENDARY,
-                                  is_premium=True)])],
-            15 * [rewards.Reward(
-                card_classes=rewards.get_pack_contents_for_sets(
-                    [models.card_set.get_newest_main_set()]
-                ))]
-            + [rewards.Reward(card_classes=[
-                rewards.CardClass(rarity=models.rarity.LEGENDARY,
-                                  is_premium=True)])],
-            13 * [rewards.Reward(
-                card_classes=rewards.get_pack_contents_for_sets(
-                    [models.card_set.get_newest_main_set()]
-                ))]
-            + [rewards.Reward(card_classes=[
-                rewards.CardClass(rarity=models.rarity.LEGENDARY,
-                                  is_premium=True)])],
-            12 * [rewards.Reward(
-                card_classes=rewards.get_pack_contents_for_sets(
-                    [models.card_set.get_newest_main_set()]
-                ))]
-            + [rewards.Reward(card_classes=[
-                rewards.CardClass(rarity=models.rarity.RARE,
-                                  is_premium=True)])],
-            9 * [rewards.Reward(
-                card_classes=rewards.get_pack_contents_for_sets(
-                    [models.card_set.get_newest_main_set()]
-                ))]
-            + [rewards.Reward(card_classes=[
-                rewards.CardClass(rarity=models.rarity.RARE,
-                                  is_premium=True)])],
-            8 * [rewards.Reward(
-                card_classes=rewards.get_pack_contents_for_sets(
-                    [models.card_set.get_newest_main_set()]
-                ))]
-            + [rewards.Reward(card_classes=[
-                rewards.CardClass(rarity=models.rarity.RARE,
-                                  is_premium=True)])],
-
+            20
+            * [
+                rewards.Reward(
+                    card_classes=rewards.get_pack_contents_for_sets(
+                        [models.card_set.get_newest_main_set()]
+                    )
+                )
+            ]
+            + [
+                rewards.Reward(
+                    card_classes=[
+                        rewards.CardClass(
+                            rarity=models.rarity.LEGENDARY, is_premium=True
+                        )
+                    ]
+                )
+            ],
+            17
+            * [
+                rewards.Reward(
+                    card_classes=rewards.get_pack_contents_for_sets(
+                        [models.card_set.get_newest_main_set()]
+                    )
+                )
+            ]
+            + [
+                rewards.Reward(
+                    card_classes=[
+                        rewards.CardClass(
+                            rarity=models.rarity.LEGENDARY, is_premium=True
+                        )
+                    ]
+                )
+            ],
+            15
+            * [
+                rewards.Reward(
+                    card_classes=rewards.get_pack_contents_for_sets(
+                        [models.card_set.get_newest_main_set()]
+                    )
+                )
+            ]
+            + [
+                rewards.Reward(
+                    card_classes=[
+                        rewards.CardClass(
+                            rarity=models.rarity.LEGENDARY, is_premium=True
+                        )
+                    ]
+                )
+            ],
+            13
+            * [
+                rewards.Reward(
+                    card_classes=rewards.get_pack_contents_for_sets(
+                        [models.card_set.get_newest_main_set()]
+                    )
+                )
+            ]
+            + [
+                rewards.Reward(
+                    card_classes=[
+                        rewards.CardClass(
+                            rarity=models.rarity.LEGENDARY, is_premium=True
+                        )
+                    ]
+                )
+            ],
+            12
+            * [
+                rewards.Reward(
+                    card_classes=rewards.get_pack_contents_for_sets(
+                        [models.card_set.get_newest_main_set()]
+                    )
+                )
+            ]
+            + [
+                rewards.Reward(
+                    card_classes=[
+                        rewards.CardClass(rarity=models.rarity.RARE, is_premium=True)
+                    ]
+                )
+            ],
+            9
+            * [
+                rewards.Reward(
+                    card_classes=rewards.get_pack_contents_for_sets(
+                        [models.card_set.get_newest_main_set()]
+                    )
+                )
+            ]
+            + [
+                rewards.Reward(
+                    card_classes=[
+                        rewards.CardClass(rarity=models.rarity.RARE, is_premium=True)
+                    ]
+                )
+            ],
+            8
+            * [
+                rewards.Reward(
+                    card_classes=rewards.get_pack_contents_for_sets(
+                        [models.card_set.get_newest_main_set()]
+                    )
+                )
+            ]
+            + [
+                rewards.Reward(
+                    card_classes=[
+                        rewards.CardClass(rarity=models.rarity.RARE, is_premium=True)
+                    ]
+                )
+            ],
         ]
 
         for win_num in range(len(rewards_of_rank)):
@@ -328,7 +401,7 @@ Top 1000 has been at 21 wins, top 500 at 25 wins and top 100 at 30 wins
 
     def get_df_rows(self):
         first_league_value = self.get_value()
-        return [self._make_row('First_League', first_league_value)]
+        return [self._make_row("First_League", first_league_value)]
 
 
 class AdditionalLeagueEvaluator(LeagueEvaluator):
@@ -339,32 +412,32 @@ class AdditionalLeagueEvaluator(LeagueEvaluator):
 
     def get_df_rows(self):
         additional_league_value = self.get_value()
-        return [self._make_row('Additional_League', additional_league_value)]
+        return [self._make_row("Additional_League", additional_league_value)]
 
 
 def get_league_packs() -> t.Dict[models.card_set.CardSet, int]:
-    url = 'https://eternalcardgame.fandom.com/wiki/Leagues'
+    url = "https://eternalcardgame.fandom.com/wiki/Leagues"
     xpath = '//*[@id="mw-content-text"]/table[3]/tbody/tr[last()]'
     full_text = browser.get_str_from_url_and_xpath(url, xpath)
-    full_text = full_text.replace('\n', ' ')
-    pack_texts = re.findall(r'\dx\s\D+', full_text)
+    full_text = full_text.replace("\n", " ")
+    pack_texts = re.findall(r"\dx\s\D+", full_text)
     set_name_counter = collections.defaultdict(int)
 
     for pack_text in pack_texts:
-        num_packs = int(pack_text.split('x ')[0])
-        set_name = pack_text.split('x ')[1].strip()
+        num_packs = int(pack_text.split("x ")[0])
+        set_name = pack_text.split("x ")[1].strip()
         set_name_counter[set_name] += num_packs
 
     card_set_counter = {
         models.card_set.CardSet.from_name(set_name): set_name_counter[set_name]
-        for set_name in set_name_counter.keys()}
+        for set_name in set_name_counter.keys()
+    }
 
     return card_set_counter
 
 
 def get_purchase_values(
-        card_values_df: models.deck_search.DeckSearchValue_DF,
-        user: models.user.User
+    card_values_df: models.deck_search.DeckSearchValue_DF, user: models.user.User
 ) -> models.deck_search.DeckSearchValue_DF:
     getter = _PurchasesValueDataframeGetter(card_values_df, user)
     return getter.get_purchase_values_df()
@@ -373,8 +446,7 @@ def get_purchase_values(
 class _PurchasesValueDataframeGetter:
     """Helper class used by get_purchase_values_df."""
 
-    def __init__(self, card_values_df: models.deck_search.DeckSearchValue_DF,
-                 user):
+    def __init__(self, card_values_df: models.deck_search.DeckSearchValue_DF, user):
         self.card_values_df = card_values_df
         self.user = user
 
@@ -386,13 +458,13 @@ class _PurchasesValueDataframeGetter:
             AverageDraftEvaluator(self.card_data),
             LoseAllGamesDraftEvaluator(self.card_data),
             FirstLeagueEvaluator(self.card_data),
-            AdditionalLeagueEvaluator(self.card_data)
+            AdditionalLeagueEvaluator(self.card_data),
         ]
 
     def get_purchase_values_df(self) -> models.deck_search.DeckSearchValue_DF:
         """Gets a dataframe of all purchase options
         with values based on card values."""
-        columns = ['name', 'gold_cost', 'value', 'value_per_gold']
+        columns = ["name", "gold_cost", "value", "value_per_gold"]
         df_constructor = []
         for purchase_evaluator in self.purchase_evaluators:
             df_constructor += purchase_evaluator.get_df_rows()
@@ -402,11 +474,12 @@ class _PurchasesValueDataframeGetter:
 
     def _get_card_data(self):
         all_cards = models.card.AllCards()
-        card_data = self.card_values_df.set_index(
-            ['set_num', 'card_num']).join(
-            all_cards.df.set_index(['set_num', 'card_num'])).reset_index()
+        card_data = (
+            self.card_values_df.set_index(["set_num", "card_num"])
+            .join(all_cards.df.set_index(["set_num", "card_num"]))
+            .reset_index()
+        )
 
-        card_data = models.user.owns_card.create_is_owned_column(
-            card_data, self.user)
+        card_data = models.user.owns_card.create_is_owned_column(card_data, self.user)
 
         return card_data

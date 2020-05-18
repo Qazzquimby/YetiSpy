@@ -9,8 +9,9 @@ from infiltrate import db
 
 class CardSetName(db.Model):
     """A table matching set numbers and names"""
-    set_num = db.Column('set_num', db.Integer, primary_key=True)
-    name = db.Column('name', db.String(length=100))
+
+    set_num = db.Column("set_num", db.Integer, primary_key=True)
+    name = db.Column("name", db.String(length=100))
 
 
 def update():
@@ -24,20 +25,20 @@ def update():
                 self._create_set_name(set_num, name)
 
         def _get_set_name_strings(self):
-            url = 'https://eternalwarcry.com/cards'
+            url = "https://eternalwarcry.com/cards"
             xpath = '//*[@id="CardSet"]/optgroup[*]/option'
             set_name_strings = browser.get_strs_from_url_and_xpath(url, xpath)
             return set_name_strings
 
-        def _parse_set_name_string(self, set_name_string: str
-                                   ) -> typing.Tuple[int, str]:
-            name = set_name_string.split(' [')[0]
-            set_num = int(set_name_string.split(' [Set')[1].split(']')[0])
+        def _parse_set_name_string(
+            self, set_name_string: str
+        ) -> typing.Tuple[int, str]:
+            name = set_name_string.split(" [")[0]
+            set_num = int(set_name_string.split(" [Set")[1].split("]")[0])
             return set_num, name
 
         def _create_set_name(self, set_num: int, name: str):
-            card_set_name = CardSetName(set_num=set_num,
-                                        name=name)
+            card_set_name = CardSetName(set_num=set_num, name=name)
             db.session.merge(card_set_name)
             db.session.commit()
 
@@ -71,8 +72,7 @@ class CardSet:
     @caches.mem_cache.cache("get_set_name")
     def name_from_num(cls, set_num: int):
         """The text name of the set corresponding to the set num."""
-        name = CardSetName.query.filter(
-            CardSetName.set_num == set_num).first().name
+        name = CardSetName.query.filter(CardSetName.set_num == set_num).first().name
         return name
 
     @property
@@ -136,8 +136,7 @@ def get_sets() -> typing.List[CardSet]:
     return sets
 
 
-def _get_sets_from_set_nums(set_nums: typing.List[int]
-                            ) -> typing.List[CardSet]:
+def _get_sets_from_set_nums(set_nums: typing.List[int]) -> typing.List[CardSet]:
     """Return card sets. Same as set ids, but 0 and 1 are one set."""
     card_sets = [CardSet(s) for s in set_nums if s != 0]
     return card_sets
@@ -145,11 +144,10 @@ def _get_sets_from_set_nums(set_nums: typing.List[int]
 
 def _get_set_nums() -> typing.List[int]:
     """Return card set ids."""
-    set_nums = list(
-        models.card.db.session.query(models.card.Card.set_num).distinct())
+    set_nums = list(models.card.db.session.query(models.card.Card.set_num).distinct())
     set_nums = [s[0] for s in set_nums if s[0]]
     return set_nums
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     update()

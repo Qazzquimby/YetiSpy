@@ -14,10 +14,9 @@ def get_columns_for_model(model) -> typing.List[str]:
     return columns
 
 
-def get_columns_from_dataframe_type(df_type: functools.partial
-                                    ) -> typing.List[str]:
+def get_columns_from_dataframe_type(df_type: functools.partial) -> typing.List[str]:
     """Gets the column names from the df type."""
-    columns = df_type.keywords['columns']
+    columns = df_type.keywords["columns"]
     return columns
 
 

@@ -16,28 +16,33 @@ from infiltrate import db
 class DeckSearchHasCard(db.Model):
     """A table showing the amount the playset sizes of cards
     present in the deck search"""
-    decksearch_id = db.Column('decksearch_id', db.Integer,
-                              db.ForeignKey('deck_searches.id'),
-                              primary_key=True)
-    set_num = db.Column('set_num', db.Integer, primary_key=True)
-    card_num = db.Column('card_num', db.Integer, primary_key=True)
-    count_in_deck = db.Column('count_in_deck', db.Integer, primary_key=True,
-                              nullable=False)
-    num_decks_with_count_or_less = db.Column('num_decks_with_count_or_less',
-                                             db.Integer, nullable=False)
+
+    decksearch_id = db.Column(
+        "decksearch_id", db.Integer, db.ForeignKey("deck_searches.id"), primary_key=True
+    )
+    set_num = db.Column("set_num", db.Integer, primary_key=True)
+    card_num = db.Column("card_num", db.Integer, primary_key=True)
+    count_in_deck = db.Column(
+        "count_in_deck", db.Integer, primary_key=True, nullable=False
+    )
+    num_decks_with_count_or_less = db.Column(
+        "num_decks_with_count_or_less", db.Integer, nullable=False
+    )
     __table_args__ = (
-        db.ForeignKeyConstraint((set_num, card_num), [models.card.Card.set_num,
-                                                      models.card.Card.card_num]),
-        {})
+        db.ForeignKeyConstraint(
+            (set_num, card_num), [models.card.Card.set_num, models.card.Card.card_num]
+        ),
+        {},
+    )
 
     @staticmethod
-    def as_df(decksearch_id: int) -> 'DeckSearchHasCard_DF':
+    def as_df(decksearch_id: int) -> "DeckSearchHasCard_DF":
         session = db.engine.raw_connection()
         query = f"""SELECT *
 FROM deck_search_has_card
 WHERE decksearch_id = {decksearch_id}"""
         df = pd.read_sql_query(query, session)
-        del df['decksearch_id']
+        del df["decksearch_id"]
 
         return df
 
@@ -46,29 +51,33 @@ DeckSearchHasCard_DF = df_types.make_dataframe_type(
     df_types.get_columns_for_model(DeckSearchHasCard)
 )
 
-NUM_DECKS_COL_STR = 'num_decks_with_count_or_less'
-PLAYRATE_COL_STR = 'playrate'
-VALUE_COL_STR = 'value'
+NUM_DECKS_COL_STR = "num_decks_with_count_or_less"
+PLAYRATE_COL_STR = "playrate"
+VALUE_COL_STR = "value"
 
 PlayRate_DF = df_types.make_dataframe_type(
-    [e for e in df_types.get_columns_for_model(DeckSearchHasCard) if
-     not e == NUM_DECKS_COL_STR]
+    [
+        e
+        for e in df_types.get_columns_for_model(DeckSearchHasCard)
+        if not e == NUM_DECKS_COL_STR
+    ]
     + [PLAYRATE_COL_STR]
 )
 
 
 class DeckSearch(db.Model):
     """A table for a set of parameters to filter the list of all decks"""
+
     __tablename__ = "deck_searches"
     id = db.Column(db.Integer, primary_key=True)
     maximum_age_days = db.Column("maximum_age_days", db.Integer())
-    cards: typing.List[DeckSearchHasCard] = db.relationship(
-        'DeckSearchHasCard')
+    cards: typing.List[DeckSearchHasCard] = db.relationship("DeckSearchHasCard")
 
     def get_decks(self):
         """Returns all decks belonging to the deck search"""
         time_to_update = datetime.datetime.now() - datetime.timedelta(
-            days=self.maximum_age_days)
+            days=self.maximum_age_days
+        )
         is_past_time_to_update = models.deck.Deck.date_updated > time_to_update
         decks = models.deck.Deck.query.filter(is_past_time_to_update)
         return decks
@@ -77,14 +86,14 @@ class DeckSearch(db.Model):
         """Gets a dataframe of card playrates.
         Playrate is roughly play count / total play count"""
         playrate_df: DeckSearchHasCard_DF = DeckSearchHasCard.as_df(
-            decksearch_id=self.id)
+            decksearch_id=self.id
+        )
 
-        playrate_df[NUM_DECKS_COL_STR] = playrate_df[
-                                             NUM_DECKS_COL_STR] * 10_000 / len(
-            self.cards)
+        playrate_df[NUM_DECKS_COL_STR] = (
+            playrate_df[NUM_DECKS_COL_STR] * 10_000 / len(self.cards)
+        )
 
-        playrate_df.rename(columns={NUM_DECKS_COL_STR: PLAYRATE_COL_STR},
-                           inplace=True)
+        playrate_df.rename(columns={NUM_DECKS_COL_STR: PLAYRATE_COL_STR}, inplace=True)
 
         return playrate_df
 
@@ -108,8 +117,9 @@ class DeckSearch(db.Model):
         playrate = card_collections.make_card_playset_dict()
         for deck in self.get_decks():
             for card in deck.cards:
-                card_id = models.card.CardId(set_num=card.set_num,
-                                             card_num=card.card_num)
+                card_id = models.card.CardId(
+                    set_num=card.set_num, card_num=card.card_num
+                )
                 for num_played in range(min(card.num_played, 4)):
                     playrate[card_id][num_played] += 1
         return playrate
@@ -122,8 +132,8 @@ class DeckSearch(db.Model):
                     set_num=card_id.set_num,
                     card_num=card_id.card_num,
                     count_in_deck=play_count + 1,
-                    num_decks_with_count_or_less=playrates[card_id][
-                        play_count])
+                    num_decks_with_count_or_less=playrates[card_id][play_count],
+                )
                 db.session.merge(deck_search_has_card)
                 db.session.commit()
 
@@ -141,34 +151,42 @@ def create_deck_searches():
     current_initial_deck_searches = [
         _DeckSearchCreate(id=1, maximum_age_days=10),
         _DeckSearchCreate(id=2, maximum_age_days=90),
-        _DeckSearchCreate(id=3, maximum_age_days=30)
+        _DeckSearchCreate(id=3, maximum_age_days=30),
     ]
     deck_searches = (
         DeckSearch(id=search.id, maximum_age_days=search.maximum_age_days)
-        for search in current_initial_deck_searches)
+        for search in current_initial_deck_searches
+    )
     for search in deck_searches:
         db.session.merge(search)
     db.session.commit()
 
 
 DeckSearchValue_DF = df_types.make_dataframe_type(
-    [e for e in df_types.get_columns_from_dataframe_type(PlayRate_DF) if
-     e != PLAYRATE_COL_STR]
-    + [VALUE_COL_STR])
+    [
+        e
+        for e in df_types.get_columns_from_dataframe_type(PlayRate_DF)
+        if e != PLAYRATE_COL_STR
+    ]
+    + [VALUE_COL_STR]
+)
 
 
 class WeightedDeckSearch(db.Model):
     """A DeckSearch with a user given weight for its relative importance.
 
     Allows users to personalize their recommendations."""
-    deck_search_id = db.Column(db.Integer, db.ForeignKey('deck_searches.id'),
-                               primary_key=True)
+
+    deck_search_id = db.Column(
+        db.Integer, db.ForeignKey("deck_searches.id"), primary_key=True
+    )
     user_id = db.Column(db.String(length=20), db.ForeignKey("users.id"))
     name = db.Column("name", db.String(length=20), primary_key=True)
 
     weight = db.Column("weight", db.Float)
-    deck_search: DeckSearch = db.relationship('DeckSearch', uselist=False,
-                                              cascade_backrefs=False)
+    deck_search: DeckSearch = db.relationship(
+        "DeckSearch", uselist=False, cascade_backrefs=False
+    )
 
     def get_value_df(self) -> DeckSearchValue_DF:
         df = self.deck_search.get_playrate_df()
@@ -186,13 +204,11 @@ def update_deck_searches():
         deck_search.update_playrates()
 
 
-def make_weighted_deck_search(deck_search: DeckSearch,
-                              weight: float,
-                              name: str):
+def make_weighted_deck_search(deck_search: DeckSearch, weight: float, name: str):
     """Creates a weighted deck search."""
-    weighted_deck_search = WeightedDeckSearch(deck_search=deck_search,
-                                              name=name,
-                                              weight=weight)
+    weighted_deck_search = WeightedDeckSearch(
+        deck_search=deck_search, name=name, weight=weight
+    )
     db.session.merge(deck_search)
     db.session.commit()
     return weighted_deck_search
@@ -201,13 +217,15 @@ def make_weighted_deck_search(deck_search: DeckSearch,
 def get_default_weighted_deck_searches(user_id: int):
     """Generates the standard weighted deck searches,
     and gives them the user_id."""
-    searches = [models.deck_search.WeightedDeckSearch(
-        deck_search_id=1, user_id=user_id, name="Last 10 days", weight=0.7),
+    searches = [
         models.deck_search.WeightedDeckSearch(
-            deck_search_id=3, user_id=user_id, name="Last 30 days",
-            weight=0.23),
+            deck_search_id=1, user_id=user_id, name="Last 10 days", weight=0.7
+        ),
         models.deck_search.WeightedDeckSearch(
-            deck_search_id=2, user_id=user_id, name="Last 90 days",
-            weight=0.07),
+            deck_search_id=3, user_id=user_id, name="Last 30 days", weight=0.23
+        ),
+        models.deck_search.WeightedDeckSearch(
+            deck_search_id=2, user_id=user_id, name="Last 90 days", weight=0.07
+        ),
     ]
     return searches

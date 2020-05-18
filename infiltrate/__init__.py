@@ -7,24 +7,24 @@ from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 
 application = Flask(__name__, instance_relative_config=True)
-application.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+application.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
 def _set_config(app, test_config):
     if test_config:
         app.config.update(test_config)
     else:
-        app.config.from_pyfile('config.py', silent=True)
+        app.config.from_pyfile("config.py", silent=True)
 
 
 _set_config(application, test_config=None)
 
 
 def _setup_db(app):
-    app.config['SQLALCHEMY_DATABASE_URI'] = app.config['DATABASE']
-    database = SQLAlchemy(app, session_options={
-        'expire_on_commit': False  # Fixes DetachedInstanceError
-    })
+    app.config["SQLALCHEMY_DATABASE_URI"] = app.config["DATABASE"]
+    database = SQLAlchemy(
+        app, session_options={"expire_on_commit": False}  # Fixes DetachedInstanceError
+    )
     return database
 
 
@@ -50,6 +50,7 @@ def _register_views(app):
     from infiltrate.views.update_api import UpdateAPI
     from infiltrate.views.login import LoginView
     from infiltrate.views.update_collection import UpdateCollectionView
+
     CardsView.register(app)
     LoginView.register(app)
     UpdateAPI.register(app)
@@ -71,11 +72,12 @@ def _register_views(app):
                 url = flask.url_for(rule.endpoint, **(rule.defaults or {}))
                 links.append((url, rule.endpoint))
         print(links)
-        return 'See backend console log.'
+        return "See backend console log."
 
 
 def _schedule_updates():
     from infiltrate import scheduling
+
     return scheduling.schedule_updates()
 
 

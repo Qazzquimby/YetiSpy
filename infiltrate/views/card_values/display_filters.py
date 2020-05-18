@@ -30,9 +30,8 @@ class UnownedFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def filter(cls, cards: pd.DataFrame,
-               user: models.user.User) -> pd.DataFrame:
-        filtered = cards[cards['is_owned'] == False]
+    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
+        filtered = cards.query("is_owned == False")
         return filtered
 
 
@@ -41,9 +40,8 @@ class OwnedFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def filter(cls, cards: pd.DataFrame,
-               user: models.user.User) -> pd.DataFrame:
-        filtered = cards[cards['is_owned'] == True]
+    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
+        filtered = cards.query("is_owned == True")
         return filtered
 
 
@@ -52,8 +50,7 @@ class AllFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def filter(cls, cards: pd.DataFrame,
-               user: models.user.User) -> pd.DataFrame:
+    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
         return cards
 
 
@@ -72,8 +69,7 @@ class CardDisplaySort(Filter, ABC):
         raise NotImplementedError
 
     @classmethod
-    def filter(cls, cards: pd.DataFrame,
-               user: models.user.User) -> pd.DataFrame:
+    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
         return cards
 
 
@@ -87,18 +83,17 @@ class CraftSort(CardDisplaySort):
     def sort(displays: pd.DataFrame) -> pd.DataFrame:
         """Sorts the cards by highest to lowest card value
          per shiftstone crafting cost."""
-        sorted = displays.sort_values(by=['value_per_shiftstone'],
-                                      ascending=False)
+        sorted = displays.sort_values(by=["value_per_shiftstone"], ascending=False)
         return sorted
 
     @classmethod
-    def filter(cls, cards: pd.DataFrame, user: models.user.User
-               ) -> pd.DataFrame:
+    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
         """Filters out uncraftable."""
         filtered = cards[
             np.logical_not(
-                models.card_set.CardSet.is_campaign_from_num(
-                    cards['set_num']))]
+                models.card_set.CardSet.is_campaign_from_num(cards["set_num"])
+            )
+        ]
         return filtered
 
 
@@ -111,36 +106,38 @@ class ValueSort(CardDisplaySort):
     @staticmethod
     def sort(displays: pd.DataFrame) -> pd.DataFrame:
         """Sorts cards from highest to lowest card value."""
-        sorted = displays.sort_values(by=['value'], ascending=False)
+        sorted = displays.sort_values(by=["value"], ascending=False)
         return sorted
 
     @classmethod
-    def filter(cls, cards: pd.DataFrame,
-               user: models.user.User) -> pd.DataFrame:
+    def filter(cls, cards: pd.DataFrame, user: models.user.User) -> pd.DataFrame:
         """Excludes owned cards."""
         return cards
 
 
 def get_sort(sort_str):
     """Get an OwnershipFilter from its id string."""
-    sort_str_to_sort = {'craft': CraftSort,
-                        'value': ValueSort}
+    sort_str_to_sort = {"craft": CraftSort, "value": ValueSort}
 
     sort = sort_str_to_sort.get(sort_str, None)
     if not sort:
         raise ValueError(
-            f"Sort method {sort_str} not recognized. Known sorts are {sort_str_to_sort.keys()}")
+            f"Sort method {sort_str} not recognized. Known sorts are {sort_str_to_sort.keys()}"
+        )
     return sort
 
 
 def get_owner(owner_str):
     """Get an OwnershipFilter from its id string."""
-    owner_str_to_owner = {'unowned': UnownedFilter,
-                          'owned': OwnedFilter,
-                          'all': AllFilter}
+    owner_str_to_owner = {
+        "unowned": UnownedFilter,
+        "owned": OwnedFilter,
+        "all": AllFilter,
+    }
 
     sort = owner_str_to_owner.get(owner_str, None)
     if not sort:
         raise ValueError(
-            f"Ownership type {owner_str} not recognized. Known types are {owner_str_to_owner.keys()}")
+            f"Ownership type {owner_str} not recognized. Known types are {owner_str_to_owner.keys()}"
+        )
     return sort

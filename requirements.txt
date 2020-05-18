@@ -69,6 +69,7 @@ pathspec==0.5.9
 pefile==2018.8.8
 pickleshare==0.7.5
 Pillow==7.1.2
+pre-commit
 pluggy==0.12.0
 progiter==0.1.0
 prompt-toolkit==2.0.9

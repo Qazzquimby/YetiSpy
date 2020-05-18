@@ -14,26 +14,29 @@ from models.user import User, get_by_id
 
 # TODO IMPORTANT authentication is currently not secure. The user can fake a cookie for any id to log in with that id.
 
+
 class BadKeyException(Exception):
     """The given key is not recognized by Eternal Warcry"""
+
     pass
 
 
 class AuthenticationException(Exception):
     """The user isn't logged in."""
+
     pass
 
 
 def get_sign_up():
     try:
-        return flask.request.form['signup'] == 'on'
+        return flask.request.form["signup"] == "on"
     except BadRequestKeyError:
         return False
 
 
 def get_remember_me():
     try:
-        return flask.request.form['remember'] == 'on'
+        return flask.request.form["remember"] == "on"
     except BadRequestKeyError:
         return False
 
@@ -47,8 +50,7 @@ def get_username(key: str):
 
 
 def get_username_from_key(key: str):
-    url = "https://api.eternalwarcry.com/v1/useraccounts/profile" + \
-          f"?key={key}"
+    url = "https://api.eternalwarcry.com/v1/useraccounts/profile" + f"?key={key}"
     response = browser.obj_from_url(url)
     username = response["username"]
     return username
@@ -64,8 +66,7 @@ def get_user_id(username: str, key: str) -> int:
 
 def get_user_if_exists(username: str, key: str) -> typing.Optional[User]:
     existing_users_with_username = User.query.filter_by(name=username).all()
-    matching_users = [user for user in existing_users_with_username if
-                      user.key == key]
+    matching_users = [user for user in existing_users_with_username if user.key == key]
     assert len(matching_users) in (0, 1)
     if matching_users:
         return matching_users[0]
@@ -108,18 +109,17 @@ class LoginView(FlaskView):
     """View for the list of card values"""
 
     def index(self):
-        return flask.render_template('login.html')
+        return flask.render_template("login.html")
 
     def post(self):
-        key = flask.request.form['key']
+        key = flask.request.form["key"]
         remember_me = get_remember_me()
 
         username = get_username(key)
         user_id = get_user_id(username, key)
 
-        response = flask.redirect('/')
-        login(response, user_id=user_id, username=username,
-              remember_me=remember_me)
+        response = flask.redirect("/")
+        login(response, user_id=user_id, username=username, remember_me=remember_me)
         return response
 
 

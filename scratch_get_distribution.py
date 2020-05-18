@@ -48,10 +48,10 @@ def simulate_event(iterations: int, win_func):
     total_wins = sum(win_counter.values())
     for win_count in win_counter.keys():
         fraction = win_counter[win_count] / total_wins
-        print(f'{win_count} - {fraction}')
+        print(f"{win_count} - {fraction}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # events = []
     # for i, num_parents in enumerate(all_num_parents):
     #     event = 1.0 / 2 ** (i + 1)
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     # simulate_event(10_000_000, num_wins_in_random_draft)
     simulate_event(10_000_000, num_wins_in_random_league)
 
-    print('debug')
+    print("debug")
 
     # for i in range(0, 10):
     #     chance = chance_of_exactly_x_events(i, events)

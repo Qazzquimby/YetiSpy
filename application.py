@@ -17,7 +17,7 @@ def open_in_browser():
     threading.Timer(1.25, lambda: webbrowser.open(url)).start()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     setup_application(application)
     open_in_browser()
     application.run(debug=True, use_debugger=False, use_reloader=False)

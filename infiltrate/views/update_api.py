@@ -18,8 +18,9 @@ NO_KEY_GIVEN = "no_key_given"
 # noinspection PyMethodMayBeStatic
 class UpdateAPI(FlaskView):
     """View for the list of card values"""
-    route_base = '/secret_update'
-    key = application.config['UPDATE_KEY']
+
+    route_base = "/secret_update"
+    key = application.config["UPDATE_KEY"]
 
     def refuse_bad_key(self, key):
         if key != self.key:

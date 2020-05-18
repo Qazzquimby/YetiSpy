@@ -16,12 +16,11 @@ def make_card_playset_dict() -> typing.Dict:
 
 
 def make_collection_from_ew_export(
-        cards: typing.List[typing.Dict[str, int]]
+    cards: typing.List[typing.Dict[str, int]]
 ) -> typing.Dict[models.card.CardId, int]:
     """Gets card ownership from the Eternal Warcry export format."""
     collection = defaultdict(int)
     for card in cards:
-        card_id = models.card.CardId(set_num=card["set"],
-                                     card_num=card["card_number"])
+        card_id = models.card.CardId(set_num=card["set"], card_num=card["card_number"])
         collection[card_id] += card["count"]
     return collection

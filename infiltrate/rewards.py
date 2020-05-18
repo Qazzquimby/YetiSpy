@@ -12,12 +12,12 @@ import models.rarity
 class CardClass:
     """A pool of cards from which drops are chosen."""
 
-    def __init__(self,
-                 rarity: models.rarity.Rarity,
-                 sets: typing.Optional[
-                     typing.List[models.card_set.CardSet]] = None,
-                 is_premium=False):
-
+    def __init__(
+        self,
+        rarity: models.rarity.Rarity,
+        sets: typing.Optional[typing.List[models.card_set.CardSet]] = None,
+        is_premium=False,
+    ):
         self.sets = sets
         if self.sets is None:
             self.sets = models.card_set.get_main_sets()
@@ -34,16 +34,20 @@ class CardClass:
         sets = self.sets
 
         set_nums = models.card_set.get_set_nums_from_sets(sets)
-        count = (session.query(models.card.Card)
-                 .filter(models.card.Card.set_num.in_(set_nums))
-                 .filter(models.card.Card.rarity == self.rarity.name)
-                 .count())
+        count = (
+            session.query(models.card.Card)
+            .filter(models.card.Card.set_num.in_(set_nums))
+            .filter(models.card.Card.rarity == self.rarity.name)
+            .count()
+        )
         return count
 
     def __eq__(self, other):
-        is_equal = (self.sets == other.sets
-                    and self.rarity == other.rarity
-                    and self.is_premium == other.is_premium)
+        is_equal = (
+            self.sets == other.sets
+            and self.rarity == other.rarity
+            and self.is_premium == other.is_premium
+        )
         return is_equal
 
     def __hash__(self):
@@ -52,29 +56,31 @@ class CardClass:
         return hash_value
 
     def get_value(self, card_data) -> float:
-        set_values = [self._get_value_for_set(card_data, card_set)
-                      for card_set in self.sets]
+        set_values = [
+            self._get_value_for_set(card_data, card_set) for card_set in self.sets
+        ]
 
         avg_set_value = sum(set_values) / len(set_values)
         return avg_set_value
 
-    def _get_value_for_set(self, card_data,
-                           card_set: models.card_set.CardSet
-                           ) -> float:
+    def _get_value_for_set(self, card_data, card_set: models.card_set.CardSet) -> float:
         cards_in_set_and_rarity = card_data[
-            np.logical_and(card_data['set_num'] == card_set.set_num,
-                           card_data['rarity'] == self.rarity.name)]
+            np.logical_and(
+                card_data["set_num"] == card_set.set_num,
+                card_data["rarity"] == self.rarity.name,
+            )
+        ]
 
         value = get_value(cards_in_set_and_rarity)
         return value
 
 
 def get_value(card_pool):
-    unowned_cards = card_pool[card_pool['is_owned'] == False]
-    findable_cards = unowned_cards.drop_duplicates(['set_num', 'card_num'])
+    unowned_cards = card_pool.query("is_owned == False]")
+    findable_cards = unowned_cards.drop_duplicates(["set_num", "card_num"])
 
     try:
-        average_value = (sum(findable_cards['value']) * 4 / len(card_pool))
+        average_value = sum(findable_cards["value"]) * 4 / len(card_pool)
         return average_value
     except ZeroDivisionError:
         return 0
@@ -92,16 +98,20 @@ class DraftPackCardClass(CardClass):
         """The total number of cards in the pool."""
         session = models.card.db.session
 
-        count = (session.query(models.card.Card)
-                 .filter(models.card.Card.is_in_draft_pack == True)
-                 .filter(models.card.Card.rarity == self.rarity.name)
-                 .count())
+        count = (
+            session.query(models.card.Card)
+            .filter(models.card.Card.is_in_draft_pack is True)
+            .filter(models.card.Card.rarity == self.rarity.name)
+            .count()
+        )
         return count
 
     def __eq__(self, other):
-        is_equal = (self.sets == other.sets
-                    and self.rarity == other.rarity
-                    and self.is_premium == other.is_premium)
+        is_equal = (
+            self.sets == other.sets
+            and self.rarity == other.rarity
+            and self.is_premium == other.is_premium
+        )
         return is_equal
 
     def __hash__(self):
@@ -110,8 +120,11 @@ class DraftPackCardClass(CardClass):
 
     def get_value(self, card_data) -> float:
         cards_in_draft_pack_and_rarity = card_data[
-            np.logical_and(card_data['is_in_draft_pack'] == True,
-                           card_data['rarity'] == self.rarity.name)]
+            np.logical_and(
+                card_data["is_in_draft_pack"] is True,
+                card_data["rarity"] == self.rarity.name,
+            )
+        ]
         value = get_value(cards_in_draft_pack_and_rarity)
         return value
 
@@ -150,9 +163,13 @@ class CardClassWithAmountPerWeek:
 
 
 class PlayerRewards:  # TODO Make into model to persist
-    def __init__(self, first_wins_per_week, drafts_per_week,
-                 ranked_wins_per_day,
-                 unranked_wins_per_day):
+    def __init__(
+        self,
+        first_wins_per_week,
+        drafts_per_week,
+        ranked_wins_per_day,
+        unranked_wins_per_day,
+    ):
         self.first_wins_per_week = first_wins_per_week
         self.drafts_per_week = drafts_per_week
         self.ranked_wins_per_day = ranked_wins_per_day
@@ -161,13 +178,15 @@ class PlayerRewards:  # TODO Make into model to persist
         self.rewards_with_rates = self.get_rewards_per_week()
 
         # This could be its own object PlayerDrops
-        self.card_classes_with_amounts_per_week \
-            = self.get_card_classes_with_amounts_per_week()
+        self.card_classes_with_amounts_per_week = (
+            self.get_card_classes_with_amounts_per_week()
+        )
 
     def get_rewards_per_week(self):
         """Get the rewards the player will find in a week on avg."""
-        rewards_with_rates = [RewardsPerWeek(FIRST_WIN_OF_THE_DAY,
-                                             self.first_wins_per_week)]
+        rewards_with_rates = [
+            RewardsPerWeek(FIRST_WIN_OF_THE_DAY, self.first_wins_per_week)
+        ]
 
         ranked_silvers = min(3, self.ranked_wins_per_day // 3) * 7
 
@@ -175,9 +194,9 @@ class PlayerRewards:  # TODO Make into model to persist
         unranked_bronzes = self.unranked_wins_per_day * 7
 
         rewards_with_rates.append(
-            RewardsPerWeek(BRONZE_CHEST, ranked_bronzes + unranked_bronzes))
-        rewards_with_rates.append(
-            RewardsPerWeek(SILVER_CHEST, ranked_silvers))
+            RewardsPerWeek(BRONZE_CHEST, ranked_bronzes + unranked_bronzes)
+        )
+        rewards_with_rates.append(RewardsPerWeek(SILVER_CHEST, ranked_silvers))
 
         # TODO add draft info
         # Draft pack pools can be found here
@@ -188,43 +207,46 @@ class PlayerRewards:  # TODO Make into model to persist
 
         return rewards_with_rates
 
-    def get_card_classes_with_amounts_per_week(self) -> typing.List[
-        CardClassWithAmountPerWeek]:
+    def get_card_classes_with_amounts_per_week(
+        self,
+    ) -> typing.List[CardClassWithAmountPerWeek]:
         card_classes_with_amounts_per_week_dict = collections.defaultdict(int)
         for reward_with_rate in self.rewards_with_rates:
             drops_per_week = reward_with_rate.drops_per_week
 
-            card_classes_with_amounts = \
-                reward_with_rate.reward.card_class_amounts
+            card_classes_with_amounts = reward_with_rate.reward.card_class_amounts
 
             for card_class_with_amount in card_classes_with_amounts:
                 card_class = card_class_with_amount.card_class
                 amount = card_class_with_amount.amount
-                card_classes_with_amounts_per_week_dict[
-                    card_class] += amount * drops_per_week
-        card_classes_with_amounts_per_week = (
-            [CardClassWithAmountPerWeek(card_class=key, amount_per_week=
-            card_classes_with_amounts_per_week_dict[key])
-             for key in card_classes_with_amounts_per_week_dict.keys()])
+                card_classes_with_amounts_per_week_dict[card_class] += (
+                    amount * drops_per_week
+                )
+        card_classes_with_amounts_per_week = [
+            CardClassWithAmountPerWeek(
+                card_class=key,
+                amount_per_week=card_classes_with_amounts_per_week_dict[key],
+            )
+            for key in card_classes_with_amounts_per_week_dict.keys()
+        ]
 
         return card_classes_with_amounts_per_week
 
     @caches.mem_cache.cache(f"player_rewards_findabilities", expires=120)
     def get_chance_of_specific_card_drop_in_a_week(
-            self,
-            rarity: models.rarity.Rarity,
-            card_set: models.card_set.CardSet):
+        self, rarity: models.rarity.Rarity, card_set: models.card_set.CardSet
+    ):
         chances = []
         for card_class_with_amount in self.card_classes_with_amounts_per_week:
             rarity_match = rarity == card_class_with_amount.card_class.rarity
 
             set_nums = models.card_set.get_set_nums_from_sets(
-                card_class_with_amount.card_class.sets)
+                card_class_with_amount.card_class.sets
+            )
 
             set_match = card_set.set_num in set_nums
             if rarity_match and set_match:
-                chance = (card_class_with_amount
-                          .chance_of_specific_card_drop_per_week)
+                chance = card_class_with_amount.chance_of_specific_card_drop_per_week
                 chances.append(chance)
         chance_of_at_least_one = get_chance_of_at_least_one(chances)
         return chance_of_at_least_one
@@ -243,10 +265,14 @@ class Reward:
     """Something a player can be given in response to a purchase,
     such as league results."""
 
-    def __init__(self, card_classes: typing.Optional[
-        typing.List[typing.Union[CardClassWithAmount, CardClass]]] = None,
-                 gold: int = 0,
-                 shiftstone: int = 0):
+    def __init__(
+        self,
+        card_classes: typing.Optional[
+            typing.List[typing.Union[CardClassWithAmount, CardClass]]
+        ] = None,
+        gold: int = 0,
+        shiftstone: int = 0,
+    ):
         self.card_class_amounts = card_classes
         if self.card_class_amounts is None:
             self.card_class_amounts = []
@@ -264,10 +290,11 @@ class Reward:
         self.card_class_amounts = new_card_classes_with_amounts
 
     def __eq__(self, other):
-        is_equal = (self.card_class_amounts == other.card_class_amounts
-                    and self.gold == other.gold
-                    and self.shiftstone == other.shiftstone
-                    )
+        is_equal = (
+            self.card_class_amounts == other.card_class_amounts
+            and self.gold == other.gold
+            and self.shiftstone == other.shiftstone
+        )
         return is_equal
 
     def get_value(self, card_data) -> float:
@@ -283,8 +310,9 @@ class Reward:
 
 def get_pack_contents_for_sets(sets: typing.List[models.card_set.CardSet]):
     card_classes_with_amounts = [
-        CardClassWithAmount(card_class=CardClass(rarity=rarity, sets=sets),
-                            amount=rarity.num_in_pack)
+        CardClassWithAmount(
+            card_class=CardClass(rarity=rarity, sets=sets), amount=rarity.num_in_pack
+        )
         for rarity in models.rarity.RARITIES
     ]
     return card_classes_with_amounts
@@ -307,44 +335,52 @@ class RewardsPerWeek:
 
 
 WOOD_CHEST = Reward(gold=24)
-BRONZE_CHEST = Reward(gold=40,
-                      card_classes=[
-                          CardClassWithAmount(card_class=CardClass(
-                              rarity=models.rarity.COMMON))
-                      ])
-SILVER_CHEST = Reward(gold=225,
-                      card_classes=[
-                          CardClassWithAmount(card_class=CardClass(
-                              rarity=models.rarity.UNCOMMON))
-                      ])
-GOLD_CHEST = Reward(gold=495,
-                    card_classes=get_pack_contents_for_sets(
-                        models.card_set.get_old_main_sets())
-                    )
+BRONZE_CHEST = Reward(
+    gold=40,
+    card_classes=[
+        CardClassWithAmount(card_class=CardClass(rarity=models.rarity.COMMON))
+    ],
+)
+SILVER_CHEST = Reward(
+    gold=225,
+    card_classes=[
+        CardClassWithAmount(card_class=CardClass(rarity=models.rarity.UNCOMMON))
+    ],
+)
+GOLD_CHEST = Reward(
+    gold=495,
+    card_classes=get_pack_contents_for_sets(models.card_set.get_old_main_sets()),
+)
 
-DIAMOND_CHEST = Reward(gold=1850,
-                       card_classes=(
-                               get_pack_contents_for_sets(
-                                   models.card_set.get_old_main_sets())
-                               + [CardClassWithAmount(
-                           CardClass(rarity=models.rarity.UNCOMMON,
-                                     is_premium=True))]
-                       ))
+DIAMOND_CHEST = Reward(
+    gold=1850,
+    card_classes=(
+        get_pack_contents_for_sets(models.card_set.get_old_main_sets())
+        + [
+            CardClassWithAmount(
+                CardClass(rarity=models.rarity.UNCOMMON, is_premium=True)
+            )
+        ]
+    ),
+)
 
 CARD_PACKS = {
     card_set: Reward(card_classes=get_pack_contents_for_sets([card_set]))
-    for card_set in models.card_set.get_main_sets()}
+    for card_set in models.card_set.get_main_sets()
+}
 
 DRAFT_PACK = Reward(card_classes=get_draft_pack_contents())
 
-FIRST_WIN_OF_THE_DAY = Reward(card_classes=get_pack_contents_for_sets(
-    [models.card_set.get_newest_main_set()]
-))
+FIRST_WIN_OF_THE_DAY = Reward(
+    card_classes=get_pack_contents_for_sets([models.card_set.get_newest_main_set()])
+)
 
-DEFAULT_PLAYER_REWARD_RATE = PlayerRewards(first_wins_per_week=6.3,
-                                           drafts_per_week=0.3,
-                                           ranked_wins_per_day=3.5,
-                                           unranked_wins_per_day=0)
+DEFAULT_PLAYER_REWARD_RATE = PlayerRewards(
+    first_wins_per_week=6.3,
+    drafts_per_week=0.3,
+    ranked_wins_per_day=3.5,
+    unranked_wins_per_day=0,
+)
 
 # if __name__ == '__main__':
 #     player_rewards = PlayerRewards(first_wins_per_week=7,

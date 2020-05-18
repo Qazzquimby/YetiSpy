@@ -15,7 +15,7 @@ if typing.TYPE_CHECKING:
     from models.user import User
 
 
-def update_collection(user: 'User'):
+def update_collection(user: "User"):
     updater = _CollectionUpdater(user)
     updater.run()
 
@@ -24,7 +24,7 @@ class _CollectionUpdater:
     """Runner class to update user's collection to match their
     Eternal Warcry collection."""
 
-    def __init__(self, user: 'User'):
+    def __init__(self, user: "User"):
         self.user = user
 
     def run(self):
@@ -35,8 +35,10 @@ class _CollectionUpdater:
         self._add_new_collection(collection)
 
     def _get_new_collection(self) -> typing.Dict[models.card.CardId, int]:
-        url = (f"https://api.eternalwarcry.com/v1/useraccounts/collection"
-               f"?key={self.user.key}")
+        url = (
+            f"https://api.eternalwarcry.com/v1/useraccounts/collection"
+            f"?key={self.user.key}"
+        )
         response = browser.obj_from_url(url)
         cards = response["cards"]
         collection = card_collections.make_collection_from_ew_export(cards)
@@ -45,9 +47,11 @@ class _CollectionUpdater:
         return collection
 
     def _remove_old_collection(self):
-        (models.user.owns_card.UserOwnsCard
-         .query.filter_by(user_id=self.user.id)
-         .delete())
+        (
+            models.user.owns_card.UserOwnsCard.query.filter_by(
+                user_id=self.user.id
+            ).delete()
+        )
 
     def _add_new_collection(self, collection: typing.Dict, retry=True):
         try:
@@ -56,7 +60,7 @@ class _CollectionUpdater:
                     user_id=self.user.id,
                     set_num=card_id.set_num,
                     card_num=card_id.card_num,
-                    count=collection[card_id]
+                    count=collection[card_id],
                 )
                 self.user.cards.append(user_owns_card)
                 db.session.add(user_owns_card)
@@ -75,16 +79,18 @@ class _CollectionUpdater:
 class UserOwnershipCache:
     """Cache for cards owned by each user."""
 
-    def __init__(self, user: 'User'):
+    def __init__(self, user: "User"):
         self._dict = self._init_dict(user)
 
     @staticmethod
     def _init_dict(user):
-        raw_ownership = (models.user.owns_card.UserOwnsCard.query
-                         .filter_by(user_id=user.id).all())
-        own_dict = {models.card.CardId(set_num=own.set_num,
-                                       card_num=own.card_num): own
-                    for own in raw_ownership}
+        raw_ownership = models.user.owns_card.UserOwnsCard.query.filter_by(
+            user_id=user.id
+        ).all()
+        own_dict = {
+            models.card.CardId(set_num=own.set_num, card_num=own.card_num): own
+            for own in raw_ownership
+        }
         return own_dict
 
     def __getitem__(self, item):
@@ -92,13 +98,13 @@ class UserOwnershipCache:
 
 
 @caches.mem_cache.cache("ownership", expires=5 * 60)
-def get_ownership_cache(user: 'User'):
+def get_ownership_cache(user: "User"):
     return UserOwnershipCache(user)
 
 
-def user_has_count_of_card(user: 'User',
-                           card_id: models.card.CardId,
-                           count: int = 1) -> bool:
+def user_has_count_of_card(
+    user: "User", card_id: models.card.CardId, count: int = 1
+) -> bool:
     """Return if a user has at least count cards."""
     cache = get_ownership_cache(user)
 

@@ -11,7 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from webdrivermanager import ChromeDriverManager
 
 # current_dir = str(pathlib.Path.cwd())
-current_dir = r'C:\Users\User\PycharmProjects\eternalCardEvaluator'
+current_dir = r"C:\Users\User\PycharmProjects\eternalCardEvaluator"
 # todo in production change back to current_dir = str(pathlib.Path.cwd())
 
 sys.path.append(current_dir)
@@ -26,9 +26,10 @@ driver = webdriver.Chrome(ChromeDriverManager().install())
 
 class Browser(selenium.webdriver.Chrome):
     """Context wrapper for selenium Chrome browser."""
-    driver, _ = ChromeDriverManager(download_root=current_dir,
-                                    link_path=current_dir) \
-        .download_and_install()
+
+    driver, _ = ChromeDriverManager(
+        download_root=current_dir, link_path=current_dir
+    ).download_and_install()
 
     def __init__(self):
         options = selenium.webdriver.chrome.options.Options()
@@ -53,8 +54,7 @@ def get_strs_from_url_and_xpath(url: str, xpath: str) -> typing.List[str]:
     """Get a list of elements found at the xpath at the url."""
     with Browser() as browser:
         browser.get(url)
-        elements = browser.safely_find(
-            lambda x: x.find_elements_by_xpath(xpath))
+        elements = browser.safely_find(lambda x: x.find_elements_by_xpath(xpath))
         texts = [element.text for element in elements]
     return texts
 
@@ -74,14 +74,14 @@ def obj_from_url(url: str):
         url,
         data=None,
         headers={
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/35.0.1916.47 Safari/537.36 '
-        }
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_3) AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/35.0.1916.47 Safari/537.36 "
+        },
     )
 
     try:
         page = urllib.request.urlopen(request)
-        page_string = page.read().decode('utf-8')
+        page_string = page.read().decode("utf-8")
         page_json = json.loads(page_string)
     except urllib.error.URLError:
         page_json = None
