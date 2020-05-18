@@ -38,9 +38,10 @@ class DeckSearchHasCard(db.Model):
     @staticmethod
     def as_df(decksearch_id: int) -> "DeckSearchHasCard_DF":
         session = db.engine.raw_connection()
-        query = f"""SELECT *
-FROM deck_search_has_card
-WHERE decksearch_id = {decksearch_id}"""
+        query = f"""\
+        SELECT *
+        FROM deck_search_has_card
+        WHERE decksearch_id = {decksearch_id}"""
         df = pd.read_sql_query(query, session)
         del df["decksearch_id"]
 

@@ -26,12 +26,32 @@ class UserOwnsCard(db.Model):
         {},
     )
 
+    @classmethod
+    def to_dataframe(cls, user: "models.user.User"):
+        session = db.engine.raw_connection()
+        query = f"""\
+                SELECT *
+                FROM user_owns_card
+                WHERE user_id = {user.id}"""
+        return pd.read_sql_query(query, session)
 
-def create_is_owned_column(df: pd.DataFrame, user: "models.user.User") -> pd.DataFrame:
-    profiling.start_timer("create is_owned column")
-    new_df = df.copy()
-    new_df["is_owned"] = df.apply(lambda x: is_owned(x, user), axis=1)  # todo speed
-    profiling.end_timer("create is_owned column")
+
+def create_is_owned_column(
+    card_details: pd.DataFrame, user: "models.user.User"
+) -> pd.DataFrame:
+    raw_ownership = UserOwnsCard.to_dataframe(user)
+
+    details_with_total_owned = (
+        card_details.set_index(["set_num", "card_num"])
+        .join(raw_ownership.set_index(["set_num", "card_num"]))
+        .reset_index()
+    )
+
+    details_with_total_owned["is_owned"] = (
+        details_with_total_owned["count_in_deck"] <= details_with_total_owned["count"]
+    )
+    del details_with_total_owned["count"]
+    new_df = details_with_total_owned
     return new_df
 
 
