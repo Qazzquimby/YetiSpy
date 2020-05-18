@@ -1,5 +1,5 @@
 """Card Rarities"""
-import typing
+import typing as t
 
 from infiltrate import db
 
@@ -72,7 +72,7 @@ LEGENDARY = Rarity(
     foil_enchant=9600,
     foil_disenchant=3200,
 )
-RARITIES: typing.List[Rarity] = [COMMON, UNCOMMON, RARE, LEGENDARY, PROMO]
+RARITIES: t.List[Rarity] = [COMMON, UNCOMMON, RARE, LEGENDARY, PROMO]
 
 rarity_from_name = {r.name: r for r in RARITIES}
 

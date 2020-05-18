@@ -3,8 +3,7 @@
 Related to card_collections.py
 """
 import json
-import typing
-from typing import NamedTuple
+import typing as t
 
 import pandas as pd
 import sqlalchemy.exc
@@ -17,7 +16,7 @@ import models.rarity
 from infiltrate import db
 
 
-class CardId(NamedTuple):
+class CardId(t.NamedTuple):
     """A key to identify a card."""
 
     set_num: int
@@ -110,7 +109,7 @@ def _get_card_json():
     return card_json
 
 
-def _make_cards_from_entries(entries: typing.List[dict]):
+def _make_cards_from_entries(entries: t.List[dict]):
     seen_ids = set()
     for entry in entries:
         if "EternalID" in entry.keys():
@@ -122,7 +121,7 @@ def _make_cards_from_entries(entries: typing.List[dict]):
                 seen_ids.add(card_id)
 
 
-def _make_card_from_entry(entry: dict) -> typing.Optional[Card]:
+def _make_card_from_entry(entry: dict) -> t.Optional[Card]:
     if not entry["DeckBuildable"] or entry["Rarity"] == "None":
         return
     card = Card(

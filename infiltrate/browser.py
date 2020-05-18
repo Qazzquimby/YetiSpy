@@ -1,7 +1,7 @@
 """Selenium web scraping utilities"""
 import json
 import sys
-import typing
+import typing as t
 import urllib.error
 import urllib.request
 
@@ -50,7 +50,7 @@ class Browser(selenium.webdriver.Chrome):
         self.close()
 
 
-def get_strs_from_url_and_xpath(url: str, xpath: str) -> typing.List[str]:
+def get_strs_from_url_and_xpath(url: str, xpath: str) -> t.List[str]:
     """Get a list of elements found at the xpath at the url."""
     with Browser() as browser:
         browser.get(url)

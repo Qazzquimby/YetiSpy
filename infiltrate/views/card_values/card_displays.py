@@ -1,5 +1,5 @@
 """This is where the routes are defined."""
-import typing
+import typing as t
 
 import numpy as np
 import pandas as pd
@@ -51,11 +51,11 @@ class CardDisplays:
         self.is_filtered = False
         self.is_sorted = False
 
-        self._sort_method: typing.Optional[display_filters.CardDisplaySort] = None
-        self._ownership: typing.Optional[display_filters.OwnershipFilter] = None
+        self._sort_method: t.Optional[display_filters.CardDisplaySort] = None
+        self._ownership: t.Optional[display_filters.OwnershipFilter] = None
 
     @property
-    def sort_method(self) -> typing.Optional[display_filters.CardDisplaySort]:
+    def sort_method(self) -> t.Optional[display_filters.CardDisplaySort]:
         return self._sort_method
 
     @sort_method.setter
@@ -66,7 +66,7 @@ class CardDisplays:
             self._sort_method = value
 
     @property
-    def ownership(self) -> typing.Optional[display_filters.OwnershipFilter]:
+    def ownership(self) -> t.Optional[display_filters.OwnershipFilter]:
         return self._ownership
 
     @ownership.setter
@@ -130,8 +130,8 @@ class CardDisplays:
 
     def configure(
         self,
-        sort_method: typing.Type[display_filters.CardDisplaySort],
-        ownership: typing.Type[display_filters.OwnedFilter] = None,
+        sort_method: t.Type[display_filters.CardDisplaySort],
+        ownership: t.Type[display_filters.OwnedFilter] = None,
     ) -> "CardDisplays":
         """Sets sort method and ownership filter,
         and updates displays to match."""

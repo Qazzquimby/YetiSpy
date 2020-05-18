@@ -1,9 +1,9 @@
 """Timing diagnostics"""
 import time
-import typing
+import typing as t
 
 
-def timer(function: typing.Callable, args=None, name=None):
+def timer(function: t.Callable, args=None, name=None):
     """Times the given function and prints the results."""
     if args is None:
         args = {}

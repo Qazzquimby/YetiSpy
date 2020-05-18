@@ -1,11 +1,11 @@
 """Data objects for working with groups of cards"""
-import typing
+import typing as t
 from collections import defaultdict
 
 import models.card
 
 
-def make_card_playset_dict() -> typing.Dict:
+def make_card_playset_dict() -> t.Dict:
     """Makes a dict representing card playsets
      CardId -> (list of 4 values corresponding to card counts)"""
 
@@ -16,8 +16,8 @@ def make_card_playset_dict() -> typing.Dict:
 
 
 def make_collection_from_ew_export(
-    cards: typing.List[typing.Dict[str, int]]
-) -> typing.Dict[models.card.CardId, int]:
+    cards: t.List[t.Dict[str, int]]
+) -> t.Dict[models.card.CardId, int]:
     """Gets card ownership from the Eternal Warcry export format."""
     collection = defaultdict(int)
     for card in cards:

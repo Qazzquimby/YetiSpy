@@ -1,5 +1,5 @@
 """Models for sets of cards."""
-import typing
+import typing as t
 
 import browser
 import caches
@@ -30,9 +30,7 @@ def update():
             set_name_strings = browser.get_strs_from_url_and_xpath(url, xpath)
             return set_name_strings
 
-        def _parse_set_name_string(
-            self, set_name_string: str
-        ) -> typing.Tuple[int, str]:
+        def _parse_set_name_string(self, set_name_string: str) -> t.Tuple[int, str]:
             name = set_name_string.split(" [")[0]
             set_num = int(set_name_string.split(" [Set")[1].split("]")[0])
             return set_num, name
@@ -97,12 +95,12 @@ class CardSet:
         return hash(self.set_num)
 
 
-def get_set_nums_from_sets(sets: typing.List[CardSet]) -> typing.List[int]:
+def get_set_nums_from_sets(sets: t.List[CardSet]) -> t.List[int]:
     set_nums = [card_set.set_num for card_set in sets]
     return set_nums
 
 
-def get_campaign_sets() -> typing.List[CardSet]:
+def get_campaign_sets() -> t.List[CardSet]:
     """Gets all CardSets for campaigns"""
     sets = get_sets()
     campaign_sets = [card_set for card_set in sets if card_set.is_campaign]
@@ -116,33 +114,33 @@ def get_newest_main_set() -> CardSet:
     return newest_main_set
 
 
-def get_old_main_sets() -> typing.List[CardSet]:
+def get_old_main_sets() -> t.List[CardSet]:
     """Gets droppable packs that are not the newest set."""
     main_sets = get_main_sets()
     return main_sets[:-1]
 
 
-def get_main_sets() -> typing.List[CardSet]:
+def get_main_sets() -> t.List[CardSet]:
     """Gets CardSets for packs"""
     sets = get_sets()
     main_sets = [card_set for card_set in sets if not card_set.is_campaign]
     return main_sets
 
 
-def get_sets() -> typing.List[CardSet]:
+def get_sets() -> t.List[CardSet]:
     """Gets all CardSets"""
     set_nums = _get_set_nums()
     sets = _get_sets_from_set_nums(set_nums)
     return sets
 
 
-def _get_sets_from_set_nums(set_nums: typing.List[int]) -> typing.List[CardSet]:
+def _get_sets_from_set_nums(set_nums: t.List[int]) -> t.List[CardSet]:
     """Return card sets. Same as set ids, but 0 and 1 are one set."""
     card_sets = [CardSet(s) for s in set_nums if s != 0]
     return card_sets
 
 
-def _get_set_nums() -> typing.List[int]:
+def _get_set_nums() -> t.List[int]:
     """Return card set ids."""
     set_nums = list(models.card.db.session.query(models.card.Card.set_num).distinct())
     set_nums = [s[0] for s in set_nums if s[0]]

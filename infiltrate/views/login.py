@@ -1,5 +1,5 @@
 """This is where the routes are defined."""
-import typing
+import typing as t
 
 import flask
 from flask_classy import FlaskView
@@ -64,7 +64,7 @@ def get_user_id(username: str, key: str) -> int:
     return user_id
 
 
-def get_user_if_exists(username: str, key: str) -> typing.Optional[User]:
+def get_user_if_exists(username: str, key: str) -> t.Optional[User]:
     existing_users_with_username = User.query.filter_by(name=username).all()
     matching_users = [user for user in existing_users_with_username if user.key == key]
     assert len(matching_users) in (0, 1)
@@ -123,7 +123,7 @@ class LoginView(FlaskView):
         return response
 
 
-def get_by_cookie() -> typing.Optional[User]:
+def get_by_cookie() -> t.Optional[User]:
     user_id = flask.request.cookies.get(cookies.ID)
     if not user_id:
         return None

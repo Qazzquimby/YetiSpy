@@ -1,6 +1,6 @@
 """User account objects"""
 
-import typing
+import typing as t
 
 import sqlalchemy_utils
 from sqlalchemy_utils.types.encrypted.encrypted_type import FernetEngine
@@ -18,7 +18,7 @@ class User(db.Model):
     __tablename__ = "users"
     id = db.Column("id", db.Integer(), primary_key=True, autoincrement=True)
     name = db.Column("name", db.String(length=40))
-    weighted_deck_searches: typing.List[
+    weighted_deck_searches: t.List[
         models.deck_search.WeightedDeckSearch
     ] = db.relationship("WeightedDeckSearch", cascade_backrefs=False)
     key = db.Column(
@@ -44,7 +44,7 @@ class User(db.Model):
         return values
 
     def add_weighted_deck_searches(
-        self, searches: typing.List[models.deck_search.WeightedDeckSearch]
+        self, searches: t.List[models.deck_search.WeightedDeckSearch]
     ):
         """Adds a weighted deck search to the user's table"""
         for search in searches:

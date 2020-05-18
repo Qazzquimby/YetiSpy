@@ -1,6 +1,6 @@
 """The Deck model and related utilities"""
 import enum
-import typing
+import typing as t
 import urllib.error
 from datetime import datetime
 
@@ -116,13 +116,13 @@ class _WarcryNewIdGetter:
         return ids
 
     @staticmethod
-    def get_ids_from_page_json(page_json: typing.Dict):
+    def get_ids_from_page_json(page_json: t.Dict):
         decks = page_json["decks"]
         ids = [deck["deck_id"] for deck in decks]
         return ids
 
     @staticmethod
-    def remove_old_ids(ids: typing.List[str]) -> typing.List[str]:
+    def remove_old_ids(ids: t.List[str]) -> t.List[str]:
         new_ids = []
         for deck_id in ids:
             if not get_deck(deck_id):
@@ -166,7 +166,7 @@ def update_decks():
 
             self.make_deck_from_details_json(page_json)
 
-        def make_deck_from_details_json(self, page_json: typing.Dict):
+        def make_deck_from_details_json(self, page_json: t.Dict):
 
             archetype = Archetype[page_json["archetype"].lower().replace(" ", "_")]
             try:
@@ -198,7 +198,7 @@ def update_decks():
             db.session.commit()
 
         @staticmethod
-        def add_cards_to_deck(deck: Deck, page_json: typing.Dict):
+        def add_cards_to_deck(deck: Deck, page_json: t.Dict):
             cards_json = (
                 page_json["deck_cards"]
                 + page_json["sideboard_cards"]

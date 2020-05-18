@@ -1,5 +1,5 @@
 """Gets card values from a user's weighted deck searches"""
-import typing
+import typing as t
 
 import pandas as pd
 
@@ -8,7 +8,7 @@ import models.rarity
 
 
 def get_cards_values_df(
-    weighted_deck_searches: typing.List[models.deck_search.WeightedDeckSearch],
+    weighted_deck_searches: t.List[models.deck_search.WeightedDeckSearch],
 ) -> models.deck_search.DeckSearchValue_DF:
     """Gets a dataframe of all cards with values for a user
     based on all their weighted deck searches."""
@@ -20,7 +20,7 @@ class _CardValueDataframeGetter:
     """Helper class used by get_cards_values_df."""
 
     def __init__(
-        self, weighted_deck_searches: typing.List[models.deck_search.WeightedDeckSearch]
+        self, weighted_deck_searches: t.List[models.deck_search.WeightedDeckSearch]
     ):
         self.weighted_deck_searches = weighted_deck_searches
 
@@ -37,7 +37,7 @@ class _CardValueDataframeGetter:
 
     @staticmethod
     def _merge_value_dfs(
-        value_dfs: typing.List[models.deck_search.DeckSearchValue_DF],
+        value_dfs: t.List[models.deck_search.DeckSearchValue_DF],
     ) -> models.deck_search.DeckSearchValue_DF:
         combined_value_dfs = pd.concat(value_dfs)
         summed_value_df = combined_value_dfs.groupby(

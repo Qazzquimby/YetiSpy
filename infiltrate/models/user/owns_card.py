@@ -1,4 +1,4 @@
-import typing
+import typing as t
 
 import pandas as pd
 
@@ -6,7 +6,7 @@ import models.card
 import profiling
 from infiltrate import db
 
-if typing.TYPE_CHECKING:
+if t.TYPE_CHECKING:
     import models.user
 
 

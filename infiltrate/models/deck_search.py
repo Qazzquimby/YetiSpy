@@ -1,7 +1,7 @@
 """Specifies groups of decks"""
 import dataclasses
 import datetime
-import typing
+import typing as t
 
 import pandas as pd
 from progiter import progiter
@@ -71,7 +71,7 @@ class DeckSearch(db.Model):
     __tablename__ = "deck_searches"
     id = db.Column(db.Integer, primary_key=True)
     maximum_age_days = db.Column("maximum_age_days", db.Integer())
-    cards: typing.List[DeckSearchHasCard] = db.relationship("DeckSearchHasCard")
+    cards: t.List[DeckSearchHasCard] = db.relationship("DeckSearchHasCard")
 
     def get_decks(self):
         """Returns all decks belonging to the deck search"""
@@ -124,7 +124,7 @@ class DeckSearch(db.Model):
                     playrate[card_id][num_played] += 1
         return playrate
 
-    def _add_playrates(self, playrates: typing.Dict):
+    def _add_playrates(self, playrates: t.Dict):
         for card_id in progiter.ProgIter(playrates.keys()):
             for play_count in range(4):
                 deck_search_has_card = DeckSearchHasCard(

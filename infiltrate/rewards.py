@@ -1,5 +1,5 @@
 import collections
-import typing
+import typing as t
 
 import numpy as np
 
@@ -15,7 +15,7 @@ class CardClass:
     def __init__(
         self,
         rarity: models.rarity.Rarity,
-        sets: typing.Optional[typing.List[models.card_set.CardSet]] = None,
+        sets: t.Optional[t.List[models.card_set.CardSet]] = None,
         is_premium=False,
     ):
         self.sets = sets
@@ -209,7 +209,7 @@ class PlayerRewards:  # TODO Make into model to persist
 
     def get_card_classes_with_amounts_per_week(
         self,
-    ) -> typing.List[CardClassWithAmountPerWeek]:
+    ) -> t.List[CardClassWithAmountPerWeek]:
         card_classes_with_amounts_per_week_dict = collections.defaultdict(int)
         for reward_with_rate in self.rewards_with_rates:
             drops_per_week = reward_with_rate.drops_per_week
@@ -267,8 +267,8 @@ class Reward:
 
     def __init__(
         self,
-        card_classes: typing.Optional[
-            typing.List[typing.Union[CardClassWithAmount, CardClass]]
+        card_classes: t.Optional[
+            t.List[t.Union[CardClassWithAmount, CardClass]]
         ] = None,
         gold: int = 0,
         shiftstone: int = 0,
@@ -308,7 +308,7 @@ class Reward:
         return total_value
 
 
-def get_pack_contents_for_sets(sets: typing.List[models.card_set.CardSet]):
+def get_pack_contents_for_sets(sets: t.List[models.card_set.CardSet]):
     card_classes_with_amounts = [
         CardClassWithAmount(
             card_class=CardClass(rarity=rarity, sets=sets), amount=rarity.num_in_pack

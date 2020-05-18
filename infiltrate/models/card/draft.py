@@ -1,4 +1,4 @@
-import typing
+import typing as t
 
 import browser
 from infiltrate import db
@@ -20,7 +20,7 @@ def update_draft_pack_contents():
     db.session.commit()
 
 
-def _get_draft_pack_card_ids() -> typing.List[CardId]:
+def _get_draft_pack_card_ids() -> t.List[CardId]:
     file_name_selector = '//*[@id="body-wrapper"]/div/div/div[2]/div/a[last()]'
     file_name = browser.get_str_from_url_and_xpath(
         "https://eternalwarcry.com/cards/download", file_name_selector

@@ -1,4 +1,4 @@
-import typing
+import typing as t
 
 from fast_autocomplete import AutoComplete
 
@@ -24,7 +24,7 @@ class _CardAutoCompleter:
         cards = self.cards[self.cards["name"].str.lower() == name]
         return cards
 
-    def _match_name(self, search: str) -> typing.Optional[str]:
+    def _match_name(self, search: str) -> t.Optional[str]:
         """Return the closest matching card name to the search string"""
         try:
             result = self.completer.search(word=search, max_cost=3, size=1)[0][0]

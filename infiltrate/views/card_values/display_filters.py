@@ -1,4 +1,4 @@
-import typing
+import typing as t
 from abc import ABC
 
 import numpy as np
@@ -61,7 +61,7 @@ class CardDisplaySort(Filter, ABC):
         super().__init__()
 
     @property
-    def default_ownership(self) -> typing.Type[OwnershipFilter]:
+    def default_ownership(self) -> t.Type[OwnershipFilter]:
         return UnownedFilter
 
     @staticmethod

@@ -1,6 +1,6 @@
 """The cards a user owns"""
 
-import typing
+import typing as t
 
 import sqlalchemy.exc
 
@@ -11,7 +11,7 @@ import models.card
 import models.user.owns_card
 from infiltrate import db
 
-if typing.TYPE_CHECKING:
+if t.TYPE_CHECKING:
     from models.user import User
 
 
@@ -34,7 +34,7 @@ class _CollectionUpdater:
         collection = self._get_new_collection()
         self._add_new_collection(collection)
 
-    def _get_new_collection(self) -> typing.Dict[models.card.CardId, int]:
+    def _get_new_collection(self) -> t.Dict[models.card.CardId, int]:
         url = (
             f"https://api.eternalwarcry.com/v1/useraccounts/collection"
             f"?key={self.user.key}"
@@ -53,7 +53,7 @@ class _CollectionUpdater:
             ).delete()
         )
 
-    def _add_new_collection(self, collection: typing.Dict, retry=True):
+    def _add_new_collection(self, collection: t.Dict, retry=True):
         try:
             for card_id in collection.keys():
                 user_owns_card = models.user.owns_card.UserOwnsCard(
