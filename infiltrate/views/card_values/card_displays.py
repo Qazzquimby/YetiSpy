@@ -7,6 +7,7 @@ import pandas as pd
 import caches
 import models.card
 import models.card_set
+import models.deck_search
 import models.rarity
 import models.user
 import models.user.owns_card as user_owns_card
@@ -78,34 +79,33 @@ class CardDisplays:
 
     def get_value_info(self, all_cards: models.card.AllCards):
         """Get all displays for a user, not sorted or filtered."""
-        values: pd.DataFrame = self.user.get_values()
-        if len(values) == 0:
-            print("get_raw_values, no values found")
-        values = values.set_index(["set_num", "card_num"]).join(
+        playabilities: models.deck_search.PlayabilityFrame = self.user.get_playabilities()
+        playabilities = playabilities.df
+        playabilities = playabilities.set_index(["set_num", "card_num"]).join(
             all_cards.df.set_index(["set_num", "card_num"])
         )
-        values["value_per_shiftstone"] = get_value_per_shiftstone(
-            values["rarity"], values["value"]
+        playabilities["value_per_shiftstone"] = get_value_per_shiftstone(
+            playabilities["rarity"], playabilities["playability"]
         )
-        values = values.reset_index()
+        playabilities = playabilities.reset_index()
 
         # FINDABILITY
         # todo make this work to different degrees based on player preference.
-        card_classes = values[["set_num", "rarity"]].drop_duplicates()
+        card_classes = playabilities[["set_num", "rarity"]].drop_duplicates()
 
         card_set = np.vectorize(models.card_set.CardSet)(
             card_classes["set_num"]
         )  # class construction might not vectorize
 
         card_classes["findability"] = get_findability(card_classes["rarity"], card_set)
-        values = (
-            values.set_index(["set_num", "rarity"])
+        playabilities = (
+            playabilities.set_index(["set_num", "rarity"])
             .join(card_classes.set_index(["set_num", "rarity"]))
             .reset_index()
         )
-        values["value_per_shiftstone"] *= 1 - values["findability"]
-        values = user_owns_card.create_is_owned_column(values, self.user)
-        return values
+        playabilities["value_per_shiftstone"] *= 1 - playabilities["findability"]
+        playabilities = user_owns_card.create_is_owned_column(playabilities, self.user)
+        return playabilities
 
     def get_page(self, page_num: int = 0) -> pd.DataFrame:
         """Gets the page of card displays,
@@ -204,7 +204,7 @@ class CardDisplayPage:
         representing the cards minimum and maximum counts in the list."""
 
         grouped = page.groupby(["set_num", "card_num"])[
-            "count_in_deck", "value", "value_per_shiftstone"
+            "count_in_deck", "playability", "value_per_shiftstone"
         ]
         min_count = grouped.min()
         max_count = grouped.max()
@@ -214,7 +214,7 @@ class CardDisplayPage:
         min_page = reindexed.join(min_count, rsuffix="_min")
         min_max_page = min_page.join(max_count, rsuffix="_max")
         del min_max_page["count_in_deck"]
-        del min_max_page["value"]
+        del min_max_page["playability"]
         del min_max_page["value_per_shiftstone"]
         min_max_dropped_duplicates = min_max_page.drop_duplicates()
 
@@ -236,16 +236,16 @@ class CardDisplayPage:
         """Formats a page for presentation without grouping it."""
         # TODO this is pretty gross, and duplicates _group_page
         min_count = page.groupby(["set_num", "card_num", "count_in_deck"])[
-            "count_in_deck", "value", "value_per_shiftstone"
+            "count_in_deck", "playability", "value_per_shiftstone"
         ].min()
         max_count = page.groupby(["set_num", "card_num", "count_in_deck"])[
-            "count_in_deck", "value", "value_per_shiftstone"
+            "count_in_deck", "playability", "value_per_shiftstone"
         ].max()
         page.set_index(["set_num", "card_num"], inplace=True)
         page = page.join(min_count, rsuffix="_min")
         page = page.join(max_count, rsuffix="_max")
         del page["count_in_deck"]
-        del page["value"]
+        del page["playability"]
         del page["value_per_shiftstone"]
         page.reset_index(inplace=True)
         page.drop_duplicates(

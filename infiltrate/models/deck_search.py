@@ -1,8 +1,9 @@
 """Specifies groups of decks"""
+from __future__ import annotations
+
 import dataclasses
 import datetime
 import typing as t
-
 import pandas as pd
 from progiter import progiter
 
@@ -36,34 +37,60 @@ class DeckSearchHasCard(db.Model):
     )
 
     @staticmethod
-    def as_df(decksearch_id: int) -> "DeckSearchHasCard_DF":
+    def as_df(decksearch_id: int) -> "DeckSearchHasCardFrame":
+        return DeckSearchHasCardFrame(decksearch_id)
+
+
+class DeckSearchHasCardFrame:
+    NUM_DECKS_COL = "num_decks_with_count_or_less"
+
+    def __init__(self, decksearch_id: int):
+        self.decksearch_id = decksearch_id
+        self.df = self._init_df()
+
+    def _init_df(self):
         session = db.engine.raw_connection()
         query = f"""\
-        SELECT *
-        FROM deck_search_has_card
-        WHERE decksearch_id = {decksearch_id}"""
+            SELECT *
+            FROM deck_search_has_card
+            WHERE decksearch_id = {self.decksearch_id}"""
         df = pd.read_sql_query(query, session)
         del df["decksearch_id"]
-
         return df
 
 
-DeckSearchHasCard_DF = df_types.make_dataframe_type(
-    df_types.get_columns_for_model(DeckSearchHasCard)
-)
+# DeckSearchHasCard_DF = df_types.make_dataframe_type(
+#     df_types.get_columns_for_model(DeckSearchHasCard)
+# )
 
-NUM_DECKS_COL_STR = "num_decks_with_count_or_less"
-PLAYRATE_COL_STR = "playrate"
-VALUE_COL_STR = "value"
 
-PlayRate_DF = df_types.make_dataframe_type(
-    [
-        e
-        for e in df_types.get_columns_for_model(DeckSearchHasCard)
-        if not e == NUM_DECKS_COL_STR
-    ]
-    + [PLAYRATE_COL_STR]
-)
+# PlayRate_DF = df_types.make_dataframe_type(
+#     [
+#         e
+#         for e in df_types.get_columns_for_model(DeckSearchHasCard)
+#         if not e == NUM_DECKS_COL
+#     ]
+#     + [PLAYRATE_COL]
+# )
+
+
+class PlayRateFrame:
+    PLAYRATE_COL = "playrate"
+
+    def __init__(self, num_decks_with_cards: DeckSearchHasCardFrame, num_cards: int):
+        self.num_cards = num_cards
+        self.df = self._init_df(num_decks_with_cards)
+
+    def _init_df(self, num_decks_with_cards: DeckSearchHasCardFrame):
+        playrates = num_decks_with_cards.df.rename(
+            columns={DeckSearchHasCardFrame.NUM_DECKS_COL: self.PLAYRATE_COL}
+        )
+
+        playrates[self.PLAYRATE_COL] = (
+            playrates[self.PLAYRATE_COL] * 10_000 / self.num_cards
+        )
+        # todo consolidate the bloat numbers.
+        return playrates
 
 
 class DeckSearch(db.Model):
@@ -83,20 +110,15 @@ class DeckSearch(db.Model):
         decks = models.deck.Deck.query.filter(is_past_time_to_update)
         return decks
 
-    def get_playrate_df(self) -> PlayRate_DF:
+    def get_playrates(self) -> PlayRateFrame:
         """Gets a dataframe of card playrates.
         Playrate is roughly play count / total play count"""
-        playrate_df: DeckSearchHasCard_DF = DeckSearchHasCard.as_df(
+        num_decks_with_cards: DeckSearchHasCardFrame = DeckSearchHasCard.as_df(
             decksearch_id=self.id
         )
+        playrates = PlayRateFrame(num_decks_with_cards, len(self.cards))
 
-        playrate_df[NUM_DECKS_COL_STR] = (
-            playrate_df[NUM_DECKS_COL_STR] * 10_000 / len(self.cards)
-        )
-
-        playrate_df.rename(columns={NUM_DECKS_COL_STR: PLAYRATE_COL_STR}, inplace=True)
-
-        return playrate_df
+        return playrates
 
     def update_playrates(self):
         """Updates a cache of playrates representing the total frequency
@@ -164,13 +186,44 @@ def create_deck_searches():
 
 
 DeckSearchValue_DF = df_types.make_dataframe_type(
-    [
-        e
-        for e in df_types.get_columns_from_dataframe_type(PlayRate_DF)
-        if e != PLAYRATE_COL_STR
-    ]
-    + [VALUE_COL_STR]
+    # [
+    #     e
+    #     for e in df_types.get_columns_from_dataframe_type(PlayRate_DF)
+    #     if e != PLAYRATE_COL
+    # ]
+    # + [PLAYABILITY_COL]
+    []
 )
+
+
+class PlayabilityFrame:
+    PLAYABILITY = "playability"
+
+    def __init__(self, df):
+        self.df = df
+
+    @classmethod
+    def from_playrates(cls, playrates: PlayRateFrame, weight: float):
+        playrates.df[PlayRateFrame.PLAYRATE_COL] *= weight
+        playrates = playrates.df.rename(
+            columns={PlayRateFrame.PLAYRATE_COL: cls.PLAYABILITY}
+        )
+        return cls(playrates)
+
+    @classmethod
+    def concat(cls, frames: t.List[PlayabilityFrame],) -> PlayabilityFrame:
+        dfs = [frame.df for frame in frames]
+        combined_value_dfs = pd.concat(dfs)
+        summed_df = combined_value_dfs.groupby(
+            ["set_num", "card_num", "count_in_deck"]
+        ).sum()
+        summed_df.reset_index(inplace=True)
+        return PlayabilityFrame(summed_df)
+
+    def normalize(self):
+        self.df[self.PLAYABILITY] = (
+            self.df[self.PLAYABILITY] * 100 / max(1, max(self.df[self.PLAYABILITY]))
+        )
 
 
 class WeightedDeckSearch(db.Model):
@@ -189,11 +242,10 @@ class WeightedDeckSearch(db.Model):
         "DeckSearch", uselist=False, cascade_backrefs=False
     )
 
-    def get_value_df(self) -> DeckSearchValue_DF:
-        df = self.deck_search.get_playrate_df()
-        df[PLAYRATE_COL_STR] *= self.weight
-        df = df.rename(columns={PLAYRATE_COL_STR: VALUE_COL_STR})
-        return df
+    def get_playabilities(self) -> DeckSearchValue_DF:
+        playrates = self.deck_search.get_playrates()
+        playabilities = PlayabilityFrame.from_playrates(playrates, self.weight)
+        return playabilities
 
 
 def update_deck_searches():

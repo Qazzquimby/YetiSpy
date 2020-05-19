@@ -36,12 +36,10 @@ class User(db.Model):
         updater = models.user.collection._CollectionUpdater(self)
         updater.run()
 
-    def get_values(self) -> models.deck_search.DeckSearchValue_DF:
-        """Get a dataframe of card values for the user"""
-        # If this needs to be faster, change from making 1 sql call per
-        #   weighted deck search to 1 call and passing the information.
-        values = value_frames.get_cards_values_df(self.weighted_deck_searches)
-        return values
+    def get_playabilities(self) -> models.deck_search.DeckSearchValue_DF:
+        """Get a dataframe of card playabilities for the user"""
+        playabilities = value_frames.get_card_playabilities(self.weighted_deck_searches)
+        return playabilities
 
     def add_weighted_deck_searches(
         self, searches: t.List[models.deck_search.WeightedDeckSearch]

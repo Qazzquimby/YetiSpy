@@ -30,5 +30,5 @@ class TestCardValueDataframeGetter(TestCase):
         ]
         sut = _CardValueDataframeGetter
 
-        summed_df = sut._merge_value_dfs(deck_search_value_dfs)
+        summed_df = sut._merge_playabilities(deck_search_value_dfs)
         self.assertTrue(summed_df["value"].equals(pd.Series([3, 7, 5, 6])))
