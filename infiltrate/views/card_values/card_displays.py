@@ -79,8 +79,8 @@ class CardDisplays:
 
     def get_value_info(self, all_cards: models.card.AllCards):
         """Get all displays for a user, not sorted or filtered."""
-        playabilities: models.deck_search.PlayabilityFrame = self.user.get_playabilities()
-        playabilities = playabilities.df
+        playabilities_wrapper: models.deck_search.PlayabilityFrame = self.user.get_playabilities()
+        playabilities: pd.DataFrame = playabilities_wrapper.df
         playabilities = playabilities.set_index(["set_num", "card_num"]).join(
             all_cards.df.set_index(["set_num", "card_num"])
         )

@@ -93,8 +93,7 @@ class CampaignEvaluator(PurchaseEvaluator):
 
         rows = []
         for card_set in campaign_values.keys():
-            name = models.card_set.CardSet._get_set_name(card_set.set_nums[0])
-            rows.append(self._make_row(name, campaign_values[card_set]))
+            rows.append(self._make_row(card_set.name, campaign_values[card_set]))
         return rows
 
 
@@ -437,17 +436,17 @@ def get_league_packs() -> t.Dict[models.card_set.CardSet, int]:
 
 
 def get_purchase_values(
-    card_values_df: models.deck_search.DeckSearchValue_DF, user: models.user.User
-) -> models.deck_search.DeckSearchValue_DF:
-    getter = _PurchasesValueDataframeGetter(card_values_df, user)
-    return getter.get_purchase_values_df()
+    playabilities: models.deck_search.PlayabilityFrame, user: models.user.User
+) -> models.deck_search.PlayabilityFrame:
+    getter = _PurchasesValueDataframeGetter(playabilities, user)
+    return getter.get_purchase_playabilities()
 
 
 class _PurchasesValueDataframeGetter:
     """Helper class used by get_purchase_values_df."""
 
-    def __init__(self, card_values_df: models.deck_search.DeckSearchValue_DF, user):
-        self.card_values_df = card_values_df
+    def __init__(self, card_playabilities: models.deck_search.PlayabilityFrame, user):
+        self.card_playabilities = card_playabilities
         self.user = user
 
         self.card_data: t.Final = self._get_card_data()
@@ -461,9 +460,10 @@ class _PurchasesValueDataframeGetter:
             AdditionalLeagueEvaluator(self.card_data),
         ]
 
-    def get_purchase_values_df(self) -> models.deck_search.DeckSearchValue_DF:
+    def get_purchase_playabilities(self) -> models.deck_search.PlayabilityFrame:
         """Gets a dataframe of all purchase options
         with values based on card values."""
+        # Todo update this to use playability.
         columns = ["name", "gold_cost", "value", "value_per_gold"]
         df_constructor = []
         for purchase_evaluator in self.purchase_evaluators:
@@ -475,7 +475,7 @@ class _PurchasesValueDataframeGetter:
     def _get_card_data(self):
         all_cards = models.card.AllCards()
         card_data = (
-            self.card_values_df.set_index(["set_num", "card_num"])
+            self.card_playabilities.set_index(["set_num", "card_num"])
             .join(all_cards.df.set_index(["set_num", "card_num"]))
             .reset_index()
         )

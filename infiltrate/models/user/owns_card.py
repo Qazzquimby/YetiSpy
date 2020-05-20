@@ -3,7 +3,6 @@ import typing as t
 import pandas as pd
 
 import models.card
-import profiling
 from infiltrate import db
 
 if t.TYPE_CHECKING:

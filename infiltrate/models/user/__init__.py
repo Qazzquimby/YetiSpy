@@ -36,7 +36,7 @@ class User(db.Model):
         updater = models.user.collection._CollectionUpdater(self)
         updater.run()
 
-    def get_playabilities(self) -> models.deck_search.DeckSearchValue_DF:
+    def get_playabilities(self) -> models.deck_search.PlayabilityFrame:
         """Get a dataframe of card playabilities for the user"""
         playabilities = value_frames.get_card_playabilities(self.weighted_deck_searches)
         return playabilities

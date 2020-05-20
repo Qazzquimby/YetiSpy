@@ -8,7 +8,6 @@ import pandas as pd
 from progiter import progiter
 
 import card_collections
-import df_types
 import models.card
 import models.deck
 from infiltrate import db
@@ -57,21 +56,6 @@ class DeckSearchHasCardFrame:
         df = pd.read_sql_query(query, session)
         del df["decksearch_id"]
         return df
-
-
-# DeckSearchHasCard_DF = df_types.make_dataframe_type(
-#     df_types.get_columns_for_model(DeckSearchHasCard)
-# )
-
-
-# PlayRate_DF = df_types.make_dataframe_type(
-#     [
-#         e
-#         for e in df_types.get_columns_for_model(DeckSearchHasCard)
-#         if not e == NUM_DECKS_COL
-#     ]
-#     + [PLAYRATE_COL]
-# )
 
 
 class PlayRateFrame:
@@ -185,17 +169,6 @@ def create_deck_searches():
     db.session.commit()
 
 
-DeckSearchValue_DF = df_types.make_dataframe_type(
-    # [
-    #     e
-    #     for e in df_types.get_columns_from_dataframe_type(PlayRate_DF)
-    #     if e != PLAYRATE_COL
-    # ]
-    # + [PLAYABILITY_COL]
-    []
-)
-
-
 class PlayabilityFrame:
     PLAYABILITY = "playability"
 
@@ -242,7 +215,7 @@ class WeightedDeckSearch(db.Model):
         "DeckSearch", uselist=False, cascade_backrefs=False
     )
 
-    def get_playabilities(self) -> DeckSearchValue_DF:
+    def get_playabilities(self) -> PlayabilityFrame:
         playrates = self.deck_search.get_playrates()
         playabilities = PlayabilityFrame.from_playrates(playrates, self.weight)
         return playabilities
