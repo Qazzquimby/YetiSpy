@@ -6,6 +6,8 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 
+import boltons.fileutils
+
 application = Flask(__name__, instance_relative_config=True)
 application.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -33,16 +35,9 @@ db = _setup_db(application)
 
 def setup_application(app):
     Bootstrap(app)
-    _make_instance_dir(app)
+    boltons.fileutils.mkdir_p(app.instance_path)
     _register_views(app)
     _schedule_updates()
-
-
-def _make_instance_dir(app):
-    try:
-        os.makedirs(app.instance_path)
-    except OSError:
-        pass
 
 
 def _register_views(app):
