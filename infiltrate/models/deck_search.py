@@ -85,7 +85,7 @@ class DeckSearch(db.Model):
     maximum_age_days = db.Column("maximum_age_days", db.Integer())
     cards: t.List[DeckSearchHasCard] = db.relationship("DeckSearchHasCard")
 
-    def get_decks(self):
+    def get_decks(self) -> t.List[models.deck.Deck]:
         """Returns all decks belonging to the deck search"""
         time_to_update = datetime.datetime.now() - datetime.timedelta(
             days=self.maximum_age_days
@@ -124,11 +124,8 @@ class DeckSearch(db.Model):
         playrate = card_collections.make_card_playset_dict()
         for deck in self.get_decks():
             for card in deck.cards:
-                card_id = models.card.CardId(
-                    set_num=card.set_num, card_num=card.card_num
-                )
                 for num_played in range(min(card.num_played, 4)):
-                    playrate[card_id][num_played] += 1
+                    playrate[card][num_played] += 1  # todo check card is right type.
         return playrate
 
     def _add_playrates(self, playrates: t.Dict):

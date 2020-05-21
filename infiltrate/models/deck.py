@@ -28,6 +28,9 @@ class DeckHasCard(db.Model):
         {},
     )
 
+    def to_card_id(self) -> models.card.CardId:
+        return models.card.CardId(set_num=self.set_num, card_num=self.card_num)
+
 
 class DeckType(enum.Enum):
     """Enum for deck types matching Warcry"""
