@@ -476,7 +476,7 @@ class _PurchasesValueDataframeGetter:
         all_cards = models.card.AllCards()
         card_data = (
             self.card_playabilities.set_index(["set_num", "card_num"])
-            .join(all_cards.df.set_index(["set_num", "card_num"]))
+            .join(all_cards.cards_df.set_index(["set_num", "card_num"]))
             .reset_index()
         )
 

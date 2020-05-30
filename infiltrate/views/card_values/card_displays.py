@@ -82,7 +82,7 @@ class CardDisplays:
         playabilities_wrapper: models.deck_search.PlayabilityFrame = self.user.get_playabilities()
         playabilities: pd.DataFrame = playabilities_wrapper.df
         playabilities = playabilities.set_index(["set_num", "card_num"]).join(
-            all_cards.df.set_index(["set_num", "card_num"])
+            all_cards.cards_df.set_index(["set_num", "card_num"])
         )
         playabilities["value_per_shiftstone"] = get_value_per_shiftstone(
             playabilities["rarity"], playabilities["playability"]

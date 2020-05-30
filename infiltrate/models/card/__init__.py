@@ -55,38 +55,36 @@ class Card(db.Model):
 Card_DF = df_types.make_dataframe_type(df_types.get_columns_for_model(Card))
 
 
+def all_cards_df_from_db() -> pd.DataFrame:
+    session = db.engine.raw_connection()
+    cards_df = pd.read_sql_query("SELECT * from cards", session)
+    cards_df.rename(
+        columns={
+            "SetNumber": "set_num",
+            "EternalID": "card_num",
+            "Name": "name",
+            "Rarity": "rarity",
+            "ImageUrl": "image_url",
+            "DetailsUrl": "details_url",
+            "IsInDraftPack": "is_in_draft_pack",
+        },
+        inplace=True,
+    )
+    return cards_df
+
+
 class AllCards:
     """A global storage for all cards in the database."""
 
-    def __init__(self):
-        session = db.engine.raw_connection()
-        cards_df = pd.read_sql_query("SELECT * from cards", session)
-        cards_df.rename(
-            columns={
-                "SetNumber": "set_num",
-                "EternalID": "card_num",
-                "Name": "name",
-                "Rarity": "rarity",
-                "ImageUrl": "image_url",
-                "DetailsUrl": "details_url",
-                "IsInDraftPack": "is_in_draft_pack",
-            },
-            inplace=True,
-        )
-
-        self.df = cards_df
-
-    def get_card(self, card_id: CardId):
-        """Return the row matching the card id."""
-        card = self.df[card_id.set_num, card_id.card_num]
-        return card
+    def __init__(self, cards_df):
+        self.cards_df = cards_df
 
     def card_exists(self, card_id: CardId):
         """Return if the card_id is found in the AllCards."""
-        matching_card = self.df.loc[
+        matching_card = self.cards_df.loc[
             (
-                (self.df["set_num"] == card_id.set_num)
-                & (self.df["card_num"] == card_id.card_num)
+                (self.cards_df["set_num"] == card_id.set_num)
+                & (self.cards_df["card_num"] == card_id.card_num)
             )
         ]
         does_exist = len(matching_card) > 0

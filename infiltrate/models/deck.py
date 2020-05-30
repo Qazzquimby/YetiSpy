@@ -13,7 +13,7 @@ from infiltrate import application, db
 
 
 class DeckHasCard(db.Model):
-    """A table showing how many copies of a card a deck has"""
+    """A table showing how many copies of a card a deck has."""
 
     deck_id = db.Column(
         "deck_id", db.String(length=100), db.ForeignKey("decks.id"), primary_key=True
@@ -82,10 +82,10 @@ class Deck(db.Model):
     rating = db.Column("rating", db.Integer)
     cards = db.relationship("DeckHasCard")
 
-
-def get_deck(deck_id: str):
-    """Gets the deck matching the deck id."""
-    return Deck.query.filter_by(id=deck_id).first()
+    @classmethod
+    def get_from_id(cls, deck_id: str):
+        """Gets the deck matching the deck id."""
+        return Deck.query.filter_by(id=deck_id).first()
 
 
 # noinspection PyMissingOrEmptyDocstring
@@ -128,7 +128,7 @@ class _WarcryNewIdGetter:
     def remove_old_ids(ids: t.List[str]) -> t.List[str]:
         new_ids = []
         for deck_id in ids:
-            if not get_deck(deck_id):
+            if not Deck.get_from_id(deck_id):
                 new_ids.append(deck_id)
             else:
                 break

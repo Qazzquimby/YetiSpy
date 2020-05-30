@@ -15,7 +15,7 @@ def get_matching_card(card_df: Card_DF, search_str: str) -> Card_DF:
 
 class _CardAutoCompleter:
     def __init__(self, all_cards: AllCards):
-        self.cards = all_cards.df
+        self.cards = all_cards.cards_df
         self.completer = self._init_autocompleter(self.cards)
 
     def get_cards_matching_search(self, search: str) -> Card_DF:
