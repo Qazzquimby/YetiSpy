@@ -28,7 +28,7 @@ class CardsView(FlaskView):
 
         return flask.render_template("card_values.html")
 
-    def card_values(self, page_num=1, sort_str="craft", owner_str=None):
+    def card_values(self, page_num=0, sort_str="craft", owner_str=None):
         """A table loaded into the card values page."""
         try:
             user = views.login.get_by_cookie()
@@ -42,7 +42,7 @@ class CardsView(FlaskView):
         else:
             ownership = display_filters.get_owner(owner_str)
 
-        profiling.start_timer("make_card_displays")
+        profiling.start_timer("make_card_displays")  # todo replace with timeit tests
         all_cards = views.globals.all_cards
         displays = card_displays.make_card_displays(user, all_cards)
         profiling.end_timer("make_card_displays")
