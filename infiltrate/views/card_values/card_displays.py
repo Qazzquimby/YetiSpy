@@ -19,14 +19,6 @@ from views.card_values import display_filters
 
 
 @pd.np.vectorize
-def get_value_per_shiftstone(rarity_str: str, value: float):
-    # todo cost could be calculated once per card rather than once per count
-    cost = models.rarity.rarity_from_name[rarity_str].enchant
-    value_per_shiftstone = value * 100 / cost
-    return value_per_shiftstone
-
-
-@pd.np.vectorize
 def get_findability(rarity_str: str, set_num: models.card_set.CardSet):
     # todo cost could be calculated once per card rather than once per count
     # TODO allow custom player profiles to override this.
@@ -80,11 +72,16 @@ class CardDisplays:
     def get_value_info(self, all_cards: models.card.AllCards):
         """Get all displays for a user, not sorted or filtered."""
         playabilities_wrapper: models.deck_search.PlayabilityFrame = self.user.get_playabilities()
-        playabilities: pd.DataFrame = playabilities_wrapper.df
-        playabilities = playabilities.set_index(["set_num", "card_num"]).join(
-            all_cards.cards_df.set_index(["set_num", "card_num"])
+        playabilities: pd.DataFrame = playabilities_wrapper.get_all_cards_data(
+            all_cards
         )
-        playabilities["value_per_shiftstone"] = get_value_per_shiftstone(
+
+        playabilities = playabilities.set_index(["set_num", "card_num"])
+
+        # todo this isn't where this goes.
+        playabilities[
+            "value_per_shiftstone"
+        ] = models.deck_search.PlayabilityFrame.get_value_per_shiftstone(
             playabilities["rarity"], playabilities["playability"]
         )
         playabilities = playabilities.reset_index()

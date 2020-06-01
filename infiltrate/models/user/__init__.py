@@ -8,7 +8,6 @@ from sqlalchemy_utils.types.encrypted.encrypted_type import FernetEngine
 import models.deck_search
 import models.user.collection
 import models.user.owns_card
-import value_frames
 from infiltrate import application, db
 
 
@@ -38,7 +37,9 @@ class User(db.Model):
 
     def get_playabilities(self) -> models.deck_search.PlayabilityFrame:
         """Get a dataframe of card playabilities for the user"""
-        playabilities = value_frames.get_card_playabilities(self.weighted_deck_searches)
+        playabilities = models.deck_search.PlayabilityFrame.from_weighted_deck_searches(
+            self.weighted_deck_searches
+        )
         return playabilities
 
     def add_weighted_deck_searches(
