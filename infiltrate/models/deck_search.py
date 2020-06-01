@@ -10,7 +10,6 @@ from progiter import progiter
 import card_collections
 import models.card
 import models.deck
-import views.globals
 from infiltrate import db
 import models.rarity
 
@@ -38,46 +37,36 @@ class DeckSearchHasCard(db.Model):
     )
 
     @staticmethod
-    def as_df(decksearch_id: int) -> "DeckSearchHasCardFrame":
-        return DeckSearchHasCardFrame(decksearch_id)
-
-
-class DeckSearchHasCardFrame:
-    NUM_DECKS_COL = "num_decks_with_count_or_less"
-
-    def __init__(self, decksearch_id: int):
-        self.decksearch_id = decksearch_id
-        self.df = self._init_df()
-
-    def _init_df(self):
+    def as_df(decksearch_id: int) -> pd.DataFrame:
         session = db.engine.raw_connection()
         query = f"""\
             SELECT *
             FROM deck_search_has_card
-            WHERE decksearch_id = {self.decksearch_id}"""
+            WHERE decksearch_id = {decksearch_id}"""
         df = pd.read_sql_query(query, session)
         del df["decksearch_id"]
         return df
 
 
-class PlayRateFrame:
-    PLAYRATE_COL = "playrate"
-
-    def __init__(self, num_decks_with_cards: DeckSearchHasCardFrame, num_cards: int):
-        self.num_cards = num_cards
-        self.df = self._init_df(num_decks_with_cards)
-
-    def _init_df(self, num_decks_with_cards: DeckSearchHasCardFrame):
-        # todo scale by deck popularity
-        playrates = num_decks_with_cards.df.rename(
-            columns={DeckSearchHasCardFrame.NUM_DECKS_COL: self.PLAYRATE_COL}
-        )
-
-        playrates[self.PLAYRATE_COL] = (
-            playrates[self.PLAYRATE_COL] * 10_000 / self.num_cards
-        )
-        # todo consolidate the bloat numbers.
-        return playrates
+#
+# class PlayRateFrame:
+#     PLAYRATE_COL = "playrate"
+#
+#     def __init__(self, num_decks_with_cards: PlayCountFrame, num_cards: int):
+#         self.num_cards = num_cards
+#         self.df = self._init_df(num_decks_with_cards)
+#
+#     def _init_df(self, num_decks_with_cards: PlayCountFrame):
+#         # todo scale by deck popularity
+#         playrates = num_decks_with_cards.df.rename(
+#             columns={PlayCountFrame.NUM_DECKS_COL: self.PLAYRATE_COL}
+#         )
+#
+#         playrates[self.PLAYRATE_COL] = (
+#                 playrates[self.PLAYRATE_COL] * 10_000 / self.num_cards
+#         )
+#         # todo consolidate the bloat numbers.
+#         return playrates
 
 
 class DeckSearch(db.Model):
@@ -97,15 +86,19 @@ class DeckSearch(db.Model):
         decks = models.deck.Deck.query.filter(is_past_time_to_update)
         return decks
 
-    def get_playrates(self) -> PlayRateFrame:
-        """Gets a dataframe of card playrates.
-        Playrate is roughly play count / total play count"""
-        num_decks_with_cards: DeckSearchHasCardFrame = DeckSearchHasCard.as_df(
-            decksearch_id=self.id
-        )
-        playrates = PlayRateFrame(num_decks_with_cards, len(self.cards))
+    def get_play_counts(self) -> pd.DataFrame:
+        """Gets a dataframe of the number of times each copy of each card is used
+        in decks in the deck search."""
+        num_decks_with_cards = DeckSearchHasCard.as_df(decksearch_id=self.id)
+        return num_decks_with_cards
 
-        return playrates
+    # def get_playrates(self) -> PlayRateFrame:
+    #     """Gets a dataframe of card playrates.
+    #     Playrate is roughly play count / total play count"""
+    #     # todo depreciate in favor of get play counts?
+    #     num_decks_with_cards = self.get_play_counts()
+    #     playrates = PlayRateFrame(num_decks_with_cards, len(self.cards))
+    #     return playrates
 
     def update_playrates(self):
         """Updates a cache of playrates representing the total frequency
@@ -169,96 +162,96 @@ def create_deck_searches():
     db.session.commit()
 
 
-class PlayabilityFrame:
-    PLAYABILITY = "playability"
-
-    SET_NUM = "set_num"
-    CARD_NUM = "card_num"
-    COUNT_IN_DECK = "count_in_deck"
-
-    PLAYABILITY_PER_SHIFTSTONE = "playability_per_shiftstone"
-
-    def __init__(self, df):
-        self.df = df
-
-    # def get_playability_per_shiftstone(self):
-    #     all_cards = self.get_all_cards_data()
-    #
-    #     # initial value per shiftstone is playability / shiftstone cost
-    #     all_cards[self.PLAYABILITY_PER_SHIFTSTONE] = self.get_value_per_shiftstone(
-    #         all_cards[models.card.AllCards.RARITY], all_cards[self.PLAYABILITY]
-    #     )
-    #     # value_of_shiftstone = self.get_value_of_shiftstone(all_cards)
-    #     # todo get value *of* shiftstone
-    #     #   then set the playability of all cards to
-    #     #   max(their playability, their disenchant value * value of shiftstone
-    #
-    #     return None  # todo
-
-    @staticmethod
-    def get_value_of_shiftstone(all_cards: pd.DataFrame):
-        # order by
-        return None  # todo
-
-    @staticmethod
-    @pd.np.vectorize
-    def get_value_per_shiftstone(rarity_str: str, playability: float):
-        """Get the playability / shifstone cost."""
-        cost = models.rarity.rarity_from_name[rarity_str].enchant
-        playability_per_shiftstone = playability / cost
-        return playability_per_shiftstone
-
-    def get_all_cards_data(self, all_cards) -> pd.DataFrame:
-        """Adds the data from all_cards to the playability data.
-        Used for getting shiftstone values."""
-        # todo This may be called many times, once per deck search
-        return (
-            self.df.set_index(["set_num", "card_num"])
-            .join(all_cards.cards_df.set_index(["set_num", "card_num"]))
-            .reset_index()
-        )
-
-    @classmethod
-    def from_weighted_deck_searches(
-        cls, weighted_deck_searches: t.List[models.deck_search.WeightedDeckSearch],
-    ) -> models.deck_search.PlayabilityFrame:
-        """Gets a dataframe of all cards with values for a user
-        based on all their weighted deck searches."""
-
-        playabilities = [
-            weighted_search.get_playabilities()
-            for weighted_search in weighted_deck_searches
-        ]
-        summed_playabilities = models.deck_search.PlayabilityFrame.concat(playabilities)
-        summed_playabilities.normalize()
-
-        # summed_playabilities.get_playability_per_shiftstone()  # todo, we don't need this now. del
-        return summed_playabilities
-
-    @classmethod
-    def from_playrates(cls, playrates: PlayRateFrame, weight: float):
-        playrates.df[PlayRateFrame.PLAYRATE_COL] *= weight
-        playrates = playrates.df.rename(
-            columns={PlayRateFrame.PLAYRATE_COL: cls.PLAYABILITY}
-        )
-
-        return cls(playrates)
-
-    @classmethod
-    def concat(cls, frames: t.List[PlayabilityFrame],) -> PlayabilityFrame:
-        dfs = [frame.df for frame in frames]
-        combined_value_dfs = pd.concat(dfs)
-        summed_df = combined_value_dfs.groupby(
-            ["set_num", "card_num", "count_in_deck"]
-        ).sum()
-        summed_df.reset_index(inplace=True)
-        return PlayabilityFrame(summed_df)
-
-    def normalize(self):
-        """Normalizes the playability column between 1 and 100"""
-        self.df[self.PLAYABILITY] = (
-            self.df[self.PLAYABILITY] * 100 / max(1, max(self.df[self.PLAYABILITY]))
-        )
+# class PlayabilityFrame:
+#     PLAYABILITY = "playability"
+#
+#     SET_NUM = "set_num"
+#     CARD_NUM = "card_num"
+#     COUNT_IN_DECK = "count_in_deck"
+#
+#     PLAYABILITY_PER_SHIFTSTONE = "playability_per_shiftstone"
+#
+#     def __init__(self, df):
+#         self.df = df
+#
+#     # def get_playability_per_shiftstone(self):
+#     #     all_cards = self.get_all_cards_data()
+#     #
+#     #     # initial value per shiftstone is playability / shiftstone cost
+#     #     all_cards[self.PLAYABILITY_PER_SHIFTSTONE] = self.get_value_per_shiftstone(
+#     #         all_cards[models.card.AllCards.RARITY], all_cards[self.PLAYABILITY]
+#     #     )
+#     #     # value_of_shiftstone = self.get_value_of_shiftstone(all_cards)
+#     #     # todo get value *of* shiftstone
+#     #     #   then set the playability of all cards to
+#     #     #   max(their playability, their disenchant value * value of shiftstone
+#     #
+#     #     return None  # todo
+#
+#     @staticmethod
+#     def get_value_of_shiftstone(all_cards: pd.DataFrame):
+#         # order by
+#         return None  # todo
+#
+#     @staticmethod
+#     @pd.np.vectorize
+#     def get_value_per_shiftstone(rarity_str: str, playability: float):
+#         """Get the playability / shifstone cost."""
+#         cost = models.rarity.rarity_from_name[rarity_str].enchant
+#         playability_per_shiftstone = playability / cost
+#         return playability_per_shiftstone
+#
+#     def get_all_cards_data(self, all_cards) -> pd.DataFrame:
+#         """Adds the data from all_cards to the playability data.
+#         Used for getting shiftstone values."""
+#         # todo This may be called many times, once per deck search
+#         return (
+#             self.df.set_index(["set_num", "card_num"])
+#                 .join(all_cards.cards_df.set_index(["set_num", "card_num"]))
+#                 .reset_index()
+#         )
+#
+#     @classmethod
+#     def from_weighted_deck_searches(
+#             cls, weighted_deck_searches: t.List[models.deck_search.WeightedDeckSearch],
+#     ) -> models.deck_search.PlayabilityFrame:
+#         """Gets a dataframe of all cards with values for a user
+#         based on all their weighted deck searches."""
+#
+#         playabilities = [
+#             weighted_search.get_playabilities()
+#             for weighted_search in weighted_deck_searches
+#         ]
+#         summed_playabilities = models.deck_search.PlayabilityFrame.concat(playabilities)
+#         summed_playabilities.normalize()
+#
+#         # summed_playabilities.get_playability_per_shiftstone()  # todo, we don't need this now. del
+#         return summed_playabilities
+#
+#     @classmethod
+#     def from_playrates(cls, playrates: PlayRateFrame, weight: float):
+#         playrates.df[PlayRateFrame.PLAYRATE_COL] *= weight
+#         playrates = playrates.df.rename(
+#             columns={PlayRateFrame.PLAYRATE_COL: cls.PLAYABILITY}
+#         )
+#
+#         return cls(playrates)
+#
+#     @classmethod
+#     def concat(cls, frames: t.List[PlayabilityFrame], ) -> PlayabilityFrame:
+#         dfs = [frame.df for frame in frames]
+#         combined_value_dfs = pd.concat(dfs)
+#         summed_df = combined_value_dfs.groupby(
+#             ["set_num", "card_num", "count_in_deck"]
+#         ).sum()
+#         summed_df.reset_index(inplace=True)
+#         return PlayabilityFrame(summed_df)
+#
+#     def normalize(self):
+#         """Normalizes the playability column between 1 and 100"""
+#         self.df[self.PLAYABILITY] = (
+#                 self.df[self.PLAYABILITY] * 100 / max(1, max(self.df[self.PLAYABILITY]))
+#         )
 
 
 class WeightedDeckSearch(db.Model):
@@ -277,10 +270,10 @@ class WeightedDeckSearch(db.Model):
         "DeckSearch", uselist=False, cascade_backrefs=False
     )
 
-    def get_playabilities(self) -> PlayabilityFrame:
-        playrates = self.deck_search.get_playrates()
-        playabilities = PlayabilityFrame.from_playrates(playrates, self.weight)
-        return playabilities
+    # def get_playabilities(self) -> PlayabilityFrame:
+    #     playrates = self.deck_search.get_playrates()
+    #     playabilities = PlayabilityFrame.from_playrates(playrates, self.weight)
+    #     return playabilities
 
 
 def update_deck_searches():
