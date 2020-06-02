@@ -10,13 +10,18 @@ Own Value (Play Value, Play Craft Efficiency)
 Own Craft Efficiency (Own Value, Findability, Cost)
 Purchase Efficiency (Own Value, Cost)
 """
+import abc
+
 import pandas as pd
 import typing as t
 
+import models.deck
 from models.deck_search import DeckSearchHasCard, WeightedDeckSearch
 
 
-class CardCopyFrame:
+class _CardCopyColumns(abc.ABC):
+    """Holds dataframe of cards with copy #s to attach other information to"""
+
     SET_NUM = "set_num"
     CARD_NUM = "card_num"
     COUNT_IN_DECK = "count_in_deck"
@@ -28,11 +33,13 @@ class CardCopyFrame:
         return type(self) == type(other) and self.df.equals(other.df)
 
 
-class PlayCountFrame(CardCopyFrame):
-    """Has column PlayCount representing the number of decks containing
-    the weighted count of that card in decks of all deck searches"""
+class _PlayCountColumns(_CardCopyColumns):
+    PLAY_COUNT = "num_decks_with_count_or_less"
 
-    NUM_DECKS_COL = "num_decks_with_count_or_less"
+
+class PlayCountFrame(_PlayCountColumns):
+    """Has column PLAY_COUNT representing the number of decks containing
+    the weighted count of that card in decks of all deck searches"""
 
     @classmethod
     def from_weighted_deck_searches(
@@ -51,7 +58,7 @@ class PlayCountFrame(CardCopyFrame):
         """Get a dataframe representing the number of times a card is seen in
         decks in the deck search, times its weight."""
         play_count_df = DeckSearchHasCard.as_df(weighted_deck_search.deck_search_id)
-        play_count_df[cls.NUM_DECKS_COL] *= weighted_deck_search.weight
+        play_count_df[cls.PLAY_COUNT] *= weighted_deck_search.weight
         return play_count_df
 
     @classmethod
@@ -63,3 +70,23 @@ class PlayCountFrame(CardCopyFrame):
             .reset_index()
         )
         return summed
+
+
+class _PlayRateColumns(_PlayCountColumns):
+    PLAY_RATE = "play_rate"
+
+
+class PlayRateFrame(_PlayRateColumns):
+    """Has column PlayRate representing the fraction of decks containing the card
+    in relevant deck searches."""
+
+    @classmethod
+    def from_play_counts(cls, play_count_frame: PlayCountFrame):
+        df = play_count_frame.df.copy()
+        total_card_inclusions = sum(df[play_count_frame.PLAY_COUNT])
+        df[cls.PLAY_RATE] = (
+            df[cls.PLAY_COUNT]
+            * models.deck.AVG_COLLECTABLE_CARDS_IN_DECK
+            / total_card_inclusions
+        )
+        return cls(df)

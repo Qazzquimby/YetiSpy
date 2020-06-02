@@ -11,6 +11,10 @@ import views.globals
 # todo replace application with config injection
 from infiltrate import application, db
 
+CARDS_IN_DECK = 75
+AVG_SIGILS_IN_DECK = 10
+AVG_COLLECTABLE_CARDS_IN_DECK = CARDS_IN_DECK - AVG_SIGILS_IN_DECK
+
 
 class DeckHasCard(db.Model):
     """A table showing how many copies of a card a deck has."""
