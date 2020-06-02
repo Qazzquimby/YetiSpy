@@ -1,22 +1,38 @@
-"""Contains Dataframe wrappers for additional analysis on card data."""
+"""Contains Dataframe wrappers for additional analysis on card data.
+
+Class Dependencies:
+Play Counts (Weighted Deck Searches)
+Play Rates (Play Counts)
+Play Value (Play Rates, Collection Fit)
+Play Craft Efficiency (Play Value, Findability, Cost)
+Own Value (Play Value, Play Craft Efficiency)
+
+Own Craft Efficiency (Own Value, Findability, Cost)
+Purchase Efficiency (Own Value, Cost)
+"""
 import pandas as pd
 import typing as t
 
 from models.deck_search import DeckSearchHasCard, WeightedDeckSearch
 
 
-class PlayCountFrame:
-    """Has column PlayCount representing the number of decks containing
-    the weighted count of that card in decks of all deck searches"""
-
+class CardCopyFrame:
     SET_NUM = "set_num"
     CARD_NUM = "card_num"
     COUNT_IN_DECK = "count_in_deck"
 
-    NUM_DECKS_COL = "num_decks_with_count_or_less"
-
     def __init__(self, df: pd.DataFrame):
         self.df = df
+
+    def __eq__(self, other):
+        return type(self) == type(other) and self.df.equals(other.df)
+
+
+class PlayCountFrame(CardCopyFrame):
+    """Has column PlayCount representing the number of decks containing
+    the weighted count of that card in decks of all deck searches"""
+
+    NUM_DECKS_COL = "num_decks_with_count_or_less"
 
     @classmethod
     def from_weighted_deck_searches(
@@ -47,6 +63,3 @@ class PlayCountFrame:
             .reset_index()
         )
         return summed
-
-    def __eq__(self, other):
-        return type(self) == type(other) and self.df.equals(other.df)
