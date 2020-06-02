@@ -77,11 +77,12 @@ class _PlayRateColumns(_PlayCountColumns):
 
 
 class PlayRateFrame(_PlayRateColumns):
-    """Has column PlayRate representing the fraction of decks containing the card
+    """Has column play_rate representing the fraction of decks containing the card
     in relevant deck searches."""
 
     @classmethod
     def from_play_counts(cls, play_count_frame: PlayCountFrame):
+        """Constructor deriving play rates from play counts"""
         df = play_count_frame.df.copy()
         total_card_inclusions = sum(df[play_count_frame.PLAY_COUNT])
         df[cls.PLAY_RATE] = (
@@ -89,4 +90,24 @@ class PlayRateFrame(_PlayRateColumns):
             * models.deck.AVG_COLLECTABLE_CARDS_IN_DECK
             / total_card_inclusions
         )
+        return cls(df)
+
+
+class _PlayValueColumns(_PlayRateColumns):
+    PLAY_VALUE = "play_value"
+
+
+class PlayValueFrame(_PlayValueColumns):
+    """Has column play_value representing how good it is to be able to play that card,
+    on a scale of 0-100.
+    This is very similar to own value, but doesn't account for reselling."""
+
+    SCALE = 100
+
+    @classmethod
+    def from_play_rates(cls, play_rate_frame: PlayRateFrame):
+        """Constructor deriving values from play rates."""
+        # todo account for collection fit.
+        df = play_rate_frame.df.copy()
+        df[cls.PLAY_VALUE] = df[cls.PLAY_COUNT] * cls.SCALE / df[cls.PLAY_COUNT].max()
         return cls(df)
