@@ -69,40 +69,40 @@ class CardDisplays:
             self.is_filtered = False
             self._ownership = value
 
-    def get_value_info(self, all_cards: models.card.CardData):
-        """Get all displays for a user, not sorted or filtered."""
-        playabilities_wrapper: models.deck_search.PlayabilityFrame = self.user.get_playabilities()
-        playabilities: pd.DataFrame = playabilities_wrapper.get_all_cards_data(
-            all_cards
-        )
-
-        playabilities = playabilities.set_index(["set_num", "card_num"])
-
-        # todo this isn't where this goes.
-        playabilities[
-            "value_per_shiftstone"
-        ] = models.deck_search.PlayabilityFrame.get_value_per_shiftstone(
-            playabilities["rarity"], playabilities["playability"]
-        )
-        playabilities = playabilities.reset_index()
-
-        # FINDABILITY
-        # todo make this work to different degrees based on player preference.
-        card_classes = playabilities[["set_num", "rarity"]].drop_duplicates()
-
-        card_set = np.vectorize(models.card_set.CardSet)(
-            card_classes["set_num"]
-        )  # class construction might not vectorize
-
-        card_classes["findability"] = get_findability(card_classes["rarity"], card_set)
-        playabilities = (
-            playabilities.set_index(["set_num", "rarity"])
-            .join(card_classes.set_index(["set_num", "rarity"]))
-            .reset_index()
-        )
-        playabilities["value_per_shiftstone"] *= 1 - playabilities["findability"]
-        playabilities = user_owns_card.create_is_owned_column(playabilities, self.user)
-        return playabilities
+    # def get_value_info(self, all_cards: models.card.CardData):
+    #     """Get all displays for a user, not sorted or filtered."""
+    #     playabilities_wrapper: models.deck_search.PlayabilityFrame = self.user.get_playabilities()
+    #     playabilities: pd.DataFrame = playabilities_wrapper.get_all_cards_data(
+    #         all_cards
+    #     )
+    #
+    #     playabilities = playabilities.set_index(["set_num", "card_num"])
+    #
+    #     # todo this isn't where this goes.
+    #     playabilities[
+    #         "value_per_shiftstone"
+    #     ] = models.deck_search.PlayabilityFrame.get_value_per_shiftstone(
+    #         playabilities["rarity"], playabilities["playability"]
+    #     )
+    #     playabilities = playabilities.reset_index()
+    #
+    #     # FINDABILITY
+    #     # todo make this work to different degrees based on player preference.
+    #     card_classes = playabilities[["set_num", "rarity"]].drop_duplicates()
+    #
+    #     card_set = np.vectorize(models.card_set.CardSet)(
+    #         card_classes["set_num"]
+    #     )  # class construction might not vectorize
+    #
+    #     card_classes["findability"] = get_findability(card_classes["rarity"], card_set)
+    #     playabilities = (
+    #         playabilities.set_index(["set_num", "rarity"])
+    #         .join(card_classes.set_index(["set_num", "rarity"]))
+    #         .reset_index()
+    #     )
+    #     playabilities["value_per_shiftstone"] *= 1 - playabilities["findability"]
+    #     playabilities = user_owns_card.create_is_owned_column(playabilities, self.user)
+    #     return playabilities
 
     def get_page(self, page_num: int = 0) -> pd.DataFrame:
         """Gets the page of card displays,
@@ -149,8 +149,8 @@ class CardDisplays:
     def _filter(self):
         if not self.is_filtered:
             filtered = self.raw_value_info
-            filtered = self.sort_method.filter(filtered, self.user)
-            filtered = self.ownership.filter(filtered, self.user)
+            filtered = self.sort_method.filter(filtered)
+            filtered = self.ownership.filter(filtered)
 
             self.value_info = filtered
             self.is_filtered = True
