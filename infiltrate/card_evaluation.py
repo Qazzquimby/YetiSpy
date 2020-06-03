@@ -132,7 +132,7 @@ class PlayCraftEfficiencyFrame(_PlayCraftEfficiencyColumns):
     def construct(
         cls, play_value_frame: PlayValueFrame, card_data: models.card.CardData
     ):
-        """Constructor deriving values from play values and card data."""
+        """Constructor for getting play craft efficiency from play value and cost."""
         value_df: pd.DataFrame = play_value_frame.df.copy()
 
         index_keys = [PlayValueFrame.CARD_NUM, PlayValueFrame.SET_NUM]
@@ -203,3 +203,21 @@ class OwnValueFrame(_OwnValueColumns):
         )
 
         return avg_top_efficiency
+
+
+class _OwnCraftEfficiencyColumns(_OwnValueColumns):
+    OWN_CRAFT_EFFICIENCY = "own_craft_efficiency"
+
+
+class OwnCraftEfficiencyFrame(_OwnCraftEfficiencyColumns):
+    """Has column own_craft_efficiency for the value of owning the card divided
+    by the shiftstone cost."""
+
+    @classmethod
+    def construct(cls, own_value: OwnValueFrame):
+        """Constructor deriving efficiency from own values and cost."""
+        df: pd.DataFrame = own_value.df.copy()
+
+        df[cls.OWN_CRAFT_EFFICIENCY] = df[cls.OWN_VALUE] / df[cls.CRAFT_COST]
+
+        return cls(df)
