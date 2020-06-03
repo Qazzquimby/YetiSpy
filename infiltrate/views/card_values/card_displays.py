@@ -4,13 +4,12 @@ import typing as t
 import numpy as np
 import pandas as pd
 
-import caches
+import card_evaluation
 import models.card
 import models.card_set
 import models.deck_search
 import models.rarity
 import models.user
-import models.user.owns_card as user_owns_card
 import rewards
 from views.card_values import display_filters
 
@@ -37,10 +36,8 @@ class CardDisplays:
 
     CARDS_PER_PAGE = 30
 
-    def __init__(self, user: models.user.User, all_cards: models.card.CardData):
-        self.user = user
-        self.raw_value_info: pd.DataFrame = self.get_value_info(all_cards)
-        self.value_info: pd.DataFrame = self.raw_value_info[:]
+    def __init__(self, value_info: card_evaluation.OwnCraftEfficiencyFrame):
+        self.value_info = value_info
         self.is_filtered = False
         self.is_sorted = False
 
@@ -252,9 +249,12 @@ class CardDisplayPage:
         return page
 
 
-@caches.mem_cache.cache("card_displays_for_user", expires=120)
 def make_card_displays(
-    user: models.user.User, all_cards: models.card.CardData
+    user: models.user.User, card_data: models.card.CardData
 ) -> CardDisplays:
     """Makes the cards for a user, cached for immediate reuse."""
-    return CardDisplays(user, all_cards)
+    own_value = card_evaluation.OwnValueFrame.from_user(user, card_data)
+    own_craft_efficiency = card_evaluation.OwnCraftEfficiencyFrame.from_own_value(
+        own_value
+    )
+    return CardDisplays(own_craft_efficiency)

@@ -140,7 +140,9 @@ def play_craft_efficiency():
 def test_build_play_craft_efficiency_frame(
     play_values, card_data, play_craft_efficiency
 ):
-    sut = card_evaluation.PlayCraftEfficiencyFrame.construct(play_values, card_data)
+    sut = card_evaluation.PlayCraftEfficiencyFrame.from_play_value(
+        play_values, card_data
+    )
     assert sut == play_craft_efficiency
 
 
@@ -161,7 +163,9 @@ def own_value():
 
 
 def test_build_own_value_frame(play_craft_efficiency, own_value):
-    sut = card_evaluation.OwnValueFrame.construct(play_craft_efficiency, 2)
+    sut = card_evaluation.OwnValueFrame.from_play_craft_efficiency(
+        play_craft_efficiency, 2
+    )
     assert sut == own_value
 
 
@@ -186,7 +190,7 @@ def own_craft_efficiency():
 
 
 def test_build_own_craft_efficiency_frame(own_value, own_craft_efficiency):
-    sut = card_evaluation.OwnCraftEfficiencyFrame.construct(own_value)
+    sut = card_evaluation.OwnCraftEfficiencyFrame.from_own_value(own_value)
     assert sut == own_craft_efficiency
 
 

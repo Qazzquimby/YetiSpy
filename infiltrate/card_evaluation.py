@@ -18,6 +18,7 @@ import typing as t
 import models.deck
 import models.card
 import models.rarity
+import models.user
 from models.deck_search import DeckSearchHasCard, WeightedDeckSearch
 
 
@@ -129,7 +130,7 @@ class PlayCraftEfficiencyFrame(_PlayCraftEfficiencyColumns):
     """
 
     @classmethod
-    def construct(
+    def from_play_value(
         cls, play_value_frame: PlayValueFrame, card_data: models.card.CardData
     ):
         """Constructor for getting play craft efficiency from play value and cost."""
@@ -166,7 +167,7 @@ class OwnValueFrame(_OwnValueColumns):
     """
 
     @classmethod
-    def construct(
+    def from_play_craft_efficiency(
         cls, play_craft_efficiency: PlayCraftEfficiencyFrame, num_options_considered=20
     ):
         """Constructs the own_value """
@@ -185,6 +186,20 @@ class OwnValueFrame(_OwnValueColumns):
         df[cls.OWN_VALUE] = df[[cls.PLAY_VALUE, cls.RESELL_VALUE]].max(axis=1)
 
         return cls(df)
+
+    @classmethod
+    def from_user(cls, user: models.user.User, card_data: models.card.CardData):
+        """Creates from a user, performing the entire pipeline."""
+        # todo cache this.
+        weighted_deck_searches = user.weighted_deck_searches
+        play_count = PlayCountFrame.from_weighted_deck_searches(weighted_deck_searches)
+        play_rate = PlayRateFrame.from_play_counts(play_count)
+        play_value = PlayValueFrame.from_play_rates(play_rate)
+        play_craft_efficiency = PlayCraftEfficiencyFrame.from_play_value(
+            play_value_frame=play_value, card_data=card_data
+        )
+        own_value = cls.from_play_craft_efficiency(play_craft_efficiency)
+        return own_value
 
     @classmethod
     def _value_of_shiftstone(
@@ -214,7 +229,7 @@ class OwnCraftEfficiencyFrame(_OwnCraftEfficiencyColumns):
     by the shiftstone cost."""
 
     @classmethod
-    def construct(cls, own_value: OwnValueFrame):
+    def from_own_value(cls, own_value: OwnValueFrame):
         """Constructor deriving efficiency from own values and cost."""
         df: pd.DataFrame = own_value.df.copy()
 
