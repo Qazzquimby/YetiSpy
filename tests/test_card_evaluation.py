@@ -92,6 +92,21 @@ def play_craft_efficiency():
     )
 
 
+own_value_dict = play_craft_efficiency_dict.copy()
+own_value_dict.update(
+    {
+        card_evaluation.OwnValueFrame.SELL_COST: {0: 1, 1: 1, 2: 10},
+        card_evaluation.OwnValueFrame.RESELL_VALUE: {0: 1.5, 1: 1.5, 2: 15.0},
+        card_evaluation.OwnValueFrame.OWN_VALUE: {0: 100.0, 1: 50.0, 2: 15.0},
+    }
+)
+
+
+@pytest.fixture
+def own_value():
+    return card_evaluation.OwnValueFrame(df=pd.DataFrame(own_value_dict))
+
+
 @pytest.fixture
 def _playcount_from_db():
     """This is slow and only for manual debugging."""
@@ -152,3 +167,8 @@ def test_build_play_craft_efficiency_frame(
 ):
     sut = card_evaluation.PlayCraftEfficiencyFrame.construct(play_values, card_data)
     assert sut == play_craft_efficiency
+
+
+def test_build_own_value_frame(play_craft_efficiency, own_value):
+    sut = card_evaluation.OwnValueFrame.construct(play_craft_efficiency, 2)
+    assert sut == own_value

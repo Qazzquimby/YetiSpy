@@ -151,3 +151,55 @@ class PlayCraftEfficiencyFrame(_PlayCraftEfficiencyColumns):
         )
 
         return cls(combined_df)
+
+
+class _OwnValueColumns(_PlayCraftEfficiencyColumns):
+    SELL_COST = "sell_cost"
+    RESELL_VALUE = "resell_value"
+    OWN_VALUE = "own_value"
+
+
+class OwnValueFrame(_OwnValueColumns):
+    """Has columns -sell_cost: the amount of shiftstone from disenchanting,
+    -resell_value: the amount of expected value the shiftstone from disenchanting has,
+    -own_value: the value of owning a card, including the possibility of reselling it.
+    """
+
+    @classmethod
+    def construct(
+        cls, play_craft_efficiency: PlayCraftEfficiencyFrame, num_options_considered=20
+    ):
+        """Constructs the own_value """
+
+        df = play_craft_efficiency.df.copy()
+        df[cls.SELL_COST] = df[models.card.CardData.RARITY].apply(
+            lambda rarity: models.rarity.rarity_from_name[rarity].disenchant
+        )
+
+        value_of_shiftstone = cls._value_of_shiftstone(
+            play_craft_efficiency, num_options_considered
+        )
+
+        df[cls.RESELL_VALUE] = df[cls.SELL_COST] * value_of_shiftstone
+
+        df[cls.OWN_VALUE] = df[[cls.PLAY_VALUE, cls.RESELL_VALUE]].max(axis=1)
+
+        return cls(df)
+
+    @classmethod
+    def _value_of_shiftstone(
+        cls, play_craft_efficiency: PlayCraftEfficiencyFrame, num_options_considered=20
+    ):
+        """Gets the top num_options crafting efficiencies and averages them to predict
+        how much value the user will get from crafting."""
+        efficiencies = play_craft_efficiency.df.sort_values(
+            play_craft_efficiency.PLAY_CRAFT_EFFICIENCY, ascending=False
+        )
+
+        top_efficiencies = efficiencies.head(num_options_considered)
+        avg_top_efficiency = (
+            sum(top_efficiencies[OwnValueFrame.PLAY_CRAFT_EFFICIENCY])
+            / num_options_considered
+        )
+
+        return avg_top_efficiency
