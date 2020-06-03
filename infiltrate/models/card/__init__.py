@@ -73,7 +73,7 @@ def all_cards_df_from_db() -> pd.DataFrame:
     return cards_df
 
 
-class AllCards:
+class CardData:
     """A global storage for all cards in the database."""
 
     SET_NUM = "set_num"
@@ -85,15 +85,15 @@ class AllCards:
     DETAILS_URL = "details_url"
     IS_IN_DRAFT_PACK = "is_in_draft_pack"
 
-    def __init__(self, cards_df):
-        self.cards_df = cards_df
+    def __init__(self, df):
+        self.df = df
 
     def card_exists(self, card_id: CardId):
         """Return if the card_id is found in the AllCards."""
-        matching_card = self.cards_df.loc[
+        matching_card = self.df.loc[
             (
-                (self.cards_df[self.SET_NUM] == card_id.set_num)
-                & (self.cards_df[self.CARD_NUM] == card_id.card_num)
+                (self.df[self.SET_NUM] == card_id.set_num)
+                & (self.df[self.CARD_NUM] == card_id.card_num)
             )
         ]
         does_exist = len(matching_card) > 0

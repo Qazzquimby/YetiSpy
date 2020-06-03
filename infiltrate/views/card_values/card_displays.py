@@ -37,7 +37,7 @@ class CardDisplays:
 
     CARDS_PER_PAGE = 30
 
-    def __init__(self, user: models.user.User, all_cards: models.card.AllCards):
+    def __init__(self, user: models.user.User, all_cards: models.card.CardData):
         self.user = user
         self.raw_value_info: pd.DataFrame = self.get_value_info(all_cards)
         self.value_info: pd.DataFrame = self.raw_value_info[:]
@@ -69,7 +69,7 @@ class CardDisplays:
             self.is_filtered = False
             self._ownership = value
 
-    def get_value_info(self, all_cards: models.card.AllCards):
+    def get_value_info(self, all_cards: models.card.CardData):
         """Get all displays for a user, not sorted or filtered."""
         playabilities_wrapper: models.deck_search.PlayabilityFrame = self.user.get_playabilities()
         playabilities: pd.DataFrame = playabilities_wrapper.get_all_cards_data(
@@ -254,7 +254,7 @@ class CardDisplayPage:
 
 @caches.mem_cache.cache("card_displays_for_user", expires=120)
 def make_card_displays(
-    user: models.user.User, all_cards: models.card.AllCards
+    user: models.user.User, all_cards: models.card.CardData
 ) -> CardDisplays:
     """Makes the cards for a user, cached for immediate reuse."""
     return CardDisplays(user, all_cards)

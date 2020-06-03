@@ -16,6 +16,8 @@ import pandas as pd
 import typing as t
 
 import models.deck
+import models.card
+import models.rarity
 from models.deck_search import DeckSearchHasCard, WeightedDeckSearch
 
 
@@ -30,7 +32,9 @@ class _CardCopyColumns(abc.ABC):
         self.df = df
 
     def __eq__(self, other):
-        return type(self) == type(other) and self.df.equals(other.df)
+        return type(self) == type(other) and self.df.sort_index(axis=1).equals(
+            other.df.sort_index(axis=1)
+        )
 
 
 class _PlayCountColumns(_CardCopyColumns):
@@ -111,3 +115,39 @@ class PlayValueFrame(_PlayValueColumns):
         df = play_rate_frame.df.copy()
         df[cls.PLAY_VALUE] = df[cls.PLAY_COUNT] * cls.SCALE / df[cls.PLAY_COUNT].max()
         return cls(df)
+
+
+class _PlayCraftEfficiencyColumns(_PlayValueColumns):
+    PLAY_CRAFT_EFFICIENCY = "play_craft_efficiency"
+    CRAFT_COST = "craft_cost"
+
+
+class PlayCraftEfficiencyFrame(_PlayCraftEfficiencyColumns):
+    """Has columns craft_cost and play_craft_efficiency representing the card's
+    shiftstone cost to craft, and its play value divided by that cost.
+    This is very similar to own crafting efficiency, but doesn't account for reselling.
+    """
+
+    @classmethod
+    def construct(
+        cls, play_value_frame: PlayValueFrame, card_data: models.card.CardData
+    ):
+        """Constructor deriving values from play values and card data."""
+        value_df: pd.DataFrame = play_value_frame.df.copy()
+
+        index_keys = [PlayValueFrame.CARD_NUM, PlayValueFrame.SET_NUM]
+
+        combined_df = (
+            value_df.set_index(index_keys)
+            .join(card_data.df.set_index(index_keys))
+            .reset_index()
+        )
+        combined_df[cls.CRAFT_COST] = combined_df[models.card.CardData.RARITY].apply(
+            lambda rarity: models.rarity.rarity_from_name[rarity].enchant
+        )
+
+        combined_df[cls.PLAY_CRAFT_EFFICIENCY] = (
+            combined_df[cls.PLAY_VALUE] / combined_df[cls.CRAFT_COST]
+        )
+
+        return cls(combined_df)

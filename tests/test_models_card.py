@@ -31,7 +31,7 @@ def all_cards():
             "is_in_draft_pack": [0, 0, 1],
         }
     )
-    return models.card.AllCards(mock_all_cards_df)
+    return models.card.CardData(mock_all_cards_df)
 
 
 def test_card_exists(all_cards):

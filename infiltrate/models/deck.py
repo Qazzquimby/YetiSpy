@@ -5,8 +5,8 @@ import urllib.error
 from datetime import datetime
 
 import browser
+import global_data
 import models.card
-import views.globals
 
 # todo replace application with config injection
 from infiltrate import application, db
@@ -218,7 +218,7 @@ def update_decks():
                 card_id = models.card.CardId(set_num, card_num)
 
                 # todo better to pass all_cards to this than use the global
-                if views.globals.all_cards.card_exists(card_id):
+                if global_data.all_cards.card_exists(card_id):
                     deck_has_card = DeckHasCard(
                         deck_id=page_json["deck_id"],
                         set_num=set_num,

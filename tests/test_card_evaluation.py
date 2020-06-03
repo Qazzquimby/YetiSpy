@@ -1,5 +1,7 @@
 import pytest
 import pandas as pd
+
+import models.card
 import models.deck
 
 import card_evaluation
@@ -45,6 +47,49 @@ def play_values():
     """A simple PlayValueFrame built to match the play_rates fixture."""
 
     return card_evaluation.PlayValueFrame(df=pd.DataFrame(play_values_dict))
+
+
+card_data_dict = {
+    card_evaluation.PlayCountFrame.SET_NUM: {0: 0, 1: 0,},
+    card_evaluation.PlayCountFrame.CARD_NUM: {0: 0, 1: 1,},
+    "name": {0: "0_0", 1: "0_1"},
+    "rarity": {0: "Common", 1: "Uncommon"},
+    "image_url": {0: "0_0", 1: "0_1"},
+    "details_url": {0: "0_0", 1: "0_1"},
+    "is_in_draft_pack": {0: 0, 1: 1},
+}
+
+
+@pytest.fixture
+def card_data():
+    """A simple CardData for the cards used in the other fixtures.."""
+
+    return models.card.CardData(df=pd.DataFrame(card_data_dict))
+
+
+play_craft_efficiency_dict = play_values_dict.copy()
+play_craft_efficiency_dict.update(
+    {
+        "name": {0: "0_0", 1: "0_0", 2: "0_1"},
+        "rarity": {0: "Common", 1: "Common", 2: "Uncommon"},
+        "image_url": {0: "0_0", 1: "0_0", 2: "0_1"},
+        "details_url": {0: "0_0", 1: "0_0", 2: "0_1"},
+        "is_in_draft_pack": {0: 0, 1: 0, 2: 1},
+        card_evaluation.PlayCraftEfficiencyFrame.CRAFT_COST: {0: 50, 1: 50, 2: 100},
+        card_evaluation.PlayCraftEfficiencyFrame.PLAY_CRAFT_EFFICIENCY: {
+            0: 2.0,
+            1: 1.0,
+            2: 0.1,
+        },
+    }
+)
+
+
+@pytest.fixture
+def play_craft_efficiency():
+    return card_evaluation.PlayCraftEfficiencyFrame(
+        df=pd.DataFrame(play_craft_efficiency_dict)
+    )
 
 
 @pytest.fixture
@@ -100,3 +145,10 @@ def test_build_play_rate_frame(play_counts, play_rates):
 def test_build_play_value_frame(play_rates, play_values):
     sut = card_evaluation.PlayValueFrame.from_play_rates(play_rates)
     assert sut == play_values
+
+
+def test_build_play_craft_efficiency_frame(
+    play_values, card_data, play_craft_efficiency
+):
+    sut = card_evaluation.PlayCraftEfficiencyFrame.construct(play_values, card_data)
+    assert sut == play_craft_efficiency

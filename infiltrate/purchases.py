@@ -473,10 +473,10 @@ class _PurchasesValueDataframeGetter:
         return values_df
 
     def _get_card_data(self):
-        all_cards = models.card.AllCards()
+        all_cards = models.card.CardData()
         card_data = (
             self.card_playabilities.set_index(["set_num", "card_num"])
-            .join(all_cards.cards_df.set_index(["set_num", "card_num"]))
+            .join(all_cards.df.set_index(["set_num", "card_num"]))
             .reset_index()
         )
 
