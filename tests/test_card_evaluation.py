@@ -6,11 +6,35 @@ import models.deck
 
 import card_evaluation
 
+card_data_dict = {
+    card_evaluation.PlayCountFrame.SET_NUM: {0: 0, 1: 0,},
+    card_evaluation.PlayCountFrame.CARD_NUM: {0: 0, 1: 1,},
+    "name": {0: "0_0", 1: "0_1"},
+    "rarity": {0: "Common", 1: "Uncommon"},
+    "image_url": {0: "0_0", 1: "0_1"},
+    "details_url": {0: "0_0", 1: "0_1"},
+    "is_in_draft_pack": {0: 0, 1: 1},
+}
+
+
+@pytest.fixture
+def card_data():
+    """A simple CardData for the cards used in the other fixtures.."""
+
+    return models.card.CardData(df=pd.DataFrame(card_data_dict))
+
+
 # PLAY COUNTS
+
 play_counts_dict = {
     card_evaluation.PlayCountFrame.SET_NUM: {0: 0, 1: 0, 2: 0,},
     card_evaluation.PlayCountFrame.CARD_NUM: {0: 0, 1: 0, 2: 1,},
     card_evaluation.PlayCountFrame.COUNT_IN_DECK: {0: 1, 1: 2, 2: 1,},
+    "name": {0: "0_0", 1: "0_0", 2: "0_1"},
+    "rarity": {0: "Common", 1: "Common", 2: "Uncommon"},
+    "image_url": {0: "0_0", 1: "0_0", 2: "0_1"},
+    "details_url": {0: "0_0", 1: "0_0", 2: "0_1"},
+    "is_in_draft_pack": {0: 0, 1: 0, 2: 1},
     card_evaluation.PlayCountFrame.PLAY_COUNT: {
         0: models.deck.AVG_COLLECTABLE_CARDS_IN_DECK * 10,
         1: models.deck.AVG_COLLECTABLE_CARDS_IN_DECK * 5,
@@ -20,7 +44,7 @@ play_counts_dict = {
 
 
 @pytest.fixture
-def play_counts():
+def play_counts(card_data):
     """A simple PlayCountFrame"""
     return card_evaluation.PlayCountFrame(df=pd.DataFrame(play_counts_dict))
 
@@ -72,7 +96,7 @@ def play_rates():
 
 def test_build_play_rate_frame(play_counts, play_rates):
     sut = card_evaluation.PlayRateFrame.from_play_counts(play_counts)
-    assert sut == play_rates
+    pd.testing.assert_frame_equal(sut.df, play_rates.df)
 
 
 # PLAY VALUES
@@ -91,18 +115,13 @@ def play_values():
 
 def test_build_play_value_frame(play_rates, play_values):
     sut = card_evaluation.PlayValueFrame.from_play_rates(play_rates)
-    assert sut == play_values
+    pd.testing.assert_frame_equal(sut.df, play_values.df)
 
 
 # PLAY CRAFT EFFICIENCY
 play_craft_efficiency_dict = play_values_dict.copy()
 play_craft_efficiency_dict.update(
     {
-        "name": {0: "0_0", 1: "0_0", 2: "0_1"},
-        "rarity": {0: "Common", 1: "Common", 2: "Uncommon"},
-        "image_url": {0: "0_0", 1: "0_0", 2: "0_1"},
-        "details_url": {0: "0_0", 1: "0_0", 2: "0_1"},
-        "is_in_draft_pack": {0: 0, 1: 0, 2: 1},
         card_evaluation.PlayCraftEfficiencyFrame.CRAFT_COST: {0: 50, 1: 50, 2: 100},
         card_evaluation.PlayCraftEfficiencyFrame.PLAY_CRAFT_EFFICIENCY: {
             0: 2.0,
@@ -112,23 +131,6 @@ play_craft_efficiency_dict.update(
     }
 )
 
-card_data_dict = {
-    card_evaluation.PlayCountFrame.SET_NUM: {0: 0, 1: 0,},
-    card_evaluation.PlayCountFrame.CARD_NUM: {0: 0, 1: 1,},
-    "name": {0: "0_0", 1: "0_1"},
-    "rarity": {0: "Common", 1: "Uncommon"},
-    "image_url": {0: "0_0", 1: "0_1"},
-    "details_url": {0: "0_0", 1: "0_1"},
-    "is_in_draft_pack": {0: 0, 1: 1},
-}
-
-
-@pytest.fixture
-def card_data():
-    """A simple CardData for the cards used in the other fixtures.."""
-
-    return models.card.CardData(df=pd.DataFrame(card_data_dict))
-
 
 @pytest.fixture
 def play_craft_efficiency():
@@ -137,13 +139,9 @@ def play_craft_efficiency():
     )
 
 
-def test_build_play_craft_efficiency_frame(
-    play_values, card_data, play_craft_efficiency
-):
-    sut = card_evaluation.PlayCraftEfficiencyFrame.from_play_value(
-        play_values, card_data
-    )
-    assert sut == play_craft_efficiency
+def test_build_play_craft_efficiency_frame(play_values, play_craft_efficiency):
+    sut = card_evaluation.PlayCraftEfficiencyFrame.from_play_value(play_values)
+    pd.testing.assert_frame_equal(sut.df, play_craft_efficiency.df)
 
 
 # OWN VALUE
@@ -166,7 +164,7 @@ def test_build_own_value_frame(play_craft_efficiency, own_value):
     sut = card_evaluation.OwnValueFrame.from_play_craft_efficiency(
         play_craft_efficiency, 2
     )
-    assert sut == own_value
+    pd.testing.assert_frame_equal(sut.df, own_value.df)
 
 
 # OWN CRAFT EFFICIENCY
@@ -191,7 +189,7 @@ def own_craft_efficiency():
 
 def test_build_own_craft_efficiency_frame(own_value, own_craft_efficiency):
     sut = card_evaluation.OwnCraftEfficiencyFrame.from_own_value(own_value)
-    assert sut == own_craft_efficiency
+    pd.testing.assert_frame_equal(sut.df, own_craft_efficiency.df)
 
 
 @pytest.fixture
@@ -199,9 +197,10 @@ def _playcount_from_db():
     """This is slow and only for manual debugging."""
     user_id = 22
     import models.user
+    import global_data
 
     user = models.user.get_by_id(user_id)
     weighted_deck_searches = user.weighted_deck_searches
     return card_evaluation.PlayCountFrame.from_weighted_deck_searches(
-        weighted_deck_searches
+        weighted_deck_searches, global_data.all_cards
     )

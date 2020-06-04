@@ -48,15 +48,25 @@ class PlayCountFrame(_PlayCountColumns):
 
     @classmethod
     def from_weighted_deck_searches(
-        cls, weighted_deck_searches: t.List[WeightedDeckSearch]
+        cls,
+        weighted_deck_searches: t.List[WeightedDeckSearch],
+        card_data: models.card.CardData,
     ):
         """Build the dataframe from the list of weighted deck searches."""
         play_count_dfs: t.List[pd.DataFrame] = []
         for weighted_deck_search in weighted_deck_searches:
             play_count_dfs.append(cls._get_count_df(weighted_deck_search))
 
-        combined = cls._sum_count_dfs(play_count_dfs)
-        return cls(combined)
+        combined_df = cls._sum_count_dfs(play_count_dfs)
+
+        index_keys = [PlayValueFrame.CARD_NUM, PlayValueFrame.SET_NUM]
+        added_card_data_df = (
+            combined_df.set_index(index_keys)
+            .join(card_data.df.set_index(index_keys))
+            .reset_index()
+        )
+
+        return cls(added_card_data_df)
 
     @classmethod
     def _get_count_df(cls, weighted_deck_search: WeightedDeckSearch):
@@ -130,28 +140,17 @@ class PlayCraftEfficiencyFrame(_PlayCraftEfficiencyColumns):
     """
 
     @classmethod
-    def from_play_value(
-        cls, play_value_frame: PlayValueFrame, card_data: models.card.CardData
-    ):
+    def from_play_value(cls, play_value_frame: PlayValueFrame):
         """Constructor for getting play craft efficiency from play value and cost."""
-        value_df: pd.DataFrame = play_value_frame.df.copy()
+        df: pd.DataFrame = play_value_frame.df.copy()
 
-        index_keys = [PlayValueFrame.CARD_NUM, PlayValueFrame.SET_NUM]
-
-        combined_df = (
-            value_df.set_index(index_keys)
-            .join(card_data.df.set_index(index_keys))
-            .reset_index()
-        )
-        combined_df[cls.CRAFT_COST] = combined_df[models.card.CardData.RARITY].apply(
+        df[cls.CRAFT_COST] = df[models.card.CardData.RARITY].apply(
             lambda rarity: models.rarity.rarity_from_name[rarity].enchant
         )
 
-        combined_df[cls.PLAY_CRAFT_EFFICIENCY] = (
-            combined_df[cls.PLAY_VALUE] / combined_df[cls.CRAFT_COST]
-        )
+        df[cls.PLAY_CRAFT_EFFICIENCY] = df[cls.PLAY_VALUE] / df[cls.CRAFT_COST]
 
-        return cls(combined_df)
+        return cls(df)
 
 
 class _OwnValueColumns(_PlayCraftEfficiencyColumns):
