@@ -35,20 +35,19 @@ class UserOwnsCard(db.Model):
         return pd.read_sql_query(query, session)
 
 
-def create_is_owned_column(
-    card_details: pd.DataFrame, user: "models.user.User"
-) -> pd.DataFrame:
-    raw_ownership = UserOwnsCard.to_dataframe(user)
-
+def create_is_owned_series(
+    card_details: pd.DataFrame, ownership: pd.DataFrame
+) -> pd.Series:
+    """Makes a series matching the card copies in card_details for if that many copies
+    are owned."""
     details_with_total_owned = (
         card_details.set_index(["set_num", "card_num"])
-        .join(raw_ownership.set_index(["set_num", "card_num"]))
+        .join(ownership.set_index(["set_num", "card_num"]))
         .reset_index()
     )
 
-    details_with_total_owned["is_owned"] = (
-        details_with_total_owned["count_in_deck"] <= details_with_total_owned["count"]
-    )
-    del details_with_total_owned["count"]
-    new_df = details_with_total_owned
-    return new_df
+    # noinspection PyTypeChecker
+    is_owned: pd.Series = details_with_total_owned[
+        "count_in_deck"
+    ] <= details_with_total_owned["count"]
+    return is_owned

@@ -5,6 +5,7 @@ import models.card
 import models.deck
 
 import card_evaluation
+import models.user.owns_card
 
 card_data_dict = {
     card_evaluation.PlayCountFrame.SET_NUM: {0: 0, 1: 0,},
@@ -100,9 +101,25 @@ def test_build_play_rate_frame(play_counts, play_rates):
 
 
 # PLAY VALUES
+ownership_dict = {
+    card_evaluation.PlayCountFrame.SET_NUM: {0: 0, 1: 0,},
+    card_evaluation.PlayCountFrame.CARD_NUM: {0: 0, 1: 1,},
+    "count": {0: 1, 1: 0},
+}
+
+
+@pytest.fixture
+def ownership():
+    # return models.user.owns_card.UserOwnsCard.to_dataframe(models.user.get_by_id(22))
+    return pd.DataFrame(ownership_dict)
+
+
 play_values_dict = play_rates_dict.copy()
 play_values_dict.update(
-    {card_evaluation.PlayValueFrame.PLAY_VALUE: {0: 100.0, 1: 50.0, 2: 10.0}}
+    {
+        card_evaluation.PlayValueFrame.PLAY_VALUE: {0: 100.0, 1: 50.0, 2: 10.0},
+        "is_owned": {0: True, 1: False, 2: False},
+    }
 )
 
 
@@ -113,8 +130,8 @@ def play_values():
     return card_evaluation.PlayValueFrame(df=pd.DataFrame(play_values_dict))
 
 
-def test_build_play_value_frame(play_rates, play_values):
-    sut = card_evaluation.PlayValueFrame.from_play_rates(play_rates)
+def test_build_play_value_frame(play_rates, ownership, play_values):
+    sut = card_evaluation.PlayValueFrame.from_play_rates(play_rates, ownership)
     pd.testing.assert_frame_equal(sut.df, play_values.df)
 
 

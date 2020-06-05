@@ -110,6 +110,7 @@ class PlayRateFrame(_PlayRateColumns):
 
 class _PlayValueColumns(_PlayRateColumns):
     PLAY_VALUE = "play_value"
+    IS_OWNED = "is_owned"
 
 
 class PlayValueFrame(_PlayValueColumns):
@@ -120,11 +121,16 @@ class PlayValueFrame(_PlayValueColumns):
     SCALE = 100
 
     @classmethod
-    def from_play_rates(cls, play_rate_frame: PlayRateFrame):
+    def from_play_rates(cls, play_rate_frame: PlayRateFrame, ownership: pd.DataFrame):
         """Constructor deriving values from play rates."""
         # todo account for collection fit.
         df = play_rate_frame.df.copy()
         df[cls.PLAY_VALUE] = df[cls.PLAY_COUNT] * cls.SCALE / df[cls.PLAY_COUNT].max()
+
+        df[cls.IS_OWNED] = models.user.owns_card.create_is_owned_series(
+            play_rate_frame.df, ownership
+        )
+
         return cls(df)
 
 
