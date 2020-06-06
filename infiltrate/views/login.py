@@ -42,11 +42,8 @@ def get_remember_me():
 
 
 def get_username(key: str):
-    try:
-        username = get_username_from_key(key)
-        return username
-    except BadKeyException as e:
-        raise e
+    username = get_username_from_key(key)
+    return username
 
 
 def get_username_from_key(key: str):
