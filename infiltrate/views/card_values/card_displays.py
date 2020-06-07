@@ -6,11 +6,7 @@ import pandas as pd
 
 from card_evaluation import OwnValueFrame
 import models.card
-import models.card_set
-import models.deck_search
-import models.rarity
 import models.user
-import rewards
 from views.card_values import display_filters
 
 
@@ -20,7 +16,7 @@ from views.card_values import display_filters
 class CardDisplays:
     """Handles sorting and filtering a list of CardValueDisplay to serve."""
 
-    CARDS_PER_PAGE = 30
+    CARDS_PER_PAGE = 15
 
     def __init__(self, value_info: OwnValueFrame):
         self.value_info = value_info
@@ -62,7 +58,7 @@ class CardDisplays:
         """Gets the page of card displays,
         sorting by the current sort method."""
         card_display_page_generator = CardDisplayPage(
-            self.value_info, page_num=page_num
+            self.value_info, page_num=page_num, cards_per_page=self.CARDS_PER_PAGE
         )
         displays_on_page = card_display_page_generator.run()
         return displays_on_page

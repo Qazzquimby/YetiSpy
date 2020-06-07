@@ -257,9 +257,9 @@ class OwnValueFrame(_OwnValueColumns):
     ):
         """Gets the top num_options crafting efficiencies and averages them to predict
         how much value the user will get from crafting."""
-        efficiencies = play_craft_efficiency.df.sort_values(
-            play_craft_efficiency.PLAY_CRAFT_EFFICIENCY, ascending=False
-        )
+        efficiencies = play_craft_efficiency.df.query(
+            f"{cls.IS_OWNED} == False"
+        ).sort_values(play_craft_efficiency.PLAY_CRAFT_EFFICIENCY, ascending=False)
 
         top_efficiencies = efficiencies.head(num_options_considered)
         avg_top_efficiency = (
