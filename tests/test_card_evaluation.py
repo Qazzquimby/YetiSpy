@@ -4,6 +4,8 @@ import pandas as pd
 import models.card
 import models.deck
 
+import models.rarity
+
 import card_evaluation
 import models.user.owns_card
 
@@ -135,13 +137,16 @@ def test_build_play_value_frame(play_rates, ownership, play_values):
 
 
 # PLAY CRAFT EFFICIENCY
+findabilities = {0: 0.5, 1: 0.5, 2: 0.0}
+
 play_craft_efficiency_dict = play_values_dict.copy()
 play_craft_efficiency_dict.update(
     {
         card_evaluation.PlayCraftEfficiencyFrame.CRAFT_COST: {0: 50, 1: 50, 2: 100},
+        card_evaluation.PlayCraftEfficiencyFrame.FINDABILITY: findabilities,
         card_evaluation.PlayCraftEfficiencyFrame.PLAY_CRAFT_EFFICIENCY: {
-            0: 2.0,
-            1: 1.0,
+            0: 1.0,
+            1: 0.5,
             2: 0.1,
         },
     }
@@ -155,7 +160,16 @@ def play_craft_efficiency():
     )
 
 
+@pd.np.vectorize
+def mock_get_findability(rarity_str: str, set_num: int):
+    if rarity_str == models.rarity.COMMON.name:
+        return 0.5
+    else:
+        return 0.0
+
+
 def test_build_play_craft_efficiency_frame(play_values, play_craft_efficiency):
+    card_evaluation.PlayCraftEfficiencyFrame.get_findability = mock_get_findability
     sut = card_evaluation.PlayCraftEfficiencyFrame.from_play_value(play_values)
     pd.testing.assert_frame_equal(sut.df, play_craft_efficiency.df)
 
@@ -165,8 +179,8 @@ own_value_dict = play_craft_efficiency_dict.copy()
 own_value_dict.update(
     {
         card_evaluation.OwnValueFrame.SELL_COST: {0: 1, 1: 1, 2: 10},
-        card_evaluation.OwnValueFrame.RESELL_VALUE: {0: 1.5, 1: 1.5, 2: 15.0},
-        card_evaluation.OwnValueFrame.OWN_VALUE: {0: 100.0, 1: 50.0, 2: 15.0},
+        card_evaluation.OwnValueFrame.RESELL_VALUE: {0: 0.75, 1: 0.75, 2: 7.5},
+        card_evaluation.OwnValueFrame.OWN_VALUE: {0: 100.0, 1: 50.0, 2: 10.0},
     }
 )
 

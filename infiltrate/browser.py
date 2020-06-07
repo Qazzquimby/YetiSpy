@@ -1,5 +1,6 @@
 """Selenium web scraping utilities"""
 import json
+import pathlib
 import sys
 import typing as t
 import urllib.error
@@ -10,28 +11,22 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from webdrivermanager import ChromeDriverManager
 
-# current_dir = str(pathlib.Path.cwd())
-current_dir = r"C:\Users\User\PycharmProjects\eternalCardEvaluator"
-# todo in production change back to current_dir = str(pathlib.Path.cwd())
+current_dir = str(pathlib.Path.cwd())
 
 sys.path.append(current_dir)
-
-"""
-from webdriver_manager.chrome import ChromeDriverManager
-
-driver = webdriver.Chrome(ChromeDriverManager().install())
-
-"""
 
 
 class Browser(selenium.webdriver.Chrome):
     """Context wrapper for selenium Chrome browser."""
 
-    driver, _ = ChromeDriverManager(
-        download_root=current_dir, link_path=current_dir
-    ).download_and_install()
+    driver = None
 
     def __init__(self):
+        if self.driver is None:
+            self.driver, _ = ChromeDriverManager(
+                download_root=current_dir, link_path=current_dir
+            ).download_and_install()
+
         options = selenium.webdriver.chrome.options.Options()
         options.headless = True
 
