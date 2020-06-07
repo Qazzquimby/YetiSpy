@@ -73,14 +73,8 @@ class CampaignEvaluator(PurchaseEvaluator):
         values = collections.defaultdict(int)
 
         for card_set in card_sets:
-            # cards_in_pool = card_data[
-            #     np.logical_and(
-            #         card_data["set_num"] == card_set.set_num,
-            #         card_data["is_owned"] == False,
-            #     )
-            # ]
             cards_in_pool = card_data.query(
-                "set_num == @card_set.set_num " "and is_owned == False"
+                "set_num == @card_set.set_num and is_owned == False"
             )
 
             value_for_pool = sum(cards_in_pool["value"])
