@@ -223,21 +223,3 @@ class OwnValueFrame(_OwnValueColumns):
         )
 
         return avg_top_efficiency
-
-
-class _OwnCraftEfficiencyColumns(_OwnValueColumns):
-    OWN_CRAFT_EFFICIENCY = "own_craft_efficiency"
-
-
-class OwnCraftEfficiencyFrame(_OwnCraftEfficiencyColumns):
-    """Has column own_craft_efficiency for the value of owning the card divided
-    by the shiftstone cost."""
-
-    @classmethod
-    def from_own_value(cls, own_value: OwnValueFrame):
-        """Constructor deriving efficiency from own values and cost."""
-        df: pd.DataFrame = own_value.df.copy()
-
-        df[cls.OWN_CRAFT_EFFICIENCY] = df[cls.OWN_VALUE] / df[cls.CRAFT_COST]
-
-        return cls(df)
