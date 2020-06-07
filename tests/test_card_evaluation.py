@@ -110,7 +110,6 @@ ownership_dict = {
 
 @pytest.fixture
 def ownership():
-    # return models.user.owns_card.UserOwnsCard.to_dataframe(models.user.get_by_id(22))
     return pd.DataFrame(ownership_dict)
 
 
@@ -182,31 +181,6 @@ def test_build_own_value_frame(play_craft_efficiency, own_value):
         play_craft_efficiency, 2
     )
     pd.testing.assert_frame_equal(sut.df, own_value.df)
-
-
-# OWN CRAFT EFFICIENCY
-own_craft_efficiency_dict = own_value_dict.copy()
-own_craft_efficiency_dict.update(
-    {
-        card_evaluation.OwnCraftEfficiencyFrame.OWN_CRAFT_EFFICIENCY: {
-            0: 2.0,
-            1: 1.0,
-            2: 0.15,
-        },
-    }
-)
-
-
-@pytest.fixture
-def own_craft_efficiency():
-    return card_evaluation.OwnCraftEfficiencyFrame(
-        df=pd.DataFrame(own_craft_efficiency_dict)
-    )
-
-
-def test_build_own_craft_efficiency_frame(own_value, own_craft_efficiency):
-    sut = card_evaluation.OwnCraftEfficiencyFrame.from_own_value(own_value)
-    pd.testing.assert_frame_equal(sut.df, own_craft_efficiency.df)
 
 
 @pytest.fixture
