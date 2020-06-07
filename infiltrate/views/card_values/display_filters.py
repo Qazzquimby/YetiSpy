@@ -109,7 +109,7 @@ class ValueSort(CardDisplaySort):
     def sort(displays):
         """Sorts cards from highest to lowest card value."""
         sorted_df = displays.df.sort_values(
-            by=[OwnValueFrame.OWN_VALUE], ascending=False
+            by=[OwnValueFrame.PLAY_VALUE], ascending=False
         )
         return OwnValueFrame(sorted_df)
 

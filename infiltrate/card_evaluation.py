@@ -19,6 +19,8 @@ import models.deck
 import models.card
 import models.rarity
 import models.user
+import models.card_set
+import rewards
 from models.deck_search import DeckSearchHasCard, WeightedDeckSearch
 
 
@@ -43,6 +45,10 @@ class _CardCopyColumns(abc.ABC):
 
 class _PlayCountColumns(_CardCopyColumns):
     PLAY_COUNT = "num_decks_with_count_or_less"
+    RARITY = "rarity"
+    IMAGE_URL = ("image_url",)
+    DETAILS_URL = ("details_url",)
+    IS_IN_DRAFT_PACK = ("is_in_draft_pack",)
 
 
 class PlayCountFrame(_PlayCountColumns):
@@ -144,6 +150,7 @@ class PlayValueFrame(_PlayValueColumns):
 class _PlayCraftEfficiencyColumns(_PlayValueColumns):
     PLAY_CRAFT_EFFICIENCY = "play_craft_efficiency"
     CRAFT_COST = "craft_cost"
+    FINDABILITY = "findability"
 
 
 class PlayCraftEfficiencyFrame(_PlayCraftEfficiencyColumns):
@@ -161,9 +168,35 @@ class PlayCraftEfficiencyFrame(_PlayCraftEfficiencyColumns):
             lambda rarity: models.rarity.rarity_from_name[rarity].enchant
         )
 
-        df[cls.PLAY_CRAFT_EFFICIENCY] = df[cls.PLAY_VALUE] / df[cls.CRAFT_COST]
+        df[cls.FINDABILITY] = cls.get_findability(
+            rarity_str=df[cls.RARITY], set_num=df[cls.SET_NUM]
+        )
+
+        df[cls.PLAY_CRAFT_EFFICIENCY] = cls.findability_scalar(
+            findability=df[cls.FINDABILITY],
+            craft_efficiency=df[cls.PLAY_VALUE] / df[cls.CRAFT_COST],
+        )
 
         return cls(df)
+
+    @staticmethod
+    @pd.np.vectorize
+    def get_findability(rarity_str: str, set_num: int):
+        """Get the chance that a player will find the given card."""
+        # todo cost could be calculated once per card rather than once per count
+        # TODO allow custom player profiles to override this.
+        player: rewards.PlayerRewards = rewards.DEFAULT_PLAYER_REWARD_RATE
+        rarity = models.rarity.rarity_from_name[rarity_str]
+        findability = player.get_chance_of_specific_card_drop_in_a_week(
+            rarity=rarity, card_set=models.card_set.CardSet(set_num)
+        )
+        return findability
+
+    @staticmethod
+    @pd.np.vectorize
+    def findability_scalar(craft_efficiency: float, findability: float):
+        """Scales the craft efficiency based on the findability."""
+        return (1 - findability) * craft_efficiency
 
 
 class _OwnValueColumns(_PlayCraftEfficiencyColumns):

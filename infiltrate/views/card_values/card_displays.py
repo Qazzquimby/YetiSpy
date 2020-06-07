@@ -17,18 +17,6 @@ from views.card_values import display_filters
 # TODO Tests :(
 
 
-@pd.np.vectorize
-def get_findability(rarity_str: str, set_num: models.card_set.CardSet):
-    # todo cost could be calculated once per card rather than once per count
-    # TODO allow custom player profiles to override this.
-    player: rewards.PlayerRewards = rewards.DEFAULT_PLAYER_REWARD_RATE
-    rarity = models.rarity.rarity_from_name[rarity_str]
-    findability = player.get_chance_of_specific_card_drop_in_a_week(
-        rarity=rarity, card_set=set_num
-    )
-    return findability
-
-
 class CardDisplays:
     """Handles sorting and filtering a list of CardValueDisplay to serve."""
 
