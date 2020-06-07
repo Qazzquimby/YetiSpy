@@ -4,7 +4,7 @@ import typing as t
 import numpy as np
 import pandas as pd
 
-import card_evaluation
+from card_evaluation import OwnValueFrame
 import models.card
 import models.card_set
 import models.deck_search
@@ -21,9 +21,7 @@ from views.card_values import display_filters
 def get_findability(rarity_str: str, set_num: models.card_set.CardSet):
     # todo cost could be calculated once per card rather than once per count
     # TODO allow custom player profiles to override this.
-    player = rewards.DEFAULT_PLAYER_REWARD_RATE
-    player: rewards.PlayerRewards
-
+    player: rewards.PlayerRewards = rewards.DEFAULT_PLAYER_REWARD_RATE
     rarity = models.rarity.rarity_from_name[rarity_str]
     findability = player.get_chance_of_specific_card_drop_in_a_week(
         rarity=rarity, card_set=set_num
@@ -36,13 +34,19 @@ class CardDisplays:
 
     CARDS_PER_PAGE = 30
 
-    def __init__(self, value_info: card_evaluation.OwnCraftEfficiencyFrame):
+    def __init__(self, value_info: OwnValueFrame):
         self.value_info = value_info
         self.is_filtered = False
         self.is_sorted = False
 
         self._sort_method: t.Optional[display_filters.CardDisplaySort] = None
         self._ownership: t.Optional[display_filters.OwnershipFilter] = None
+
+    @classmethod
+    def make_for_user(cls, user: models.user.User, card_data: models.card.CardData):
+        """Makes the cards for a user, cached for immediate reuse."""
+        own_value = OwnValueFrame.from_user(user, card_data)
+        return cls(own_value)
 
     @property
     def sort_method(self) -> t.Optional[display_filters.CardDisplaySort]:
@@ -66,42 +70,7 @@ class CardDisplays:
             self.is_filtered = False
             self._ownership = value
 
-    # def get_value_info(self, all_cards: models.card.CardData):
-    #     """Get all displays for a user, not sorted or filtered."""
-    #     playabilities_wrapper: models.deck_search.PlayabilityFrame = self.user.get_playabilities()
-    #     playabilities: pd.DataFrame = playabilities_wrapper.get_all_cards_data(
-    #         all_cards
-    #     )
-    #
-    #     playabilities = playabilities.set_index(["set_num", "card_num"])
-    #
-    #     # todo this isn't where this goes.
-    #     playabilities[
-    #         "value_per_shiftstone"
-    #     ] = models.deck_search.PlayabilityFrame.get_value_per_shiftstone(
-    #         playabilities["rarity"], playabilities["playability"]
-    #     )
-    #     playabilities = playabilities.reset_index()
-    #
-    #     # FINDABILITY
-    #     # todo make this work to different degrees based on player preference.
-    #     card_classes = playabilities[["set_num", "rarity"]].drop_duplicates()
-    #
-    #     card_set = np.vectorize(models.card_set.CardSet)(
-    #         card_classes["set_num"]
-    #     )  # class construction might not vectorize
-    #
-    #     card_classes["findability"] = get_findability(card_classes["rarity"], card_set)
-    #     playabilities = (
-    #         playabilities.set_index(["set_num", "rarity"])
-    #         .join(card_classes.set_index(["set_num", "rarity"]))
-    #         .reset_index()
-    #     )
-    #     playabilities["value_per_shiftstone"] *= 1 - playabilities["findability"]
-    #     playabilities = user_owns_card.create_is_owned_column(playabilities, self.user)
-    #     return playabilities
-
-    def get_page(self, page_num: int = 0) -> pd.DataFrame:
+    def get_page(self, page_num: int = 0) -> OwnValueFrame:
         """Gets the page of card displays,
         sorting by the current sort method."""
         card_display_page_generator = CardDisplayPage(
@@ -113,10 +82,10 @@ class CardDisplays:
     def get_card(self, card_id: models.card.CardId) -> pd.DataFrame:
         """Gets all displays matching the given card id
         1 display for each playset size."""
-        displays_df = self.value_info[
+        displays_df = self.value_info.df[
             np.logical_and(
-                self.value_info["set_num"] == card_id.set_num,
-                self.value_info["card_num"] == card_id.card_num,
+                self.value_info.df[self.value_info.SET_NUM] == card_id.set_num,
+                self.value_info.df[self.value_info.CARD_NUM] == card_id.card_num,
             )
         ]
 
@@ -145,7 +114,7 @@ class CardDisplays:
 
     def _filter(self):
         if not self.is_filtered:
-            filtered = self.raw_value_info
+            filtered = self.value_info
             filtered = self.sort_method.filter(filtered)
             filtered = self.ownership.filter(filtered)
 
@@ -168,13 +137,13 @@ class CardDisplayPage:
         self.cards_per_page = cards_per_page
         self.page_num = self._wrap_negative_page_num(page_num)
 
-    def run(self) -> pd.DataFrame:
+    def run(self) -> OwnValueFrame:
         """Call for the card displays to be displayed at the given page."""
         start_index = self._get_start_card_index()
-        displays_on_page_df: pd.DataFrame = self.value_info[
-            start_index : start_index + self.cards_per_page
-        ]
-        displays_on_page = self._group_page(displays_on_page_df)
+        displays_on_page = OwnValueFrame(
+            self.value_info.df[start_index : start_index + self.cards_per_page]
+        )
+        displays_on_page = self._group_page(displays_on_page)
         return displays_on_page
 
     def _wrap_negative_page_num(self, page_num) -> int:
@@ -191,25 +160,28 @@ class CardDisplayPage:
         return start
 
     @staticmethod
-    def _group_page(page: pd.DataFrame) -> pd.DataFrame:  # todo make less disgusting
+    def _group_page(page: OwnValueFrame) -> OwnValueFrame:  # todo make less disgusting
         """Groups the card value displays in the list as a single item.
 
         Grouped displays are given new minimum and maximum attributes
         representing the cards minimum and maximum counts in the list."""
 
-        grouped = page.groupby(["set_num", "card_num"])[
-            "count_in_deck", "playability", "value_per_shiftstone"
+        index_keys = [page.SET_NUM, page.CARD_NUM]
+
+        grouped = page.df.groupby(index_keys)[
+            page.COUNT_IN_DECK, page.PLAY_VALUE, page.PLAY_CRAFT_EFFICIENCY
         ]
         min_count = grouped.min()
         max_count = grouped.max()
 
-        reindexed = page.set_index(["set_num", "card_num"])
+        reindexed = page.df.set_index(index_keys)
 
         min_page = reindexed.join(min_count, rsuffix="_min")
         min_max_page = min_page.join(max_count, rsuffix="_max")
-        del min_max_page["count_in_deck"]
-        del min_max_page["playability"]
-        del min_max_page["value_per_shiftstone"]
+        del min_max_page[page.COUNT_IN_DECK]
+        del min_max_page[page.PLAY_VALUE]
+        del min_max_page[page.OWN_VALUE]
+        del min_max_page[page.PLAY_CRAFT_EFFICIENCY]
         min_max_dropped_duplicates = min_max_page.drop_duplicates()
 
         min_max_dropped_index_duplicates = min_max_dropped_duplicates[
@@ -221,7 +193,7 @@ class CardDisplayPage:
         original_order = min_max_dropped_index_duplicates.reindex(index=original_index)
 
         original_index = original_order.reset_index()
-        no_duplicates = original_index.drop_duplicates(subset=["set_num", "card_num"])
+        no_duplicates = original_index.drop_duplicates(subset=index_keys)
 
         return no_duplicates
 
@@ -247,14 +219,3 @@ class CardDisplayPage:
         )
 
         return page
-
-
-def make_card_displays(
-    user: models.user.User, card_data: models.card.CardData
-) -> CardDisplays:
-    """Makes the cards for a user, cached for immediate reuse."""
-    own_value = card_evaluation.OwnValueFrame.from_user(user, card_data)
-    own_craft_efficiency = card_evaluation.OwnCraftEfficiencyFrame.from_own_value(
-        own_value
-    )
-    return CardDisplays(own_craft_efficiency)

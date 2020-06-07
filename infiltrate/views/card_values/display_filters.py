@@ -2,8 +2,8 @@ import typing as t
 from abc import ABC
 
 import numpy as np
-import pandas as pd
 
+from card_evaluation import OwnValueFrame
 import models.card
 import models.card_set
 import models.user
@@ -12,11 +12,8 @@ import models.user
 class Filter(ABC):
     """ABC for methods of filtering cards to be displayed."""
 
-    def __init__(self):
-        pass
-
     @classmethod
-    def filter(cls, cards: pd.DataFrame) -> bool:
+    def filter(cls, cards: OwnValueFrame) -> OwnValueFrame:
         """Should the card be filtered out."""
         raise NotImplementedError
 
@@ -30,9 +27,9 @@ class UnownedFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def filter(cls, cards: pd.DataFrame) -> pd.DataFrame:
-        filtered = cards.query("is_owned == False")
-        return filtered
+    def filter(cls, cards):
+        filtered_df = cards.df.query("is_owned == False")
+        return OwnValueFrame(filtered_df)
 
 
 class OwnedFilter(OwnershipFilter):
@@ -40,9 +37,9 @@ class OwnedFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def filter(cls, cards: pd.DataFrame) -> pd.DataFrame:
-        filtered = cards.query("is_owned == True")
-        return filtered
+    def filter(cls, cards):
+        filtered_df = cards.df.query("is_owned == True")
+        return OwnValueFrame(filtered_df)
 
 
 class AllFilter(OwnershipFilter):
@@ -50,7 +47,7 @@ class AllFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def filter(cls, cards: pd.DataFrame) -> pd.DataFrame:
+    def filter(cls, cards):
         return cards
 
 
@@ -62,14 +59,17 @@ class CardDisplaySort(Filter, ABC):
 
     @property
     def default_ownership(self) -> t.Type[OwnershipFilter]:
+        """The ownership filter to be used first, unless overridden."""
         return UnownedFilter
 
     @staticmethod
-    def sort(displays: pd.DataFrame) -> pd.DataFrame:
+    def sort(displays: OwnValueFrame) -> OwnValueFrame:
+        """The method to reorder the card displays."""
         raise NotImplementedError
 
     @classmethod
-    def filter(cls, cards: pd.DataFrame) -> pd.DataFrame:
+    def filter(cls, cards: OwnValueFrame) -> OwnValueFrame:
+        """The method to filter out irrelevant card displays."""
         return cards
 
 
@@ -80,37 +80,41 @@ class CraftSort(CardDisplaySort):
         super().__init__()
 
     @staticmethod
-    def sort(displays: pd.DataFrame) -> pd.DataFrame:
+    def sort(cards):
         """Sorts the cards by highest to lowest card value
          per shiftstone crafting cost."""
-        sorted = displays.sort_values(by=["value_per_shiftstone"], ascending=False)
-        return sorted
+        sorted_df = cards.df.sort_values(
+            by=[cards.PLAY_CRAFT_EFFICIENCY], ascending=False
+        )
+        return OwnValueFrame(sorted_df)
 
     @classmethod
-    def filter(cls, cards: pd.DataFrame) -> pd.DataFrame:
+    def filter(cls, cards):
         """Filters out uncraftable."""
-        filtered = cards[
+        filtered_df = cards.df[
             np.logical_not(
-                models.card_set.CardSet.is_campaign_from_num(cards["set_num"])
+                models.card_set.CardSet.is_campaign_from_num(cards.df[cards.SET_NUM])
             )
         ]
-        return filtered
+        return OwnValueFrame(filtered_df)
 
 
 class ValueSort(CardDisplaySort):
-    """Sorts and filters cards to show overall card value"""
+    """Sorts and filters cards to show ownership card value"""
 
     def __init__(self):
         super().__init__()
 
     @staticmethod
-    def sort(displays: pd.DataFrame) -> pd.DataFrame:
+    def sort(displays):
         """Sorts cards from highest to lowest card value."""
-        sorted = displays.sort_values(by=["value"], ascending=False)
-        return sorted
+        sorted_df = displays.df.sort_values(
+            by=[OwnValueFrame.OWN_VALUE], ascending=False
+        )
+        return OwnValueFrame(sorted_df)
 
     @classmethod
-    def filter(cls, cards: pd.DataFrame) -> pd.DataFrame:
+    def filter(cls, cards):
         """Excludes owned cards."""
         return cards
 

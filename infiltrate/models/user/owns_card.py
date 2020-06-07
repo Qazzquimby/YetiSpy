@@ -26,7 +26,7 @@ class UserOwnsCard(db.Model):
     )
 
     @classmethod
-    def to_dataframe(cls, user: "models.user.User"):
+    def dataframe_for_user(cls, user: "models.user.User"):
         session = db.engine.raw_connection()
         query = f"""\
                 SELECT *
@@ -40,14 +40,12 @@ def create_is_owned_series(
 ) -> pd.Series:
     """Makes a series matching the card copies in card_details for if that many copies
     are owned."""
-    details_with_total_owned = (
-        card_details.set_index(["set_num", "card_num"])
-        .join(ownership.set_index(["set_num", "card_num"]))
-        .reset_index()
-    )
+    details_with_total_owned = card_details.merge(ownership, on=["set_num", "card_num"])
+
+    ownership_frame = details_with_total_owned[["set_num", "card_num", "count_in_deck"]]
 
     # noinspection PyTypeChecker
-    is_owned: pd.Series = details_with_total_owned[
-        "count_in_deck"
-    ] <= details_with_total_owned["count"]
-    return is_owned
+    ownership_frame["is_owned"] = (
+        details_with_total_owned["count_in_deck"] <= details_with_total_owned["count"]
+    )
+    return ownership_frame

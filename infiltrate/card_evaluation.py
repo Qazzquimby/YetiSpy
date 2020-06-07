@@ -32,6 +32,9 @@ class _CardCopyColumns(abc.ABC):
     def __init__(self, df: pd.DataFrame):
         self.df = df
 
+    def __len__(self):
+        return len(self.df)
+
     def __eq__(self, other):
         return type(self) == type(other) and self.df.sort_index(axis=1).equals(
             other.df.sort_index(axis=1)
@@ -124,11 +127,15 @@ class PlayValueFrame(_PlayValueColumns):
     def from_play_rates(cls, play_rate_frame: PlayRateFrame, ownership: pd.DataFrame):
         """Constructor deriving values from play rates."""
         # todo account for collection fit.
-        df = play_rate_frame.df.copy()
+        df: pd.DataFrame = play_rate_frame.df.copy()
         df[cls.PLAY_VALUE] = df[cls.PLAY_COUNT] * cls.SCALE / df[cls.PLAY_COUNT].max()
 
-        df[cls.IS_OWNED] = models.user.owns_card.create_is_owned_series(
+        ownership_frame = models.user.owns_card.create_is_owned_series(
             play_rate_frame.df, ownership
+        )
+
+        df = df.merge(
+            ownership_frame, on=[cls.SET_NUM, cls.CARD_NUM, cls.COUNT_IN_DECK]
         )
 
         return cls(df)
@@ -197,12 +204,17 @@ class OwnValueFrame(_OwnValueColumns):
         """Creates from a user, performing the entire pipeline."""
         # todo cache this.
         weighted_deck_searches = user.weighted_deck_searches
-        play_count = PlayCountFrame.from_weighted_deck_searches(weighted_deck_searches)
-        play_rate = PlayRateFrame.from_play_counts(play_count)
-        play_value = PlayValueFrame.from_play_rates(play_rate)
-        play_craft_efficiency = PlayCraftEfficiencyFrame.from_play_value(
-            play_value_frame=play_value, card_data=card_data
+        play_count = PlayCountFrame.from_weighted_deck_searches(
+            weighted_deck_searches=weighted_deck_searches, card_data=card_data
         )
+
+        play_rate = PlayRateFrame.from_play_counts(play_count)
+
+        ownership = models.user.owns_card.UserOwnsCard.dataframe_for_user(user)
+        play_value = PlayValueFrame.from_play_rates(
+            play_rate_frame=play_rate, ownership=ownership
+        )
+        play_craft_efficiency = PlayCraftEfficiencyFrame.from_play_value(play_value)
         own_value = cls.from_play_craft_efficiency(play_craft_efficiency)
         return own_value
 

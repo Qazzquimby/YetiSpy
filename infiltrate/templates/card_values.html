@@ -31,34 +31,7 @@
             <div id="card-table" class="text-center row">
                 <div class="space-t"></div>
                 <table id="card-value" class="table vertical-align col-md-8">
-                    <caption>The card value data.</caption>
-                    <tr class="row">
-                        <th scope="col" class="col-md-4 no-padding">
-                            Sort by:
-                        </th>
-                        <th scope="col"
-                            class="col-md-2 text-center btn
-                                {% if sort=="craft" %} bg-primary {% endif %}"
-                            onclick="sort='craft';
-                                page=0;
-                                ownership='unowned';
-                                updateCardTable()">
-                            Crafting Efficiency ▼
-
-                        </th>
-                        <th scope="col"
-                            class="col-md-2 text-center btn
-                                {% if sort=="value" %} bg-primary {% endif %}"
-                            onclick="sort='value';
-                                page=0;
-                                ownership='unowned';
-                                updateCardTable()">
-                            Value ▼
-                        </th>
-                        <th scope="col" class="col-md-2 text-center">
-                            Findability
-                        </th>
-                    </tr>
+                    {% include 'card_values_table_header.html' %}
                 </table>
                 Loading Values...
             </div>

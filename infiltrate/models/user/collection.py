@@ -52,6 +52,7 @@ class _CollectionUpdater:
                 user_id=self.user.id
             ).delete()
         )
+        db.session.commit()
 
     def _add_new_collection(self, collection: t.Dict, retry=True):
         try:
@@ -69,8 +70,10 @@ class _CollectionUpdater:
             if retry:
                 db.session.rollback()
 
-                # Missing cards used by Eternal Warcry can cause this error.
+                # Missing cards used by Eternal Warcry can cause this error, so add
+                #   missing cards.
                 models.card.update_cards()
+                self._remove_old_collection()
                 self._add_new_collection(collection, retry=False)
             else:
                 raise e
