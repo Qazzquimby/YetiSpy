@@ -46,9 +46,9 @@ class _CardCopyColumns(abc.ABC):
 class _PlayCountColumns(_CardCopyColumns):
     PLAY_COUNT = "num_decks_with_count_or_less"
     RARITY = "rarity"
-    IMAGE_URL = ("image_url",)
-    DETAILS_URL = ("details_url",)
-    IS_IN_DRAFT_PACK = ("is_in_draft_pack",)
+    IMAGE_URL = "image_url"
+    DETAILS_URL = "details_url"
+    IS_IN_DRAFT_PACK = "is_in_draft_pack"
 
 
 class PlayCountFrame(_PlayCountColumns):

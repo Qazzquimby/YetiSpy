@@ -179,7 +179,7 @@ own_value_dict = play_craft_efficiency_dict.copy()
 own_value_dict.update(
     {
         card_evaluation.OwnValueFrame.SELL_COST: {0: 1, 1: 1, 2: 10},
-        card_evaluation.OwnValueFrame.RESELL_VALUE: {0: 0.75, 1: 0.75, 2: 7.5},
+        card_evaluation.OwnValueFrame.RESELL_VALUE: {0: 0.3, 1: 0.3, 2: 3.0},
         card_evaluation.OwnValueFrame.OWN_VALUE: {0: 100.0, 1: 50.0, 2: 10.0},
     }
 )

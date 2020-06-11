@@ -92,17 +92,25 @@ class DeckSearch(db.Model):
         for deck in self.get_decks():
             for card in deck.cards:
                 for num_played in range(min(card.num_played, 4)):
-                    playrate[card][num_played] += 1  # todo check card is right type.
+                    # todo check card is right type.
+                    # This scales the
+                    playrate[card][num_played] += self._scale_playrate(deck)
         return playrate
+
+    def _scale_playrate(self, deck):
+        """This is the adjusted amount a card play counts for,
+        scaled on the 'importance' of the deck, so that better decks have more
+        influence over the play rates."""
+        return deck.views
 
     def _add_playrates(self, playrates: t.Dict):
         for card_id in progiter.ProgIter(playrates.keys()):
-            for play_count in range(4):
+            for play_count in range(1, 5):
                 deck_search_has_card = DeckSearchHasCard(
                     decksearch_id=self.id,
                     set_num=card_id.set_num,
                     card_num=card_id.card_num,
-                    count_in_deck=play_count + 1,
+                    count_in_deck=play_count,
                     num_decks_with_count_or_less=playrates[card_id][play_count],
                 )
                 db.session.merge(deck_search_has_card)
