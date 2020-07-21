@@ -1,6 +1,7 @@
 import pytest
 import pandas as pd
 
+import card_details
 import models.card
 import models.deck
 
@@ -8,204 +9,422 @@ import models.rarity
 
 import card_evaluation
 import models.user.owns_card
-
-card_data_dict = {
-    card_evaluation.PlayCountFrame.SET_NUM: {0: 0, 1: 0,},
-    card_evaluation.PlayCountFrame.CARD_NUM: {0: 0, 1: 1,},
-    "name": {0: "0_0", 1: "0_1"},
-    "rarity": {0: "Common", 1: "Uncommon"},
-    "image_url": {0: "0_0", 1: "0_1"},
-    "details_url": {0: "0_0", 1: "0_1"},
-    "is_in_draft_pack": {0: 0, 1: 1},
-}
+import models.deck_search
 
 
-@pytest.fixture
-def card_data():
-    """A simple CardData for the cards used in the other fixtures.."""
-
-    return models.card.CardData(df=pd.DataFrame(card_data_dict))
-
-
-# PLAY COUNTS
-
-play_counts_dict = {
-    card_evaluation.PlayCountFrame.SET_NUM: {0: 0, 1: 0, 2: 0,},
-    card_evaluation.PlayCountFrame.CARD_NUM: {0: 0, 1: 0, 2: 1,},
-    card_evaluation.PlayCountFrame.COUNT_IN_DECK: {0: 1, 1: 2, 2: 1,},
-    "name": {0: "0_0", 1: "0_0", 2: "0_1"},
-    "rarity": {0: "Common", 1: "Common", 2: "Uncommon"},
-    "image_url": {0: "0_0", 1: "0_0", 2: "0_1"},
-    "details_url": {0: "0_0", 1: "0_0", 2: "0_1"},
-    "is_in_draft_pack": {0: 0, 1: 0, 2: 1},
-    card_evaluation.PlayCountFrame.PLAY_COUNT: {
-        0: models.deck.AVG_COLLECTABLE_CARDS_IN_DECK * 10,
-        1: models.deck.AVG_COLLECTABLE_CARDS_IN_DECK * 5,
-        2: models.deck.AVG_COLLECTABLE_CARDS_IN_DECK * 1,
-    },
-}
-
-
-@pytest.fixture
-def play_counts(card_data):
-    """A simple PlayCountFrame"""
-    return card_evaluation.PlayCountFrame(df=pd.DataFrame(play_counts_dict))
-
-
-def test__sum_count_dfs():
-    df_a = pd.DataFrame(
-        {
-            "set_num": {0: 0, 1: 0,},
-            "card_num": {0: 0, 1: 0,},
-            "count_in_deck": {0: 1, 1: 2,},
-            "num_decks_with_count_or_less": {0: 2, 1: 1,},
-        }
-    )
-    df_b = pd.DataFrame(
-        {
-            "set_num": {0: 0, 1: 0,},
-            "card_num": {0: 0, 1: 1,},
-            "count_in_deck": {0: 1, 1: 1,},
-            "num_decks_with_count_or_less": {0: 5, 1: 5,},
-        }
+def test_card_copy_creates_index():
+    sut = card_details.CardCopy(
+        [
+            {"set_num": 0, "card_num": 0, "count_in_deck": 0},
+            {"set_num": 0, "card_num": 0, "count_in_deck": 2},
+            {"set_num": 0, "card_num": 1, "count_in_deck": 0},
+        ]
     )
 
-    df_result = pd.DataFrame(
-        {
-            "set_num": {0: 0, 1: 0, 2: 0,},
-            "card_num": {0: 0, 1: 0, 2: 1,},
-            "count_in_deck": {0: 1, 1: 2, 2: 1,},
-            "num_decks_with_count_or_less": {0: 7, 1: 1, 2: 5,},
-        }
+    assert len(sut) == 3
+    assert sut.index.nlevels == 3
+    assert len(sut.columns) == 3
+
+
+def test_card_details():
+    sut = card_details.CardDetails(
+        [
+            {
+                "set_num": 0,
+                "card_num": 0,
+                "rarity": models.rarity.COMMON,
+                "image_url": "image_url",
+                "details_url": "details_url",
+                "is_in_draft_pack": "is_in_draft_pack",
+            }
+        ]
     )
 
-    result = card_evaluation.PlayCountFrame._sum_count_dfs([df_a, df_b])
-
-    assert result.equals(df_result)
-
-
-# PLAY RATES
-play_rates_dict = play_counts_dict.copy()
-play_rates_dict.update(
-    {card_evaluation.PlayRateFrame.PLAY_RATE: {0: 40.625, 1: 20.3125, 2: 4.06250,}}
-)
+    assert len(sut) == 1
+    assert sut.index.nlevels == 2
+    assert len(sut.columns) == 6
 
 
-@pytest.fixture
-def play_rates():
-    """A simple PlayRateFrame built to match the play_counts fixture."""
-    return card_evaluation.PlayRateFrame(df=pd.DataFrame(play_rates_dict))
+def test_play_count_frame_from_weighted_deck_searches():
+    sut = card_evaluation.PlayCountFrame.from_weighted_deck_searches(
+        weighted_deck_searches=[
+            models.deck_search.WeightedDeckSearch(
+                deck_search_id=0,
+                user_id=0,
+                name="",
+                weight=1,
+                deck_search=models.deck_search.DeckSearch(
+                    id=0,
+                    cards=[
+                        models.deck_search.DeckSearchHasCard(
+                            decksearch_id=0,
+                            set_num=0,
+                            card_num=0,
+                            count_in_deck=1,
+                            num_decks_with_count_or_less=2,
+                        ),
+                        models.deck_search.DeckSearchHasCard(
+                            decksearch_id=0,
+                            set_num=0,
+                            card_num=0,
+                            count_in_deck=2,
+                            num_decks_with_count_or_less=1,
+                        ),
+                        models.deck_search.DeckSearchHasCard(
+                            decksearch_id=0,
+                            set_num=0,
+                            card_num=1,
+                            count_in_deck=1,
+                            num_decks_with_count_or_less=1,
+                        ),
+                    ],
+                ),
+            )
+        ],
+        card_details=card_details.CardDetails(
+            [
+                {
+                    "set_num": 0,
+                    "card_num": 0,
+                    "rarity": models.rarity.COMMON,
+                    "image_url": "image_url",
+                    "details_url": "details_url",
+                    "is_in_draft_pack": "is_in_draft_pack",
+                },
+                {
+                    "set_num": 0,
+                    "card_num": 1,
+                    "rarity": models.rarity.LEGENDARY,
+                    "image_url": "image_url",
+                    "details_url": "details_url",
+                    "is_in_draft_pack": "is_in_draft_pack",
+                },
+            ]
+        ),
+    )
+    assert len(sut) == 3
+    # todo should probably assert entire output
 
 
-def test_build_play_rate_frame(play_counts, play_rates):
-    sut = card_evaluation.PlayRateFrame.from_play_counts(play_counts)
-    pd.testing.assert_frame_equal(sut.df, play_rates.df)
+def test_play_rate_frame_from_play_counts():
+    sut = card_evaluation.PlayRateFrame.from_play_counts(
+        play_count_frame=card_evaluation.PlayCountFrame(
+            {
+                "count_in_deck": [1, 2, 1],
+                "decksearch_id": [0, 0, 0],
+                "num_decks_with_count_or_less": [2, 1, 1],
+                "card_num": [0, 0, 1],
+                "details_url": ["details_url"] * 3,
+                "image_url": ["image_url"] * 3,
+                "is_in_draft_pack": [True] * 3,
+                "rarity": [
+                    models.rarity.COMMON,
+                    models.rarity.COMMON,
+                    models.rarity.LEGENDARY,
+                ],
+                "set_num": [0, 0, 0],
+            }
+        )
+    )
+    _ = sut.play_count
+    assert len(sut) == 3
 
 
-# PLAY VALUES
-ownership_dict = {
-    card_evaluation.PlayCountFrame.SET_NUM: {0: 0, 1: 0,},
-    card_evaluation.PlayCountFrame.CARD_NUM: {0: 0, 1: 1,},
-    "count": {0: 1, 1: 0},
-}
-
-
-@pytest.fixture
-def ownership():
-    return pd.DataFrame(ownership_dict)
-
-
-play_values_dict = play_rates_dict.copy()
-play_values_dict.update(
-    {
-        card_evaluation.PlayValueFrame.PLAY_VALUE: {0: 100.0, 1: 50.0, 2: 10.0},
-        "is_owned": {0: True, 1: False, 2: False},
-    }
-)
-
-
-@pytest.fixture
-def play_values():
-    """A simple PlayValueFrame built to match the play_rates fixture."""
-
-    return card_evaluation.PlayValueFrame(df=pd.DataFrame(play_values_dict))
-
-
-def test_build_play_value_frame(play_rates, ownership, play_values):
-    sut = card_evaluation.PlayValueFrame.from_play_rates(play_rates, ownership)
-    pd.testing.assert_frame_equal(sut.df, play_values.df)
-
-
-# PLAY CRAFT EFFICIENCY
-findabilities = {0: 0.5, 1: 0.5, 2: 0.0}
-
-play_craft_efficiency_dict = play_values_dict.copy()
-play_craft_efficiency_dict.update(
-    {
-        card_evaluation.PlayCraftEfficiencyFrame.CRAFT_COST: {0: 50, 1: 50, 2: 100},
-        card_evaluation.PlayCraftEfficiencyFrame.FINDABILITY: findabilities,
-        card_evaluation.PlayCraftEfficiencyFrame.PLAY_CRAFT_EFFICIENCY: {
-            0: 1.0,
-            1: 0.5,
-            2: 0.1,
-        },
-    }
-)
-
-
-@pytest.fixture
-def play_craft_efficiency():
-    return card_evaluation.PlayCraftEfficiencyFrame(
-        df=pd.DataFrame(play_craft_efficiency_dict)
+def test_play_value_frame_from_play_rates():
+    sut = card_evaluation.PlayValueFrame.from_play_rates(
+        play_rate_frame=card_evaluation.PlayRateFrame(
+            {
+                "count_in_deck": [1, 2, 1],
+                "decksearch_id": [0, 0, 0],
+                "num_decks_with_count_or_less": [2, 1, 1],
+                "card_num": [0, 0, 1],
+                "details_url": ["details_url"] * 3,
+                "image_url": ["image_url"] * 3,
+                "is_in_draft_pack": [True] * 3,
+                "rarity": [
+                    models.rarity.COMMON,
+                    models.rarity.COMMON,
+                    models.rarity.LEGENDARY,
+                ],
+                "set_num": [0, 0, 0],
+                "play_rate": [16.25, 32.5, 16.25],
+            }
+        ),
+        ownership=pd.DataFrame(
+            {
+                "set_num": {0: 0, 1: 0,},
+                "card_num": {0: 0, 1: 1,},
+                "count": {0: 1, 1: 0},
+            }
+        ),
     )
 
+    _ = sut.play_value
+    assert len(sut) == 3
 
-@pd.np.vectorize
-def mock_get_findability(rarity_str: str, set_num: int):
-    if rarity_str == models.rarity.COMMON.name:
-        return 0.5
-    else:
-        return 0.0
+    # todo should probably assert entire output
 
 
-def test_build_play_craft_efficiency_frame(play_values, play_craft_efficiency):
-    card_evaluation.PlayCraftEfficiencyFrame.get_findability = mock_get_findability
-    sut = card_evaluation.PlayCraftEfficiencyFrame.from_play_value(play_values)
-    pd.testing.assert_frame_equal(sut.df, play_craft_efficiency.df)
+def test_play_craft_efficency_from_play_value():
+    sut = card_evaluation.PlayCraftEfficiencyFrame.from_play_value(
+        card_evaluation.PlayValueFrame(
+            {
+                "count_in_deck": [1, 2, 1],
+                "decksearch_id": [0, 0, 0],
+                "num_decks_with_count_or_less": [2, 1, 1],
+                "card_num": [0, 0, 1],
+                "details_url": ["details_url"] * 3,
+                "image_url": ["image_url"] * 3,
+                "is_in_draft_pack": [True] * 3,
+                "rarity": [
+                    models.rarity.COMMON,
+                    models.rarity.COMMON,
+                    models.rarity.LEGENDARY,
+                ],
+                "set_num": [0, 0, 0],
+                "play_rate": [16.25, 32.5, 16.25],
+                "play_value": [100, 50, 50],
+                "is_owned": [True] * 3,
+            }
+        )
+    )
+    _ = sut.play_craft_efficiency
+    assert len(sut) == 3
 
 
-# OWN VALUE
-own_value_dict = play_craft_efficiency_dict.copy()
-own_value_dict.update(
-    {
-        card_evaluation.OwnValueFrame.SELL_COST: {0: 1, 1: 1, 2: 10},
-        card_evaluation.OwnValueFrame.RESELL_VALUE: {0: 0.3, 1: 0.3, 2: 3.0},
-        card_evaluation.OwnValueFrame.OWN_VALUE: {0: 100.0, 1: 50.0, 2: 10.0},
-    }
-)
-
-
-@pytest.fixture
-def own_value():
-    return card_evaluation.OwnValueFrame(df=pd.DataFrame(own_value_dict))
-
-
-def test_build_own_value_frame(play_craft_efficiency, own_value):
+def test_own_value_frame_from_play_craft_efficency():
     sut = card_evaluation.OwnValueFrame.from_play_craft_efficiency(
-        play_craft_efficiency, 2
+        card_evaluation.PlayCraftEfficiencyFrame(
+            {
+                "count_in_deck": [1, 2, 1],
+                "decksearch_id": [0, 0, 0],
+                "num_decks_with_count_or_less": [2, 1, 1],
+                "card_num": [0, 0, 1],
+                "details_url": ["details_url"] * 3,
+                "image_url": ["image_url"] * 3,
+                "is_in_draft_pack": [True] * 3,
+                "rarity": [
+                    models.rarity.COMMON,
+                    models.rarity.COMMON,
+                    models.rarity.LEGENDARY,
+                ],
+                "set_num": [0, 0, 0],
+                "play_rate": [16.25, 32.5, 16.25],
+                "play_value": [100, 50, 50],
+                "is_owned": [True] * 3,
+                "craft_cost": [50, 50, 3200],
+                "findability": [0.02623, 0.02623, 0],
+                "play_craft_efficiency": [1.94755, 0.97377, 0.01562],
+            }
+        )
     )
-    pd.testing.assert_frame_equal(sut.df, own_value.df)
+    _ = sut.own_value
+    assert len(sut) == 3
 
 
-@pytest.fixture
-def _playcount_from_db():
-    """This is slow and only for manual debugging."""
-    user_id = 22
-    import models.user
-    import global_data
-
-    user = models.user.get_by_id(user_id)
-    weighted_deck_searches = user.weighted_deck_searches
-    return card_evaluation.PlayCountFrame.from_weighted_deck_searches(
-        weighted_deck_searches, global_data.all_cards
-    )
+# def test_play_rate_frame_from_play_counts():
+#     sut = card_evaluation.PlayRateFrame.from_play_counts(
+#         pd.DataFrame()
+#     )
+#
+# card_data_dict = {
+#     card_evaluation.PlayCountFrame.SET_NUM: {0: 0, 1: 0,},
+#     card_evaluation.PlayCountFrame.CARD_NUM: {0: 0, 1: 1,},
+#     "name": {0: "0_0", 1: "0_1"},
+#     "rarity": {0: "Common", 1: "Uncommon"},
+#     "image_url": {0: "0_0", 1: "0_1"},
+#     "details_url": {0: "0_0", 1: "0_1"},
+#     "is_in_draft_pack": {0: 0, 1: 1},
+# }
+#
+#
+# @pytest.fixture
+# def card_data():
+#     """A simple CardData for the cards used in the other fixtures.."""
+#
+#     return models.card.CardData(df=pd.DataFrame(card_data_dict))
+#
+#
+# # PLAY COUNTS
+#
+# play_counts_dict = {
+#     card_evaluation.PlayCountFrame.SET_NUM: {0: 0, 1: 0, 2: 0,},
+#     card_evaluation.PlayCountFrame.CARD_NUM: {0: 0, 1: 0, 2: 1,},
+#     card_evaluation.PlayCountFrame.COUNT_IN_DECK: {0: 1, 1: 2, 2: 1,},
+#     "name": {0: "0_0", 1: "0_0", 2: "0_1"},
+#     "rarity": {0: "Common", 1: "Common", 2: "Uncommon"},
+#     "image_url": {0: "0_0", 1: "0_0", 2: "0_1"},
+#     "details_url": {0: "0_0", 1: "0_0", 2: "0_1"},
+#     "is_in_draft_pack": {0: 0, 1: 0, 2: 1},
+#     card_evaluation.PlayCountFrame.PLAY_COUNT: {
+#         0: models.deck.AVG_COLLECTABLE_CARDS_IN_DECK * 10,
+#         1: models.deck.AVG_COLLECTABLE_CARDS_IN_DECK * 5,
+#         2: models.deck.AVG_COLLECTABLE_CARDS_IN_DECK * 1,
+#     },
+# }
+#
+#
+# @pytest.fixture
+# def play_counts(card_data):
+#     """A simple PlayCountFrame"""
+#     return card_evaluation.PlayCountFrame(df=pd.DataFrame(play_counts_dict))
+#
+#
+# def test__sum_count_dfs():
+#     df_a = pd.DataFrame(
+#         {
+#             "set_num": {0: 0, 1: 0,},
+#             "card_num": {0: 0, 1: 0,},
+#             "count_in_deck": {0: 1, 1: 2,},
+#             "num_decks_with_count_or_less": {0: 2, 1: 1,},
+#         }
+#     )
+#     df_b = pd.DataFrame(
+#         {
+#             "set_num": {0: 0, 1: 0,},
+#             "card_num": {0: 0, 1: 1,},
+#             "count_in_deck": {0: 1, 1: 1,},
+#             "num_decks_with_count_or_less": {0: 5, 1: 5,},
+#         }
+#     )
+#
+#     df_result = pd.DataFrame(
+#         {
+#             "set_num": {0: 0, 1: 0, 2: 0,},
+#             "card_num": {0: 0, 1: 0, 2: 1,},
+#             "count_in_deck": {0: 1, 1: 2, 2: 1,},
+#             "num_decks_with_count_or_less": {0: 7, 1: 1, 2: 5,},
+#         }
+#     )
+#
+#     result = card_evaluation.PlayCountFrame._sum_count_dfs([df_a, df_b])
+#
+#     assert result.equals(df_result)
+#
+#
+# # PLAY RATES
+# play_rates_dict = play_counts_dict.copy()
+# play_rates_dict.update(
+#     {card_evaluation.PlayRateFrame.PLAY_RATE: {0: 40.625, 1: 20.3125, 2: 4.06250,}}
+# )
+#
+#
+# @pytest.fixture
+# def play_rates():
+#     """A simple PlayRateFrame built to match the play_counts fixture."""
+#     return card_evaluation.PlayRateFrame(df=pd.DataFrame(play_rates_dict))
+#
+#
+# def test_build_play_rate_frame(play_counts, play_rates):
+#     sut = card_evaluation.PlayRateFrame.from_play_counts(play_counts)
+#     pd.testing.assert_frame_equal(sut.df, play_rates.df)
+#
+#
+# # PLAY VALUES
+# ownership_dict = {
+#     card_evaluation.PlayCountFrame.SET_NUM: {0: 0, 1: 0,},
+#     card_evaluation.PlayCountFrame.CARD_NUM: {0: 0, 1: 1,},
+#     "count": {0: 1, 1: 0},
+# }
+#
+#
+# @pytest.fixture
+# def ownership():
+#     return pd.DataFrame(ownership_dict)
+#
+#
+# play_values_dict = play_rates_dict.copy()
+# play_values_dict.update(
+#     {
+#         card_evaluation.PlayValueFrame.PLAY_VALUE: {0: 100.0, 1: 50.0, 2: 10.0},
+#         "is_owned": {0: True, 1: False, 2: False},
+#     }
+# )
+#
+#
+# @pytest.fixture
+# def play_values():
+#     """A simple PlayValueFrame built to match the play_rates fixture."""
+#
+#     return card_evaluation.PlayValueFrame(df=pd.DataFrame(play_values_dict))
+#
+#
+# def test_build_play_value_frame(play_rates, ownership, play_values):
+#     sut = card_evaluation.PlayValueFrame.from_play_rates(play_rates, ownership)
+#     pd.testing.assert_frame_equal(sut.df, play_values.df)
+#
+#
+# # PLAY CRAFT EFFICIENCY
+# findabilities = {0: 0.5, 1: 0.5, 2: 0.0}
+#
+# play_craft_efficiency_dict = play_values_dict.copy()
+# play_craft_efficiency_dict.update(
+#     {
+#         card_evaluation.PlayCraftEfficiencyFrame.CRAFT_COST: {0: 50, 1: 50, 2: 100},
+#         card_evaluation.PlayCraftEfficiencyFrame.FINDABILITY: findabilities,
+#         card_evaluation.PlayCraftEfficiencyFrame.PLAY_CRAFT_EFFICIENCY: {
+#             0: 1.0,
+#             1: 0.5,
+#             2: 0.1,
+#         },
+#     }
+# )
+#
+#
+# @pytest.fixture
+# def play_craft_efficiency():
+#     return card_evaluation.PlayCraftEfficiencyFrame(
+#         df=pd.DataFrame(play_craft_efficiency_dict)
+#     )
+#
+#
+# @pd.np.vectorize
+# def mock_get_findability(rarity_str: str, set_num: int):
+#     if rarity_str == models.rarity.COMMON.name:
+#         return 0.5
+#     else:
+#         return 0.0
+#
+#
+# def test_build_play_craft_efficiency_frame(play_values, play_craft_efficiency):
+#     card_evaluation.PlayCraftEfficiencyFrame.get_findability = mock_get_findability
+#     sut = card_evaluation.PlayCraftEfficiencyFrame.from_play_value(play_values)
+#     pd.testing.assert_frame_equal(sut.df, play_craft_efficiency.df)
+#
+#
+# # OWN VALUE
+# own_value_dict = play_craft_efficiency_dict.copy()
+# own_value_dict.update(
+#     {
+#         card_evaluation.OwnValueFrame.SELL_COST: {0: 1, 1: 1, 2: 10},
+#         card_evaluation.OwnValueFrame.RESELL_VALUE: {0: 0.3, 1: 0.3, 2: 3.0},
+#         card_evaluation.OwnValueFrame.OWN_VALUE: {0: 100.0, 1: 50.0, 2: 10.0},
+#     }
+# )
+#
+#
+# @pytest.fixture
+# def own_value():
+#     return card_evaluation.OwnValueFrame(df=pd.DataFrame(own_value_dict))
+#
+#
+# def test_build_own_value_frame(play_craft_efficiency, own_value):
+#     sut = card_evaluation.OwnValueFrame.from_play_craft_efficiency(
+#         play_craft_efficiency, 2
+#     )
+#     pd.testing.assert_frame_equal(sut.df, own_value.df)
+#
+#
+# @pytest.fixture
+# def _playcount_from_db():
+#     """This is slow and only for manual debugging."""
+#     user_id = 22
+#     import models.user
+#     import global_data
+#
+#     user = models.user.get_by_id(user_id)
+#     weighted_deck_searches = user.weighted_deck_searches
+#     play_counts = card_evaluation.PlayCountFrame.from_weighted_deck_searches(
+#         weighted_deck_searches, global_data.all_cards
+#     )
+#     return play_counts

@@ -40,12 +40,17 @@ def create_is_owned_series(
 ) -> pd.Series:
     """Makes a series matching the card copies in card_details for if that many copies
     are owned."""
-    details_with_total_owned = card_details.merge(ownership, on=["set_num", "card_num"])
+    full_ownership = pd.concat(
+        [ownership.assign(count_in_deck=i) for i in range(1, 5)], axis=0
+    ).set_index(["set_num", "card_num", "count_in_deck"])
+
+    details_with_total_owned = card_details.join(full_ownership)
 
     ownership_frame = details_with_total_owned[["set_num", "card_num", "count_in_deck"]]
 
     # noinspection PyTypeChecker
-    ownership_frame["is_owned"] = (
+    is_owned = (
         details_with_total_owned["count_in_deck"] <= details_with_total_owned["count"]
     )
+    ownership_frame.loc[:, "is_owned"] = is_owned
     return ownership_frame

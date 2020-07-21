@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 
 from card_evaluation import OwnValueFrame
+from card_details import CardDetails
 import models.card
 import models.user
 from views.card_values import display_filters
@@ -27,9 +28,9 @@ class CardDisplays:
         self._ownership: t.Optional[display_filters.OwnershipFilter] = None
 
     @classmethod
-    def make_for_user(cls, user: models.user.User, card_data: models.card.CardData):
+    def make_for_user(cls, user: models.user.User, card_details: CardDetails):
         """Makes the cards for a user, cached for immediate reuse."""
-        own_value = OwnValueFrame.from_user(user, card_data)
+        own_value = OwnValueFrame.from_user(user, card_details)
         return cls(own_value)
 
     @property
@@ -125,7 +126,7 @@ class CardDisplayPage:
         """Call for the card displays to be displayed at the given page."""
         start_index = self._get_start_card_index()
         displays_on_page = OwnValueFrame(
-            self.value_info.df[start_index : start_index + self.cards_per_page]
+            self.value_info[start_index : start_index + self.cards_per_page]
         )
         displays_on_page = self._group_page(displays_on_page)
         return displays_on_page
@@ -150,22 +151,28 @@ class CardDisplayPage:
         Grouped displays are given new minimum and maximum attributes
         representing the cards minimum and maximum counts in the list."""
 
-        index_keys = [page.SET_NUM, page.CARD_NUM]
+        index_keys = [page.SET_NUM_NAME, page.CARD_NUM_NAME]
 
-        grouped = page.df.groupby(index_keys)[
-            page.COUNT_IN_DECK, page.PLAY_VALUE, page.PLAY_CRAFT_EFFICIENCY
+        grouped = page.groupby(page.index)
+        index_columns = grouped[page.SET_NUM_NAME, page.CARD_NUM_NAME].first()
+        measure_columns = grouped[
+            page.COUNT_IN_DECK_NAME,
+            page.PLAY_VALUE_NAME,
+            page.PLAY_CRAFT_EFFICIENCY_NAME,
         ]
-        min_count = grouped.min()
-        max_count = grouped.max()
+        min_count = measure_columns.min().join(index_columns).set_index(index_keys)
+        max_count = measure_columns.max().join(index_columns).set_index(index_keys)
 
-        reindexed = page.df.set_index(index_keys)
+        reindexed = page.set_index(index_keys)
+
+        # page.groupby(page.index)[    page.COUNT_IN_DECK_NAME, page.PLAY_VALUE_NAME, page.PLAY_CRAFT_EFFICIENCY_NAME].min().join(page.groupby(page.index)[ page.SET_NUM_NAME, page.CARD_NUM_NAME].first())
 
         min_page = reindexed.join(min_count, rsuffix="_min")
         min_max_page = min_page.join(max_count, rsuffix="_max")
-        del min_max_page[page.COUNT_IN_DECK]
-        del min_max_page[page.PLAY_VALUE]
-        del min_max_page[page.OWN_VALUE]
-        del min_max_page[page.PLAY_CRAFT_EFFICIENCY]
+        del min_max_page[page.COUNT_IN_DECK_NAME]
+        del min_max_page[page.PLAY_VALUE_NAME]
+        del min_max_page[page.OWN_VALUE_NAME]
+        del min_max_page[page.PLAY_CRAFT_EFFICIENCY_NAME]
         min_max_dropped_duplicates = min_max_page.drop_duplicates()
 
         min_max_dropped_index_duplicates = min_max_dropped_duplicates[

@@ -70,34 +70,42 @@ def all_cards_df_from_db() -> pd.DataFrame:
         },
         inplace=True,
     )
+
+    cards_df["rarity"] = cards_df.rarity.apply(
+        lambda rarity_name: models.rarity.rarity_from_name[rarity_name]
+    )
+
     return cards_df
 
 
-class CardData:
-    """A global storage for all cards in the database."""
-
-    SET_NUM = "set_num"
-    CARD_NUM = "card_num"
-    COUNT_IN_DECK = "count_in_deck"
-    NAME = "name"
-    RARITY = "rarity"
-    IMAGE_URL = "image_url"
-    DETAILS_URL = "details_url"
-    IS_IN_DRAFT_PACK = "is_in_draft_pack"
-
-    def __init__(self, df):
-        self.df = df
-
-    def card_exists(self, card_id: CardId):
-        """Return if the card_id is found in the AllCards."""
-        matching_card = self.df.loc[
-            (
-                (self.df[self.SET_NUM] == card_id.set_num)
-                & (self.df[self.CARD_NUM] == card_id.card_num)
-            )
-        ]
-        does_exist = len(matching_card) > 0
-        return does_exist
+#
+# #todo replace with CardDetails currently stored in card_evaluation.
+# #   It's very similar but uses df inheritance and has card id as the index.
+# class CardData:
+#     """A global storage for all cards in the database."""
+#
+#     SET_NUM = "set_num"
+#     CARD_NUM = "card_num"
+#     COUNT_IN_DECK = "count_in_deck"
+#     NAME = "name"
+#     RARITY = "rarity"
+#     IMAGE_URL = "image_url"
+#     DETAILS_URL = "details_url"
+#     IS_IN_DRAFT_PACK = "is_in_draft_pack"
+#
+#     def __init__(self, df):
+#         self.df = df
+#
+#     def card_exists(self, card_id: CardId):
+#         """Return if the card_id is found."""
+#         matching_card = self.df.loc[
+#             (
+#                 (self.df[self.SET_NUM] == card_id.set_num)
+#                 & (self.df[self.CARD_NUM] == card_id.card_num)
+#             )
+#         ]
+#         does_exist = len(matching_card) > 0
+#         return does_exist
 
 
 def update_cards():

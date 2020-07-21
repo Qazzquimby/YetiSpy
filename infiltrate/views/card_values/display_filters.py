@@ -28,7 +28,7 @@ class UnownedFilter(OwnershipFilter):
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
     def filter(cls, cards):
-        filtered_df = cards.df.query("is_owned == False")
+        filtered_df = cards.query("is_owned == False")
         return OwnValueFrame(filtered_df)
 
 
@@ -38,7 +38,7 @@ class OwnedFilter(OwnershipFilter):
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
     def filter(cls, cards):
-        filtered_df = cards.df.query("is_owned == True")
+        filtered_df = cards.query("is_owned == True")
         return OwnValueFrame(filtered_df)
 
 
@@ -83,18 +83,16 @@ class CraftSort(CardDisplaySort):
     def sort(cards):
         """Sorts the cards by highest to lowest card value
          per shiftstone crafting cost."""
-        sorted_df = cards.df.sort_values(
-            by=[cards.PLAY_CRAFT_EFFICIENCY], ascending=False
+        sorted_df = cards.sort_values(
+            by=[cards.PLAY_CRAFT_EFFICIENCY_NAME], ascending=False
         )
         return OwnValueFrame(sorted_df)
 
     @classmethod
     def filter(cls, cards):
         """Filters out uncraftable."""
-        filtered_df = cards.df[
-            np.logical_not(
-                models.card_set.CardSet.is_campaign_from_num(cards.df[cards.SET_NUM])
-            )
+        filtered_df = cards[
+            np.logical_not(models.card_set.CardSet.is_campaign_from_num(cards.set_num))
         ]
         return OwnValueFrame(filtered_df)
 
@@ -108,8 +106,8 @@ class ValueSort(CardDisplaySort):
     @staticmethod
     def sort(displays):
         """Sorts cards from highest to lowest card value."""
-        sorted_df = displays.df.sort_values(
-            by=[OwnValueFrame.PLAY_VALUE], ascending=False
+        sorted_df = displays.sort_values(
+            by=[OwnValueFrame.PLAY_VALUE_NAME], ascending=False
         )
         return OwnValueFrame(sorted_df)
 
