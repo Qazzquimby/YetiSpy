@@ -11,28 +11,6 @@ import views.login
 from views.login import AuthenticationException
 
 
-def card_search(search_str="_"):
-    """Searches for cards with names matching the search string,
-    by the method used in AllCards"""
-    try:
-        user = views.login.get_by_cookie()
-    except AuthenticationException:
-        return flask.redirect("/login")
-    displays = card_displays.make_card_displays(user)
-
-    search_str = search_str[1:]
-    search_str = search_str.lower()
-    matching_card_df = models.card.completion.get_matching_card(
-        displays.value_info, search_str
-    )
-    if len(matching_card_df) > 0:
-        cards_in_search = matching_card_df
-        displays = card_displays.CardDisplayPage.format_ungrouped_page(cards_in_search)
-        return flask.render_template("card_values_table.html", card_values=displays)
-    else:
-        return ""
-
-
 class CardsView(FlaskView):
     """View for the list of card values"""
 
@@ -79,3 +57,27 @@ class CardsView(FlaskView):
             sort=sort_str,
             card_values=cards_on_page,
         )
+
+    def card_search(self, search_str="_"):
+        """Searches for cards with names matching the search string,
+        by the method used in AllCards"""
+
+        try:
+            user = views.login.get_by_cookie()
+        except AuthenticationException:
+            return flask.redirect("/login")
+
+        displays = card_displays.CardDisplays.make_for_user(user, global_data.all_cards)
+
+        search_str = search_str[1:]
+        search_str = search_str.lower()
+        matching_card_df = models.card.completion.get_matching_card(
+            displays.value_info, search_str
+        )
+        if len(matching_card_df) > 0:
+            displays = card_displays.CardDisplayPage.format_ungrouped_page(
+                matching_card_df
+            )
+            return flask.render_template("card_values_table.html", card_values=displays)
+        else:
+            return ""

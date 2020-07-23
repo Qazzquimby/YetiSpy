@@ -153,19 +153,11 @@ class CardDisplayPage:
 
         index_keys = [page.SET_NUM_NAME, page.CARD_NUM_NAME]
 
-        grouped = page.groupby(page.index)
-        index_columns = grouped[page.SET_NUM_NAME, page.CARD_NUM_NAME].first()
-        measure_columns = grouped[
-            page.COUNT_IN_DECK_NAME,
-            page.PLAY_VALUE_NAME,
-            page.PLAY_CRAFT_EFFICIENCY_NAME,
-        ]
-        min_count = measure_columns.min().join(index_columns).set_index(index_keys)
-        max_count = measure_columns.max().join(index_columns).set_index(index_keys)
-
         reindexed = page.set_index(index_keys)
 
-        # page.groupby(page.index)[    page.COUNT_IN_DECK_NAME, page.PLAY_VALUE_NAME, page.PLAY_CRAFT_EFFICIENCY_NAME].min().join(page.groupby(page.index)[ page.SET_NUM_NAME, page.CARD_NUM_NAME].first())
+        min_count, max_count = CardDisplayPage._get_page_min_max_counts(
+            page, index_keys
+        )
 
         min_page = reindexed.join(min_count, rsuffix="_min")
         min_max_page = min_page.join(max_count, rsuffix="_max")
@@ -179,34 +171,58 @@ class CardDisplayPage:
             ~min_max_dropped_duplicates.index.duplicated(keep="first")
         ]
 
-        reindexed_deduplicate = reindexed[~reindexed.index.duplicated(keep="first")]
-        original_index = reindexed_deduplicate.index
-        original_order = min_max_dropped_index_duplicates.reindex(index=original_index)
+        deduplicated_index = reindexed[~reindexed.index.duplicated(keep="first")].index
+        original_order = min_max_dropped_index_duplicates.reindex(
+            index=deduplicated_index
+        )
 
-        original_index = original_order.reset_index()
-        no_duplicates = original_index.drop_duplicates(subset=index_keys)
+        reset_original_order = original_order.reset_index()
+        no_duplicates = reset_original_order.drop_duplicates(subset=index_keys)
 
         return no_duplicates
+
+    @staticmethod
+    def _get_page_min_max_counts(page, index_keys):
+        grouped = page.groupby(page.index)
+        index_columns = grouped[page.SET_NUM_NAME, page.CARD_NUM_NAME].first()
+        measure_columns = grouped[
+            page.COUNT_IN_DECK_NAME,
+            page.PLAY_VALUE_NAME,
+            page.PLAY_CRAFT_EFFICIENCY_NAME,
+        ]
+        min_count = measure_columns.min().join(index_columns).set_index(index_keys)
+        max_count = measure_columns.max().join(index_columns).set_index(index_keys)
+        return min_count, max_count
 
     @staticmethod
     def format_ungrouped_page(page: pd.DataFrame) -> pd.DataFrame:
         """Formats a page for presentation without grouping it."""
         # TODO this is pretty gross, and duplicates _group_page
-        min_count = page.groupby(["set_num", "card_num", "count_in_deck"])[
-            "count_in_deck", "playability", "value_per_shiftstone"
-        ].min()
-        max_count = page.groupby(["set_num", "card_num", "count_in_deck"])[
-            "count_in_deck", "playability", "value_per_shiftstone"
-        ].max()
-        page.set_index(["set_num", "card_num"], inplace=True)
-        page = page.join(min_count, rsuffix="_min")
-        page = page.join(max_count, rsuffix="_max")
-        del page["count_in_deck"]
-        del page["playability"]
-        del page["value_per_shiftstone"]
-        page.reset_index(inplace=True)
-        page.drop_duplicates(
-            subset=["set_num", "card_num", "count_in_deck"], inplace=True
-        )
 
-        return page
+        index_keys = [page.SET_NUM_NAME, page.CARD_NUM_NAME]
+
+        grouped = page.groupby(page.index)
+        index_columns = grouped[page.SET_NUM_NAME, page.CARD_NUM_NAME].first()
+        measure_columns = grouped[
+            page.COUNT_IN_DECK_NAME,
+            page.PLAY_VALUE_NAME,
+            page.PLAY_CRAFT_EFFICIENCY_NAME,
+        ]
+        min_count = measure_columns.min().join(index_columns).set_index(index_keys)
+        max_count = measure_columns.max().join(index_columns).set_index(index_keys)
+
+        reindexed = page.set_index(index_keys)
+        min_page = reindexed.join(min_count, rsuffix="_min")
+        min_max_page = min_page.join(max_count, rsuffix="_max")
+        del min_max_page[page.COUNT_IN_DECK_NAME]
+        del min_max_page[page.PLAY_VALUE_NAME]
+        del min_max_page[page.PLAY_CRAFT_EFFICIENCY_NAME]
+        min_max_page = min_max_page.reset_index()
+
+        min_max_dropped_duplicates = min_max_page.drop_duplicates(
+            subset=[page.SET_NUM_NAME, page.CARD_NUM_NAME, "count_in_deck_min"]
+        )
+        min_max_dropped_duplicates["count_in_deck_max"] = min_max_dropped_duplicates[
+            "count_in_deck_min"
+        ]
+        return min_max_dropped_duplicates

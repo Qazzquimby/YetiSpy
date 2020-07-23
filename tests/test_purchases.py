@@ -1,3 +1,4 @@
+import card_evaluation
 import purchases
 import models.user
 import models.user.owns_card
@@ -21,7 +22,10 @@ def test_get_purchase_values():
         ],
     )
     _ = purchases.get_purchase_values(
-        pd.DataFrame([{"set_num": 0, "rarity": models.rarity.COMMON.name}]), user
+        card_evaluation.OwnValueFrame(
+            [{"set_num": 0, "rarity": models.rarity.COMMON.name}]
+        ),
+        user,
     )
 
     assert False

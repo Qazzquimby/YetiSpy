@@ -16,12 +16,24 @@
                        data-target="#updateCollectionModal">Update
                         Collection</a>
                 </li>
+                <li>
+                    <a href="#">
+                        Purchases <i class="fas fa-store"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        You <i class="fas fa-user"></i>
+                    </a>
+                </li>
+                <li>
+                    <a id="nav-expander" class="nav-expander fixed">
+                        <em class="fa fa-bars fa-lg"></em>
+                    </a>
+                </li>
             </ul>
-            <div class="pull-right">
-                <a id="nav-expander" class="nav-expander fixed">
-                    <em class="fa fa-bars fa-lg"></em>
-                </a>
-            </div>
+
+
         </div>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -56,6 +68,8 @@
 {% endblock %}
 
 {% block scripts %}
+    <script src="https://kit.fontawesome.com/a8de047042.js"
+            crossorigin="anonymous"></script>
     {{ super() }}
 
 {% endblock %}
