@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 from card_evaluation import OwnValueFrame
-from card_details import CardDetails
+from card_frame_bases import CardDetails
 import models.card
 import models.user
 from views.card_values import display_filters

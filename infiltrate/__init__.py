@@ -45,8 +45,10 @@ def _register_views(app):
     from infiltrate.views.update_api import UpdateAPI
     from infiltrate.views.login import LoginView
     from infiltrate.views.update_collection import UpdateCollectionView
+    from views.purchases_view import PurchasesView
 
     CardsView.register(app)
+    PurchasesView.register(app)
     LoginView.register(app)
     UpdateAPI.register(app)
     UpdateCollectionView.register(app)

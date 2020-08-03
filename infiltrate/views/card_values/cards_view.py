@@ -26,9 +26,9 @@ class CardsView(FlaskView):
         if not user:
             return flask.redirect("/login")
 
-        return flask.render_template("card_values.html")
+        return flask.render_template("card_values/main.html")
 
-    def card_values(self, page_num=0, sort_str="craft", owner_str=None):
+    def card_values(self, page_num=0, sort_str="efficiency", owner_str=None):
         """A table loaded into the card values page."""
         try:
             user = views.login.get_by_cookie()
@@ -52,7 +52,7 @@ class CardsView(FlaskView):
         cards_on_page = displays.get_page(page_num)
 
         return flask.render_template(
-            "card_values_table.html",
+            "card_values/table.html",
             page=page_num,
             sort=sort_str,
             card_values=cards_on_page,
@@ -78,6 +78,6 @@ class CardsView(FlaskView):
             displays = card_displays.CardDisplayPage.format_ungrouped_page(
                 matching_card_df
             )
-            return flask.render_template("card_values_table.html", card_values=displays)
+            return flask.render_template("card_values/table.html", card_values=displays)
         else:
             return ""

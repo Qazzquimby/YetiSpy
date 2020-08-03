@@ -111,7 +111,7 @@ class DeckSearch(db.Model):
                     set_num=card_id.set_num,
                     card_num=card_id.card_num,
                     count_in_deck=play_count,
-                    num_decks_with_count_or_less=playrates[card_id][play_count],
+                    num_decks_with_count_or_less=playrates[card_id][play_count - 1],
                 )
                 db.session.merge(deck_search_has_card)
                 db.session.commit()

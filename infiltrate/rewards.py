@@ -67,7 +67,7 @@ class CardClass:
         cards_in_set_and_rarity = card_data[
             np.logical_and(
                 card_data["set_num"] == card_set.set_num,
-                card_data["rarity"] == self.rarity.name,
+                card_data["rarity"] == self.rarity,
             )
         ]
 
@@ -76,11 +76,11 @@ class CardClass:
 
 
 def get_value(card_pool):
-    unowned_cards = card_pool.query("is_owned == False]")
-    findable_cards = unowned_cards.drop_duplicates(["set_num", "card_num"])
+    unowned_cards = card_pool.query("is_owned == False")
+    findable_copies = unowned_cards.drop_duplicates(["set_num", "card_num"])
 
     try:
-        average_value = sum(findable_cards["value"]) * 4 / len(card_pool)
+        average_value = sum(findable_copies["own_value"]) * 4 / len(card_pool)
         return average_value
     except ZeroDivisionError:
         return 0

@@ -1,0 +1,41 @@
+<div id="card-values" class="pad-t pad-more ">
+    <table id="card-value" class="table vertical-align col-md-8">
+        {% include 'purchase_values/header.html' %}
+        {% if purchase_values.empty %}
+            <h> No purchases found.</h>
+        {% endif %}
+        {% for _, display in purchase_values.iterrows() %}
+            <tr class="row">
+                <td class="col-md-4 no-padding">
+
+                    <div class="row equal-height flex-center-vertically">
+                        <div class="col-md-9">
+                            {{ display['name'] }}
+                        </div>
+                    </div>
+
+                </td>
+
+                <td class="col-md-2 text-center">
+                    <div>
+                        {{ '%0.2f' % (display['value_per_gold']) }}
+                    </div>
+                </td>
+                <td class="col-md-2 text-center">
+                    <div>
+                        {{ '%0.2f' % display['value'] }}
+                    </div>
+                </td>
+                <td class="col-md-2 text-center">
+
+                    {{ '%0.2f' % (display['gold_cost']) }}
+
+                </td>
+
+
+            </tr>
+        {% endfor %}
+    </table>
+
+
+</div>

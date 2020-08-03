@@ -1,5 +1,7 @@
 import pandas as pd
 
+import models.card
+
 
 class CardCopy(pd.DataFrame):
     SET_NUM_NAME = "set_num"
@@ -33,3 +35,14 @@ class CardDetails(pd.DataFrame):
         self.image_url = self.image_url
         self.details_url = self.details_url
         self.is_in_draft_pack = self.is_in_draft_pack
+
+    def card_exists(self, card_id: models.card.CardId):
+        """Return if the card_id is found."""
+        matching_card = self.loc[
+            (
+                (self[self.SET_NUM_NAME] == card_id.set_num)
+                & (self[self.CARD_NUM_NAME] == card_id.card_num)
+            )
+        ]
+        does_exist = len(matching_card) > 0
+        return does_exist

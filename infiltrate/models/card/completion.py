@@ -2,7 +2,7 @@ import typing as t
 
 from fast_autocomplete import AutoComplete
 
-import card_details
+import card_frame_bases
 import card_evaluation
 from models.card import Card_DF
 
@@ -16,7 +16,7 @@ def get_matching_card(card_df: Card_DF, search_str: str) -> Card_DF:
 
 
 class _CardAutoCompleter:
-    def __init__(self, all_cards: card_details.CardDetails):
+    def __init__(self, all_cards: card_frame_bases.CardDetails):
         self.cards = all_cards
         self.completer = self._init_autocompleter(self.cards)
 
@@ -55,6 +55,6 @@ class _AllCardAutoCompleter(_CardAutoCompleter):
     # TODO totally untested
     completer: AutoComplete = None
 
-    def __init__(self, all_cards: card_details.CardDetails):
+    def __init__(self, all_cards: card_frame_bases.CardDetails):
         if self.completer is None:
             super().__init__(all_cards)

@@ -24,3 +24,10 @@ def schedule_updates():
 
     # Shut down the scheduler when exiting the app
     atexit.register(lambda: scheduler.shutdown())
+
+
+if __name__ == "__main__":
+    # models.card.update_cards()
+    # models.card_set.update()
+    models.deck.update_decks()
+    models.deck_search.update_deck_searches()

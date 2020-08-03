@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 
-import card_details
+import card_frame_bases
 import models.card
 import models.deck
 
@@ -13,7 +13,7 @@ import models.deck_search
 
 
 def test_card_copy_creates_index():
-    sut = card_details.CardCopy(
+    sut = card_frame_bases.CardCopy(
         [
             {"set_num": 0, "card_num": 0, "count_in_deck": 0},
             {"set_num": 0, "card_num": 0, "count_in_deck": 2},
@@ -27,7 +27,7 @@ def test_card_copy_creates_index():
 
 
 def test_card_details():
-    sut = card_details.CardDetails(
+    sut = card_frame_bases.CardDetails(
         [
             {
                 "set_num": 0,
@@ -81,7 +81,7 @@ def test_play_count_frame_from_weighted_deck_searches():
                 ),
             )
         ],
-        card_details=card_details.CardDetails(
+        card_details=card_frame_bases.CardDetails(
             [
                 {
                     "set_num": 0,

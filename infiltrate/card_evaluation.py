@@ -21,11 +21,11 @@ import models.rarity
 import models.user
 import models.card_set
 import rewards
-import card_details
+import card_frame_bases
 from models.deck_search import WeightedDeckSearch
 
 
-class PlayCountFrame(card_details.CardCopy):
+class PlayCountFrame(card_frame_bases.CardCopy):
     """Has column play_count representing the number of decks containing
      the weighted count of that card in decks of all deck searches"""
 
@@ -37,14 +37,14 @@ class PlayCountFrame(card_details.CardCopy):
     IS_IN_DRAFT_PACK_NAME = "is_in_drat_pack"
 
     def __init__(self, *args):
-        card_details.CardCopy.__init__(self, *args)
+        card_frame_bases.CardCopy.__init__(self, *args)
         self.num_decks_with_count_or_less = self.num_decks_with_count_or_less
 
     @classmethod
     def from_weighted_deck_searches(
         cls,
         weighted_deck_searches: t.List[WeightedDeckSearch],
-        card_details: card_details.CardDetails,
+        card_details: card_frame_bases.CardDetails,
     ):
         """Build the dataframe from the list of weighted deck searches."""
         play_count_dfs: t.List[pd.DataFrame] = []
@@ -239,7 +239,9 @@ class OwnValueFrame(PlayCraftEfficiencyFrame):
         return cls(df)
 
     @classmethod
-    def from_user(cls, user: models.user.User, card_details: card_details.CardDetails):
+    def from_user(
+        cls, user: models.user.User, card_details: card_frame_bases.CardDetails
+    ):
         """Creates from a user, performing the entire pipeline."""
         # todo cache this.
         weighted_deck_searches = user.weighted_deck_searches

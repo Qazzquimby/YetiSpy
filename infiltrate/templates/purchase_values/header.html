@@ -1,0 +1,24 @@
+<thead>
+<tr class="row">
+    <th scope="col"
+        class="col-md-4 no-padding">
+        Sort by:
+    </th>
+    <th scope="col"
+        class="col-md-2 text-center btn {% if sort=="efficiency" %} bg-primary {% endif %}"
+        onclick="sort='efficiency'; page=0; ownership='unowned'; updatePurchaseTable()">
+        Purchase Efficiency ▼
+    </th>
+
+    <th scope="col"
+        class="col-md-2 text-center btn {% if sort=="value" %} bg-primary {% endif %}"
+        onclick="sort='value'; page=0; ownership='unowned'; updatePurchaseTable()">
+        Value ▼
+    </th>
+    <th scope="col"
+        class="col-md-2 text-center btn">
+        Gold Cost
+    </th>
+
+</tr>
+</thead>

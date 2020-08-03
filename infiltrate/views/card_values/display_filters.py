@@ -119,7 +119,7 @@ class ValueSort(CardDisplaySort):
 
 def get_sort(sort_str):
     """Get an OwnershipFilter from its id string."""
-    sort_str_to_sort = {"craft": CraftSort, "value": ValueSort}
+    sort_str_to_sort = {"efficiency": CraftSort, "value": ValueSort}
 
     sort = sort_str_to_sort.get(sort_str, None)
     if not sort:

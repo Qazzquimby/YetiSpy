@@ -57,6 +57,8 @@ class CardSet:
     def from_name(cls, name: str) -> "CardSet":
         """Constructs a CardSet matching the given name."""
         row = CardSetName.query.filter(CardSetName.name == name).first()
+        if row is None:
+            raise ValueError(f"Card set named {name} not found in database.")
         set_num = row.set_num
         card_set = cls(set_num)
         return card_set
