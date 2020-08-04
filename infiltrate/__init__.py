@@ -1,6 +1,4 @@
 """Handles creating the flask app"""
-import os
-
 import flask
 from flask import Flask
 from flask_bootstrap import Bootstrap
