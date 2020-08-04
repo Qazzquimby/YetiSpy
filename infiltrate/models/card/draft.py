@@ -22,7 +22,7 @@ def update_draft_pack_contents():
 
 def _get_draft_pack_card_ids() -> t.List[CardId]:
     file_name_selector = (
-        "#body-wrapper > div > div > " "div:nth-child(2) > div > a:nth-child(1)"
+        "#body-wrapper > div > div > div:nth-child(2) > div > a:nth-child(1)"
     )
     file_name = browsers.get_text_from_url_and_selector(
         "https://eternalwarcry.com/cards/download", file_name_selector
