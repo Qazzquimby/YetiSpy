@@ -10,7 +10,7 @@ import sqlalchemy.exc
 import sqlalchemy.orm
 import sqlalchemy.orm.exc
 
-import browser
+import browsers
 import df_types
 import models.rarity
 from infiltrate import db
@@ -116,7 +116,7 @@ def update_cards():
 
 
 def _get_card_json():
-    card_json_str = browser.get_str_from_url_and_xpath(
+    card_json_str = browsers.get_str_from_url_and_xpath(
         "https://eternalwarcry.com/content/cards/eternal-cards.json", "/html/body/pre"
     )
     card_json = json.loads(card_json_str)

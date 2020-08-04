@@ -5,7 +5,7 @@ import flask
 from flask_classy import FlaskView
 from werkzeug.exceptions import BadRequestKeyError
 
-import browser
+import browsers
 import cookies
 from infiltrate import db
 from models.deck_search import get_default_weighted_deck_searches
@@ -48,7 +48,7 @@ def get_username(key: str):
 
 def get_username_from_key(key: str):
     url = "https://api.eternalwarcry.com/v1/useraccounts/profile" + f"?key={key}"
-    response = browser.obj_from_url(url)
+    response = browsers.obj_from_url(url)
     username = response["username"]
     return username
 

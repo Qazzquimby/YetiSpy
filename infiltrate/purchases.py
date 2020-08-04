@@ -6,7 +6,7 @@ import typing as t
 
 import pandas as pd
 
-import browser
+import browsers
 import card_evaluation
 import models.card
 import models.card_set
@@ -412,7 +412,7 @@ class AdditionalLeagueEvaluator(LeagueEvaluator):
 def get_league_packs() -> t.Dict[models.card_set.CardSet, int]:
     url = "https://eternalcardgame.fandom.com/wiki/Leagues"
     xpath = '//*[@id="mw-content-text"]/table[1]/tbody/tr[last()]'
-    full_text = browser.get_str_from_url_and_xpath(url, xpath)
+    full_text = browsers.get_str_from_url_and_xpath(url, xpath)
     full_text = full_text.replace("\n", " ").replace("×", "x")
     pack_texts = re.findall(r"\dx\s\D+", full_text)
     set_name_counter = collections.defaultdict(int)

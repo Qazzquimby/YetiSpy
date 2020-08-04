@@ -4,7 +4,7 @@ import typing as t
 
 import sqlalchemy.exc
 
-import browser
+import browsers
 import card_collections
 import models.card
 import models.user.owns_card
@@ -39,7 +39,7 @@ class _CollectionUpdater:
             f"https://api.eternalwarcry.com/v1/useraccounts/collection"
             f"?key={self.user.key}"
         )
-        response = browser.obj_from_url(url)
+        response = browsers.obj_from_url(url)
         cards = response["cards"]
         collection = card_collections.make_collection_from_ew_export(cards)
         # TODO IMPORTANT This needs to invalidate the caches for card values

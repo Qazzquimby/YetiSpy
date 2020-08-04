@@ -4,7 +4,7 @@ import typing as t
 import urllib.error
 from datetime import datetime
 
-import browser
+import browsers
 import global_data
 import models.card
 
@@ -113,7 +113,7 @@ class _WarcryNewIdGetter:
             + f"&perpage={items_per_page}"
             + f"&key={application.config['WARCRY_KEY']}"
         )
-        page_json = browser.obj_from_url(url)
+        page_json = browsers.obj_from_url(url)
         ids = self.get_ids_from_page_json(page_json)
 
         return ids
@@ -163,7 +163,7 @@ def update_decks():
                 + f"&deck_id={deck_id}"
             )
             try:
-                page_json = browser.obj_from_url(url)
+                page_json = browsers.obj_from_url(url)
             except (ConnectionError, urllib.error.HTTPError):
                 return
 

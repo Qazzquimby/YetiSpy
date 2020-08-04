@@ -1,7 +1,7 @@
 """Models for sets of cards."""
 import typing as t
 
-import browser
+import browsers
 import caches
 import models.card
 from infiltrate import db
@@ -27,7 +27,7 @@ def update():
         def _get_set_name_strings(self):
             url = "https://eternalwarcry.com/cards"
             xpath = '//*[@id="CardSet"]/optgroup[*]/option'
-            set_name_strings = browser.get_strs_from_url_and_xpath(url, xpath)
+            set_name_strings = browsers.get_strs_from_url_and_xpath(url, xpath)
             return set_name_strings
 
         def _parse_set_name_string(self, set_name_string: str) -> t.Tuple[int, str]:
