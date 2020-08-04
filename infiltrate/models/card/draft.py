@@ -21,12 +21,14 @@ def update_draft_pack_contents():
 
 
 def _get_draft_pack_card_ids() -> t.List[CardId]:
-    file_name_selector = '//*[@id="body-wrapper"]/div/div/div[2]/div/a[last()]'
-    file_name = browsers.get_str_from_url_and_xpath(
+    file_name_selector = (
+        "#body-wrapper > div > div > " "div:nth-child(2) > div > a:nth-child(1)"
+    )
+    file_name = browsers.get_text_from_url_and_selector(
         "https://eternalwarcry.com/cards/download", file_name_selector
     )
     draft_pack_url = f"https://eternalwarcry.com/content/draftpacks/{file_name}"
-    newest_draft_pack = browsers.obj_from_url(draft_pack_url)
+    newest_draft_pack = browsers.get_json_from_url(draft_pack_url)
     card_ids = []
     for card in newest_draft_pack:
         card_id = CardId(set_num=card["SetNumber"], card_num=card["EternalID"])

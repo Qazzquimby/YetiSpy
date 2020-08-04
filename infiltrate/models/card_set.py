@@ -26,8 +26,8 @@ def update():
 
         def _get_set_name_strings(self):
             url = "https://eternalwarcry.com/cards"
-            xpath = '//*[@id="CardSet"]/optgroup[*]/option'
-            set_name_strings = browsers.get_strs_from_url_and_xpath(url, xpath)
+            selector = "#CardSet > optgroup > option"
+            set_name_strings = browsers.get_texts_from_url_and_selector(url, selector)
             return set_name_strings
 
         def _parse_set_name_string(self, set_name_string: str) -> t.Tuple[int, str]:
@@ -82,7 +82,7 @@ class CardSet:
 
     @classmethod
     def is_campaign_from_num(cls, set_num: int):
-        """Is the set matching the set num a campagin rather than a pack."""
+        """Is the set matching the set num a campaign rather than a pack."""
         return 1000 < set_num
 
     def __str__(self):

@@ -2,7 +2,6 @@
 
 Related to card_collections.py
 """
-import json
 import typing as t
 
 import pandas as pd
@@ -56,6 +55,7 @@ Card_DF = df_types.make_dataframe_type(df_types.get_columns_for_model(Card))
 
 
 def all_cards_df_from_db() -> pd.DataFrame:
+    """Return all rows from the cards table."""
     session = db.engine.raw_connection()
     cards_df = pd.read_sql_query("SELECT * from cards", session)
     cards_df.rename(
@@ -116,10 +116,9 @@ def update_cards():
 
 
 def _get_card_json():
-    card_json_str = browsers.get_str_from_url_and_xpath(
-        "https://eternalwarcry.com/content/cards/eternal-cards.json", "/html/body/pre"
+    card_json = browsers.get_json_from_url(
+        "https://eternalwarcry.com/content/cards/eternal-cards.json"
     )
-    card_json = json.loads(card_json_str)
 
     return card_json
 
@@ -128,9 +127,7 @@ def _make_cards_from_entries(entries: t.List[dict]):
     seen_ids = set()
     for entry in entries:
         if "EternalID" in entry.keys():
-            card_id = models.card.CardId(
-                set_num=entry["SetNumber"], card_num=entry["EternalID"]
-            )
+            card_id = CardId(set_num=entry["SetNumber"], card_num=entry["EternalID"])
             if card_id not in seen_ids:
                 _make_card_from_entry(entry)
                 seen_ids.add(card_id)
@@ -152,3 +149,7 @@ def _make_card_from_entry(entry: dict) -> t.Optional[Card]:
     except sqlalchemy.exc.IntegrityError:
         pass
     #     db.session.rollback()
+
+
+if __name__ == "__main__":
+    update_cards()

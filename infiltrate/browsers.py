@@ -30,7 +30,7 @@ def _get_soup_from_url(url: str) -> bs4.BeautifulSoup:
     return response.soup
 
 
-def obj_from_url(url: str):
+def get_json_from_url(url: str):
     """Returns the page at the given url as JSON"""
     request = urllib.request.Request(
         url,

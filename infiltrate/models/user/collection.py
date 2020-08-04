@@ -14,7 +14,7 @@ if t.TYPE_CHECKING:
     from models.user import User
 
 
-def update_collection(user: "User"):
+def update(user: "User"):
     """Update the user's collection to match their Eternal Warcry collection."""
     updater = _CollectionUpdater(user)
     updater.run()
@@ -39,7 +39,7 @@ class _CollectionUpdater:
             f"https://api.eternalwarcry.com/v1/useraccounts/collection"
             f"?key={self.user.key}"
         )
-        response = browsers.obj_from_url(url)
+        response = browsers.get_json_from_url(url)
         cards = response["cards"]
         collection = card_collections.make_collection_from_ew_export(cards)
         # TODO IMPORTANT This needs to invalidate the caches for card values

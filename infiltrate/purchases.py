@@ -411,8 +411,8 @@ class AdditionalLeagueEvaluator(LeagueEvaluator):
 
 def get_league_packs() -> t.Dict[models.card_set.CardSet, int]:
     url = "https://eternalcardgame.fandom.com/wiki/Leagues"
-    xpath = '//*[@id="mw-content-text"]/table[1]/tbody/tr[last()]'
-    full_text = browsers.get_str_from_url_and_xpath(url, xpath)
+    selector = "#mw-content-text > table:nth-child(10) > tbody > tr:nth-child(2)"
+    full_text = browsers.get_text_from_url_and_selector(url, selector)
     full_text = full_text.replace("\n", " ").replace("×", "x")
     pack_texts = re.findall(r"\dx\s\D+", full_text)
     set_name_counter = collections.defaultdict(int)

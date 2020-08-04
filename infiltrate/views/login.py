@@ -48,7 +48,7 @@ def get_username(key: str):
 
 def get_username_from_key(key: str):
     url = "https://api.eternalwarcry.com/v1/useraccounts/profile" + f"?key={key}"
-    response = browsers.obj_from_url(url)
+    response = browsers.get_json_from_url(url)
     username = response["username"]
     return username
 

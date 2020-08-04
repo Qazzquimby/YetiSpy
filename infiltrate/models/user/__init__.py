@@ -30,9 +30,7 @@ class User(db.Model):
     cards = db.relationship("UserOwnsCard")
 
     def update_collection(self):
-        """Replaces a user's old collection in the db
-        with their new collection."""
-        updater = models.user.collection._CollectionUpdater(self)
+        updater = models.user.collection.update(self)
         updater.run()
 
     def add_weighted_deck_searches(
