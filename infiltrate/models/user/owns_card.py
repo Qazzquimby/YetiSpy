@@ -46,7 +46,9 @@ def create_is_owned_series(
 
     details_with_total_owned = card_details.join(full_ownership)
 
-    ownership_frame = details_with_total_owned[["set_num", "card_num", "count_in_deck"]]
+    ownership_frame = details_with_total_owned[
+        ["set_num", "card_num", "count_in_deck"]
+    ].copy()
 
     # noinspection PyTypeChecker
     is_owned = (

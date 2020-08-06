@@ -8,6 +8,7 @@ import pandas as pd
 
 import browsers
 import card_evaluation
+import dwd_news
 import models.card
 import models.card_set
 import models.deck_search
@@ -410,14 +411,11 @@ class AdditionalLeagueEvaluator(LeagueEvaluator):
 
 
 def get_league_packs() -> t.Dict[models.card_set.CardSet, int]:
-    url = "https://eternalcardgame.fandom.com/wiki/Leagues"
-    selector = "#mw-content-text > table:nth-child(10) > tbody > tr:nth-child(2)"
-    full_text = browsers.get_text_from_url_and_selector(url, selector)
-    full_text = full_text.replace("\n", " ").replace("×", "x")
-    pack_texts = re.findall(r"\dx\s\D+", full_text)
+    pack_texts = dwd_news.get_most_recent_league_article_packs_text()
     set_name_counter = collections.defaultdict(int)
 
     for pack_text in pack_texts:
+        pack_text = pack_text.split(":")[-1]
         split = pack_text.split("x ")
         num_packs = int(split[0])
         set_name = split[1].strip()
