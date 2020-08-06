@@ -10,21 +10,21 @@ from mechanicalsoup import Browser
 
 def get_texts_from_url_and_selector(url: str, selector: str) -> t.List[str]:
     """Get a list of elements found at the xpath at the url."""
-    soup = _get_soup_from_url(url)
+    soup = get_soup_from_url(url)
     elements = soup.select(selector)
     texts = [element.text for element in elements]
     return texts
 
 
-def get_text_from_url_and_selector(url: str, selector: str) -> str:
+def get_first_text_from_url_and_selector(url: str, selector: str) -> str:
     """Get the text from an element specified by the xpath at the url."""
-    soup = _get_soup_from_url(url)
+    soup = get_soup_from_url(url)
     element = soup.select_one(selector)
     result = element.text
     return result
 
 
-def _get_soup_from_url(url: str) -> bs4.BeautifulSoup:
+def get_soup_from_url(url: str) -> bs4.BeautifulSoup:
     with Browser() as browser:
         response = browser.get(url)
     return response.soup
@@ -53,13 +53,3 @@ def get_json_from_url(url: str):
     if page_json is None:
         raise ConnectionError(f"Got no content from {url}")
     return page_json
-
-
-if __name__ == "__main__":
-    get_texts_from_url_and_selector(
-        "https://wikipedia.com",
-        "#www-wikipedia-org > div.footer > div.other-projects > div:nth-child(1) > a > "
-        "div.other-project-text > span.other-project-title.jsl10n",
-    )
-
-    print("done")
