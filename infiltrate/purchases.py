@@ -186,7 +186,7 @@ class LeagueEvaluator(PurchaseEvaluator, abc.ABC):
         super().__init__(card_data, cost=12_500)
 
     def get_league_packs_value(self) -> float:
-        pack_counts = get_league_packs()  # todo store in database
+        pack_counts = get_league_packs()
 
         pack_values = PackEvaluator(self.card_data).get_values()
 
@@ -411,22 +411,12 @@ class AdditionalLeagueEvaluator(LeagueEvaluator):
 
 
 def get_league_packs() -> t.Dict[models.card_set.CardSet, int]:
-    pack_texts = dwd_news.get_most_recent_league_article_packs_text()
-    set_name_counter = collections.defaultdict(int)
-
-    for pack_text in pack_texts:
-        pack_text = pack_text.split(":")[-1]
-        split = pack_text.split("x ")
-        num_packs = int(split[0])
-        set_name = split[1].strip()
-        set_name_counter[set_name] += num_packs
-
-    card_set_counter = {
-        models.card_set.CardSet.from_name(set_name): set_name_counter[set_name]
-        for set_name in set_name_counter.keys()
+    card_sets = models.card_set.CardSetName.query.all()
+    packs = {
+        models.card_set.CardSet.from_name(card_set.name): card_set.num_in_league
+        for card_set in card_sets
     }
-
-    return card_set_counter
+    return packs
 
 
 def get_purchase_values(
@@ -457,7 +447,6 @@ class _PurchasesValueDataframeGetter:
     def get_purchase_values(self):
         """Gets a dataframe of all purchase options
         with values based on card values."""
-        # Todo update this to use playability.
         columns = ["name", "gold_cost", "value", "value_per_gold"]
         df_constructor = []
         for purchase_evaluator in self.purchase_evaluators:

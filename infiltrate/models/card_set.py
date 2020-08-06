@@ -1,8 +1,10 @@
 """Models for sets of cards."""
+import collections
 import typing as t
 
 import browsers
 import caches
+import dwd_news
 import models.card
 from infiltrate import db
 
@@ -12,6 +14,7 @@ class CardSetName(db.Model):
 
     set_num = db.Column("set_num", db.Integer, primary_key=True)
     name = db.Column("name", db.String(length=100))
+    num_in_league = db.Column("num_in_league", db.Integer)
 
 
 def update():
@@ -20,9 +23,11 @@ def update():
     class _CardSetNameUpdater:
         def run(self):
             set_name_strings = self._get_set_name_strings()
+            league_counts = self._get_league_counts()
             for set_name_string in set_name_strings:
                 set_num, name = self._parse_set_name_string(set_name_string)
-                self._create_set_name(set_num, name)
+                league_count = league_counts.get(CardSet(set_num), 0)
+                self._create_set_name(set_num, name, league_count)
 
         def _get_set_name_strings(self):
             url = "https://eternalwarcry.com/cards"
@@ -35,10 +40,27 @@ def update():
             set_num = int(set_name_string.split(" [Set")[1].split("]")[0])
             return set_num, name
 
-        def _create_set_name(self, set_num: int, name: str):
-            card_set_name = CardSetName(set_num=set_num, name=name)
+        def _create_set_name(self, set_num: int, name: str, league_count: int):
+            card_set_name = CardSetName(
+                set_num=set_num, name=name, num_in_league=league_count
+            )
             db.session.merge(card_set_name)
             db.session.commit()
+
+        def _get_league_counts(self) -> dict:
+            pack_texts = dwd_news.get_most_recent_league_article_packs_text()
+            set_name_counter = collections.defaultdict(int)
+            for pack_text in pack_texts:
+                pack_text = pack_text.split(":")[-1]
+                split = pack_text.split("x ")
+                num_packs = int(split[0])
+                set_name = split[1].strip()
+                set_name_counter[set_name] += num_packs
+            card_set_counter = {
+                models.card_set.CardSet.from_name(set_name): set_name_counter[set_name]
+                for set_name in set_name_counter.keys()
+            }
+            return card_set_counter
 
     updater = _CardSetNameUpdater()
     updater.run()
