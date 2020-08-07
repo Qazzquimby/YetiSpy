@@ -40,6 +40,7 @@ class PurchasesView(flask_classy.FlaskView):
                 user=user, card_details=global_data.all_cards
             ),
         )
+        purchase_values = purchase_values.query("value > 0")
 
         if sort_str == "efficiency":
             displays = purchase_values.sort_values("value_per_gold", ascending=False)
