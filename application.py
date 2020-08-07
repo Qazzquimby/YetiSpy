@@ -17,7 +17,18 @@ def open_in_browser():
     threading.Timer(1.25, lambda: webbrowser.open(url)).start()
 
 
+def enable_profiling(application):
+    from werkzeug.middleware.profiler import ProfilerMiddleware
+
+    application.config["PROFILE"] = True
+    application.wsgi_app = ProfilerMiddleware(
+        application.wsgi_app, sort_by=("cumulative", "name"), restrictions=[60]
+    )
+
+
 if __name__ == "__main__":
+    enable_profiling(application)
+
     setup_application(application)
     open_in_browser()
     application.run(debug=True, use_debugger=False, use_reloader=False)
