@@ -191,9 +191,9 @@ class LeagueEvaluator(PurchaseEvaluator, abc.ABC):
         pack_values = PackEvaluator(self.card_data).get_values()
 
         total_value = 0
-        for pack in pack_counts.keys():
+        for pack, count in pack_counts.items():
             count = pack_counts[pack]
-            value_per_pack = pack_values[pack]
+            value_per_pack = pack_values.get(pack, 0)
             total_value += count * value_per_pack
 
         return total_value
