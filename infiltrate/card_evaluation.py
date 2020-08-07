@@ -10,7 +10,7 @@ Own Value (Play Value, Play Craft Efficiency)
 Own Craft Efficiency (Own Value, Findability, Cost)
 Purchase Efficiency (Own Value, Cost)
 """
-
+from pandas.util import hash_pandas_object
 import pandas as pd
 import typing as t
 
@@ -39,6 +39,9 @@ class PlayCountFrame(card_frame_bases.CardCopy):
     def __init__(self, *args):
         card_frame_bases.CardCopy.__init__(self, *args)
         self.num_decks_with_count_or_less = self.num_decks_with_count_or_less
+
+    def __hash__(self):
+        return int(hash_pandas_object(self).sum())
 
     @classmethod
     def from_weighted_deck_searches(
