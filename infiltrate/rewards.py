@@ -1,4 +1,5 @@
 import collections
+import functools
 import typing as t
 
 import numpy as np
@@ -55,7 +56,8 @@ class CardClass:
         hash_value = hash((sets, self.rarity, self.is_premium))
         return hash_value
 
-    def get_value(self, card_data) -> float:
+    @functools.lru_cache(maxsize=1500)
+    def get_value(self, card_data) -> float:  # todo can this be saved once per user?
         set_values = [
             self._get_value_for_set(card_data, card_set) for card_set in self.sets
         ]
@@ -75,7 +77,7 @@ class CardClass:
         return value
 
 
-def get_value(card_pool):
+def get_value(card_pool):  # called many times and slow
     unowned_cards = card_pool.query("is_owned == False")
     findable_copies = unowned_cards.drop_duplicates(["set_num", "card_num"])
 
