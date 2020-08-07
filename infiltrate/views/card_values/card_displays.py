@@ -128,7 +128,8 @@ class CardDisplayPage:
         """Call for the card displays to be displayed at the given page."""
         start_index = self._get_start_card_index()
         displays_on_page = OwnValueFrame(
-            self.value_info[start_index : start_index + self.cards_per_page]
+            self.value_info.user,
+            self.value_info[start_index : start_index + self.cards_per_page],
         )
         displays_on_page = self._group_page(displays_on_page)
         return displays_on_page

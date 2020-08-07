@@ -57,7 +57,7 @@ class CardClass:
         return hash_value
 
     @functools.lru_cache(maxsize=1500)
-    def get_value(self, card_data) -> float:  # todo can this be saved once per user?
+    def get_value(self, card_data) -> float:
         set_values = [
             self._get_value_for_set(card_data, card_set) for card_set in self.sets
         ]

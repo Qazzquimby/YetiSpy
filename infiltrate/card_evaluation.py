@@ -40,9 +40,6 @@ class PlayCountFrame(card_frame_bases.CardCopy):
         card_frame_bases.CardCopy.__init__(self, *args)
         self.num_decks_with_count_or_less = self.num_decks_with_count_or_less
 
-    def __hash__(self):
-        return int(hash_pandas_object(self).sum())
-
     @classmethod
     def from_weighted_deck_searches(
         cls,
@@ -117,13 +114,22 @@ class PlayValueFrame(PlayRateFrame):
     PLAY_VALUE_NAME = "play_value"
     IS_OWNED_NAME = "is_owned"
 
-    def __init__(self, *args):
+    def __init__(self, user: models.user.User, *args):
         PlayRateFrame.__init__(self, *args)
 
+        self.user = user
         self.play_value = self.play_value
 
+    def __hash__(self):
+        return hash(self.user)
+
     @classmethod
-    def from_play_rates(cls, play_rate_frame: PlayRateFrame, ownership: pd.DataFrame):
+    def from_play_rates(
+        cls,
+        user: models.user.User,
+        play_rate_frame: PlayRateFrame,
+        ownership: pd.DataFrame,
+    ):
         """Constructor deriving values from play rates."""
         # todo account for collection fit.
         df: pd.DataFrame = play_rate_frame.copy()
@@ -143,7 +149,7 @@ class PlayValueFrame(PlayRateFrame):
             )
         )
 
-        return cls(df)
+        return cls(user, df)
 
 
 class PlayCraftEfficiencyFrame(PlayValueFrame):
@@ -156,8 +162,8 @@ class PlayCraftEfficiencyFrame(PlayValueFrame):
     CRAFT_COST_NAME = "craft_cost"
     FINDABILITY_NAME = "findability"
 
-    def __init__(self, *args):
-        PlayValueFrame.__init__(self, *args)
+    def __init__(self, user: models.user.User, *args):
+        PlayValueFrame.__init__(self, user, *args)
 
         self.play_craft_efficiency = self.play_craft_efficiency
 
@@ -179,7 +185,7 @@ class PlayCraftEfficiencyFrame(PlayValueFrame):
             craft_efficiency=df[cls.PLAY_VALUE_NAME] / df[cls.CRAFT_COST_NAME],
         )
 
-        return cls(df)
+        return cls(play_value_frame.user, df)
 
     @staticmethod
     @pd.np.vectorize
@@ -211,8 +217,11 @@ class OwnValueFrame(PlayCraftEfficiencyFrame):
     RESELL_VALUE_NAME = "resell_value"
     OWN_VALUE_NAME = "own_value"
 
-    def __init__(self, *args):
-        PlayCraftEfficiencyFrame.__init__(self, *args)
+    def __init__(self, user: models.user.User, *args):
+        if type(user) != models.user.User:
+            raise ValueError("Must be given user parameter of type User")
+
+        PlayCraftEfficiencyFrame.__init__(self, user, *args)
 
         self.sell_cost = self.sell_cost
         self.resell_value = self.resell_value
@@ -239,7 +248,7 @@ class OwnValueFrame(PlayCraftEfficiencyFrame):
             axis=1
         )
 
-        return cls(df)
+        return cls(play_craft_efficiency.user, df)
 
     @classmethod
     def from_user(
@@ -256,7 +265,7 @@ class OwnValueFrame(PlayCraftEfficiencyFrame):
 
         ownership = models.user.owns_card.UserOwnsCard.dataframe_for_user(user)
         play_value = PlayValueFrame.from_play_rates(
-            play_rate_frame=play_rate, ownership=ownership
+            user=user, play_rate_frame=play_rate, ownership=ownership
         )
         play_craft_efficiency = PlayCraftEfficiencyFrame.from_play_value(play_value)
         own_value = cls.from_play_craft_efficiency(play_craft_efficiency)

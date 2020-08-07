@@ -29,7 +29,7 @@ class UnownedFilter(OwnershipFilter):
     @classmethod
     def filter(cls, cards):
         filtered_df = cards.query("is_owned == False")
-        return OwnValueFrame(filtered_df)
+        return OwnValueFrame(cards.user, filtered_df)
 
 
 class OwnedFilter(OwnershipFilter):
@@ -39,7 +39,7 @@ class OwnedFilter(OwnershipFilter):
     @classmethod
     def filter(cls, cards):
         filtered_df = cards.query("is_owned == True")
-        return OwnValueFrame(filtered_df)
+        return OwnValueFrame(cards.user, filtered_df)
 
 
 class AllFilter(OwnershipFilter):
@@ -86,7 +86,7 @@ class CraftSort(CardDisplaySort):
         sorted_df = cards.sort_values(
             by=[cards.PLAY_CRAFT_EFFICIENCY_NAME], ascending=False
         )
-        return OwnValueFrame(sorted_df)
+        return OwnValueFrame(cards.user, sorted_df)
 
     @classmethod
     def filter(cls, cards):
@@ -94,7 +94,7 @@ class CraftSort(CardDisplaySort):
         filtered_df = cards[
             np.logical_not(models.card_set.CardSet.is_campaign_from_num(cards.set_num))
         ]
-        return OwnValueFrame(filtered_df)
+        return OwnValueFrame(cards.user, filtered_df)
 
 
 class ValueSort(CardDisplaySort):
