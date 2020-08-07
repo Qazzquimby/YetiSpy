@@ -23,7 +23,7 @@ class CardDetails(pd.DataFrame):
     RARITY_NAME = "rarity"
     IMAGE_URL_NAME = "image_url"
     DETAILS_URL_NAME = "details_url"
-    IS_IN_DRAFT_PACK_NAME = "is_in_drat_pack"
+    IS_IN_DRAFT_PACK_NAME = "is_in_draft_pack"
 
     def __init__(self, *args):
         pd.DataFrame.__init__(self, *args)

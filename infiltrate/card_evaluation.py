@@ -34,7 +34,7 @@ class PlayCountFrame(card_frame_bases.CardCopy):
     RARITY_NAME = "rarity"
     IMAGE_URL_NAME = "image_url"
     DETAILS_URL_NAME = "details_url"
-    IS_IN_DRAFT_PACK_NAME = "is_in_drat_pack"
+    IS_IN_DRAFT_PACK_NAME = "is_in_draft_pack"
 
     def __init__(self, *args):
         card_frame_bases.CardCopy.__init__(self, *args)
