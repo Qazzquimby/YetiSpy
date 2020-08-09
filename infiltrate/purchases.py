@@ -1,14 +1,9 @@
 """Handles things that can be bought, such as packs, draft, and league."""
 import abc
 import collections
-import re
 import typing as t
-
 import pandas as pd
-
-import browsers
 import card_evaluation
-import dwd_news
 import models.card
 import models.card_set
 import models.deck_search

@@ -10,7 +10,6 @@ Own Value (Play Value, Play Craft Efficiency)
 Own Craft Efficiency (Own Value, Findability, Cost)
 Purchase Efficiency (Own Value, Cost)
 """
-from pandas.util import hash_pandas_object
 import pandas as pd
 import typing as t
 
