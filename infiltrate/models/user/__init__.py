@@ -7,7 +7,6 @@ from sqlalchemy_utils.types.encrypted.encrypted_type import FernetEngine
 
 import models.deck_search
 import models.user.collection
-import models.user.owns_card
 from infiltrate import application, db
 
 
@@ -26,12 +25,6 @@ class User(db.Model):
             db.String(50), application.config["SECRET_KEY"], FernetEngine
         ),
     )
-
-    cards = db.relationship("UserOwnsCard")
-
-    def update_collection(self):
-        updater = models.user.collection.update(self)
-        updater.run()
 
     def add_weighted_deck_searches(
         self, searches: t.List[models.deck_search.WeightedDeckSearch]

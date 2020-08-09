@@ -20,6 +20,7 @@ import models.deck_constants
 import models.rarity
 import models.user
 import models.card_set
+import models.user.collection
 import rewards
 import card_frame_bases
 from models.deck_search import WeightedDeckSearch
@@ -139,7 +140,7 @@ class PlayValueFrame(PlayRateFrame):
             / df["num_decks_with_count_or_less"].max()
         )
 
-        ownership_frame = models.user.owns_card.create_is_owned_series(
+        ownership_frame = models.user.collection.create_is_owned_series(
             play_rate_frame, ownership
         )
 
@@ -263,7 +264,7 @@ class OwnValueFrame(PlayCraftEfficiencyFrame):
 
         play_rate = PlayRateFrame.from_play_counts(play_count)
 
-        ownership = models.user.owns_card.UserOwnsCard.dataframe_for_user(user)
+        ownership = models.user.collection.dataframe_for_user(user)
         play_value = PlayValueFrame.from_play_rates(
             user=user, play_rate_frame=play_rate, ownership=ownership
         )
