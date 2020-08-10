@@ -5,7 +5,7 @@ import dataclasses
 import datetime
 import typing as t
 import pandas as pd
-from progiter import progiter
+from tqdm import tqdm
 
 import card_collections
 import models.card
@@ -104,7 +104,7 @@ class DeckSearch(db.Model):
         return deck.views
 
     def _add_playrates(self, playrates: t.Dict):
-        for card_id in progiter.ProgIter(playrates.keys()):
+        for card_id in tqdm(playrates.keys(), desc="Add playrates"):
             for play_count in range(1, 5):
                 deck_search_has_card = DeckSearchHasCard(
                     decksearch_id=self.id,
