@@ -25,6 +25,10 @@ import card_frame_bases
 from models.deck_search import WeightedDeckSearch
 
 
+# TODO Important. Add card values to the database as a column on cards. Everyone has the
+#   same basic card values. Later mask with ownership to make individual.
+
+
 class PlayCountFrame(card_frame_bases.CardCopy):
     """Has column play_count representing the number of decks containing
      the weighted count of that card in decks of all deck searches"""
