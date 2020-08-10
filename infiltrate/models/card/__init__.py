@@ -78,36 +78,6 @@ def all_cards_df_from_db() -> pd.DataFrame:
     return cards_df
 
 
-#
-# #todo replace with CardDetails currently stored in card_evaluation.
-# #   It's very similar but uses df inheritance and has card id as the index.
-# class CardData:
-#     """A global storage for all cards in the database."""
-#
-#     SET_NUM = "set_num"
-#     CARD_NUM = "card_num"
-#     COUNT_IN_DECK = "count_in_deck"
-#     NAME = "name"
-#     RARITY = "rarity"
-#     IMAGE_URL = "image_url"
-#     DETAILS_URL = "details_url"
-#     IS_IN_DRAFT_PACK = "is_in_draft_pack"
-#
-#     def __init__(self, df):
-#         self.df = df
-#
-#     def card_exists(self, card_id: CardId):
-#         """Return if the card_id is found."""
-#         matching_card = self.df.loc[
-#             (
-#                 (self.df[self.SET_NUM] == card_id.set_num)
-#                 & (self.df[self.CARD_NUM] == card_id.card_num)
-#             )
-#         ]
-#         does_exist = len(matching_card) > 0
-#         return does_exist
-
-
 def update_cards():
     """Updates the db to match the Warcry cards list."""
     card_json = _get_card_json()
