@@ -6,6 +6,7 @@ flask
 mechanicalsoup
 numpy
 pandas
+psycopg2
 requests
 sqlalchemy
 tqdm
