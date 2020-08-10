@@ -83,4 +83,6 @@ def create_rarities():
     db.session.commit()
 
 
+db.create_all()
+db.session.commit()
 create_rarities()
