@@ -26,7 +26,7 @@ def update():
             league_counts = self._get_league_counts()
             for set_name_string in set_name_strings:
                 set_num, name = self._parse_set_name_string(set_name_string)
-                league_count = league_counts.get(CardSet(set_num), 0)
+                league_count = league_counts.get(name, 0)
                 self._create_set_name(set_num, name, league_count)
 
         def _get_set_name_strings(self):
@@ -47,7 +47,7 @@ def update():
             db.session.merge(card_set_name)
             db.session.commit()
 
-        def _get_league_counts(self) -> dict:
+        def _get_league_counts(self) -> t.Dict[str, int]:
             pack_texts = dwd_news.get_most_recent_league_article_packs_text()
             set_name_counter = collections.defaultdict(int)
             for pack_text in pack_texts:
@@ -57,7 +57,7 @@ def update():
                 set_name = split[1].strip()
                 set_name_counter[set_name] += num_packs
             card_set_counter = {
-                models.card_set.CardSet.from_name(set_name): set_name_counter[set_name]
+                set_name: set_name_counter[set_name]
                 for set_name in set_name_counter.keys()
             }
             return card_set_counter
