@@ -8,11 +8,11 @@ from werkzeug.exceptions import BadRequestKeyError
 import browsers
 import cookies
 from infiltrate import db
-from models.deck_search import get_default_weighted_deck_searches
 from models.user import User, get_by_id
 
 
-# TODO IMPORTANT authentication is currently not secure. The user can fake a cookie for any id to log in with that id.
+# TODO IMPORTANT authentication is currently not secure.
+#  The user can fake a cookie for any id to log in with that id.
 
 
 class BadKeyException(Exception):
@@ -76,19 +76,10 @@ def make_new_user(user_name: str, key: str):
     db.session.merge(new_user)
     db.session.commit()
 
-    new_user = get_user_if_exists(new_user.name, new_user.key)
-    add_default_weighted_deck_searches(new_user)
-    db.session.commit()
-
     return get_user_if_exists(user_name, key)
 
 
-def add_default_weighted_deck_searches(user: User):
-    searches = get_default_weighted_deck_searches(user.id)
-    user.add_weighted_deck_searches(searches)
-
-
-def login(response, user_id: int, username: str, remember_me: bool):
+def login(response: flask.Response, user_id: int, username: str, remember_me: bool):
     # import datetime
     # response.set_cookie(name, value, expires=)
 
@@ -97,8 +88,10 @@ def login(response, user_id: int, username: str, remember_me: bool):
     else:
         max_age = None
 
-    response.set_cookie(cookies.ID, str(user_id), max_age=max_age)
-    response.set_cookie(cookies.USERNAME, username, max_age=max_age)
+    response.set_cookie(cookies.ID, str(user_id), max_age=max_age, samesite="same-site")
+    response.set_cookie(
+        cookies.USERNAME, username, max_age=max_age, samesite="same-site"
+    )
 
 
 # noinspection PyMethodMayBeStatic
