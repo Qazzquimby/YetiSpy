@@ -34,8 +34,8 @@ db = _setup_db(application)
 def setup_application(app):
     Bootstrap(app)
     boltons.fileutils.mkdir_p(app.instance_path)
+    updates()
     _register_views(app)
-    _schedule_updates()
 
 
 def _register_views(app):
@@ -70,10 +70,11 @@ def _register_views(app):
         return "See backend console log."
 
 
-def _schedule_updates():
-    from infiltrate import scheduling
+def updates():
+    import scheduling
 
-    return scheduling.schedule_updates()
+    scheduling.initial_update()
+    scheduling.schedule_updates()
 
 
 @application.teardown_request
