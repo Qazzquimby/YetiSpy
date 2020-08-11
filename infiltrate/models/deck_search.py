@@ -91,8 +91,11 @@ class DeckSearch(db.Model):
         playrate = card_collections.make_card_playset_dict()
         for deck in self.get_decks():
             for card in deck.cards:
+                card_id = models.card.CardId(
+                    set_num=card.set_num, card_num=card.card_num
+                )
                 for num_played in range(min(card.num_played, 4)):
-                    playrate[card][num_played] += self._scale_playrate(deck)
+                    playrate[card_id][num_played] += self._scale_playrate(deck)
         return playrate
 
     def _scale_playrate(self, deck):
@@ -102,6 +105,7 @@ class DeckSearch(db.Model):
         return deck.views
 
     def _add_playrates(self, playrates: t.Dict):
+        rows = []
         for card_id, counts in tqdm(playrates.items(), desc="Add playrates"):
             for play_count in range(1, 5):
                 deck_search_has_card = DeckSearchHasCard(
@@ -111,7 +115,8 @@ class DeckSearch(db.Model):
                     count_in_deck=play_count,
                     num_decks_with_count_or_less=counts[play_count - 1],
                 )
-                db.session.merge(deck_search_has_card)
+                rows.append(deck_search_has_card)
+        db.session.bulk_save_objects(rows)
         db.session.commit()
 
 
