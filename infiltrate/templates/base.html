@@ -1,49 +1,62 @@
 <!doctype html>
 {% extends "bootstrap/base.html" %}
 
-<title>{% block title %}{% endblock %} - Eternal Infiltrate</title>
+
 
 {% block head %}
     {{ super() }}
-    <div class="navbar navbar-infiltrate navbar-fixed-top">
-        <a href="/" class="navbar-brand">
-            Eternal Infiltrate
+    <title>{% block title %}{% endblock %} - Eternal Infiltrate</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon3.ico') }}">
+    <nav class="navbar navbar-expand-lg navbar-infiltrate">
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                data-target="#baseNavbar"
+                aria-controls="baseNavbar"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand d-inline-block align-top" href="#">
+            <img src="{{ url_for('static', filename='images/logo_square.png') }}"
+                 style="height: 40px; margin-top: -10px">
+            Eternal Scout
         </a>
-        <div class="navbar-header">
-            <ul class="nav navbar-nav hidden-xs">
+
+        <div class="collapse navbar-collapse" id="baseNavbar">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                 <li>
-                    <a href="#" data-toggle="modal"
-                       data-target="#updateCollectionModal">Update
-                        Collection</a>
-                </li>
-                <li>
-                    <a href="{{ url_for('PurchasesView:index') }}">
-                        Purchases <i class="fas fa-store"></i>
+                    <a href="{{ url_for('CardsView:index') }}"
+                       class="nav-link">
+                        <i class="fas fa-clone"></i> Cards
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        You <i class="fas fa-user"></i>
+                    <a href="{{ url_for('PurchasesView:index') }}"
+                       class="nav-link">
+                        <i class="fas fa-store"></i> Purchases
+
                     </a>
                 </li>
-                <li>
-                    <a id="nav-expander" class="nav-expander fixed">
-                        <em class="fa fa-bars fa-lg"></em>
+                <li class="nav-item">
+                    <a href="#"
+                       class="nav-link"
+                       data-toggle="modal"
+                       data-target="#updateCollectionModal">
+                        <i class="fas fa-redo"></i> Update Collection
                     </a>
                 </li>
             </ul>
-
-
         </div>
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul class=flashes>
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
+    </nav>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
     </div>
     <div class="space-t hidden-xs"></div>
 {% endblock %}
