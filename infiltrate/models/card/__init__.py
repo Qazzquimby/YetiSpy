@@ -83,6 +83,9 @@ def update_cards():
     card_json = _get_card_json()
     _make_cards_from_entries(card_json)
     db.session.commit()
+    import models.card.draft
+
+    models.card.draft.update_draft_pack_contents()
 
 
 def _get_card_json():
@@ -113,6 +116,7 @@ def _make_card_from_entry(entry: dict) -> t.Optional[Card]:
         rarity=entry["Rarity"],
         image_url=entry["ImageUrl"],
         details_url=entry["DetailsUrl"],
+        is_in_draft_pack=False,  # Default value
     )
     try:
         db.session.merge(card)
