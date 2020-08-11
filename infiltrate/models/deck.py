@@ -4,6 +4,8 @@ import typing as t
 import urllib.error
 from datetime import datetime
 
+import tqdm
+
 import browsers
 import global_data
 import models.card
@@ -90,7 +92,14 @@ class Deck(db.Model):
 
 # noinspection PyMissingOrEmptyDocstring
 class _WarcryNewIdGetter:
-    def get_new_ids(self):
+    ITEMS_PER_PAGE = 50
+
+    def get_new_ids(self, max_decks=None):
+        if max_decks is not None:
+            max_pages = max_decks / self.ITEMS_PER_PAGE
+        else:
+            max_pages = None
+
         print("Getting new deck ids")
         new_ids = []
         page = 0
@@ -98,7 +107,8 @@ class _WarcryNewIdGetter:
             ids_on_page = self.get_ids_from_page(page)
             new_ids_on_page = self.remove_old_ids(ids_on_page)
             new_ids += new_ids_on_page
-            if not new_ids_on_page:  # todo this may need testing.
+            if not new_ids_on_page or max_pages is not None and page >= max_pages:
+                # todo this may need testing.
                 break
 
             page += 1
@@ -106,11 +116,10 @@ class _WarcryNewIdGetter:
         return new_ids
 
     def get_ids_from_page(self, page: int):
-        items_per_page = 50
         url = (
             "https://api.eternalwarcry.com/v1/decks/SearchDecks"
-            + f"?starting={items_per_page * page}"
-            + f"&perpage={items_per_page}"
+            + f"?starting={self.ITEMS_PER_PAGE * page}"
+            + f"&perpage={self.ITEMS_PER_PAGE}"
             + f"&key={application.config['WARCRY_KEY']}"
         )
         page_json = browsers.get_json_from_url(url)
@@ -135,11 +144,11 @@ class _WarcryNewIdGetter:
         return new_ids
 
 
-def get_new_warcry_ids():
+def get_new_warcry_ids(max_decks=1_000):
     """Return all Warcry deck IDs newer than any in the database."""
 
     id_getter = _WarcryNewIdGetter()
-    ids = id_getter.get_new_ids()
+    ids = id_getter.get_new_ids(max_decks=max_decks)
 
     return ids
 
@@ -150,10 +159,9 @@ def update_decks():
     # noinspection PyMissingOrEmptyDocstring
     class _WarcyDeckUpdater:
         def run(self):
-            ids = get_new_warcry_ids()
+            ids = get_new_warcry_ids(1_000)
 
-            for i, deck_id in enumerate(ids):
-                print(f"Updating deck {i} of {len(ids)}")
+            for deck_id in tqdm.tqdm(ids, desc="Updating decks"):
                 self.update_deck(deck_id)
 
         def update_deck(self, deck_id: str):
