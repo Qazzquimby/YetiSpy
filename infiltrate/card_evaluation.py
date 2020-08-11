@@ -259,8 +259,7 @@ class OwnValueFrame(PlayCraftEfficiencyFrame):
         cls, user: models.user.User, card_details: card_frame_bases.CardDetails
     ):
         """Creates from a user, performing the entire pipeline."""
-        # todo cache this.
-        weighted_deck_searches = user.weighted_deck_searches
+        weighted_deck_searches = models.deck_search.get_weighted_deck_searches()
         play_count = PlayCountFrame.from_weighted_deck_searches(
             weighted_deck_searches=weighted_deck_searches, card_details=card_details
         )
