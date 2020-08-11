@@ -92,8 +92,6 @@ class DeckSearch(db.Model):
         for deck in self.get_decks():
             for card in deck.cards:
                 for num_played in range(min(card.num_played, 4)):
-                    # todo check card is right type.
-                    # This scales the
                     playrate[card][num_played] += self._scale_playrate(deck)
         return playrate
 
@@ -104,24 +102,20 @@ class DeckSearch(db.Model):
         return deck.views
 
     def _add_playrates(self, playrates: t.Dict):
-        for card_id in tqdm(playrates.keys(), desc="Add playrates"):
+        for card_id, counts in tqdm(playrates.items(), desc="Add playrates"):
             for play_count in range(1, 5):
                 deck_search_has_card = DeckSearchHasCard(
                     decksearch_id=self.id,
                     set_num=card_id.set_num,
                     card_num=card_id.card_num,
                     count_in_deck=play_count,
-                    num_decks_with_count_or_less=playrates[card_id][play_count - 1],
+                    num_decks_with_count_or_less=counts[play_count - 1],
                 )
                 db.session.merge(deck_search_has_card)
-                db.session.commit()
+        db.session.commit()
 
 
 def create_deck_searches():
-    # Todo at some point users may be able to make their own deck searches.
-    # TODO maybe make this cleaner while merging with the
-    #  create_weighted_deck_searches stuff in login
-
     @dataclasses.dataclass
     class _DeckSearchCreate:
         id: int
@@ -129,8 +123,8 @@ def create_deck_searches():
 
     current_initial_deck_searches = [
         _DeckSearchCreate(id=1, maximum_age_days=10),
-        _DeckSearchCreate(id=2, maximum_age_days=90),
-        _DeckSearchCreate(id=3, maximum_age_days=30),
+        _DeckSearchCreate(id=2, maximum_age_days=30),
+        _DeckSearchCreate(id=3, maximum_age_days=90),
     ]
     deck_searches = (
         DeckSearch(id=search.id, maximum_age_days=search.maximum_age_days)
@@ -149,7 +143,7 @@ class WeightedDeckSearch(db.Model):
     deck_search_id = db.Column(
         db.Integer, db.ForeignKey("deck_searches.id"), primary_key=True
     )
-    user_id = db.Column(db.String(length=20), db.ForeignKey("users.id"))
+    profile_id = db.Column(db.Integer())
     name = db.Column("name", db.String(length=20), primary_key=True)
 
     weight = db.Column("weight", db.Float)
@@ -177,18 +171,47 @@ def make_weighted_deck_search(deck_search: DeckSearch, weight: float, name: str)
     return weighted_deck_search
 
 
-def get_default_weighted_deck_searches(user_id: int):
+def get_weighted_deck_searches(profile=1):
     """Generates the standard weighted deck searches,
     and gives them the user_id."""
-    searches = [
-        models.deck_search.WeightedDeckSearch(
-            deck_search_id=1, user_id=user_id, name="Last 10 days", weight=0.7
+
+    return models.deck_search.WeightedDeckSearch.query.filter_by(
+        profile_id=profile
+    ).all()
+
+
+def _normalize_deck_search_weights(weighted_deck_searches: t.List[WeightedDeckSearch]):
+    """Ensures that a user's saved weights are approximately normalized
+    to 1.
+    This prevents weight sizes from inflating values."""
+    total_weight = sum([search.weight for search in weighted_deck_searches])
+    # Bounds prevent repeated work due to rounding on later passes
+    if not 0.9 < total_weight < 1.10:
+        for search in weighted_deck_searches:
+            search.weight = search.weight / total_weight
+
+
+def create_weighted_deck_searches():
+    weighted_deck_searches = [
+        WeightedDeckSearch(
+            profile_id=1, deck_search_id=1, name="Last 10 days", weight=0.7
         ),
-        models.deck_search.WeightedDeckSearch(
-            deck_search_id=3, user_id=user_id, name="Last 30 days", weight=0.23
+        WeightedDeckSearch(
+            profile_id=1, deck_search_id=2, name="Last 30 days", weight=0.23
         ),
-        models.deck_search.WeightedDeckSearch(
-            deck_search_id=2, user_id=user_id, name="Last 90 days", weight=0.07
+        WeightedDeckSearch(
+            profile_id=1, deck_search_id=3, name="Last 90 days", weight=0.07
         ),
     ]
-    return searches
+    _normalize_deck_search_weights(weighted_deck_searches)
+    for wds in weighted_deck_searches:
+        db.session.merge(wds)
+    db.session.commit()
+
+
+def setup():
+    create_deck_searches()
+    create_weighted_deck_searches()
+
+
+setup()
