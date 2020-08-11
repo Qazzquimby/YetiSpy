@@ -104,12 +104,12 @@ class ValueSort(CardDisplaySort):
         super().__init__()
 
     @staticmethod
-    def sort(displays):
+    def sort(cards):
         """Sorts cards from highest to lowest card value."""
-        sorted_df = displays.sort_values(
+        sorted_df = cards.sort_values(
             by=[OwnValueFrame.PLAY_VALUE_NAME], ascending=False
         )
-        return OwnValueFrame(sorted_df)
+        return OwnValueFrame(cards.user, sorted_df)
 
     @classmethod
     def filter(cls, cards):
