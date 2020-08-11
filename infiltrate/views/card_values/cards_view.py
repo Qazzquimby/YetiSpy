@@ -3,7 +3,6 @@ from flask_classy import FlaskView
 
 import models.card
 import models.card.completion
-import profiling
 import views.card_values.card_displays as card_displays
 import views.card_values.display_filters as display_filters
 import global_data
