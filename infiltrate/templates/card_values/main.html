@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %} Card Values {% endblock %}
+{% block title %}Card Values{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
 
 {% block inner_content %}
     {{ super() }}
-    <script
-            src="https://code.jquery.com/jquery-3.4.1.min.js"
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
             crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
     <div class="row">
@@ -34,6 +36,21 @@
                     {% include 'card_values/header.html' %}
                 </table>
                 Loading Values...
+                <div class="lds-default">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+
             </div>
             <div id="card-table-pagination" class="text-center row">
                 <nav aria-label="Card values page">

@@ -5,19 +5,20 @@
         Sort by:
     </th>
     <th scope="col"
-        class="col-md-2 text-center btn {% if sort=="efficiency" %} bg-primary {% endif %}"
+        class="col-md-2 text-center btn
+            {% if sort=="efficiency" %} bg-primary {% endif %}"
         onclick="sort='efficiency'; page=0; ownership='unowned'; updateCardTable()">
-        Crafting Efficiency ▼
+        Efficiency ▼
 
     </th>
     <th scope="col"
         class="col-md-2 text-center btn {% if sort=="value" %} bg-primary {% endif %}"
         onclick="sort='value'; page=0; ownership='unowned'; updateCardTable()">
         Value ▼
-{#    </th>#}
-{#    <th scope="col"#}
-{#        class="col-md-2 text-center">#}
-{#        Findability#}
-{#    </th>#}
+    </th>
+    <th scope="col" class="col-md-1 text-center">
+        Copy
+    </th>
+    <th scope="col" class="col"></th>
 </tr>
 </thead>
