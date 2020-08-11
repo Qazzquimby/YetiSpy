@@ -78,11 +78,11 @@ rarity_from_name = {r.name: r for r in RARITIES}
 
 
 def create_rarities():
+    db.create_all()
+    db.session.commit()
     for rarity in RARITIES:
         db.session.merge(rarity)
     db.session.commit()
 
 
-db.create_all()
-db.session.commit()
 create_rarities()
