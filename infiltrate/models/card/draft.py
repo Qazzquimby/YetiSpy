@@ -26,7 +26,7 @@ def _get_draft_pack_card_ids() -> t.List[CardId]:
     )
     file_name = browsers.get_first_text_from_url_and_selector(
         "https://eternalwarcry.com/cards/download", file_name_selector
-    )
+    ).strip()
     draft_pack_url = f"https://eternalwarcry.com/content/draftpacks/{file_name}"
     newest_draft_pack = browsers.get_json_from_url(draft_pack_url)
     card_ids = []
