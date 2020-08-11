@@ -42,10 +42,8 @@ class CardsView(FlaskView):
         else:
             ownership = display_filters.get_owner(owner_str)
 
-        profiling.start_timer("make_card_displays")  # todo replace with timeit tests
         all_cards = global_data.all_cards
         displays = card_displays.CardDisplays.make_for_user(user, all_cards)
-        profiling.end_timer("make_card_displays")
 
         displays = displays.configure(sort, ownership)
 
