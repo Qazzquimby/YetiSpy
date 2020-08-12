@@ -14,8 +14,7 @@
 
 
     <div class="row">
-        <div class="col-md-2"></div>
-        <div id="content-col" class="col-md-8">
+        <div id="content-col" class="col-md-8 offset-md-2">
             <input id="card-search" type="text" class="form-control"
                    placeholder="Name">
             <div id="card-preview"></div>
@@ -32,25 +31,27 @@
 
             <div id="card-table" class="text-center row">
                 <div class="space-t"></div>
-                <table id="card-value" class="table vertical-align col-md-8">
+                <table id="card-value"
+                       class="table vertical-align col-md-8 offset-md-2">
                     {% include 'card_values/header.html' %}
                 </table>
-                Loading Values...
-                <div class="lds-default">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
+                <div>
+                    Loading Values...
+                    <div class="lds-default">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
                 </div>
-
             </div>
             <div id="card-table-pagination" class="text-center row">
                 <nav aria-label="Card values page">

@@ -1,24 +1,28 @@
 <thead>
-<tr class="row">
+<tr>
+    <th scope="col" class="col" style="width: 20%"></th>
     <th scope="col"
-        class="col-md-4 no-padding">
+        class="col no-padding"
+        style="width: 30%">
         Sort by:
     </th>
     <th scope="col"
-        class="col-md-2 text-center btn
+        class="col text-center btn
             {% if sort=="efficiency" %} bg-primary {% endif %}"
+        style="width: 20%; display: table-cell"
         onclick="sort='efficiency'; page=0; ownership='unowned'; updateCardTable()">
         Efficiency ▼
 
     </th>
     <th scope="col"
-        class="col-md-2 text-center btn {% if sort=="value" %} bg-primary {% endif %}"
+        class="coltext-center btn {% if sort=="value" %} bg-primary {% endif %}"
+        style="width: 20%; display: table-cell"
         onclick="sort='value'; page=0; ownership='unowned'; updateCardTable()">
         Value ▼
     </th>
-    <th scope="col" class="col-md-1 text-center">
-        Copy
+    <th scope="col" class="col text-center" style="width: 10%">
+
     </th>
-    <th scope="col" class="col"></th>
+
 </tr>
 </thead>

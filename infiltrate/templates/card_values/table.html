@@ -1,39 +1,33 @@
-<div id="card-values" class="pad-t pad-more ">
-    <table id="card-value" class="table col-md-8">
+<div id="card-values" class="pad-t pad-more" style="width:100%">
+    <table id="card-value" class="table">
         {% include 'card_values/header.html' %}
         {% if card_values.empty %}
             <h> No cards found.</h>
         {% endif %}
         {% for _, display in card_values.iterrows() %}
             <tr>
-                <td class="col-md-7 no-padding">
-
-                    <div class="equal-height">
-                        <div class="col-md-3 no-padding">
-                            <img class="card-thumb"
-                                 src="{{ display['image_url'] }}"
-                                 alt="{{ display['name'] }}">
-                        </div>
-                        <div class="col-md-9">
-                            <a class="btn-text text-bold text-lg text-left
-                                                     text-{{ display['rarity'].name.lower() }}"
-                               rel="popover"
-                               data-content="<img src={{ display['image_url'] }}/>"
-                               data-name="{{ display['name'] }}"
-                               href="{{ display['details_url'] }}">
-                                {{ display['name'] }}
-                            </a>
-                        </div>
-                    </div>
-
+                <td class="no-padding">
+                    <img class="card-thumb"
+                         src="{{ display['image_url'] }}"
+                         alt="{{ display['name'] }}">
                 </td>
-                <td class="col-md-2 align-middle">
+                <td>
+                    <a class="btn-text text-bold text-lg text-left
+                                                 text-{{ display['rarity'].name.lower() }}"
+                       rel="popover"
+                       data-content="<img src={{ display['image_url'] }}/>"
+                       data-name="{{ display['name'] }}"
+                       href="{{ display['details_url'] }}">
+                        {{ display['name'] }}
+                    </a>
+                </td>
+                <td class="align-middle">
                     {{ '%0.2f' % (display['play_craft_efficiency_max']*100) }}
                 </td>
-                <td class="col-md-2 align-middle">
+                <td class="align-middle">
                     {{ '%0.2f' % display['play_value_max'] }}
                 </td>
-                <td class="col-md-1 text-center">
+                <td class="text-center">
                     <div class="card-count-display">
                         {% set ns = namespace(minimum = 0, maximum = 0) %}
                         {% if display['count_in_deck_min'] != display['count_in_deck_max'] %}
@@ -61,8 +55,9 @@
                         {% endfor %}
                     </div>
                 </td>
+            <td class="col"></td>
             </tr>
-            <tr class="col"></tr>
+
         {% endfor %}
     </table>
 
