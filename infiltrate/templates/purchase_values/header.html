@@ -1,22 +1,28 @@
 <thead>
-<tr class="row">
+<tr>
     <th scope="col"
-        class="col-md-4 no-padding">
+        class="col"
+        style="width: 40%">
         Sort by:
     </th>
     <th scope="col"
-        class="col-md-2 text-center btn {% if sort=="efficiency" %} bg-primary {% endif %}"
+        class="col text-center btn
+            {% if sort=="efficiency" %} bg-primary {% endif %}"
+        style="width: 20%; display: table-cell"
         onclick="sort='efficiency'; page=0; ownership='unowned'; updatePurchaseTable()">
         Purchase Efficiency ▼
     </th>
 
     <th scope="col"
-        class="col-md-2 text-center btn {% if sort=="value" %} bg-primary {% endif %}"
+        class="col text-center btn
+            {% if sort=="value" %} bg-primary {% endif %}"
+        style="width: 20%; display: table-cell"
         onclick="sort='value'; page=0; ownership='unowned'; updatePurchaseTable()">
         Value ▼
     </th>
     <th scope="col"
-        class="col-md-2 text-center btn">
+        class="col text-center"
+        style="width: 20%">
         Gold Cost
     </th>
 
