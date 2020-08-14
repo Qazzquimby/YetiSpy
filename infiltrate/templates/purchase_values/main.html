@@ -15,34 +15,6 @@
             </table>
             {% include 'loading.html' %}
         </div>
-        <div id="card-table-pagination" class="text-center row">
-            <nav aria-label="Card values page">
-                <ul id="pagination" class="pagination">
-                    <li class="page-item">
-                        <button onclick="page=0; updateCardTable()">
-                            First
-                        </button>
-                    </li>
-
-                    <li class="page-item">
-                        <button onclick="page=page-1; updateCardTable()">
-                            Previous
-                        </button>
-                    </li>
-                    <li class="pagination-info">
-                        <span id="current-page">1</span>
-                    </li>
-                    <li class="page-item"
-                        onclick="page=page+1; updateCardTable()">
-                        <button>Next</button>
-                    </li>
-                    <li class="page-item"
-                        onclick="page=-1; updateCardTable()">
-                        <button>Last</button>
-                    </li>
-                </ul>
-            </nav>
-        </div>
     </div>
 
 
