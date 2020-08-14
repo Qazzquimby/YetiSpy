@@ -12,77 +12,75 @@
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
             crossorigin="anonymous"></script>
 
+    <div id="content-col" class="col-md-8 offset-md-2">
+        <input id="card-search" type="text" class="form-control"
+               placeholder="Name">
+        <div id="card-preview"></div>
 
-    <div class="row">
-        <div id="content-col" class="col-md-8 offset-md-2">
-            <input id="card-search" type="text" class="form-control"
-                   placeholder="Name">
-            <div id="card-preview"></div>
+        <div id="ownership" style="width:100%">
+            <select class="form-control"
+                    onchange="ownership=this.value; updateCardTable();">
+                <option value="unowned">Unowned</option>
+                <option value="owned">Owned</option>
+                <option value="all">All</option>
+            </select>
+        </div>
 
-            <div id="ownership" style="width:100%">
-                <select class="form-control"
-                        onchange="ownership=this.value; updateCardTable();">
-                    <option value="unowned">Unowned</option>
-                    <option value="owned">Owned</option>
-                    <option value="all">All</option>
-                </select>
-            </div>
-
-
-            <div id="card-table" class="text-center row">
-                <div class="space-t"></div>
+        <div id="card-table" class="text-center">
+            <div class="space-t"></div>
+            <div class="row">
                 <table id="card-value"
-                       class="table vertical-align col-md-8 offset-md-2">
+                       class="table vertical-align">
                     {% include 'card_values/header.html' %}
                 </table>
-                <div>
-                    Loading Values...
-                    <div class="lds-default">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                    </div>
-                </div>
             </div>
-            <div id="card-table-pagination" class="text-center row">
-                <nav aria-label="Card values page">
-                    <ul id="pagination" class="pagination">
-                        <li class="page-item">
-                            <button onclick="page=0; updateCardTable()">
-                                First
-                            </button>
-                        </li>
+            <div>
+                Loading Values...
+            </div>
+            <div class="lds-default">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
 
-                        <li class="page-item">
-                            <button onclick="page=page-1; updateCardTable()">
-                                Previous
-                            </button>
-                        </li>
-                        <li class="pagination-info">
-                            <span id="current-page">1</span>
-                        </li>
-                        <li class="page-item"
-                            onclick="page=page+1; updateCardTable()">
-                            <button>Next</button>
-                        </li>
-                        <li class="page-item"
-                            onclick="page=-1; updateCardTable()">
-                            <button>Last</button>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
         </div>
-        <div class="col-md-2"></div>
+        <div id="card-table-pagination" class="text-center">
+            <nav aria-label="Card values page">
+                <ul id="pagination" class="pagination justify-content-center">
+                    <li class="page-item">
+                        <button onclick="page=0; updateCardTable()">
+                            First
+                        </button>
+                    </li>
+
+                    <li class="page-item">
+                        <button onclick="page=page-1; updateCardTable()">
+                            Previous
+                        </button>
+                    </li>
+                    <li class="pagination-info">
+                        <span id="current-page">1</span>
+                    </li>
+                    <li class="page-item"
+                        onclick="page=page+1; updateCardTable()">
+                        <button>Next</button>
+                    </li>
+                    <li class="page-item"
+                        onclick="page=-1; updateCardTable()">
+                        <button>Last</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
 
 
@@ -103,16 +101,17 @@
                 $("#current-page").html(page);
                 {#Show card on hover#}
                 $('*[rel=popover]').popover({
-                    html: true,
-                    trigger: 'hover',
-                    viewport: '#content-col',
-                    content: function () {
-                        return '<div class="card-tooltip-image">' +
-                            '<img src="' + $(this).data('img') + '" />' +
-                            '<div>' + $(this).data("name") + '</div>' +
-                            '</div>';
+                        html: true,
+                        trigger: 'hover',
+                        viewport: '#content-col',
+                        content: function () {
+                            return '<div class="card-tooltip-image">' +
+                                '<img src="' + $(this).data('img') + '" />' +
+                                '<div>' + $(this).data("name") + '</div>' +
+                                '</div>';
+                        }
                     }
-                });
+                );
             }).fail(function (jqxhr, textStatus, error) {
                 const err = jqxhr.status + ", " + textStatus + ", " + error;
                 console.log("Request Failed: " + err);
