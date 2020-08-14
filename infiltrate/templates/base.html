@@ -7,7 +7,13 @@
         {{ super() }}
         <link rel="shortcut icon"
               href="{{ url_for('static', filename='favicon_zoom.ico') }}">
-        <nav class="navbar navbar-expand-lg navbar-infiltrate">
+        <nav class="navbar navbar-expand-md navbar-infiltrate navbar-dark">
+            <a class="navbar-brand d-inline-block align-top" href="#">
+                <img src="{{ url_for('static', filename='images/logo_zoom.png') }}"
+                     style="height: 40px; margin-top: -10px">
+                Yeti Spy
+            </a>
+
             <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#baseNavbar"
                     aria-controls="baseNavbar"
@@ -15,30 +21,25 @@
                     aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand d-inline-block align-top" href="#">
-                <img src="{{ url_for('static', filename='images/logo_zoom.png') }}"
-                     style="height: 40px; margin-top: -10px">
-                Yeti Spy
-            </a>
 
             <div class="collapse navbar-collapse" id="baseNavbar">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0" >
                     <li>
                         <a href="{{ url_for('CardsView:index') }}"
-                           class="nav-link">
+                           class="nav-link text-white">
                             <i class="fas fa-clone"></i> Cards
                         </a>
                     </li>
                     <li>
                         <a href="{{ url_for('PurchasesView:index') }}"
-                           class="nav-link">
+                           class="nav-link text-white">
                             <i class="fas fa-store"></i> Purchases
 
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#"
-                           class="nav-link"
+                           class="nav-link text-white"
                            data-toggle="modal"
                            data-target="#updateCollectionModal">
                             <i class="fas fa-redo"></i> Update Collection
