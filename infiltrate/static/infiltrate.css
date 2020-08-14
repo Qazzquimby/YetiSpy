@@ -211,23 +211,23 @@ a.list-group-item {
 
 
 .text-common, .text-common:focus, .text-common:hover {
-    color: #333
+    color: #333 !important
 }
 
 .text-uncommon, .text-uncommon:focus, .text-uncommon:hover {
-    color: #1d6e06
+    color: #1d6e06 !important
 }
 
 .text-rare, .text-rare:focus, .text-rare:hover {
-    color: #4a89e5
+    color: #4a89e5 !important
 }
 
 .text-promo, .text-promo:focus, .text-promo:hover {
-    color: #7718c1
+    color: #7718c1 !important
 }
 
 .text-legendary, .text-legendary:focus, .text-legendary:hover {
-    color: #ff951a
+    color: #ff951a !important
 }
 
 .card-tooltip-image {
