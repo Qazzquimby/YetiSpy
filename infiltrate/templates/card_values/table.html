@@ -6,14 +6,19 @@
         {% endif %}
         {% for _, display in card_values.iterrows() %}
             <tr>
-                <td class="no-padding">
+                <td class="no-padding"
+                    rel="popover"
+                    data-content="<img src={{ display['image_url'] }}>"
+                    data-name="{{ display['name'] }}"
+                    href="{{ display['details_url'] }}">
                     <img class="card-thumb"
                          src="{{ display['image_url'] }}"
                          alt="{{ display['name'] }}">
+
                 </td>
                 <td>
                     <a class="btn-text text-bold text-lg text-left
-                                                 text-{{ display['rarity'].name.lower() }}"
+                                text-{{ display['rarity'].name.lower() }}"
                        rel="popover"
                        data-content="<img src={{ display['image_url'] }}/>"
                        data-name="{{ display['name'] }}"
@@ -55,7 +60,7 @@
                         {% endfor %}
                     </div>
                 </td>
-            <td class="col"></td>
+                <td class="col"></td>
             </tr>
 
         {% endfor %}
