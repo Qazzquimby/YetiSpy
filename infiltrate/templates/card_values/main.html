@@ -28,29 +28,11 @@
 
         <div id="card-table" class="text-center">
             <div class="space-t"></div>
-            <div class="row">
-                <table id="card-value"
-                       class="table vertical-align">
-                    {% include 'card_values/header.html' %}
-                </table>
-            </div>
-            <div>
-                Loading Values...
-            </div>
-            <div class="lds-default">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
+            <table id="card-value"
+                   class="table vertical-align">
+                {% include 'card_values/header.html' %}
+            </table>
+            {% include 'loading.html' %}
 
         </div>
         <div id="card-table-pagination" class="text-center">
