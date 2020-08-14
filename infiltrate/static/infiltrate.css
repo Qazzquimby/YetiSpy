@@ -194,13 +194,6 @@ a.list-group-item {
     width: 100%;
 }
 
-/*@media (min-width: 768px) {*/
-/*    .row.equal-height {*/
-/*        display: flex;*/
-/*        flex-wrap: wrap;*/
-/*    }*/
-/*}*/
-
 .flex-center-vertically > * {
     display: flex;
     flex-direction: column;
