@@ -9,6 +9,8 @@ import models.card
 import models.card_set
 import models.rarity
 
+DAYS_IN_WEEK = 7
+
 
 class CardClass:
     """A pool of cards from which drops are chosen."""
@@ -190,10 +192,10 @@ class PlayerRewards:  # TODO Make into model to persist
             RewardsPerWeek(FIRST_WIN_OF_THE_DAY, self.first_wins_per_week)
         ]
 
-        ranked_silvers = min(3, self.ranked_wins_per_day // 3) * 7
+        ranked_silvers = min(3, self.ranked_wins_per_day // 3) * DAYS_IN_WEEK
 
-        ranked_bronzes = (self.ranked_wins_per_day * 7) - ranked_silvers
-        unranked_bronzes = self.unranked_wins_per_day * 7
+        ranked_bronzes = (self.ranked_wins_per_day * DAYS_IN_WEEK) - ranked_silvers
+        unranked_bronzes = self.unranked_wins_per_day * DAYS_IN_WEEK
 
         rewards_with_rates.append(
             RewardsPerWeek(BRONZE_CHEST, ranked_bronzes + unranked_bronzes)
