@@ -1,11 +1,10 @@
 import flask
 import flask_classy
+import flask_login
 
 import card_evaluation
 import global_data
 import purchases
-import views.login
-from views.login import AuthenticationException
 
 
 class PurchasesView(flask_classy.FlaskView):
@@ -13,31 +12,19 @@ class PurchasesView(flask_classy.FlaskView):
 
     route_base = "/purchases"
 
+    @flask_login.login_required
     def index(self):
         """The main purchases page"""
-        try:
-            user = views.login.get_by_cookie()
-        except AuthenticationException:
-            user = None
-
-        if not user:
-            return flask.redirect("/login")
-
         return flask.render_template("purchase_values/main.html")
 
     def values(self, page_num=0, sort_str="efficiency", owner_str=None):
         """A table loaded into the card values page."""
-        try:
-            user = views.login.get_by_cookie()
-        except AuthenticationException:
-            return flask.abort(401)
-
         page_num = int(page_num)
 
         purchase_values = purchases.get_purchase_values(
-            user=user,
+            user=flask_login.current_user,
             own_values=card_evaluation.OwnValueFrame.from_user(
-                user=user, card_details=global_data.all_cards
+                user=flask_login.current_user, card_details=global_data.all_cards
             ),
         )
         purchase_values = purchase_values.query("value > 0")

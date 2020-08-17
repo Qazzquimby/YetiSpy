@@ -7,8 +7,6 @@ import models.card.completion
 import views.card_values.card_displays as card_displays
 import views.card_values.display_filters as display_filters
 import global_data
-import views.login
-from views.login import AuthenticationException
 
 
 class CardsView(FlaskView):
@@ -52,12 +50,9 @@ class CardsView(FlaskView):
         """Searches for cards with names matching the search string,
         by the method used in AllCards"""
 
-        try:
-            user = views.login.get_by_cookie()
-        except AuthenticationException:
-            return flask.redirect("/login")
-
-        displays = card_displays.CardDisplays.make_for_user(user, global_data.all_cards)
+        displays = card_displays.CardDisplays.make_for_user(
+            flask_login.current_user, global_data.all_cards
+        )
 
         search_str = search_str[1:]
         search_str = search_str.lower()
