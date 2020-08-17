@@ -1,4 +1,5 @@
 import flask
+import flask_login
 from flask_classy import FlaskView
 
 import models.card
@@ -15,24 +16,14 @@ class CardsView(FlaskView):
 
     route_base = "/"
 
+    @flask_login.login_required
     def index(self):
         """The main card values page"""
-        try:
-            user = views.login.get_by_cookie()
-        except AuthenticationException:
-            user = None
-
-        if not user:
-            return flask.redirect("/login")
-
         return flask.render_template("card_values/main.html")
 
+    @flask_login.login_required
     def card_values(self, page_num=0, sort_str="efficiency", owner_str=None):
         """A table loaded into the card values page."""
-        try:
-            user = views.login.get_by_cookie()
-        except AuthenticationException:
-            return flask.abort(401)
 
         page_num = int(page_num)
         sort = display_filters.get_sort(sort_str)
@@ -42,7 +33,9 @@ class CardsView(FlaskView):
             ownership = display_filters.get_owner(owner_str)
 
         all_cards = global_data.all_cards
-        displays = card_displays.CardDisplays.make_for_user(user, all_cards)
+        displays = card_displays.CardDisplays.make_for_user(
+            flask_login.current_user, all_cards
+        )
 
         displays = displays.configure(sort, ownership)
 

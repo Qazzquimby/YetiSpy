@@ -11,12 +11,10 @@ if t.TYPE_CHECKING:
 
 
 def get_collection_from_ew(user: "User") -> t.Dict[models.card.CardId, int]:
-    url = f"https://api.eternalwarcry.com/v1/useraccounts/collection?key={user.key}"
+    url = f"https://api.eternalwarcry.com/v1/useraccounts/collection?key={user.ew_key}"
     response = browsers.get_json_from_url(url)
     cards = response["cards"]
     collection = card_collections.make_collection_from_ew_export(cards)
-    # TODO IMPORTANT This needs to invalidate the caches for card values
-    #  and user_ownership_cache.
     return collection
 
 

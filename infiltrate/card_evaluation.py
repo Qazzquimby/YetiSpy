@@ -13,6 +13,8 @@ Purchase Efficiency (Own Value, Cost)
 import pandas as pd
 import typing as t
 
+import werkzeug.local
+
 import df_types
 import models.card
 import models.deck_constants
@@ -222,7 +224,10 @@ class OwnValueFrame(PlayCraftEfficiencyFrame):
     OWN_VALUE_NAME = "own_value"
 
     def __init__(self, user: models.user.User, *args):
-        if type(user) != models.user.User:
+        if not (
+            isinstance(user, models.user.User)
+            or isinstance(user, werkzeug.local.LocalProxy)
+        ):
             raise ValueError("Must be given user parameter of type User")
 
         PlayCraftEfficiencyFrame.__init__(self, user, *args)

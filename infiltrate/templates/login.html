@@ -1,34 +1,62 @@
 {% extends "base.html" %}
 
-{% block title %} Card Values {% endblock %}
+{% block title %} Login {% endblock %}
 
 {% block inner_content %}
     {{ super() }}
+    <h2>Login</h2>
 
-    Please provide your Eternal Warcry username and API key from
-    <a id="warcry-link">your Eternal Warcry profile.</a>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification text-danger">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
 
+    <form method="POST" action="{{ url_for('LoginView:post') }}">
+        <div class="field">
+            <div class="control">
+                <input class="input is-large"
+                       type="email" name="email" placeholder="Email" autofocus="">
+            </div>
+        </div>
 
-    <form method="POST">
-        <label for="key">API Key</label>
-        <input id="key" name="key" autocomplete="current-password"
-               type="password">
-
-        <label for="remember">Remember me</label>
-        <input id="remember" name="remember" type="checkbox">
-
-        <input type="submit" class="btn btn-default">
+        <div class="field">
+            <div class="control">
+                <input class="input is-large"
+                       type="password" name="password" placeholder="Password">
+            </div>
+        </div>
+        <div class="field">
+            <label class="checkbox">
+                <input type="checkbox">
+                Remember me
+            </label>
+        </div>
+        <button class="button is-block is-info is-large is-fullwidth">Login</button>
     </form>
 
+    <br>
 
-    <script>
-        document.getElementById("warcry-link").onclick = function () {
-            window.open("https://eternalwarcry.com/profile/keys",
-                'targetWindow',
-                'toolbar=no,location = no, status = no, menubar = no, scrollbars = yes, resizable = yes, width = SomeSize, height = SomeSize');
-        };
+    or <a href="{{ url_for('RegisterView:index') }}">Register</a>
 
-    </script>
+{#    Please provide your Eternal Warcry API key from#}
+{#    <a href="https://eternalwarcry.com/profile/keys" class="my-link">your Eternal Warcry profile</a>, so we can make#}
+{#    recommendations based on your collection.f#}
+    {# Todo: The link is weird. Cursor is wrong.
+{#        Should be a normal link instead of onclick.#}
+{##}
+{#    <form method="POST">#}
+{#        <label for="key">API Key</label>#}
+{#        <input id="key" name="key" autocomplete="current-password"#}
+{#               type="password">#}
+{##}
+{#        <label for="remember">Remember me</label>#}
+{#        <input id="remember" name="remember" type="checkbox">#}
+{##}
+{#        <input type="submit" class="btn btn-default">#}
+{#    </form>#}
 
 {% endblock %}
 

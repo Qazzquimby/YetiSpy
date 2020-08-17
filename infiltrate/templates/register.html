@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %} Register {% endblock %}
+
+{% block inner_content %}
+    {{ super() }}
+    <h2>Register</h2>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification text-danger">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('RegisterView:post') }}">
+        <div class="field">
+            <div class="control">
+                <input class="input is-large" type="email"
+                       name="email" placeholder="Email" autofocus="">
+                No spam ever.
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <input class="input is-large"
+                       type="password"
+                       name="ew_key" placeholder="EW API Key" autofocus="">
+                <a href="https://eternalwarcry.com/profile/keys" class="my-link">
+                    Found here.
+                </a>
+                Used to personalize recommendations based on your collection.
+            </div>
+        </div>
+
+        <div class="field">
+            <div class="control">
+                <input class="input is-large"
+                       type="password"
+                       name="password" placeholder="Password">
+            </div>
+        </div>
+
+        <button class="button is-block is-info is-large is-fullwidth">Sign Up</button>
+    </form>
+    <br>
+
+    or <a href="{{ url_for('LoginView:index') }}">Log In</a>
+
+{% endblock %}
+
+

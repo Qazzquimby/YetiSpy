@@ -1,24 +1,12 @@
 """This is where the routes are defined."""
 import typing as t
-
 import flask
+import flask_login
 from flask_classy import FlaskView
-from werkzeug.exceptions import BadRequestKeyError
-
+from werkzeug.security import generate_password_hash, check_password_hash
 import browsers
-import cookies
 from infiltrate import db
-from models.user import User, get_by_id
-
-
-# TODO IMPORTANT authentication is currently not secure.
-#  The user can fake a cookie for any id to log in with that id.
-
-
-class BadKeyException(Exception):
-    """The given key is not recognized by Eternal Warcry"""
-
-    pass
+from models.user import User
 
 
 class AuthenticationException(Exception):
@@ -27,71 +15,46 @@ class AuthenticationException(Exception):
     pass
 
 
-def get_sign_up():
-    try:
-        return flask.request.form["signup"] == "on"
-    except BadRequestKeyError:
-        return False
+class RegisterView(FlaskView):
+    def index(self):
+        return flask.render_template("register.html")
+
+    def post(self):
+        email = flask.request.form.get("email")
+        ew_key = flask.request.form.get("ew_key")
+        password = flask.request.form.get("password")
+
+        user = User.query.filter_by(email=email).first()
+        if user:
+            flask.flash("An account with that email address already exists.")
+            return flask.redirect(flask.url_for("RegisterView:index"))
+
+        name = get_username_from_key(ew_key)
+        if name is None:
+            flask.flash("Bad Eternal Warcry API key.")
+            return flask.redirect(flask.url_for("RegisterView:index"))
+
+        new_user = User(
+            email=email,
+            ew_key=ew_key,
+            name=name,
+            password=generate_password_hash(password, method="sha256"),
+        )
+
+        db.session.add(new_user)
+        db.session.commit()
+
+        redirect = flask.redirect("/")
+        return redirect
 
 
-def get_remember_me():
-    try:
-        return flask.request.form["remember"] == "on"
-    except BadRequestKeyError:
-        return False
-
-
-def get_username(key: str):
-    username = get_username_from_key(key)
-    return username
-
-
-def get_username_from_key(key: str):
+def get_username_from_key(key: str) -> t.Optional[str]:
     url = "https://api.eternalwarcry.com/v1/useraccounts/profile" + f"?key={key}"
-    response = browsers.get_json_from_url(url)
-    username = response["username"]
-    return username
-
-
-def get_user_id(username: str, key: str) -> int:
-    user = get_user_if_exists(username, key)
-    if not user:
-        user = make_new_user(username, key)
-    user_id = user.id
-    return user_id
-
-
-def get_user_if_exists(username: str, key: str) -> t.Optional[User]:
-    existing_users_with_username = User.query.filter_by(name=username).all()
-    matching_users = [user for user in existing_users_with_username if user.key == key]
-    assert len(matching_users) in (0, 1)
-    if matching_users:
-        return matching_users[0]
-    else:
+    try:
+        response = browsers.get_json_from_url(url)
+        return response["username"]
+    except (ConnectionError, KeyError):
         return None
-
-
-def make_new_user(user_name: str, key: str):
-    new_user = User(name=user_name, key=key)
-    db.session.merge(new_user)
-    db.session.commit()
-
-    return get_user_if_exists(user_name, key)
-
-
-def login(response: flask.Response, user_id: int, username: str, remember_me: bool):
-    # import datetime
-    # response.set_cookie(name, value, expires=)
-
-    if remember_me:
-        max_age = 60 * 60 * 24 * 365
-    else:
-        max_age = None
-
-    response.set_cookie(cookies.ID, str(user_id), max_age=max_age, samesite="same-site")
-    response.set_cookie(
-        cookies.USERNAME, username, max_age=max_age, samesite="same-site"
-    )
 
 
 # noinspection PyMethodMayBeStatic
@@ -102,23 +65,16 @@ class LoginView(FlaskView):
         return flask.render_template("login.html")
 
     def post(self):
-        key = flask.request.form["key"]
-        remember_me = get_remember_me()
+        email = flask.request.form.get("email")
+        password = flask.request.form.get("password")
+        remember = True if flask.request.form.get("remember") else False
 
-        username = get_username(key)
-        user_id = get_user_id(username, key)
+        user = User.query.filter(User.email == email).first()
 
-        response = flask.redirect("/")
-        login(response, user_id=user_id, username=username, remember_me=remember_me)
-        return response
+        if not user or not check_password_hash(user.password, password):
+            flask.flash("Your username or password is incorrect.")
+            return flask.redirect(flask.url_for("LoginView:index"))
 
-
-def get_by_cookie() -> t.Optional[User]:
-    user_id = flask.request.cookies.get(cookies.ID)
-    if not user_id:
-        return None
-    user = get_by_id(int(user_id))
-    if user:
-        return user
-    else:
-        raise AuthenticationException  # User in cookie is not found in db
+        # if the above check passes, then we know the user has the right credentials
+        flask_login.login_user(user, remember=remember)
+        return flask.redirect("/")

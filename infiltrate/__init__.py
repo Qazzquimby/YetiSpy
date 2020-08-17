@@ -1,5 +1,6 @@
 """Handles creating the flask app"""
 import flask
+import flask_login
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
@@ -36,18 +37,20 @@ def setup_application(app):
     boltons.fileutils.mkdir_p(app.instance_path)
     updates()
     _register_views(app)
+    _setup_login_manager(app)
 
 
 def _register_views(app):
     from views.card_values.cards_view import CardsView
     from infiltrate.views.update_api import UpdateAPI
-    from infiltrate.views.login import LoginView
+    from infiltrate.views.login import LoginView, RegisterView
     from infiltrate.views.update_collection import UpdateCollectionView
     from views.purchases_view import PurchasesView
 
     CardsView.register(app)
     PurchasesView.register(app)
     LoginView.register(app)
+    RegisterView.register(app)
     UpdateAPI.register(app)
     UpdateCollectionView.register(app)
 
@@ -68,6 +71,18 @@ def _register_views(app):
                 links.append((url, rule.endpoint))
         print(links)
         return "See backend console log."
+
+
+def _setup_login_manager(app):
+    login_manager = flask_login.LoginManager()
+    login_manager.login_view = "LoginView:index"
+    login_manager.init_app(app)
+
+    from models.user import User
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.filter(User.id == user_id).first()
 
 
 def updates():
