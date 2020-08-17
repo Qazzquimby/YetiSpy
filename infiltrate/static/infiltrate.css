@@ -21,6 +21,14 @@ a:hover, a:focus, a:active {
     color: #d79900;
 }
 
+.my-link {
+    color: #fdb501 !important;
+}
+
+.my-link:hover, .my-link:focus, .my-link:active {
+    color: #d79900 !important;
+}
+
 .deck-listing-info a {
     color: #c7c7c7;
 }
