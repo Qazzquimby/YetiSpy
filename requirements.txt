@@ -3,6 +3,8 @@ beaker
 boltons
 bs4
 flask
+flask-login
+flask-sqlalchemy
 mechanicalsoup
 numpy
 pandas
