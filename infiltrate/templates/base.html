@@ -26,7 +26,7 @@
             </button>
 
             <div class="collapse navbar-collapse" id="baseNavbar">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0" >
+                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li>
                         <a href="{{ url_for('CardsView:index') }}"
                            class="nav-link text-white">
@@ -49,6 +49,26 @@
                         </a>
                     </li>
                 </ul>
+                <ul class="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
+                    {#                    <li class="nav-item"><a class="nav-link" href=""><i class="fa fa-facebook mr-1"></i></a> </li>#}
+                    {#                    <li class="nav-item"><a class="nav-link" href=""><i class="fa fa-twitter"></i></a> </li>#}
+                    {% if not current_user.is_authenticated %}
+                        <a href="{{ url_for('LoginView:index') }}" class="navbar-item">
+                            Login
+                        </a>
+                        <a href="{{ url_for('RegisterView:index') }}" class="navbar-item">
+                            Register
+                        </a>
+                    {% endif %}
+                    {% if current_user.is_authenticated %}
+                        <a href="/logout" class="navbar-item">
+                            Logout
+                        </a>
+                    {% endif %}
+
+                </ul>
+
+
             </div>
         </nav>
 
@@ -57,15 +77,15 @@
 </head>
 
 <body>
-    {% block content %}
-        {{ super() }}
-        <div id="body-wrapper">
-            <div class="container">
-                {% include "update_collection.html" %}
-                {% block inner_content %}{% endblock %}
-            </div>
+{% block content %}
+    {{ super() }}
+    <div id="body-wrapper">
+        <div class="container">
+            {% include "update_collection.html" %}
+            {% block inner_content %}{% endblock %}
         </div>
-    {% endblock %}
+    </div>
+{% endblock %}
 </body>
 
 {% block styles %}

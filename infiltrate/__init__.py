@@ -72,6 +72,12 @@ def _register_views(app):
         print(links)
         return "See backend console log."
 
+    @app.route("/logout")
+    @flask_login.login_required
+    def logout():
+        flask_login.logout_user()
+        return flask.redirect("/")
+
 
 def _setup_login_manager(app):
     login_manager = flask_login.LoginManager()
