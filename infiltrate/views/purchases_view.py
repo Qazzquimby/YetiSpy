@@ -12,7 +12,6 @@ class PurchasesView(flask_classy.FlaskView):
 
     route_base = "/purchases"
 
-    @flask_login.login_required
     def index(self):
         """The main purchases page"""
         return flask.render_template("purchase_values/main.html")

@@ -14,12 +14,10 @@ class CardsView(FlaskView):
 
     route_base = "/"
 
-    @flask_login.login_required
     def index(self):
         """The main card values page"""
         return flask.render_template("card_values/main.html")
 
-    @flask_login.login_required
     def card_values(self, page_num=0, sort_str="efficiency", owner_str=None):
         """A table loaded into the card values page."""
 
