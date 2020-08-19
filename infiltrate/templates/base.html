@@ -62,7 +62,7 @@
                     {% endif %}
                     {% if current_user.is_authenticated %}
                         <a href="/logout" class="navbar-item">
-                            Logout
+                            Logout {{current_user.name}}
                         </a>
                     {% endif %}
 
