@@ -207,11 +207,13 @@ class CardDisplayPage:
     @staticmethod
     def _get_page_min_max_counts(page):
         grouped = page.groupby(page.index)
-        index_columns = grouped[page.SET_NUM_NAME, page.CARD_NUM_NAME].first()
+        index_columns = grouped[[page.SET_NUM_NAME, page.CARD_NUM_NAME]].first()
         measure_columns = grouped[
-            page.COUNT_IN_DECK_NAME,
-            page.PLAY_VALUE_NAME,
-            page.PLAY_CRAFT_EFFICIENCY_NAME,
+            [
+                page.COUNT_IN_DECK_NAME,
+                page.PLAY_VALUE_NAME,
+                page.PLAY_CRAFT_EFFICIENCY_NAME,
+            ]
         ]
         min_count = (
             measure_columns.min()
