@@ -1,6 +1,5 @@
 <div id="card-values" class="pad-t pad-more">
     <div id="card-value">
-        {#        {% include 'card_values/header.html' %}#}
         {% if card_values.empty %}
             <h> No cards found.</h>
         {% endif %}
@@ -8,39 +7,33 @@
             {% for _, display in card_values.iterrows() %}
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12">
 
+                    <div class="mt-4">
+                        {% set ns = namespace(minimum = 0, maximum = 0) %}
+                        {% if display['count_in_deck_min'] != display['count_in_deck_max'] %}
+                            {% set ns.minimum = display['count_in_deck_min'] %}
+                            {% set ns.maximum = display['count_in_deck_max'] %}
 
-                    {% set ns = namespace(minimum = 0, maximum = 0) %}
-                    {% if display['count_in_deck_min'] != display['count_in_deck_max'] %}
-                        {% set ns.minimum = display['count_in_deck_min'] %}
-                        {% set ns.maximum = display['count_in_deck_max'] %}
+                        {% else %}
+                            {% set ns.minimum = display['count_in_deck_max'] %}
+                            {% set ns.maximum = display['count_in_deck_max'] %}
+                        {% endif %}
 
-                    {% else %}
-                        {% set ns.minimum = display['count_in_deck_max'] %}
-                        {% set ns.maximum = display['count_in_deck_max'] %}
-                    {% endif %}
-
-                    {% for owned in range(1, ns.minimum) %}
-                        <img src="../static/images/owned.png"
-                             width="16" height="25"/>
-                    {% endfor %}
-                    {% for owned in range(ns.minimum, ns.maximum+1) %}
-                        <img src="../static/images/current.png"
-                             width="16"
-                             height="25"/>
-                    {% endfor %}
-                    {% for owned in range(ns.maximum, 4) %}
-                        <img src="../static/images/unowned.png"
-                             width="16"
-                             height="25"/>
-                    {% endfor %}
+                        {% for owned in range(1, ns.minimum) %}
+                            <img src="../static/images/owned.png"/>
+                        {% endfor %}
+                        {% for owned in range(ns.minimum, ns.maximum+1) %}
+                            <img src="../static/images/current.png"/>
+                        {% endfor %}
+                        {% for owned in range(ns.maximum, 4) %}
+                            <img src="../static/images/unowned.png"/>
+                        {% endfor %}
+                    </div>
 
 
-
-
-                <img class="img-fluid"
-                     src="{{ display['image_url'] }}"
-                     alt="{{ display['name'] }}">
-                <span class="align-middle">
+                    <img class="img-fluid"
+                         src="{{ display['image_url'] }}"
+                         alt="{{ display['name'] }}">
+                    <span class="align-middle">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -107,8 +100,8 @@
                 {#                <td class="col"></td>#}
                 {#            </tr>#}
             {% endfor %}
+        </div>
     </div>
-</div>
 
 
 </div>
