@@ -49,28 +49,27 @@
                         </a>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav flex-row justify-content-md-center justify-content-start flex-nowrap">
-                    {#                    <li class="nav-item"><a class="nav-link" href=""><i class="fa fa-facebook mr-1"></i></a> </li>#}
-                    {#                    <li class="nav-item"><a class="nav-link" href=""><i class="fa fa-twitter"></i></a> </li>#}
-
+                <ul class="nav navbar-nav
+                 mr-auto
+                flex-row justify-content-md-center justify-content-start flex-nowrap">
                     {% if not current_user.is_authenticated %}
-                        <li>
+                        <li class="navbar-item mr-2">
                             <a href="{{ url_for('LoginView:index') }}"
-                               class="navbar-item nav-link">
+                               class=" nav-link">
                                 Login
                             </a>
                         </li>
-                        <li>
+                        <li class="navbar-item">
                             <a href="{{ url_for('RegisterView:index') }}"
-                               class="navbar-item nav-link">
+                               class="nav-link">
                                 Register
                             </a>
                         </li>
                     {% endif %}
 
                     {% if current_user.is_authenticated %}
-                        <li>
-                            <a href="/logout" class="navbar-item nav-link">
+                        <li class="navbar-item">
+                            <a href="/logout" class="nav-link">
                                 Logout {{ current_user.name }}
                             </a>
                         </li>
