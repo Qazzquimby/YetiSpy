@@ -90,6 +90,10 @@ class CardSet:
         """The text name of the set."""
         return self.name_from_num(self.set_num)
 
+    @property
+    def image_path(self) -> str:
+        return f"https://eternalwarcry.com/images/simulators/pack-set{self.set_num}.png"
+
     @classmethod
     @caches.mem_cache.cache("get_set_name")
     def name_from_num(cls, set_num: int):
