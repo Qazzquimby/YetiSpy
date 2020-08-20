@@ -9,7 +9,7 @@
 {% block inner_content %}
     {{ super() }}
 
-    <div id="content-col" class="col-md-8 offset-md-2">
+    <div id="content-col">
         <input id="card-search" type="text" class="form-control"
                placeholder="Name">
         <div id="card-preview"></div>
@@ -25,10 +25,10 @@
 
         <div id="card-table" class="text-center">
             <div class="space-t"></div>
-            <table id="card-value"
-                   class="table vertical-align">
-                {% include 'card_values/header.html' %}
-            </table>
+{#            <table id="card-value"#}
+{#                   class="table vertical-align">#}
+{#                {% include 'card_values/header.html' %}#}
+{#            </table>#}
             {% include 'loading.html' %}
         </div>
 

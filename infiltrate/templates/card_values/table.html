@@ -1,70 +1,114 @@
 <div id="card-values" class="pad-t pad-more">
-    <table id="card-value" class="table">
-        {% include 'card_values/header.html' %}
+    <div id="card-value">
+        {#        {% include 'card_values/header.html' %}#}
         {% if card_values.empty %}
             <h> No cards found.</h>
         {% endif %}
-        {% for _, display in card_values.iterrows() %}
-            <tr>
-                <td class="no-padding"
-                    rel="popover"
-                    data-content="<img src={{ display['image_url'] }}>"
-                    data-name="{{ display['name'] }}"
-                    href="{{ display['details_url'] }}">
-                    <img class="card-thumb"
-                         src="{{ display['image_url'] }}"
-                         alt="{{ display['name'] }}">
+        <div class="row">
+            {% for _, display in card_values.iterrows() %}
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12">
 
-                </td>
-                <td>
-                    <a class="btn-text text-bold text-lg text-left
-                                text-{{ display['rarity'].name.lower() }}"
-                       rel="popover"
-                       data-content="<img src={{ display['image_url'] }}/>"
-                       data-name="{{ display['name'] }}"
-                       href="{{ display['details_url'] }}">
-                        {{ display['name'] }}
-                    </a>
-                </td>
-                <td class="align-middle">
-                    {{ '%0.2f' % (display['play_craft_efficiency_max']*100) }}
-                </td>
-                <td class="align-middle">
-                    {{ '%0.2f' % display['play_value_max'] }}
-                </td>
-                <td class="text-center">
-                    <div class="card-count-display">
-                        {% set ns = namespace(minimum = 0, maximum = 0) %}
-                        {% if display['count_in_deck_min'] != display['count_in_deck_max'] %}
-                            {% set ns.minimum = display['count_in_deck_min'] %}
-                            {% set ns.maximum = display['count_in_deck_max'] %}
 
-                        {% else %}
-                            {% set ns.minimum = display['count_in_deck_max'] %}
-                            {% set ns.maximum = display['count_in_deck_max'] %}
-                        {% endif %}
+                    {% set ns = namespace(minimum = 0, maximum = 0) %}
+                    {% if display['count_in_deck_min'] != display['count_in_deck_max'] %}
+                        {% set ns.minimum = display['count_in_deck_min'] %}
+                        {% set ns.maximum = display['count_in_deck_max'] %}
 
-                        {% for owned in range(1, ns.minimum) %}
-                            <img src="../static/images/owned_card.png"
-                                 width="16" height="25"/>
-                        {% endfor %}
-                        {% for owned in range(ns.minimum, ns.maximum+1) %}
-                            <img src="../static/images/current_card.png"
-                                 width="16"
-                                 height="25"/>
-                        {% endfor %}
-                        {% for owned in range(ns.maximum, 4) %}
-                            <img src="../static/images/unowned_card.png"
-                                 width="16"
-                                 height="25"/>
-                        {% endfor %}
-                    </div>
-                </td>
-                <td class="col"></td>
-            </tr>
+                    {% else %}
+                        {% set ns.minimum = display['count_in_deck_max'] %}
+                        {% set ns.maximum = display['count_in_deck_max'] %}
+                    {% endif %}
 
-        {% endfor %}
-    </table>
+                    {% for owned in range(1, ns.minimum) %}
+                        <img src="../static/images/owned.png"
+                             width="16" height="25"/>
+                    {% endfor %}
+                    {% for owned in range(ns.minimum, ns.maximum+1) %}
+                        <img src="../static/images/current.png"
+                             width="16"
+                             height="25"/>
+                    {% endfor %}
+                    {% for owned in range(ns.maximum, 4) %}
+                        <img src="../static/images/unowned.png"
+                             width="16"
+                             height="25"/>
+                    {% endfor %}
+
+
+
+
+                <img class="img-fluid"
+                     src="{{ display['image_url'] }}"
+                     alt="{{ display['name'] }}">
+                <span class="align-middle">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half"></i>
+                        {{ '%0.2f' % display['play_value_max'] }}
+                    </span>
+                </div>
+
+                {#            <tr>#}
+                {#                <td class="no-padding"#}
+                {#                    rel="popover"#}
+                {#                    data-content="<img src={{ display['image_url'] }}>"#}
+                {#                    data-name="{{ display['name'] }}"#}
+                {#                    href="{{ display['details_url'] }}">#}
+                {#                    <img class="card-thumb"#}
+                {#                         src="{{ display['image_url'] }}"#}
+                {#                         alt="{{ display['name'] }}">#}
+                {##}
+                {#                </td>#}
+                {#                <td>#}
+                {#                    <a class="btn-text text-bold text-lg text-left#}
+                {#                                text-{{ display['rarity'].name.lower() }}"#}
+                {#                       rel="popover"#}
+                {#                       data-content="<img src={{ display['image_url'] }}/>"#}
+                {#                       data-name="{{ display['name'] }}"#}
+                {#                       href="{{ display['details_url'] }}">#}
+                {#                        {{ display['name'] }}#}
+                {#                    </a>#}
+                {#                </td>#}
+                {#                <td class="align-middle">#}
+                {#                    {{ '%0.2f' % (display['play_craft_efficiency_max']*100) }}#}
+                {#                </td>#}
+                {#                <td class="align-middle">#}
+                {#                    {{ '%0.2f' % display['play_value_max'] }}#}
+                {#                </td>#}
+                {#                <td class="text-center">#}
+                {#                    <div class="card-count-display">#}
+                {#                        {% set ns = namespace(minimum = 0, maximum = 0) %}#}
+                {#                        {% if display['count_in_deck_min'] != display['count_in_deck_max'] %}#}
+                {#                            {% set ns.minimum = display['count_in_deck_min'] %}#}
+                {#                            {% set ns.maximum = display['count_in_deck_max'] %}#}
+                {##}
+                {#                        {% else %}#}
+                {#                            {% set ns.minimum = display['count_in_deck_max'] %}#}
+                {#                            {% set ns.maximum = display['count_in_deck_max'] %}#}
+                {#                        {% endif %}#}
+                {##}
+                {#                        {% for owned in range(1, ns.minimum) %}#}
+                {#                            <img src="../static/images/owned_card.png"#}
+                {#                                 width="16" height="25"/>#}
+                {#                        {% endfor %}#}
+                {#                        {% for owned in range(ns.minimum, ns.maximum+1) %}#}
+                {#                            <img src="../static/images/current_card.png"#}
+                {#                                 width="16"#}
+                {#                                 height="25"/>#}
+                {#                        {% endfor %}#}
+                {#                        {% for owned in range(ns.maximum, 4) %}#}
+                {#                            <img src="../static/images/unowned_card.png"#}
+                {#                                 width="16"#}
+                {#                                 height="25"/>#}
+                {#                        {% endfor %}#}
+                {#                    </div>#}
+                {#                </td>#}
+                {#                <td class="col"></td>#}
+                {#            </tr>#}
+            {% endfor %}
+    </div>
+</div>
 
 
 </div>
