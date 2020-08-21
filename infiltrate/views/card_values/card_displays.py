@@ -17,7 +17,7 @@ from views.card_values import display_filters
 class CardDisplays:
     """Handles sorting and filtering a list of CardValueDisplay to serve."""
 
-    CARDS_PER_PAGE = 16
+    CARDS_PER_PAGE = 24
 
     def __init__(self, value_info: OwnValueFrame):
         self.value_info = value_info
