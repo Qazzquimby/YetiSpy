@@ -10,6 +10,20 @@
     {{ super() }}
 
     <div id="content-col">
+        <div class="dropdown">
+            <button class="text-lg btn btn-lg btn-secondary dropdown-toggle"
+                    type="button"
+                    id="dropdownMenuButton"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    style="width:100%">
+                Current View
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Other View</a>
+            </div>
+        </div>
         <input id="card-search" type="text" class="form-control"
                placeholder="Name">
         <div id="card-preview"></div>
