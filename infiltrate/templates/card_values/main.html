@@ -15,16 +15,25 @@
         <div class="text-center ">
             <h1 class="display-4">{{ title }}</h1>
         </div>
+        <div class="row">
+            <div class="col-md-6 col-11 offset-md-3 p-0">
+                <select class="form-control form-control-lg"
+                        style="height:70px; font-size: 2.5rem"
+                        onchange="sort=this.value; updateCardTable();">
+                    <option value="efficiency">Craft Efficiency</option>
+                    <option value="value">Popularity</option>
+                </select>
+            </div>
+            <i class="col-1 fas fa-info-circle fa-lg pl-1"
+            style="padding-top: 28px"></i>
+        </div>
 
-        <select class="form-control form-control-lg col-md-6 offset-md-3"
-                style="height:70px; font-size: 2.5rem"
-                onchange="sort=this.value; updateCardTable();">
-            <option value="efficiency">Craft Efficiency</option>
-            <option value="value">Popularity</option>
-        </select>
-        <input id="card-search" type="text" class="form-control mt-3 col-md-6 offset-md-3"
-               placeholder="Search for a card">
-        <div id="card-preview"></div>
+        <div class="row">
+            <input id="card-search" type="text"
+                   class="form-control mt-3 col-md-6 offset-md-3"
+                   placeholder="Search for a card">
+            <div id="card-preview"></div>
+        </div>
 
         <div id="card-table" class="text-center">
             <div class="space-t"></div>
