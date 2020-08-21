@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
-{% block title %}Card Values{% endblock %}
+{% set title = "Cards" %}
+
+{% block title %}{{ title }}{% endblock %}
 
 {% block head %}
     {{ super() }}
@@ -10,8 +12,12 @@
     {{ super() }}
 
     <div id="content-col">
+        <div class="text-center ">
+            <h1 class="display-2">{{ title }}</h1>
+        </div>
+
         <select class="form-control form-control-lg col-md-6 offset-md-3"
-                style="height:90px; font-size: 2.5rem"
+                style="height:70px; font-size: 2.5rem"
                 onchange="sort=this.value; updateCardTable();">
             <option value="efficiency">Craft Efficiency</option>
             <option value="value">Popularity</option>
