@@ -37,13 +37,18 @@
 
                     <h4 class="mb-0">#{{ i+1 }}</h4>
 
-                    {# wrap this in an if#}
-                    {% set display_var = display['play_craft_efficiency_max']*100 %}
+                    {% if sort == "efficiency" %}
+                        {% set display_var = display['play_craft_efficiency_max']*100 %}
+                    {% elif sort == "value" %}
+                        {% set display_var = display['play_value_max'] %}
+                    {% endif %}
                     {% set score_out_of_11 = (display_var*11 / 100) | int %}
                     {% set half_stars = [score_out_of_11 | int, 10 ] | min %}
                     {% set full_stars = (half_stars / 2) | int %}
 
+                    {{ '%0.0f' % display_var }}
                     <span class="align-middle" style="color:orange">
+
                         {% for _ in range(full_stars) %}
                             <i class="fas fa-star"></i>
                         {% endfor %}
