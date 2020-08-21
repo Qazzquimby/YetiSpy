@@ -1,3 +1,4 @@
+import numpy as np
 import flask
 import flask_login
 from flask_classy import FlaskView
@@ -36,6 +37,9 @@ class CardsView(FlaskView):
         displays = displays.configure(sort, ownership)
 
         cards_on_page = displays.get_page(page_num)
+
+        scaled = 15 * np.log2(cards_on_page["play_craft_efficiency"] * 100)
+        cards_on_page["scaled_play_craft_efficiency"] = scaled
 
         return flask.render_template(
             "card_values/table.html",

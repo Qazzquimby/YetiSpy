@@ -32,10 +32,12 @@
 
                     {% if sort == "efficiency" %}
                         {% set display_var = display['play_craft_efficiency']*100 %}
+                        {% set stars_var = display['scaled_play_craft_efficiency'] %}
                     {% elif sort == "value" %}
                         {% set display_var = display['play_value'] %}
+                        {% set stars_var = display['play_value'] %}
                     {% endif %}
-                    {% set score_out_of_11 = (display_var*11 / 100) | int %}
+                    {% set score_out_of_11 = (stars_var*11 / 100) | int %}
                     {% set half_stars = [score_out_of_11 | int, 10 ] | min %}
                     {% set full_stars = (half_stars / 2) | int %}
 
