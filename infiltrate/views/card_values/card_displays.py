@@ -17,7 +17,7 @@ from views.card_values import display_filters
 class CardDisplays:
     """Handles sorting and filtering a list of CardValueDisplay to serve."""
 
-    CARDS_PER_PAGE = 15
+    CARDS_PER_PAGE = 16
 
     def __init__(self, value_info: OwnValueFrame):
         self.value_info = value_info
@@ -131,7 +131,7 @@ class CardDisplayPage:
             self.value_info.user,
             self.value_info[start_index : start_index + self.cards_per_page],
         )
-        displays_on_page = self._group_page(displays_on_page)
+        # displays_on_page = self._group_page(displays_on_page)
         return displays_on_page
 
     def _wrap_negative_page_num(self, page_num) -> int:

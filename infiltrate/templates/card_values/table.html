@@ -9,22 +9,15 @@
 
                     <div class="mt-4">
                         {% set ns = namespace(minimum = 0, maximum = 0) %}
-                        {% if display['count_in_deck_min'] != display['count_in_deck_max'] %}
-                            {% set ns.minimum = display['count_in_deck_min'] %}
-                        {% else %}
-                            {% set ns.minimum = display['count_in_deck_max'] %}
-                        {% endif %}
-                        {% set ns.maximum = display['count_in_deck_max'] %}
-
-                        {% for owned in range(1, ns.minimum) %}
+                        {% for owned in range(1, display['count_in_deck']) %}
                             <img src="../static/images/owned.png"
                                  style="margin-right: -5px"/>
                         {% endfor %}
-                        {% for owned in range(ns.minimum, ns.maximum+1) %}
+                        {% for owned in range(1) %}
                             <img src="../static/images/current.png"
                                  style="margin-right: -5px"/>
                         {% endfor %}
-                        {% for owned in range(ns.maximum, 4) %}
+                        {% for owned in range(display['count_in_deck'], 4) %}
                             <img src="../static/images/unowned.png"
                                  style="margin-right: -5px"/>
                         {% endfor %}
@@ -35,12 +28,12 @@
                          alt="{{ display['name'] }}"
                          style="margin-top: -15px">
 
-                    <h4 class="mb-0">#{{ i+1 }}</h4>
+                    <h4 class="mb-0">#{{ loop.index }}</h4>
 
                     {% if sort == "efficiency" %}
-                        {% set display_var = display['play_craft_efficiency_max']*100 %}
+                        {% set display_var = display['play_craft_efficiency']*100 %}
                     {% elif sort == "value" %}
-                        {% set display_var = display['play_value_max'] %}
+                        {% set display_var = display['play_value'] %}
                     {% endif %}
                     {% set score_out_of_11 = (display_var*11 / 100) | int %}
                     {% set half_stars = [score_out_of_11 | int, 10 ] | min %}
@@ -56,7 +49,7 @@
                             <i class="fas fa-star-half"></i>
                         {% endif %}
                     </span>
-                                    </div>
+                </div>
             {% endfor %}
         </div>
     </div>
