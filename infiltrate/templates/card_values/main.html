@@ -15,6 +15,23 @@
         <div class="text-center ">
             <h1 class="display-4">{{ title }}</h1>
         </div>
+
+        {% if not current_user.is_authenticated %}
+            <div class="alert alert-danger" role="alert">
+                <h4>These recommendations aren't tuned to your collections yet.</h4>
+                <p>
+                    <a class="alert-link" href="{{ url_for('LoginView:index') }}">
+                        Log in
+                    </a>
+                    or
+                    <a class="alert-link" href="{{ url_for('RegisterView:index') }}">
+                        Register
+                    </a>
+                    for recommendations based on your collection.
+                </p>
+            </div>
+        {% endif %}
+
         <div class="row">
             <div class="col-md-6 col-11 offset-md-3 p-0">
                 <select class="form-control form-control-lg"
