@@ -46,6 +46,7 @@ class CardsView(FlaskView):
             page=page_num,
             sort=sort_str,
             card_values=cards_on_page,
+            cards_per_page=card_displays.CardDisplays.CARDS_PER_PAGE,
         )
 
     def card_search(self, search_str="_"):

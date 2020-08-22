@@ -28,7 +28,7 @@
                          alt="{{ display['name'] }}"
                          style="margin-top: -15px">
 
-                    <h4 class="mb-0">#{{ loop.index }}</h4>
+                    <h4 class="mb-0">#{{ page*cards_per_page + loop.index }}</h4>
 
                     {% if sort == "efficiency" %}
                         {% set display_var = display['play_craft_efficiency']*100 %}
