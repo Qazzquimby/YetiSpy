@@ -85,7 +85,7 @@
                 url: "/card_values/" + page + "/" + sort + "/" + ownership,
             }).done(function (data) {
                 $("#card-table").html(data);
-                $("#current-page").html(page);
+                $("#current-page").html(page+1);
                 {#Show card on hover#}
                 $('*[rel=popover]').popover({
                         html: true,
@@ -105,9 +105,9 @@
                 if (jqxhr.status === 401) {
                     window.location.replace("/login");
                 } else {
-                    $("#card-table").html("<h1>Something's gone very wrong.</h1>");
+                    $("#card-table").html("<h1>Something's gone very wrong.</h1>" +
+                        "<p>Please tell qazzquimby#0073 on discord.</p>");
                 }
-
             });
         }
 

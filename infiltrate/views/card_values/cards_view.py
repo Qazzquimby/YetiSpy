@@ -29,16 +29,15 @@ class CardsView(FlaskView):
         else:
             ownership = display_filters.get_owner(owner_str)
 
-        all_cards = global_data.all_cards
-        displays = card_displays.CardDisplays.make_for_user(
-            flask_login.current_user, all_cards
-        )
+        displays = card_displays.CardDisplays.make_for_user(flask_login.current_user)
 
         displays = displays.configure(sort, ownership)
 
-        cards_on_page = displays.get_page(page_num)
+        page_num, cards_on_page = displays.get_page(page_num)
 
-        scaled = 15 * np.log2(cards_on_page["play_craft_efficiency"] * 100)
+        scaled = (np.log2(cards_on_page["play_craft_efficiency"] * 100) * 15).clip(
+            lower=0
+        )
         cards_on_page["scaled_play_craft_efficiency"] = scaled
 
         return flask.render_template(

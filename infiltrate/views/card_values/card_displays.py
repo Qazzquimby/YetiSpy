@@ -1,9 +1,11 @@
 """This is where the routes are defined."""
+import functools
 import typing as t
 
 import numpy as np
 import pandas as pd
 
+import global_data
 from card_evaluation import OwnValueFrame
 from card_frame_bases import CardDetails
 import models.card
@@ -28,8 +30,11 @@ class CardDisplays:
         self._ownership: t.Optional[display_filters.OwnershipFilter] = None
 
     @classmethod
-    def make_for_user(cls, user: models.user.User, card_details: CardDetails):
+    @functools.lru_cache(maxsize=50)
+    def make_for_user(cls, user: models.user.User, card_details: CardDetails = None):
         """Makes the cards for a user, cached for immediate reuse."""
+        if card_details is None:
+            card_details = global_data.all_cards
         own_value = OwnValueFrame.from_user(user, card_details)
         return cls(own_value)
 
@@ -55,14 +60,14 @@ class CardDisplays:
             self.is_filtered = False
             self._ownership = value
 
-    def get_page(self, page_num: int = 0) -> OwnValueFrame:
-        """Gets the page of card displays,
+    def get_page(self, page_num: int = 0) -> t.Tuple[int, OwnValueFrame]:
+        """Gets the page page number and page of card displays,
         sorting by the current sort method."""
         card_display_page_generator = CardDisplayPage(
             self.value_info, page_num=page_num, cards_per_page=self.CARDS_PER_PAGE
         )
         displays_on_page = card_display_page_generator.run()
-        return displays_on_page
+        return card_display_page_generator.page_num, displays_on_page
 
     def get_card(self, card_id: models.card.CardId) -> pd.DataFrame:
         """Gets all displays matching the given card id
@@ -135,9 +140,11 @@ class CardDisplayPage:
         return displays_on_page
 
     def _wrap_negative_page_num(self, page_num) -> int:
-        num_pages = int(len(self.value_info) / self.cards_per_page)
         if page_num < 0:
-            page_num = num_pages + page_num + 1
+            num_pages = int(
+                (len(self.value_info) + self.cards_per_page - 1) / self.cards_per_page
+            )
+            page_num = num_pages + page_num
         return page_num
 
     def _get_start_card_index(self) -> int:
@@ -155,9 +162,7 @@ class CardDisplayPage:
         representing the cards minimum and maximum counts in the list."""
 
         min_max_page = CardDisplayPage._get_min_max_of_page(page)
-
         min_max_dropped_duplicates = min_max_page.drop_duplicates()
-
         min_max_dropped_index_duplicates = min_max_dropped_duplicates[
             ~min_max_dropped_duplicates.index.duplicated(keep="first")
         ]
