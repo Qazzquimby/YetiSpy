@@ -24,8 +24,10 @@
                     <option value="value">Popularity</option>
                 </select>
             </div>
-            <i class="col-1 fas fa-info-circle fa-lg pl-1"
-            style="padding-top: 28px"></i>
+            <a id="info-link">
+                <i class="col-1 fas fa-info-circle fa-lg pl-1"
+                   style="padding-top: 28px"></i>
+            </a>
         </div>
 
         <div class="row">
@@ -81,11 +83,13 @@
         let ownership = "unowned";
 
         function updateCardTable() {
+            document.getElementById("info-link")
+                .setAttribute("href", {{ url_for("FaqView:index") }}+"#" + sort)
             $.get({
                 url: "/card_values/" + page + "/" + sort + "/" + ownership,
             }).done(function (data) {
                 $("#card-table").html(data);
-                $("#current-page").html(page+1);
+                $("#current-page").html(page + 1);
                 {#Show card on hover#}
                 $('*[rel=popover]').popover({
                         html: true,

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% set title = "FAQ" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block inner_content %}
+    {{ super() }}
+
+    <h1>FAQ</h1>
+    <h2 id="cards">Cards</h2>
+
+    <h4>Why are cards showing up more than
+        once?</h4>
+    <p>The red colored diamond above the card shows the copy of the card being
+        shown.</p>
+    <p>Each of the 4 copies of a card can have a different value. A market card might
+        have a
+        very desirable first copy, and unplayed 2nd, 3rd and 4th copies.</p>
+    <br>
+
+    <h4 id="value">What is popularity?</h4>
+    <p>Card popularity is how desirable a copy of card is to own.</p>
+    <p>It is calculated from the card&#39;s use in
+        <a href="https://eternalwarcry.com/decks">Eternal Warcry decks</a>,
+        with focus on more recent and more popular decks.</p>
+    <br>
+
+    <h4 id="efficiency">What is craft efficiency?</h4>
+    <p>Craft efficiency is how much you should craft a card with shiftstone.</p>
+    <p>Mostly that means dividing popularity / cost, but it is also better to craft
+        cards
+        that
+        you are less likely to find naturally while playing the game. Easily findable
+        cards,
+        like Common cards from the latest set, have lower craft efficiency.</p>
+    <br>
+
+{% endblock %}

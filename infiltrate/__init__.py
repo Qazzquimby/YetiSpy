@@ -46,6 +46,7 @@ def _register_views(app):
     from infiltrate.views.login import LoginView, RegisterView
     from infiltrate.views.update_collection import UpdateCollectionView
     from views.purchases_view import PurchasesView
+    from views.faq import FaqView
 
     CardsView.register(app)
     PurchasesView.register(app)
@@ -53,6 +54,7 @@ def _register_views(app):
     RegisterView.register(app)
     UpdateAPI.register(app)
     UpdateCollectionView.register(app)
+    FaqView.register(app)
 
     # Temporary dev page to see all routes
     @app.route("/site_map")
