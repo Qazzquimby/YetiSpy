@@ -9,7 +9,14 @@
                 integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
                 crossorigin="anonymous"></script>
         <link rel="shortcut icon"
-              href="{{ url_for('static', filename='favicon.ico') }}">
+              href="{{ url_for('static', filename='images/logo_zoom.png') }}">
+
+        {% set title = title|default('no title') -%}
+        {% set nav_items = [
+            (url_for('CardsView:index'), 'fa-clone', 'Cards'),
+            (url_for('PurchasesView:index'), 'fa-store', 'Purchases')
+        ] -%}
+
         <nav class="navbar navbar-expand-md navbar-infiltrate navbar-dark">
             <a class="navbar-brand d-inline-block align-top" href="/">
                 <img src="{{ url_for('static', filename='images/logo_zoom.png') }}"
@@ -26,33 +33,45 @@
             </button>
 
             <div class="collapse navbar-collapse" id="baseNavbar">
-                <ul class="nav navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="navbar-item">
-                        <a href="{{ url_for('CardsView:index') }}"
-                           class="nav-link text-white">
-                            <i class="fas fa-clone"></i> Cards
-                        </a>
-                    </li>
-                    <li class="navbar-item">
-                        <a href="{{ url_for('PurchasesView:index') }}"
-                           class="nav-link text-white">
-                            <i class="fas fa-store"></i> Purchases
+                <ul class="nav navbar-nav nav-pills mr-auto mt-2 mt-lg-0">
+                    {% for href, icon, name in nav_items %}
+                        <li class="navbar-item">
+                            <a href="{{ href }}"
+                               class="nav-link text-white
+                               {% if name == title %} active{% endif %}">
+                                <i class="fas {{ icon }}"></i> {{ name }}
+                            </a>
+                        </li>
+                    {% endfor %}
 
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#"
-                           class="nav-link text-white"
-                           data-toggle="modal"
-                           data-target="#updateCollectionModal">
-                            <i class="fas fa-redo"></i> Update Collection
-                        </a>
-                    </li>
+                    {#                    <li class="navbar-item">#}
+                    {#                        <a href="{{ url_for('CardsView:index') }}"#}
+                    {#                           class="nav-link text-white active">#}
+                    {#                            <i class="fas fa-clone"></i> Cards#}
+                    {#                        </a>#}
+                    {#                    </li>#}
+                    {#                    <li class="navbar-item">#}
+                    {#                        <a href="{{ url_for('PurchasesView:index') }}"#}
+                    {#                           class="nav-link text-white">#}
+                    {#                            <i class="fas fa-store"></i> Purchases#}
+                    {##}
+                    {#                        </a>#}
+                    {#                    </li>#}
+
+
+                    {#                    <li class="nav-item">#}
+                    {#                        <a href="#"#}
+                    {#                           class="nav-link text-white"#}
+                    {#                           data-toggle="modal"#}
+                    {#                           data-target="#updateCollectionModal">#}
+                    {#                            <i class="fas fa-redo"></i> Update Collection#}
+                    {#                        </a>#}
+                    {#                    </li>#}
                 </ul>
-                <ul class="nav navbar-nav
+                <ul class="nav nav-pills
                 flex-row justify-content-md-center justify-content-start flex-nowrap">
                     {% if not current_user.is_authenticated %}
-                        <li class="navbar-item mr-2">
+                        <li class="navbar-item">
                             <a href="{{ url_for('LoginView:index') }}"
                                class=" nav-link">
                                 Login
