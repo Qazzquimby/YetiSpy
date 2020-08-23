@@ -32,8 +32,6 @@
                          data-name="{{ display['name'] }}"
                          href="{{ display['details_url'] }}">
 
-                    <h4 class="mb-0">#{{ page*cards_per_page + loop.index }}</h4>
-
                     {% if sort == "efficiency" %}
                         {% set display_var = display['play_craft_efficiency']*100 %}
                         {% set stars_var = display['scaled_play_craft_efficiency'] %}
@@ -45,7 +43,19 @@
                     {% set half_stars = [score_out_of_11 | int, 10 ] | min %}
                     {% set full_stars = (half_stars / 2) | int %}
 
+
+                    {% if sort == "efficiency" %}
+                        <a data-toggle="tooltip"
+                           title="Popularity({{ '%0.2f' % display['play_value'] }})
+* (1-Findability({{ '%0.2f' % display['findability'] }})
+/ Cost({{ '%0.0f' % display['craft_cost'] }})">
+                    {% endif %}
+
+                    <h4 class="mb-0">#{{ page*cards_per_page + loop.index }}</h4>
+
+
                     {{ '%0.0f' % display_var }}
+
                     <span class="align-middle" style="color:orange">
 
                         {% for _ in range(full_stars) %}
@@ -55,6 +65,7 @@
                             <i class="fas fa-star-half"></i>
                         {% endif %}
                     </span>
+                    {% if sort == "efficiency" %}</a>{% endif %}
                 </div>
             {% endfor %}
         </div>
