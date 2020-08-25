@@ -78,6 +78,9 @@ class CardClass:
         value = get_value(cards_in_set_and_rarity)
         return value
 
+    def __str__(self):
+        return f"{tuple(self.sets)} {self.rarity}, premium {self.is_premium}"
+
 
 def get_value(card_pool):  # called many times and slow
     unowned_cards = card_pool.query("is_owned == False")
@@ -145,6 +148,9 @@ class CardClassWithAmount:
         value_for_card_class = self.card_class.get_value(card_data)
         value_for_card_class *= self.amount
         return value_for_card_class
+
+    def __str__(self):
+        return f"{self.amount}x {self.card_class}"
 
 
 class CardClassWithAmountPerWeek:
