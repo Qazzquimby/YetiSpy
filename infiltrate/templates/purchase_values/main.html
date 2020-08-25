@@ -8,7 +8,13 @@
 {% block inner_content %}
     {{ super() }}
 
-    <div id="content-col" class="col-md-8 offset-md-2">
+
+    <div id="content-col"
+{#         class="col-md-8 offset-md-2"#}
+    >
+        <div class="text-center ">
+            <h1 class="display-4">{{ title }}</h1>
+        </div>
 
         <div id="purchase-table" class="text-center">
             <div class="space-t"></div>

@@ -11,15 +11,15 @@
                 </td>
 
                 <td class="text-center">
-                    {{ '%0.2f' % (display['value_per_gold']) }}
+                    {{ '%0.1f' % (display['value_per_gold']) }}
                 </td>
 
                 <td class="text-center">
-                    {{ '%0.2f' % display['value'] }}
+                    {{ '%0.0f' % display['value'] }}
                 </td>
 
                 <td class="text-center">
-                    {{ '%0.2f' % (display['gold_cost']) }}
+                    {{ '%0.0f' % (display['gold_cost']) }}
                 </td>
             </tr>
         {% endfor %}
