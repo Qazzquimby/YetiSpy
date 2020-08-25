@@ -128,7 +128,7 @@ class DraftPackCardClass(CardClass):
     def get_value(self, card_data) -> float:
         cards_in_draft_pack_and_rarity = card_data[
             np.logical_and(
-                card_data["is_in_draft_pack"] is True,
+                card_data["is_in_draft_pack"] == True,
                 card_data["rarity"] == self.rarity,
             )
         ]
