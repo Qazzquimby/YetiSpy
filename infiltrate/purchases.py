@@ -391,7 +391,7 @@ Top 1000 has been at 21 wins, top 500 at 25 wins and top 100 at 30 wins
 
     def get_df_rows(self):
         first_league_value = self.get_value()
-        return [self._make_row("First_League", first_league_value)]
+        return [self._make_row("First League of the Month", first_league_value)]
 
 
 class AdditionalLeagueEvaluator(LeagueEvaluator):
@@ -402,7 +402,9 @@ class AdditionalLeagueEvaluator(LeagueEvaluator):
 
     def get_df_rows(self):
         additional_league_value = self.get_value()
-        return [self._make_row("Additional_League", additional_league_value)]
+        return [
+            self._make_row("Additional League in the Month", additional_league_value)
+        ]
 
 
 def get_league_packs() -> t.Dict[models.card_set.CardSet, int]:
