@@ -98,16 +98,17 @@ class DraftPackCardClass(CardClass):
         self.sets = "DRAFT"
 
     @property
-    def num_cards(self) -> int:  # todo cache this
+    @functools.lru_cache(maxsize=1)
+    def num_cards(self) -> int:
         """The total number of cards in the pool."""
         session = models.card.db.session
 
         count = (
             session.query(models.card.Card)
             .filter(models.card.Card.is_in_draft_pack is True)
-            .filter(models.card.Card.rarity == self.rarity.name)
+            .filter(models.card.Card.rarity == self.rarity)
             .count()
-        )
+        )  # Check that the rarity equality is correct
         return count
 
     def __eq__(self, other):
