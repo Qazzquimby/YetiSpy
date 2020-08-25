@@ -83,8 +83,7 @@ class CardClass:
 
 
 def get_value(card_pool):  # called many times and slow
-    unowned_cards = card_pool.query("is_owned == False")
-    findable_copies = unowned_cards.drop_duplicates(["set_num", "card_num"])
+    findable_copies = card_pool.drop_duplicates(["set_num", "card_num"])
 
     try:
         average_value = sum(findable_copies["own_value"]) * 4 / len(card_pool)
