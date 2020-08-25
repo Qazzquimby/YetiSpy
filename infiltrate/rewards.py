@@ -98,7 +98,7 @@ class DraftPackCardClass(CardClass):
 
     def __init__(self, rarity: models.rarity.Rarity):
         super().__init__(rarity, None, False)
-        self.sets = "DRAFT"
+        self.sets = ["DRAFT"]
 
     @property
     @functools.lru_cache(maxsize=1)
