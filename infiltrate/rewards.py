@@ -83,10 +83,18 @@ class CardClass:
 
 
 def get_value(card_pool):  # called many times and slow
-    findable_copies = card_pool.drop_duplicates(["set_num", "card_num"])
+    is_owned = card_pool["is_owned"] == True
+    unowned_cards = card_pool[~is_owned]
+    findable_copies = unowned_cards.drop_duplicates(["set_num", "card_num"])
+    unowned_value = sum(findable_copies["own_value"])
+
+    fully_owned_cards = card_pool[
+        np.logical_and(is_owned, card_pool["count_in_deck"] == 4)
+    ]
+    owned_value = sum(fully_owned_cards["resell_value"])
 
     try:
-        average_value = sum(findable_copies["own_value"]) * 4 / len(card_pool)
+        average_value = (owned_value + unowned_value) / (len(card_pool) / 4)
         return average_value
     except ZeroDivisionError:
         return 0
