@@ -5,25 +5,22 @@
             <h> No purchases found.</h>
         {% endif %}
         {% for _, display in purchase_values.iterrows() %}
+
             <tr>
+
                 <td>
                     {{ display['name'] }}
                 </td>
-
-
-
                 <td class="text-center">
-                    {{ '%0.0f' % display['value'] }}
+                    <a data-toggle="tooltip"
+                       title="Expected Value({{ '%0.2f' % display['value'] }})
+/ Cost({{ '%0.0f' % display['gold_cost'] }})">
+                        {{ '%0.1f' % (display['value_per_gold']) }}
+                    </a>
                 </td>
 
-                <td class="text-center">
-                    {{ '%0.0f' % (display['gold_cost']) }}
-                </td>
-
-                <td class="text-center">
-                    {{ '%0.1f' % (display['value_per_gold']) }}
-                </td>
             </tr>
+
         {% endfor %}
     </table>
 </div>
