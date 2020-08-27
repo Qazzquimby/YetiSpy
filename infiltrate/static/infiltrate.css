@@ -544,3 +544,13 @@ table.vertical-align > tbody > tr > td {
         transform: scale(1.5);
     }
 }
+
+.popover-header {
+    background-color: #1a4979;
+    color: #dddddd;
+}
+
+.popover-body {
+    background-color: #353535;
+    color: #dddddd;
+}

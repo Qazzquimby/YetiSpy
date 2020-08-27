@@ -45,6 +45,11 @@
             }).done(function (data) {
                 $("#purchase-table").html(data);
                 $("#current-page").html(page);
+
+                $(function () {
+                    $('[data-toggle="popover"]').popover()
+                })
+
             }).fail(function (jqxhr, textStatus, error) {
                 const err = jqxhr.status + ", " + textStatus + ", " + error;
                 console.log("Request Failed: " + err);

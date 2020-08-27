@@ -12,11 +12,20 @@
                     {{ display['name'] }}
                 </td>
                 <td class="text-center">
-                    <a data-toggle="tooltip"
-                       title="Expected Value({{ '%0.2f' % display['value'] }})
-/ Cost({{ '%0.0f' % display['gold_cost'] }})">
+                    <a tabindex="0"
+                       class="btn btn-lg"
+                       role="button"
+                       data-toggle="popover"
+                       data-trigger="focus"
+                       title="Calculations"
+                       data-content="Expected Value({{ '%0.2f' % display['value'] }})
+/ Cost({{ '%0.0f' % display['gold_cost'] }})"
+                    >
                         {{ '%0.1f' % (display['value_per_gold']) }}
                     </a>
+
+
+                    {#                    </a>#}
                 </td>
 
             </tr>
