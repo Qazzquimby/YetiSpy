@@ -43,19 +43,24 @@
                             </a>
                         </li>
                     {% endfor %}
-
-                    <li class="nav-item">
-                        <a href="#"
-                           class="nav-link text-white"
-                           data-toggle="modal"
-                           data-target="#updateCollectionModal">
-                            <i class="fas fa-redo"></i> Update Collection
-                        </a>
-                    </li>
                 </ul>
                 <ul class="nav nav-pills
                 flex-row justify-content-md-center justify-content-start flex-nowrap">
-                    {% if not current_user.is_authenticated %}
+                    {% if current_user.is_authenticated %}
+                        <li class="navbar-item">
+                            <a href="#"
+                               class="nav-link text-white"
+                               data-toggle="modal"
+                               data-target="#updateCollectionModal">
+                                <i class="fas fa-redo"></i> Update Collection
+                            </a>
+                        </li>
+                        <li class="navbar-item">
+                            <a href="/logout" class="nav-link">
+                                Logout {{ current_user.name }}
+                            </a>
+                        </li>
+                    {% else %}
                         <li class="navbar-item">
                             <a href="{{ url_for('LoginView:index') }}"
                                class=" nav-link">
@@ -66,14 +71,6 @@
                             <a href="{{ url_for('RegisterView:index') }}"
                                class="nav-link">
                                 Register
-                            </a>
-                        </li>
-                    {% endif %}
-
-                    {% if current_user.is_authenticated %}
-                        <li class="navbar-item">
-                            <a href="/logout" class="nav-link">
-                                Logout {{ current_user.name }}
                             </a>
                         </li>
                     {% endif %}
