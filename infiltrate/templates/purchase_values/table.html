@@ -9,6 +9,19 @@
             <tr>
                 <td class="text-left">
                     {{ display['type'] }}: <b>{{ display['name'] }}</b>
+
+                    {% if display['type'] == "League" %}
+                        {% set faq_link = "league" %}
+                    {% elif display['type'] == "Draft" %}
+                        {% set faq_link = "draft" %}
+                    {% elif display['type'] == "Card Pack" %}
+                        {% set faq_link = "card-pack" %}
+                    {% endif %}
+                    <a id="info-link"
+                       href="{{ url_for("FaqView:index") }}#{{ faq_link }}">
+                        <i class="col-1 fas fa-info-circle fa-md pl-1"></i>
+                    </a>
+
                 </td>
                 <td class="text-center">
                     <a tabindex="0"
