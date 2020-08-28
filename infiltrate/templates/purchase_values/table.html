@@ -7,25 +7,25 @@
         {% for _, display in purchase_values.iterrows() %}
 
             <tr>
-
                 <td class="text-left">
                     {{ display['type'] }}: <b>{{ display['name'] }}</b>
                 </td>
                 <td class="text-center">
                     <a tabindex="0"
-                       class="btn btn-lg"
+                       class="btn btn-lg info-popover"
                        role="button"
                        data-toggle="popover"
                        data-trigger="focus"
                        title="Calculations"
                        data-content="Expected Value({{ '%0.2f' % display['value'] }})
 / Cost({{ '%0.0f' % display['gold_cost'] }})"
+                       data-template='<div class="popover popover-info" role="tooltip">
+                       <div class="arrow"></div>
+                       <h3 class="popover-header"></h3>
+                       <div class="popover-body"></div></div>'
                     >
                         {{ '%0.1f' % (display['value_per_gold']) }}
                     </a>
-
-
-                    {#                    </a>#}
                 </td>
 
             </tr>

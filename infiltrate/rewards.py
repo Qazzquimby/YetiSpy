@@ -317,7 +317,7 @@ class Reward:
 
     def get_value(self, card_data) -> float:
         total_value = 0
-
+        # todo use gold and shiftstone
         for card_class_with_amount in self.card_class_amounts:
             value_for_card_class = card_class_with_amount.get_value(card_data)
 

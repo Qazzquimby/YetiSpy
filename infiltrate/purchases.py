@@ -151,7 +151,7 @@ class LoseAllGamesDraftEvaluator(DraftEvaluator):
 
     def get_df_rows(self) -> t.List[PurchaseRow]:
         draft_value = self.get_values()
-        return [self._make_row("Lose All Games", draft_value)]
+        return [self._make_row("No Wins", draft_value)]
 
     def _get_no_wins_value(self):
         _, no_win_reward = list(self._get_win_chances_and_rewards())[0]

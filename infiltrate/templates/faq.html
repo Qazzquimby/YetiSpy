@@ -41,6 +41,82 @@
             craft efficiency.</p>
     </div>
 
+    <div class="container">
+        <h4>Why do many cards have Popularity 0?</h4>
+        <p>To keep recommendations current with the meta, and decrease the workload,
+            only decks from the last few months are used to find Popularity. Cards with
+            Popularity 0 were not used in any
+            <a href="https://eternalwarcry.com/decks">Eternal Warcry decks</a> in that
+            period.</p>
+    </div>
+
+    <br>
+    <h2 id="purchases">Purchases</h2>
+
+    <div id="purchase-value" class="container">
+        <h4>What is Expected Purchase Value?</h4>
+        <p>It's the amount of total card-popularity that your collection will gain from
+            the purchase, on average</p>
+        <p>For example, if a purchase has an even chance of giving a card with
+            10 Popularity, or 20 Popularity, the expected purchase would be 15.</p>
+        <br>
+        <p>Yeti Spy also values raw shiftstone. Shiftstone has a value in Popularity
+            based on the most shiftstone efficient crafts that can be made.
+        <p>If a card could be destroyed and re-crafted for more popularity than the card
+            itself, The greater value is used in calculating Expected Purchase
+            Value.</p>
+        <p>For example, if a purchase gave 1000 copies of a legendary card you have a
+            full playset of, the purchase would have a very high expected value due to
+            the shiftstone from destroying them, even though unplayable copies after the
+            4th have Popularity 0.</p>
+    </div>
+
+    <div id="card-pack" class="container">
+        <h4>How are Card Pack values calculated?</h4>
+        <p>Each rarity is evaluated separately, by averaging the Popularity of cards in
+            that set and rarity.</p>
+        <p>Then each rarity value is multiplied by its frequency in the pack, and added
+            together for the final value.</p>
+
+        <h5>Card frequencies:</h5>
+        <ul>
+            <li>Common: 8</li>
+            <li>Uncommon: 3</li>
+            <li>Rare: 0.9</li>
+            <li>Legendary: 0.1</li>
+        </ul>
+    </div>
+
+    <div id="draft" class="container">
+        <h4>How are Draft values calculated?</h4>
+        <p>Draft value comes from two parts, the card draft itself, and the play
+            rewards.</p>
+        <p>In the average case, for the average player, drafting 4 packs of cards will
+            be equivalent to opening 4 such packs, so that is what Yeti Spy uses.</p>
+        <p>Measuring the card draft is very messy, though, because it relies on the
+            behaviour of other players, and how much attention you're putting on
+            choosing cards for the draft versus your collection.</p>
+        <p>For average draft, each possible reward value is averaged weighted on the
+            chance of a statistically average player earning it.</p>
+        <p>No wins draft is just the value of the two silver chests you get by
+            default.</p>
+
+
+    </div>
+
+    <div id="league" class="container">
+        <h4>How are League values calculated?</h4>
+        <p>Every league purchase gives a number of card packs, which are evaluated
+            <a href="{{ url_for("FaqView:index") }}#card-packs">like any other card
+                pack.</a></p>
+        <p> The first league of a month also gives rewards based on your placement.
+            Using historical data, Yeti Spy determines the average placements for League
+            players.</p>
+        <p>This is a messy calculation, and can change based individual skill, and the
+            number of League players that month.
+            However, the majority of the rewards can usually be gained even with poor
+            play and few games played, so the stakes are low.</p>
+    </div>
     <style>
         :target {
             background-color: #1a4979 !important;
