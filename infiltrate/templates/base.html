@@ -87,7 +87,7 @@
 {% block content %}
     {{ super() }}
     <div id="body-wrapper">
-        <div class="container" style="background-color: black">
+        <div class="container" style="background-color: black;">
             {% include "update_collection.html" %}
             {% block inner_content %}{% endblock %}
         </div>
@@ -107,6 +107,40 @@
                  filter:  brightness(25%);
                  width: 100%;
                  background-size: cover;"></div>
+
+    <footer>
+        <div class="space-t hidden-xs"></div>
+        <div class="container-fluid text-sm"
+             style="background-color: #111; padding: 2em">
+            <div>
+                <div class="row" style="min-height: 100px">
+                    <div class="col-md-3 offset-md-3">
+                        <h3>Contact</h3>
+                        Reddit: <b>/u/qazzquimby</b>
+                        Discord: <b>qazzquimby#0073</b>
+                    </div>
+
+                    <div class="col-md-5">
+                        <h3>Information</h3>
+                        <p>This site is not affiliated with Eternal or Dire Wolf
+                            Digital.</p>
+                        <p>All assets from Eternal are property of Dire Wolf
+                            Digital.</p>
+                        <p>This site is made possible by
+                            <a href="https://eternalwarcry.com/">
+                                Eternal Warcry.
+                            </a>
+                        </p>
+
+                        <a href="https://github.com/Qazzquimby/eternalCardEvaluator">
+                            This site is open-source.
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
 {% endblock %}
 
 
