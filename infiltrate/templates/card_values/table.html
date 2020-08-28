@@ -28,10 +28,12 @@
                              alt="{{ display['name'] }}"
                              style="margin-top: -15px"
                              rel="popover"
-                             data-content="<img src={{ display['image_url'] }}>"
-                             data-name="{{ display['name'] }}">
+                             data-content="<img
+                             src={{ display['image_url'] }}
+                             style='max-height:400px'>"
+                             data-name="{{ display['name'] }}"
+                             data-placement="bottom">
                     </a>
-
                     {% if sort == "efficiency" %}
                         {% set display_var = display['play_craft_efficiency']*100 %}
                         {% set stars_var = display['scaled_play_craft_efficiency'] %}
