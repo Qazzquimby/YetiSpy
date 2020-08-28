@@ -11,15 +11,16 @@ import models.rarity
 import models.user
 import rewards
 
-PurchaseRow = t.Tuple[str, int, float, float]
+PurchaseRow = t.Tuple[str, str, int, float, float]
 
 
 class PurchaseEvaluator(abc.ABC):
     """ABC for evaluable purchase types"""
 
-    def __init__(self, card_data, cost: int):
+    def __init__(self, card_data, cost: int, purchase_type: str):
         self.card_data = card_data
         self.cost = cost
+        self.type = purchase_type
 
     def get_values(self) -> dict:
         """Get a list of average values for purchases."""
@@ -31,7 +32,7 @@ class PurchaseEvaluator(abc.ABC):
         raise NotImplementedError
 
     def _make_row(self, name, value) -> PurchaseRow:
-        row = (name, self.cost, value, 1000 * value / self.cost)
+        row = (self.type, name, self.cost, value, 1000 * value / self.cost)
         return row
 
 
@@ -39,7 +40,7 @@ class PackEvaluator(PurchaseEvaluator):
     """Evaluates all packs"""
 
     def __init__(self, card_data):
-        super().__init__(card_data, cost=1_000)
+        super().__init__(card_data, cost=1_000, purchase_type="Card Pack")
 
     def get_values(self) -> t.Dict[models.card_set.CardSet, int]:
         values = {
@@ -62,7 +63,7 @@ class CampaignEvaluator(PurchaseEvaluator):
     """Evaluates all campaigns"""
 
     def __init__(self, card_data):
-        super().__init__(card_data, cost=25_000)
+        super().__init__(card_data, cost=25_000, purchase_type="Campaign")
 
     def get_values(self):
         card_data = self.card_data.copy()
@@ -92,7 +93,7 @@ class DraftEvaluator(PurchaseEvaluator, abc.ABC):
     """ABC for evaluating drafts."""
 
     def __init__(self, card_data):
-        super().__init__(card_data, cost=5_000)
+        super().__init__(card_data, cost=5_000, purchase_type="Draft")
 
     def _get_packs_value(self):
         newest_set = models.card_set.get_newest_main_set()
@@ -100,37 +101,6 @@ class DraftEvaluator(PurchaseEvaluator, abc.ABC):
         draft_pack_value = rewards.DRAFT_PACK.get_value(self.card_data)
         value = 2 * newest_pack_value + 2 * draft_pack_value
         return value
-
-
-class LoseAllGamesDraftEvaluator(DraftEvaluator):
-    def get_values(self) -> float:
-        return self._get_packs_value()
-
-    def get_df_rows(self) -> t.List[PurchaseRow]:
-        draft_value = self.get_values()
-        return [self._make_row("Lose All Games Draft", draft_value)]
-
-
-class AverageDraftEvaluator(DraftEvaluator):
-    """Evaluates a single where the player has an average win rate."""
-
-    def get_values(self) -> float:
-        packs_value = self._get_packs_value()
-
-        average_wins_value = self._get_average_wins_value()
-
-        value = packs_value + average_wins_value
-        return value
-
-    def _get_average_wins_value(self) -> float:
-        average_win_value = 0
-        for chance, win_rewards in self._get_win_chances_and_rewards():
-            win_value = sum(
-                [reward.get_value(self.card_data) for reward in win_rewards]
-            )
-
-            average_win_value += win_value * chance
-        return average_win_value
 
     def _get_win_chances_and_rewards(
         self,
@@ -169,6 +139,46 @@ class AverageDraftEvaluator(DraftEvaluator):
         ]
         return zip(chances_of_n_wins, rewards_of_n_wins)
 
+
+class LoseAllGamesDraftEvaluator(DraftEvaluator):
+    """A draft where all games are lost."""
+
+    def get_values(self) -> float:
+        packs_value = self._get_packs_value()
+        no_wins_value = self._get_no_wins_value()
+        value = packs_value + no_wins_value
+        return value
+
+    def get_df_rows(self) -> t.List[PurchaseRow]:
+        draft_value = self.get_values()
+        return [self._make_row("Lose All Games", draft_value)]
+
+    def _get_no_wins_value(self):
+        _, no_win_reward = list(self._get_win_chances_and_rewards())[0]
+        return sum([reward.get_value(self.card_data) for reward in no_win_reward])
+
+
+class AverageDraftEvaluator(DraftEvaluator):
+    """Evaluates a single where the player has an average win rate."""
+
+    def get_values(self) -> float:
+        packs_value = self._get_packs_value()
+
+        average_wins_value = self._get_average_wins_value()
+
+        value = packs_value + average_wins_value
+        return value
+
+    def _get_average_wins_value(self) -> float:
+        average_win_value = 0
+        for chance, win_rewards in self._get_win_chances_and_rewards():
+            win_value = sum(
+                [reward.get_value(self.card_data) for reward in win_rewards]
+            )
+
+            average_win_value += win_value * chance
+        return average_win_value
+
     def get_df_rows(self) -> t.List[PurchaseRow]:
         draft_value = self.get_values()
         return [self._make_row("Average Draft", draft_value)]
@@ -178,7 +188,7 @@ class LeagueEvaluator(PurchaseEvaluator, abc.ABC):
     """ABC for league purchases."""
 
     def __init__(self, card_data):
-        super().__init__(card_data, cost=12_500)
+        super().__init__(card_data, cost=12_500, purchase_type="League")
 
     def get_league_packs_value(self) -> float:
         pack_counts = get_league_packs()
@@ -391,7 +401,7 @@ Top 1000 has been at 21 wins, top 500 at 25 wins and top 100 at 30 wins
 
     def get_df_rows(self):
         first_league_value = self.get_value()
-        return [self._make_row("First League of the Month", first_league_value)]
+        return [self._make_row("First of the Month", first_league_value)]
 
 
 class AdditionalLeagueEvaluator(LeagueEvaluator):
@@ -402,9 +412,7 @@ class AdditionalLeagueEvaluator(LeagueEvaluator):
 
     def get_df_rows(self):
         additional_league_value = self.get_value()
-        return [
-            self._make_row("Additional League in the Month", additional_league_value)
-        ]
+        return [self._make_row("Additional in the Month", additional_league_value)]
 
 
 def get_league_packs() -> t.Dict[models.card_set.CardSet, int]:
@@ -444,7 +452,7 @@ class _PurchasesValueDataframeGetter:
     def get_purchase_values(self):
         """Gets a dataframe of all purchase options
         with values based on card values."""
-        columns = ["name", "gold_cost", "value", "value_per_gold"]
+        columns = ["type", "name", "gold_cost", "value", "value_per_gold"]
         df_constructor = []
         for purchase_evaluator in self.purchase_evaluators:
             df_constructor += purchase_evaluator.get_df_rows()
