@@ -22,15 +22,15 @@
                                  style="margin-right: -5px"/>
                         {% endfor %}
                     </div>
-
-                    <img class="img-fluid"
-                         src="{{ display['image_url'] }}"
-                         alt="{{ display['name'] }}"
-                         style="margin-top: -15px"
-                         rel="popover"
-                         data-content="<img src={{ display['image_url'] }}>"
-                         data-name="{{ display['name'] }}"
-                         href="{{ display['details_url'] }}">
+                    <a href="{{ display['details_url'] }}">
+                        <img class="img-fluid"
+                             src="{{ display['image_url'] }}"
+                             alt="{{ display['name'] }}"
+                             style="margin-top: -15px"
+                             rel="popover"
+                             data-content="<img src={{ display['image_url'] }}>"
+                             data-name="{{ display['name'] }}">
+                    </a>
 
                     {% if sort == "efficiency" %}
                         {% set display_var = display['play_craft_efficiency']*100 %}
