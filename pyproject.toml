@@ -1,5 +1,5 @@
 [project]
-name = "eternal_infiltrate"
+name = "Yeti Spy"
 version = "0.0.0"
 description = "Recommends purchases in the card game Eternal."
 authors = [
