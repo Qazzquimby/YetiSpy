@@ -6,21 +6,22 @@
         {% endif %}
         {% for _, display in purchase_values.iterrows() %}
             <tr>
+                {% if display['type'] == "League" %}
+                    {% set faq_link = "league" %}
+                {% elif display['type'] == "Draft" %}
+                    {% set faq_link = "draft" %}
+                {% elif display['type'] == "Card Pack" %}
+                    {% set faq_link = "card-pack" %}
+                {% endif %}
+
                 <td class="text-left">
-                    {{ display['type'] }}: <b>{{ display['name'] }}</b>
-
-                    {% if display['type'] == "League" %}
-                        {% set faq_link = "league" %}
-                    {% elif display['type'] == "Draft" %}
-                        {% set faq_link = "draft" %}
-                    {% elif display['type'] == "Card Pack" %}
-                        {% set faq_link = "card-pack" %}
-                    {% endif %}
+                    {{ display['type'] }}
                     <a id="info-link"
-                       href="{{ url_for("FaqView:index") }}#{{ faq_link }}">
-                        <i class="col-1 fas fa-info-circle fa-md pl-1"></i>
+                       href="{{ url_for("FaqView:index") }}#{{ faq_link }}"
+                    style="margin:-3px">
+                        <i class="fas fa-info-circle fa-md"></i>
                     </a>
-
+                    : <b>{{ display['name'] }}</b>
                 </td>
                 <td class="text-center">
                     <a tabindex="0"
