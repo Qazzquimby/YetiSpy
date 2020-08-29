@@ -5,7 +5,6 @@
             <h> No purchases found.</h>
         {% endif %}
         {% for _, display in purchase_values.iterrows() %}
-
             <tr>
                 <td class="text-left">
                     {{ display['type'] }}: <b>{{ display['name'] }}</b>
