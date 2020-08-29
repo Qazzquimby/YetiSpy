@@ -33,9 +33,14 @@ def _get_most_recent_league_link():
         )
 
 
-def get_most_recent_league_article_packs_text():
+def get_most_recent_league_article_url():
     link = _get_most_recent_league_link()
     url = f"{ROOT_URL}/{link['href']}"
+    return url
+
+
+def get_most_recent_league_article_packs_text():
+    url = get_most_recent_league_article_url()
     rows = browsers.get_texts_from_url_and_selector(url, LEAGUE_PACKS_SELECTOR)
     pack_texts = list(itertools.chain(*[row.split(",") for row in rows]))
     return pack_texts

@@ -1,6 +1,21 @@
 <div id="card-values" class="pad-t pad-more">
     <table id="card-value" class="table">
-        {% include 'purchase_values/header.html' %}
+        <thead>
+        <tr>
+            <th scope="col"
+                class="col"
+                style="width: 40%">
+                <h4>Name</h4>
+            </th>
+
+            <th scope="col"
+                class="col text-center"
+                style="width: 20%; display: table-cell">
+                <h4>Purchase Efficiency</h4>
+            </th>
+
+        </tr>
+        </thead>
         {% if purchase_values.empty %}
             <h> No purchases found.</h>
         {% endif %}
@@ -12,16 +27,20 @@
                     {% set faq_link = "draft" %}
                 {% elif display['type'] == "Card Pack" %}
                     {% set faq_link = "card-pack" %}
+                {% elif display['type'] == "Campaign" %}
+                    {% set faq_link = "campaign" %}
                 {% endif %}
 
                 <td class="text-left">
                     {{ display['type'] }}
                     <a id="info-link"
                        href="{{ url_for("FaqView:index") }}#{{ faq_link }}"
-                    style="margin:-3px">
+                       style="margin:-3px">
                         <i class="fas fa-info-circle fa-md"></i>
                     </a>
-                    : <b>{{ display['name'] }}</b>
+                    : <b><a href="{{ display['info_url'] }}">
+                    {{ display['name'] }}
+                </a></b>
                 </td>
                 <td class="text-center">
                     <a tabindex="0"

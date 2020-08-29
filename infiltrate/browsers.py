@@ -16,10 +16,15 @@ def get_texts_from_url_and_selector(url: str, selector: str) -> t.List[str]:
     return texts
 
 
-def get_first_text_from_url_and_selector(url: str, selector: str) -> str:
-    """Get the text from an element specified by the xpath at the url."""
+def get_first_element_from_url_and_selector(url: str, selector: str) -> bs4.element.Tag:
     soup = get_soup_from_url(url)
     element = soup.select_one(selector)
+    return element
+
+
+def get_first_text_from_url_and_selector(url: str, selector: str) -> str:
+    """Get the text from an element specified by the xpath at the url."""
+    element = get_first_element_from_url_and_selector(url, selector)
     result = element.text
     return result
 

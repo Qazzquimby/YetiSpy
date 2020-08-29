@@ -4,14 +4,16 @@ import collections
 import typing as t
 import pandas as pd
 import card_evaluation
+import dwd_news
 import models.card
+import models.card.draft
 import models.card_set
 import models.deck_search
 import models.rarity
 import models.user
 import rewards
 
-PurchaseRow = t.Tuple[str, str, int, float, float]
+PurchaseRow = t.Tuple[str, str, str, int, float, float]
 
 
 class PurchaseEvaluator(abc.ABC):
@@ -31,8 +33,8 @@ class PurchaseEvaluator(abc.ABC):
         Format is name, cost, value, value/cost"""
         raise NotImplementedError
 
-    def _make_row(self, name, value) -> PurchaseRow:
-        row = (self.type, name, self.cost, value, 1000 * value / self.cost)
+    def _make_row(self, name, info_link, value) -> PurchaseRow:
+        row = (self.type, name, info_link, self.cost, value, 1000 * value / self.cost)
         return row
 
 
@@ -53,10 +55,17 @@ class PackEvaluator(PurchaseEvaluator):
         pack_values = self.get_values()
 
         rows = [
-            self._make_row(card_set.name, pack_values[card_set])
+            self._make_row(
+                name=card_set.name,
+                info_link=self._make_info_link(card_set),
+                value=pack_values[card_set],
+            )
             for card_set in pack_values.keys()
         ]
         return rows
+
+    def _make_info_link(self, card_set: models.card_set.CardSet) -> str:
+        return f"https://eternalwarcry.com/cards?CardSet={card_set.set_num}"
 
 
 class CampaignEvaluator(PurchaseEvaluator):
@@ -75,7 +84,7 @@ class CampaignEvaluator(PurchaseEvaluator):
                 "set_num == @card_set.set_num and is_owned == False"
             )
 
-            value_for_pool = sum(cards_in_pool["own_value"])
+            value_for_pool = sum(cards_in_pool["play_value"])
             values[card_set] += value_for_pool
 
         return values
@@ -85,8 +94,17 @@ class CampaignEvaluator(PurchaseEvaluator):
 
         rows = []
         for card_set in campaign_values.keys():
-            rows.append(self._make_row(card_set.name, campaign_values[card_set]))
+            rows.append(
+                self._make_row(
+                    card_set.name,
+                    self._make_info_link(card_set),
+                    campaign_values[card_set],
+                )
+            )
         return rows
+
+    def _make_info_link(self, card_set: models.card_set.CardSet) -> str:
+        return f"https://eternalwarcry.com/cards?CardSet={card_set.set_num}"
 
 
 class DraftEvaluator(PurchaseEvaluator, abc.ABC):
@@ -151,7 +169,13 @@ class LoseAllGamesDraftEvaluator(DraftEvaluator):
 
     def get_df_rows(self) -> t.List[PurchaseRow]:
         draft_value = self.get_values()
-        return [self._make_row("No Wins", draft_value)]
+        return [
+            self._make_row(
+                "No Wins",
+                models.card.draft.most_recent_draft_pack_cards_url(),
+                draft_value,
+            )
+        ]
 
     def _get_no_wins_value(self):
         _, no_win_reward = list(self._get_win_chances_and_rewards())[0]
@@ -181,7 +205,13 @@ class AverageDraftEvaluator(DraftEvaluator):
 
     def get_df_rows(self) -> t.List[PurchaseRow]:
         draft_value = self.get_values()
-        return [self._make_row("Average Draft", draft_value)]
+        return [
+            self._make_row(
+                "Average Draft",
+                models.card.draft.most_recent_draft_pack_cards_url(),
+                draft_value,
+            )
+        ]
 
 
 class LeagueEvaluator(PurchaseEvaluator, abc.ABC):
@@ -401,7 +431,13 @@ Top 1000 has been at 21 wins, top 500 at 25 wins and top 100 at 30 wins
 
     def get_df_rows(self):
         first_league_value = self.get_value()
-        return [self._make_row("First of the Month", first_league_value)]
+        return [
+            self._make_row(
+                "First of the Month",
+                dwd_news.get_most_recent_league_article_url(),
+                first_league_value,
+            )
+        ]
 
 
 class AdditionalLeagueEvaluator(LeagueEvaluator):
@@ -412,7 +448,13 @@ class AdditionalLeagueEvaluator(LeagueEvaluator):
 
     def get_df_rows(self):
         additional_league_value = self.get_value()
-        return [self._make_row("Additional in the Month", additional_league_value)]
+        return [
+            self._make_row(
+                "Additional in the Month",
+                dwd_news.get_most_recent_league_article_url(),
+                additional_league_value,
+            )
+        ]
 
 
 def get_league_packs() -> t.Dict[models.card_set.CardSet, int]:
@@ -452,7 +494,7 @@ class _PurchasesValueDataframeGetter:
     def get_purchase_values(self):
         """Gets a dataframe of all purchase options
         with values based on card values."""
-        columns = ["type", "name", "gold_cost", "value", "value_per_gold"]
+        columns = ["type", "name", "info_url", "gold_cost", "value", "value_per_gold"]
         df_constructor = []
         for purchase_evaluator in self.purchase_evaluators:
             df_constructor += purchase_evaluator.get_df_rows()

@@ -20,14 +20,27 @@ def update_draft_pack_contents():
     db.session.commit()
 
 
-def _get_draft_pack_card_ids() -> t.List[CardId]:
+def most_recent_draft_pack_json_url():
     file_name_selector = (
         "#body-wrapper > div > div > div:nth-child(2) > div > a:nth-child(1)"
     )
     file_name = browsers.get_first_text_from_url_and_selector(
         "https://eternalwarcry.com/cards/download", file_name_selector
     ).strip()
-    draft_pack_url = f"https://eternalwarcry.com/content/draftpacks/{file_name}"
+    return f"https://eternalwarcry.com/content/draftpacks/{file_name}"
+
+
+def most_recent_draft_pack_cards_url():
+    draft_pack_id_selector = "#DraftPack > option:nth-child(2)"
+    draft_pack_id = browsers.get_first_element_from_url_and_selector(
+        "https://eternalwarcry.com/cards", draft_pack_id_selector
+    ).attrs["value"]
+    url = f"https://eternalwarcry.com/cards?DraftPack={draft_pack_id}"
+    return url
+
+
+def _get_draft_pack_card_ids() -> t.List[CardId]:
+    draft_pack_url = most_recent_draft_pack_json_url()
     newest_draft_pack = browsers.get_json_from_url(draft_pack_url)
     card_ids = []
     for card in newest_draft_pack:
