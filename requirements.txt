@@ -2,6 +2,7 @@ apscheduler
 beaker
 boltons
 bs4
+cryptography
 fast-autocomplete
 flask
 flask-bootstrap4
