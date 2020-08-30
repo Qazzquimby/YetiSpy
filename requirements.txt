@@ -3,7 +3,7 @@ beaker
 boltons
 bs4
 flask
-flask-bootstrap
+flask-bootstrap4
 flask-login
 flask-sqlalchemy
 mechanicalsoup
