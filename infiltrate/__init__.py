@@ -19,11 +19,7 @@ def _set_config(app):
         "WARCRY_KEY",
         "UPDATE_KEY",
         "ENV",
-        "DB_USER",
-        "DB_PASSWORD",
-        "DB_HOST_PORT",
-        "DB_NAME",
-        "DATABASE",
+        "DATABASE_URL",
     ]
     for var in variables:
         value = os.environ.get(var)
@@ -36,7 +32,7 @@ _set_config(application)
 
 
 def _setup_db(app):
-    app.config["SQLALCHEMY_DATABASE_URI"] = app.config["DATABASE"]
+    app.config["SQLALCHEMY_DATABASE_URI"] = app.config["DATABASE_URL"]
     database = SQLAlchemy(
         app, session_options={"expire_on_commit": False}  # Fixes DetachedInstanceError
     )
