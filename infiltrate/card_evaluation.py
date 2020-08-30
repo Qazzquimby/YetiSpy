@@ -69,7 +69,6 @@ class PlayCountFrame(card_frame_bases.CardCopy):
         play_count_df = df_types.sqlalchemy_objects_to_df(
             weighted_deck_search.deck_search.cards
         )
-        print(f"Debug: {play_count_df.columns}")
         play_count_df.num_decks_with_count_or_less *= weighted_deck_search.weight
         return play_count_df
 
