@@ -214,6 +214,3 @@ def create_weighted_deck_searches():
 def setup():
     create_deck_searches()
     create_weighted_deck_searches()
-
-
-setup()

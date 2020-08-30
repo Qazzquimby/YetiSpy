@@ -20,7 +20,7 @@ UPDATES_TO_INTERVALS = {
 def initial_update():
     card.db.create_all()
     card.db.session.commit()
-    # models.card_set.CardSetName.query.delete()
+    deck_search.setup()
     if len(card_set.CardSetName.query.all()) == 0:
         for update in UPDATES_TO_INTERVALS.keys():
             update()
