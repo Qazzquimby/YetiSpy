@@ -9,8 +9,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 import boltons.fileutils
 
-import infiltrate.models.deck_search
-
 application = Flask(__name__, instance_relative_config=True)
 application.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 

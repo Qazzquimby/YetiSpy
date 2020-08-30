@@ -8,7 +8,7 @@ import infiltrate.models.card as card
 import infiltrate.models.card_set as card_set
 import infiltrate.models.deck as deck
 import infiltrate.models.deck_search as deck_search
-import infiltrate.models.rarity
+import infiltrate.models.rarity as rarity
 
 UPDATES_TO_INTERVALS = {
     card.update_cards: 3,
@@ -23,7 +23,7 @@ def initial_update():
     card.db.session.commit()
 
     deck_search.setup()
-    infiltrate.models.rarity.create_rarities()
+    rarity.create_rarities()
 
     if len(card_set.CardSetName.query.all()) == 0:
         for update in UPDATES_TO_INTERVALS.keys():
