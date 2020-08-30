@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 import boltons.fileutils
 
-application = Flask(__name__, instance_relative_config=True)
+application = Flask(__name__)
 application.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
