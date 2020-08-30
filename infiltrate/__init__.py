@@ -118,6 +118,7 @@ def teardown_request(exception):
     db.session.remove()
 
 
+setup_application(application)
+
 if __name__ == "__main__":
-    setup_application(application)
     application.run()
