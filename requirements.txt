@@ -2,6 +2,7 @@ apscheduler
 beaker
 boltons
 bs4
+fast-autocomplete
 flask
 flask-bootstrap4
 Flask-Classy
