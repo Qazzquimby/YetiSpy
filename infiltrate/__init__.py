@@ -1,4 +1,6 @@
 """Handles creating the flask app"""
+import os
+
 import flask
 import flask_login
 from flask import Flask
@@ -11,14 +13,26 @@ application = Flask(__name__, instance_relative_config=True)
 application.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
-def _set_config(app, test_config):
-    if test_config:
-        app.config.update(test_config)
-    else:
-        app.config.from_pyfile("config.py", silent=True)
+def _set_config(app):
+    variables = [
+        "SECRET_KEY",
+        "WARCRY_KEY",
+        "UPDATE_KEY",
+        "ENV",
+        "DB_USER",
+        "DB_PASSWORD",
+        "DB_HOST_PORT",
+        "DB_NAME",
+        "DATABASE",
+    ]
+    for var in variables:
+        value = os.environ.get(var)
+        if value is None:
+            raise ValueError(f"{var} missing from environment.")
+        app.config[var] = value
 
 
-_set_config(application, test_config=None)
+_set_config(application)
 
 
 def _setup_db(app):
