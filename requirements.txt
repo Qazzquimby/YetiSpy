@@ -4,6 +4,7 @@ boltons
 bs4
 flask
 flask-bootstrap4
+Flask-Classy
 flask-login
 flask-sqlalchemy
 mechanicalsoup
