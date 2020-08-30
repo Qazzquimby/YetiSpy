@@ -83,6 +83,3 @@ def create_rarities():
     for rarity in RARITIES:
         db.session.merge(rarity)
     db.session.commit()
-
-
-create_rarities()
