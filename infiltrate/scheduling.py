@@ -19,6 +19,7 @@ UPDATES_TO_INTERVALS = {
 
 
 def initial_update():
+    card.db.create_all()
     card.db.drop_all()
     card.db.create_all()
     card.db.session.commit()
