@@ -2,8 +2,7 @@
 
 import sqlalchemy_utils
 from sqlalchemy_utils.types.encrypted.encrypted_type import FernetEngine
-
-import models.user.collection
+import infiltrate.models.user.collection as collection
 from infiltrate import application, db
 from flask_login import UserMixin
 

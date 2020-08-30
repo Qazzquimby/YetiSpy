@@ -2,9 +2,7 @@
 import flask
 import requests
 from flask_classy import FlaskView
-
-# noinspection PyMethodMayBeStatic
-import views.login
+import flask_login
 
 
 # noinspection PyMethodMayBeStatic
@@ -15,7 +13,7 @@ class UpdateCollectionView(FlaskView):
         return flask.render_template("update_collection.html")
 
     def post(self):
-        user = views.login.get_by_cookie()
+        user = flask_login.current_user
 
         try:
             card_import = flask.request.form["import-cards-text"]

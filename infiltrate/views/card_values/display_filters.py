@@ -3,10 +3,8 @@ from abc import ABC
 
 import numpy as np
 
-from card_evaluation import OwnValueFrame
-import models.card
-import models.card_set
-import models.user
+from infiltrate.card_evaluation import OwnValueFrame
+import infiltrate.models.card_set as card_set
 
 
 class Filter(ABC):
@@ -27,7 +25,7 @@ class UnownedFilter(OwnershipFilter):
 
     # noinspection PyMissingOrEmptyDocstring
     @classmethod
-    def filter(cls, cards):
+    def filter(cls, cards: OwnValueFrame):
         filtered_df = cards.query("is_owned == False")
         return OwnValueFrame(cards.user, filtered_df)
 
@@ -92,7 +90,7 @@ class CraftSort(CardDisplaySort):
     def filter(cls, cards):
         """Filters out uncraftable."""
         filtered_df = cards[
-            np.logical_not(models.card_set.CardSet.is_campaign_from_num(cards.set_num))
+            np.logical_not(card_set.CardSet.is_campaign_from_num(cards.set_num))
         ]
         return OwnValueFrame(cards.user, filtered_df)
 

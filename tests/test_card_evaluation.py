@@ -1,15 +1,12 @@
 import pytest
 import pandas as pd
 
-import card_frame_bases
-import models.card
-import models.deck
-
-import models.rarity
-
-import card_evaluation
-import models.user.owns_card
-import models.deck_search
+import infiltrate.card_frame_bases as card_frame_bases
+import infiltrate.models.card as card
+import infiltrate.models.deck as deck
+import infiltrate.models.rarity as rarity
+import infiltrate.card_evaluation as card_evaluation
+import infiltrate.models.deck_search as deck_search
 
 
 def test_card_copy_creates_index():
@@ -32,7 +29,7 @@ def test_card_details():
             {
                 "set_num": 0,
                 "card_num": 0,
-                "rarity": models.rarity.COMMON,
+                "rarity": rarity.COMMON,
                 "image_url": "image_url",
                 "details_url": "details_url",
                 "is_in_draft_pack": "is_in_draft_pack",
@@ -48,29 +45,29 @@ def test_card_details():
 def test_play_count_frame_from_weighted_deck_searches():
     sut = card_evaluation.PlayCountFrame.from_weighted_deck_searches(
         weighted_deck_searches=[
-            models.deck_search.WeightedDeckSearch(
+            deck_search.WeightedDeckSearch(
                 deck_search_id=0,
                 user_id=0,
                 name="",
                 weight=1,
-                deck_search=models.deck_search.DeckSearch(
+                deck_search=deck_search.DeckSearch(
                     id=0,
                     cards=[
-                        models.deck_search.DeckSearchHasCard(
+                        deck_search.DeckSearchHasCard(
                             decksearch_id=0,
                             set_num=0,
                             card_num=0,
                             count_in_deck=1,
                             num_decks_with_count_or_less=2,
                         ),
-                        models.deck_search.DeckSearchHasCard(
+                        deck_search.DeckSearchHasCard(
                             decksearch_id=0,
                             set_num=0,
                             card_num=0,
                             count_in_deck=2,
                             num_decks_with_count_or_less=1,
                         ),
-                        models.deck_search.DeckSearchHasCard(
+                        deck_search.DeckSearchHasCard(
                             decksearch_id=0,
                             set_num=0,
                             card_num=1,
@@ -86,7 +83,7 @@ def test_play_count_frame_from_weighted_deck_searches():
                 {
                     "set_num": 0,
                     "card_num": 0,
-                    "rarity": models.rarity.COMMON,
+                    "rarity": rarity.COMMON,
                     "image_url": "image_url",
                     "details_url": "details_url",
                     "is_in_draft_pack": "is_in_draft_pack",
@@ -94,7 +91,7 @@ def test_play_count_frame_from_weighted_deck_searches():
                 {
                     "set_num": 0,
                     "card_num": 1,
-                    "rarity": models.rarity.LEGENDARY,
+                    "rarity": rarity.LEGENDARY,
                     "image_url": "image_url",
                     "details_url": "details_url",
                     "is_in_draft_pack": "is_in_draft_pack",
@@ -117,11 +114,7 @@ def test_play_rate_frame_from_play_counts():
                 "details_url": ["details_url"] * 3,
                 "image_url": ["image_url"] * 3,
                 "is_in_draft_pack": [True] * 3,
-                "rarity": [
-                    models.rarity.COMMON,
-                    models.rarity.COMMON,
-                    models.rarity.LEGENDARY,
-                ],
+                "rarity": [rarity.COMMON, rarity.COMMON, rarity.LEGENDARY,],
                 "set_num": [0, 0, 0],
             }
         )
@@ -141,11 +134,7 @@ def test_play_value_frame_from_play_rates():
                 "details_url": ["details_url"] * 3,
                 "image_url": ["image_url"] * 3,
                 "is_in_draft_pack": [True] * 3,
-                "rarity": [
-                    models.rarity.COMMON,
-                    models.rarity.COMMON,
-                    models.rarity.LEGENDARY,
-                ],
+                "rarity": [rarity.COMMON, rarity.COMMON, rarity.LEGENDARY,],
                 "set_num": [0, 0, 0],
                 "play_rate": [16.25, 32.5, 16.25],
             }
@@ -176,11 +165,7 @@ def test_play_craft_efficency_from_play_value():
                 "details_url": ["details_url"] * 3,
                 "image_url": ["image_url"] * 3,
                 "is_in_draft_pack": [True] * 3,
-                "rarity": [
-                    models.rarity.COMMON,
-                    models.rarity.COMMON,
-                    models.rarity.LEGENDARY,
-                ],
+                "rarity": [rarity.COMMON, rarity.COMMON, rarity.LEGENDARY,],
                 "set_num": [0, 0, 0],
                 "play_rate": [16.25, 32.5, 16.25],
                 "play_value": [100, 50, 50],
@@ -203,11 +188,7 @@ def test_own_value_frame_from_play_craft_efficency():
                 "details_url": ["details_url"] * 3,
                 "image_url": ["image_url"] * 3,
                 "is_in_draft_pack": [True] * 3,
-                "rarity": [
-                    models.rarity.COMMON,
-                    models.rarity.COMMON,
-                    models.rarity.LEGENDARY,
-                ],
+                "rarity": [rarity.COMMON, rarity.COMMON, rarity.LEGENDARY,],
                 "set_num": [0, 0, 0],
                 "play_rate": [16.25, 32.5, 16.25],
                 "play_value": [100, 50, 50],

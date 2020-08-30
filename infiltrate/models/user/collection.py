@@ -1,16 +1,18 @@
 """The cards a user owns"""
 
 import typing as t
-import browsers
-import card_collections
-import models.card
 import pandas as pd
 
+import infiltrate.browsers as browsers
+import infiltrate.card_collections as card_collections
+import infiltrate.models.card as card
+
+
 if t.TYPE_CHECKING:
-    from models.user import User
+    from infiltrate.models.user import User
 
 
-def get_collection_from_ew(user: "User") -> t.Dict[models.card.CardId, int]:
+def get_collection_from_ew(user: "User") -> t.Dict[card.CardId, int]:
     if not user.is_authenticated:
         return {}
     url = f"https://api.eternalwarcry.com/v1/useraccounts/collection?key={user.ew_key}"

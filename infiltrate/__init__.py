@@ -41,12 +41,12 @@ def setup_application(app):
 
 
 def _register_views(app):
-    from views.card_values.cards_view import CardsView
+    from infiltrate.views.card_values.cards_view import CardsView
     from infiltrate.views.update_api import UpdateAPI
     from infiltrate.views.login import LoginView, RegisterView
+    from infiltrate.views.purchases_view import PurchasesView
     from infiltrate.views.update_collection import UpdateCollectionView
-    from views.purchases_view import PurchasesView
-    from views.faq import FaqView
+    from infiltrate.views.faq import FaqView
 
     CardsView.register(app)
     PurchasesView.register(app)
@@ -86,7 +86,7 @@ def _setup_login_manager(app):
     login_manager.login_view = "LoginView:index"
     login_manager.init_app(app)
 
-    from models.user import User
+    from infiltrate.models.user import User
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -94,7 +94,7 @@ def _setup_login_manager(app):
 
 
 def updates():
-    import scheduling
+    import infiltrate.scheduling as scheduling
 
     scheduling.initial_update()
     scheduling.schedule_updates()

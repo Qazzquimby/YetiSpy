@@ -1,7 +1,7 @@
 """Handles extracting events from """
 import itertools
 
-import browsers
+import infiltrate.browsers as browsers
 
 ROOT_URL = "https://www.direwolfdigital.com/"
 NEWS_URL = "https://www.direwolfdigital.com/news/"

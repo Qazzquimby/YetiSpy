@@ -4,9 +4,10 @@ import flask
 import flask_login
 from flask_classy import FlaskView
 from werkzeug.security import generate_password_hash, check_password_hash
-import browsers
 from infiltrate import db
-from models.user import User
+
+import infiltrate.browsers as browsers
+from infiltrate.models.user import User
 
 
 class AuthenticationException(Exception):

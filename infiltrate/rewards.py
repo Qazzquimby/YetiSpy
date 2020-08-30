@@ -4,10 +4,10 @@ import typing as t
 
 import numpy as np
 
-import caches
-import models.card
-import models.card_set
-import models.rarity
+import infiltrate.caches as caches
+import infiltrate.models.card as card
+import infiltrate.models.card_set as card_sets
+import infiltrate.models.rarity as rarities
 
 DAYS_IN_WEEK = 7
 
@@ -17,13 +17,13 @@ class CardClass:
 
     def __init__(
         self,
-        rarity: models.rarity.Rarity,
-        sets: t.Optional[t.List[models.card_set.CardSet]] = None,
+        rarity: rarities.Rarity,
+        sets: t.Optional[t.List[card_sets.CardSet]] = None,
         is_premium=False,
     ):
         self.sets = sets
         if self.sets is None:
-            self.sets = models.card_set.get_main_sets()
+            self.sets = card_sets.get_main_sets()
 
         self.rarity = rarity
 
@@ -32,15 +32,15 @@ class CardClass:
     @property
     def num_cards(self) -> int:  # todo cache this
         """The total number of cards in the pool."""
-        session = models.card.db.session
+        session = card.db.session
 
         sets = self.sets
 
-        set_nums = models.card_set.get_set_nums_from_sets(sets)
+        set_nums = card_sets.get_set_nums_from_sets(sets)
         count = (
-            session.query(models.card.Card)
-            .filter(models.card.Card.set_num.in_(set_nums))
-            .filter(models.card.Card.rarity == self.rarity.name)
+            session.query(card.Card)
+            .filter(card.Card.set_num.in_(set_nums))
+            .filter(card.Card.rarity == self.rarity.name)
             .count()
         )
         return count
@@ -67,7 +67,7 @@ class CardClass:
         avg_set_value = sum(set_values) / len(set_values)
         return avg_set_value
 
-    def _get_value_for_set(self, card_data, card_set: models.card_set.CardSet) -> float:
+    def _get_value_for_set(self, card_data, card_set: card_sets.CardSet) -> float:
         cards_in_set_and_rarity = card_data[
             np.logical_and(
                 card_data["set_num"] == card_set.set_num,
@@ -103,7 +103,7 @@ def get_value(card_pool):  # called many times and slow
 class DraftPackCardClass(CardClass):
     """A pool of cards from from a draft pack, instead of a set."""
 
-    def __init__(self, rarity: models.rarity.Rarity):
+    def __init__(self, rarity: rarities.Rarity):
         super().__init__(rarity, None, False)
         self.sets = ["DRAFT"]
 
@@ -111,12 +111,12 @@ class DraftPackCardClass(CardClass):
     @functools.lru_cache(maxsize=1)
     def num_cards(self) -> int:
         """The total number of cards in the pool."""
-        session = models.card.db.session
+        session = card.db.session
 
         count = (
-            session.query(models.card.Card)
-            .filter(models.card.Card.is_in_draft_pack is True)
-            .filter(models.card.Card.rarity == self.rarity)
+            session.query(card.Card)
+            .filter(card.Card.is_in_draft_pack is True)
+            .filter(card.Card.rarity == self.rarity)
             .count()
         )  # Check that the rarity equality is correct
         return count
@@ -252,13 +252,13 @@ class PlayerRewards:  # TODO Make into model to persist
 
     @caches.mem_cache.cache(f"player_rewards_findabilities", expires=120)
     def get_chance_of_specific_card_drop_in_a_week(
-        self, rarity: models.rarity.Rarity, card_set: models.card_set.CardSet
+        self, rarity: rarities.Rarity, card_set: card_sets.CardSet
     ):
         chances = []
         for card_class_with_amount in self.card_classes_with_amounts_per_week:
             rarity_match = rarity == card_class_with_amount.card_class.rarity
 
-            set_nums = models.card_set.get_set_nums_from_sets(
+            set_nums = card_sets.get_set_nums_from_sets(
                 card_class_with_amount.card_class.sets
             )
 
@@ -326,12 +326,12 @@ class Reward:
         return total_value
 
 
-def get_pack_contents_for_sets(sets: t.List[models.card_set.CardSet]):
+def get_pack_contents_for_sets(sets: t.List[card_sets.CardSet]):
     card_classes_with_amounts = [
         CardClassWithAmount(
             card_class=CardClass(rarity=rarity, sets=sets), amount=rarity.num_in_pack
         )
-        for rarity in models.rarity.RARITIES
+        for rarity in rarities.RARITIES
     ]
     return card_classes_with_amounts
 
@@ -339,7 +339,7 @@ def get_pack_contents_for_sets(sets: t.List[models.card_set.CardSet]):
 def get_draft_pack_contents():
     contents = [
         CardClassWithAmount(card_class=DraftPackCardClass(rarity=rarity))
-        for rarity in models.rarity.RARITIES
+        for rarity in rarities.RARITIES
     ]
     return contents
 
@@ -355,42 +355,33 @@ class RewardsPerWeek:
 WOOD_CHEST = Reward(gold=24)
 BRONZE_CHEST = Reward(
     gold=40,
-    card_classes=[
-        CardClassWithAmount(card_class=CardClass(rarity=models.rarity.COMMON))
-    ],
+    card_classes=[CardClassWithAmount(card_class=CardClass(rarity=rarities.COMMON))],
 )
 SILVER_CHEST = Reward(
     gold=225,
-    card_classes=[
-        CardClassWithAmount(card_class=CardClass(rarity=models.rarity.UNCOMMON))
-    ],
+    card_classes=[CardClassWithAmount(card_class=CardClass(rarity=rarities.UNCOMMON))],
 )
 GOLD_CHEST = Reward(
-    gold=495,
-    card_classes=get_pack_contents_for_sets(models.card_set.get_old_main_sets()),
+    gold=495, card_classes=get_pack_contents_for_sets(card_sets.get_old_main_sets()),
 )
 
 DIAMOND_CHEST = Reward(
     gold=1850,
     card_classes=(
-        get_pack_contents_for_sets(models.card_set.get_old_main_sets())
-        + [
-            CardClassWithAmount(
-                CardClass(rarity=models.rarity.UNCOMMON, is_premium=True)
-            )
-        ]
+        get_pack_contents_for_sets(card_sets.get_old_main_sets())
+        + [CardClassWithAmount(CardClass(rarity=rarities.UNCOMMON, is_premium=True))]
     ),
 )
 
 CARD_PACKS = {
     card_set: Reward(card_classes=get_pack_contents_for_sets([card_set]))
-    for card_set in models.card_set.get_main_sets()
+    for card_set in card_sets.get_main_sets()
 }
 
 DRAFT_PACK = Reward(card_classes=get_draft_pack_contents())
 
 FIRST_WIN_OF_THE_DAY = Reward(
-    card_classes=get_pack_contents_for_sets([models.card_set.get_newest_main_set()])
+    card_classes=get_pack_contents_for_sets([card_sets.get_newest_main_set()])
 )
 
 DEFAULT_PLAYER_REWARD_RATE = PlayerRewards(

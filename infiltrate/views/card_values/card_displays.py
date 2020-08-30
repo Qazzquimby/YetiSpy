@@ -5,12 +5,12 @@ import typing as t
 import numpy as np
 import pandas as pd
 
-import global_data
-from card_evaluation import OwnValueFrame
-from card_frame_bases import CardDetails
-import models.card
-import models.user
-from views.card_values import display_filters
+import infiltrate.global_data as global_data
+from infiltrate.models.user import User
+from infiltrate.card_evaluation import OwnValueFrame
+from infiltrate.card_frame_bases import CardDetails
+import infiltrate.models.card as card
+from infiltrate.views.card_values import display_filters
 
 
 # TODO Tests :(
@@ -31,7 +31,7 @@ class CardDisplays:
 
     @classmethod
     @functools.lru_cache(maxsize=50)
-    def make_for_user(cls, user: models.user.User, card_details: CardDetails = None):
+    def make_for_user(cls, user: User, card_details: CardDetails = None):
         """Makes the cards for a user, cached for immediate reuse."""
         if card_details is None:
             card_details = global_data.all_cards
@@ -69,7 +69,7 @@ class CardDisplays:
         displays_on_page = card_display_page_generator.run()
         return card_display_page_generator.page_num, displays_on_page
 
-    def get_card(self, card_id: models.card.CardId) -> pd.DataFrame:
+    def get_card(self, card_id: card.CardId) -> pd.DataFrame:
         """Gets all displays matching the given card id
         1 display for each playset size."""
         displays_df = self.value_info.df[
@@ -136,7 +136,6 @@ class CardDisplayPage:
             self.value_info.user,
             self.value_info[start_index : start_index + self.cards_per_page],
         )
-        # displays_on_page = self._group_page(displays_on_page)
         return displays_on_page
 
     def _wrap_negative_page_num(self, page_num) -> int:

@@ -6,9 +6,9 @@ from datetime import datetime
 
 import tqdm
 
-import browsers
-import global_data
-import models.card
+import infiltrate.browsers as browsers
+import infiltrate.global_data as global_data
+import infiltrate.models.card as card
 
 # todo replace application with config injection
 from infiltrate import application, db
@@ -25,13 +25,13 @@ class DeckHasCard(db.Model):
     num_played = db.Column("num_played", db.Integer, nullable=False)
     __table_args__ = (
         db.ForeignKeyConstraint(
-            [set_num, card_num], [models.card.Card.set_num, models.card.Card.card_num]
+            [set_num, card_num], [card.Card.set_num, card.Card.card_num]
         ),
         {},
     )
 
-    def to_card_id(self) -> models.card.CardId:
-        return models.card.CardId(set_num=self.set_num, card_num=self.card_num)
+    def to_card_id(self) -> card.CardId:
+        return card.CardId(set_num=self.set_num, card_num=self.card_num)
 
 
 class DeckType(enum.Enum):
@@ -219,7 +219,7 @@ def update_decks():
             for card_json in cards_json:
                 set_num = card_json["set_number"]
                 card_num = card_json["eternal_id"]
-                card_id = models.card.CardId(set_num, card_num)
+                card_id = card.CardId(set_num, card_num)
 
                 # todo better to pass all_cards to this than use the global
                 if global_data.all_cards.card_exists(card_id):

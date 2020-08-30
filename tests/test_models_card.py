@@ -1,8 +1,7 @@
 import pandas as pd
 
-import models.card
-import models.rarity
-
+import infiltrate.models.card as card
+import infiltrate.models.rarity as rarity
 import pytest
 
 
@@ -13,11 +12,7 @@ def all_cards():
             "set_num": [0, 0, 0],
             "card_num": [0, 1, 2],
             "name": ["0", "1", "2"],
-            "rarity": [
-                models.rarity.COMMON,
-                models.rarity.UNCOMMON,
-                models.rarity.RARE,
-            ],
+            "rarity": [rarity.COMMON, rarity.UNCOMMON, rarity.RARE,],
             "image_url": [
                 "https://cards.eternalwarcry.com/cards/full/Kaleb's_Favor.png",
                 "https://cards.eternalwarcry.com/cards/full/Blazing_Renegade.png",
@@ -31,10 +26,10 @@ def all_cards():
             "is_in_draft_pack": [0, 0, 1],
         }
     )
-    return models.card.CardData(mock_all_cards_df)
+    return card.CardData(mock_all_cards_df)
 
 
 def test_card_exists(all_cards):
-    assert all_cards.card_exists(card_id=models.card.CardId(0, 0))
-    assert not all_cards.card_exists(card_id=models.card.CardId(1, 0))
-    assert not all_cards.card_exists(card_id=models.card.CardId(0, 3))
+    assert all_cards.card_exists(card_id=card.CardId(0, 0))
+    assert not all_cards.card_exists(card_id=card.CardId(1, 0))
+    assert not all_cards.card_exists(card_id=card.CardId(0, 3))

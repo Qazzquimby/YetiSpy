@@ -3,15 +3,15 @@ import abc
 import collections
 import typing as t
 import pandas as pd
-import card_evaluation
-import dwd_news
-import models.card
-import models.card.draft
-import models.card_set
-import models.deck_search
-import models.rarity
-import models.user
-import rewards
+
+import infiltrate.card_evaluation as card_evaluation
+import infiltrate.dwd_news as dwd_news
+import infiltrate.models.card as card
+import infiltrate.models.card.draft as card_draft
+import infiltrate.models.card_set as models_card_set
+import infiltrate.models.rarity as rarity
+from infiltrate.models.user import User
+import infiltrate.rewards as rewards
 
 PurchaseRow = t.Tuple[str, str, str, int, float, float]
 
@@ -44,7 +44,7 @@ class PackEvaluator(PurchaseEvaluator):
     def __init__(self, card_data):
         super().__init__(card_data, cost=1_000, purchase_type="Card Pack")
 
-    def get_values(self) -> t.Dict[models.card_set.CardSet, int]:
+    def get_values(self) -> t.Dict[models_card_set.CardSet, int]:
         values = {
             card_set: card_pack.get_value(self.card_data)
             for card_set, card_pack in rewards.CARD_PACKS.items()
@@ -64,7 +64,7 @@ class PackEvaluator(PurchaseEvaluator):
         ]
         return rows
 
-    def _make_info_link(self, card_set: models.card_set.CardSet) -> str:
+    def _make_info_link(self, card_set: models_card_set.CardSet) -> str:
         return f"https://eternalwarcry.com/cards?CardSet={card_set.set_num}"
 
 
@@ -76,7 +76,7 @@ class CampaignEvaluator(PurchaseEvaluator):
 
     def get_values(self):
         card_data = self.card_data.copy()
-        card_sets = models.card_set.get_campaign_sets()
+        card_sets = models_card_set.get_campaign_sets()
         values = collections.defaultdict(int)
 
         for card_set in card_sets:
@@ -103,7 +103,7 @@ class CampaignEvaluator(PurchaseEvaluator):
             )
         return rows
 
-    def _make_info_link(self, card_set: models.card_set.CardSet) -> str:
+    def _make_info_link(self, card_set: models_card_set.CardSet) -> str:
         return f"https://eternalwarcry.com/cards?CardSet={card_set.set_num}"
 
 
@@ -114,7 +114,7 @@ class DraftEvaluator(PurchaseEvaluator, abc.ABC):
         super().__init__(card_data, cost=5_000, purchase_type="Draft")
 
     def _get_packs_value(self):
-        newest_set = models.card_set.get_newest_main_set()
+        newest_set = models_card_set.get_newest_main_set()
         newest_pack_value = rewards.CARD_PACKS[newest_set].get_value(self.card_data)
         draft_pack_value = rewards.DRAFT_PACK.get_value(self.card_data)
         value = 2 * newest_pack_value + 2 * draft_pack_value
@@ -171,9 +171,7 @@ class LoseAllGamesDraftEvaluator(DraftEvaluator):
         draft_value = self.get_values()
         return [
             self._make_row(
-                "No Wins",
-                models.card.draft.most_recent_draft_pack_cards_url(),
-                draft_value,
+                "No Wins", card.draft.most_recent_draft_pack_cards_url(), draft_value,
             )
         ]
 
@@ -208,7 +206,7 @@ class AverageDraftEvaluator(DraftEvaluator):
         return [
             self._make_row(
                 "Average Draft",
-                models.card.draft.most_recent_draft_pack_cards_url(),
+                card.draft.most_recent_draft_pack_cards_url(),
                 draft_value,
             )
         ]
@@ -305,16 +303,14 @@ Top 1000 has been at 21 wins, top 500 at 25 wins and top 100 at 30 wins
             * [
                 rewards.Reward(
                     card_classes=rewards.get_pack_contents_for_sets(
-                        [models.card_set.get_newest_main_set()]
+                        [models_card_set.get_newest_main_set()]
                     )
                 )
             ]
             + [
                 rewards.Reward(
                     card_classes=[
-                        rewards.CardClass(
-                            rarity=models.rarity.LEGENDARY, is_premium=True
-                        )
+                        rewards.CardClass(rarity=rarity.LEGENDARY, is_premium=True)
                     ]
                 )
             ],
@@ -322,16 +318,14 @@ Top 1000 has been at 21 wins, top 500 at 25 wins and top 100 at 30 wins
             * [
                 rewards.Reward(
                     card_classes=rewards.get_pack_contents_for_sets(
-                        [models.card_set.get_newest_main_set()]
+                        [models_card_set.get_newest_main_set()]
                     )
                 )
             ]
             + [
                 rewards.Reward(
                     card_classes=[
-                        rewards.CardClass(
-                            rarity=models.rarity.LEGENDARY, is_premium=True
-                        )
+                        rewards.CardClass(rarity=rarity.LEGENDARY, is_premium=True)
                     ]
                 )
             ],
@@ -339,16 +333,14 @@ Top 1000 has been at 21 wins, top 500 at 25 wins and top 100 at 30 wins
             * [
                 rewards.Reward(
                     card_classes=rewards.get_pack_contents_for_sets(
-                        [models.card_set.get_newest_main_set()]
+                        [models_card_set.get_newest_main_set()]
                     )
                 )
             ]
             + [
                 rewards.Reward(
                     card_classes=[
-                        rewards.CardClass(
-                            rarity=models.rarity.LEGENDARY, is_premium=True
-                        )
+                        rewards.CardClass(rarity=rarity.LEGENDARY, is_premium=True)
                     ]
                 )
             ],
@@ -356,16 +348,14 @@ Top 1000 has been at 21 wins, top 500 at 25 wins and top 100 at 30 wins
             * [
                 rewards.Reward(
                     card_classes=rewards.get_pack_contents_for_sets(
-                        [models.card_set.get_newest_main_set()]
+                        [models_card_set.get_newest_main_set()]
                     )
                 )
             ]
             + [
                 rewards.Reward(
                     card_classes=[
-                        rewards.CardClass(
-                            rarity=models.rarity.LEGENDARY, is_premium=True
-                        )
+                        rewards.CardClass(rarity=rarity.LEGENDARY, is_premium=True)
                     ]
                 )
             ],
@@ -373,14 +363,14 @@ Top 1000 has been at 21 wins, top 500 at 25 wins and top 100 at 30 wins
             * [
                 rewards.Reward(
                     card_classes=rewards.get_pack_contents_for_sets(
-                        [models.card_set.get_newest_main_set()]
+                        [models_card_set.get_newest_main_set()]
                     )
                 )
             ]
             + [
                 rewards.Reward(
                     card_classes=[
-                        rewards.CardClass(rarity=models.rarity.RARE, is_premium=True)
+                        rewards.CardClass(rarity=rarity.RARE, is_premium=True)
                     ]
                 )
             ],
@@ -388,14 +378,14 @@ Top 1000 has been at 21 wins, top 500 at 25 wins and top 100 at 30 wins
             * [
                 rewards.Reward(
                     card_classes=rewards.get_pack_contents_for_sets(
-                        [models.card_set.get_newest_main_set()]
+                        [models_card_set.get_newest_main_set()]
                     )
                 )
             ]
             + [
                 rewards.Reward(
                     card_classes=[
-                        rewards.CardClass(rarity=models.rarity.RARE, is_premium=True)
+                        rewards.CardClass(rarity=rarity.RARE, is_premium=True)
                     ]
                 )
             ],
@@ -403,14 +393,14 @@ Top 1000 has been at 21 wins, top 500 at 25 wins and top 100 at 30 wins
             * [
                 rewards.Reward(
                     card_classes=rewards.get_pack_contents_for_sets(
-                        [models.card_set.get_newest_main_set()]
+                        [models_card_set.get_newest_main_set()]
                     )
                 )
             ]
             + [
                 rewards.Reward(
                     card_classes=[
-                        rewards.CardClass(rarity=models.rarity.RARE, is_premium=True)
+                        rewards.CardClass(rarity=rarity.RARE, is_premium=True)
                     ]
                 )
             ],
@@ -457,18 +447,16 @@ class AdditionalLeagueEvaluator(LeagueEvaluator):
         ]
 
 
-def get_league_packs() -> t.Dict[models.card_set.CardSet, int]:
-    card_sets = models.card_set.CardSetName.query.all()
+def get_league_packs() -> t.Dict[models_card_set.CardSet, int]:
+    card_sets = models_card_set.CardSetName.query.all()
     packs = {
-        models.card_set.CardSet.from_name(card_set.name): card_set.num_in_league
+        models_card_set.CardSet.from_name(card_set.name): card_set.num_in_league
         for card_set in card_sets
     }
     return packs
 
 
-def get_purchase_values(
-    own_values: card_evaluation.OwnValueFrame, user: models.user.User
-):
+def get_purchase_values(own_values: card_evaluation.OwnValueFrame, user: User):
     getter = _PurchasesValueDataframeGetter(own_values, user)
     return getter.get_purchase_values()
 
@@ -476,9 +464,7 @@ def get_purchase_values(
 class _PurchasesValueDataframeGetter:
     """Helper class used by get_purchase_values_df."""
 
-    def __init__(
-        self, card_data: card_evaluation.OwnValueFrame, user: models.user.User
-    ):
+    def __init__(self, card_data: card_evaluation.OwnValueFrame, user: User):
         self.card_data = card_data
         self.user = user
 

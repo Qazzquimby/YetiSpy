@@ -2,9 +2,9 @@ import flask
 import flask_classy
 import flask_login
 
-import card_evaluation
-import global_data
-import purchases
+import infiltrate.card_evaluation as card_evaluation
+import infiltrate.global_data as global_data
+import infiltrate.purchases as purchases
 
 
 class PurchasesView(flask_classy.FlaskView):

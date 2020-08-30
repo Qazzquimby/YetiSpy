@@ -3,11 +3,10 @@ import flask
 import flask_login
 from flask_classy import FlaskView
 
-import models.card
-import models.card.completion
-import views.card_values.card_displays as card_displays
-import views.card_values.display_filters as display_filters
-import global_data
+import infiltrate.models.card.completion as completion
+import infiltrate.views.card_values.card_displays as card_displays
+import infiltrate.views.card_values.display_filters as display_filters
+import infiltrate.global_data as global_data
 
 
 class CardsView(FlaskView):
@@ -58,9 +57,7 @@ class CardsView(FlaskView):
 
         search_str = search_str[1:]
         search_str = search_str.lower()
-        matching_card_df = models.card.completion.get_matching_card(
-            displays.value_info, search_str
-        )
+        matching_card_df = completion.get_matching_card(displays.value_info, search_str)
         if len(matching_card_df) > 0:
             displays = card_displays.CardDisplayPage.format_ungrouped_page(
                 matching_card_df

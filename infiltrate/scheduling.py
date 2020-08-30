@@ -4,25 +4,24 @@ import atexit
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
-import models.card
-import models.card_set
-import models.deck
-import models.deck_search
-import models.user
+import infiltrate.models.card as card
+import infiltrate.models.card_set as card_set
+import infiltrate.models.deck as deck
+import infiltrate.models.deck_search as deck_search
 
 UPDATES_TO_INTERVALS = {
-    models.card.update_cards: 3,
-    models.card_set.update: 3,
-    models.deck.update_decks: 3,
-    models.deck_search.update_deck_searches: 3,
+    card.update_cards: 3,
+    card_set.update: 3,
+    deck.update_decks: 3,
+    deck_search.update_deck_searches: 3,
 }
 
 
 def initial_update():
-    models.card.db.create_all()
-    models.card.db.session.commit()
+    card.db.create_all()
+    card.db.session.commit()
     # models.card_set.CardSetName.query.delete()
-    if len(models.card_set.CardSetName.query.all()) == 0:
+    if len(card_set.CardSetName.query.all()) == 0:
         for update in UPDATES_TO_INTERVALS.keys():
             update()
 
@@ -40,7 +39,7 @@ def schedule_updates():
 
 
 if __name__ == "__main__":
-    models.card.update_cards()
-    # models.card_set.update()
-    # models.deck.update_decks()
-    # models.deck_search.update_deck_searches()
+    card.update_cards()
+    # card_set.update()
+    # deck.update_decks()
+    # deck_search.update_deck_searches()

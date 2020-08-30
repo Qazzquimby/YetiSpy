@@ -2,7 +2,7 @@
 import typing as t
 from collections import defaultdict
 
-import models.card
+from infiltrate.models.card import CardId
 
 
 def make_card_playset_dict() -> t.Dict:
@@ -17,10 +17,10 @@ def make_card_playset_dict() -> t.Dict:
 
 def make_collection_from_ew_export(
     cards: t.List[t.Dict[str, int]]
-) -> t.Dict[models.card.CardId, int]:
+) -> t.Dict[CardId, int]:
     """Gets card ownership from the Eternal Warcry export format."""
     collection = defaultdict(int)
     for card in cards:
-        card_id = models.card.CardId(set_num=card["set"], card_num=card["card_number"])
+        card_id = CardId(set_num=card["set"], card_num=card["card_number"])
         collection[card_id] += card["count"]
     return collection

@@ -1,9 +1,9 @@
 """Shared singleton values for the views"""
-import card_frame_bases
+import infiltrate.card_frame_bases as card_frame_bases
 import infiltrate
-import models.card
+import infiltrate.models.card as card
 
 infiltrate.db.create_all()
 infiltrate.db.session.commit()
 
-all_cards = card_frame_bases.CardDetails(models.card.all_cards_df_from_db())
+all_cards = card_frame_bases.CardDetails(card.all_cards_df_from_db())

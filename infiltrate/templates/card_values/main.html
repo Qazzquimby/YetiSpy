@@ -112,7 +112,7 @@
                 if (jqxhr.status === 401) {
                     window.location.replace("/login");
                 } else {
-                    $("#card-table").html("<h1>Something's gone very wrong.</h1>" +
+                    $("#card-table").html("<h1>Something's gone wrong.</h1>" +
                         "<p>Please tell qazzquimby#0073 on discord.</p>");
                 }
             });
@@ -149,7 +149,7 @@
                                         $("#card-preview").html(data);
                                     }
                                 }).fail(function (jqxhr, textStatus, error) {
-                                    $("#card-preview").html("<h1>Something's gone very wrong.</h1>");
+                                    $("#card-preview").html("<h1>Something's gone wrong.</h1>");
                                     const err = textStatus + ", " + error;
                                     console.log("Request Failed: " + err);
                                 });

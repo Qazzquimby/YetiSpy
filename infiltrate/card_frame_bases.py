@@ -1,6 +1,6 @@
 import pandas as pd
 
-import models.card
+import infiltrate.models.card as card
 
 
 class CardCopy(pd.DataFrame):
@@ -36,7 +36,7 @@ class CardDetails(pd.DataFrame):
         self.details_url = self.details_url
         self.is_in_draft_pack = self.is_in_draft_pack
 
-    def card_exists(self, card_id: models.card.CardId):
+    def card_exists(self, card_id: card.CardId):
         """Return if the card_id is found."""
         matching_card = self.loc[
             (

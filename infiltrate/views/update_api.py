@@ -2,10 +2,10 @@
 
 from flask_classy import FlaskView
 
-import caches
-import models.card
-import models.deck
-import models.deck_search
+import infiltrate.caches as caches
+import infiltrate.models.card as card
+import infiltrate.models.deck as deck
+import infiltrate.models.deck_search as deck_search
 from infiltrate import application
 
 NO_KEY_GIVEN = "no_key_given"
@@ -35,18 +35,18 @@ class UpdateAPI(FlaskView):
 
     def update_cards(self, key=NO_KEY_GIVEN):
         self.refuse_bad_key(key)
-        models.card.update_cards()
+        card.update_cards()
         caches.invalidate()
         return "Updated Cards"
 
     def update_decks(self, key=NO_KEY_GIVEN):
         self.refuse_bad_key(key)
-        models.deck.update_decks()
+        deck.update_decks()
         caches.invalidate()
         return "Updated Decks"
 
     def update_deck_searches(self, key=NO_KEY_GIVEN):
         self.refuse_bad_key(key)
-        models.deck_search.update_deck_searches()
+        deck_search.update_deck_searches()
         caches.invalidate()
         return "Updated Deck Searches"

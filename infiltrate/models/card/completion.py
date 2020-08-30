@@ -2,9 +2,9 @@ import typing as t
 
 from fast_autocomplete import AutoComplete
 
-import card_frame_bases
-import card_evaluation
-from models.card import Card_DF
+import infiltrate.card_frame_bases as card_frame_bases
+import infiltrate.card_evaluation as card_evaluation
+from infiltrate.models.card import Card_DF
 
 
 def get_matching_card(card_df: Card_DF, search_str: str) -> Card_DF:

@@ -2,10 +2,10 @@
 import collections
 import typing as t
 
-import browsers
-import caches
-import dwd_news
-import models.card
+import infiltrate.browsers as browsers
+import infiltrate.caches as caches
+import infiltrate.dwd_news as dwd_news
+import infiltrate.models.card as card
 from infiltrate import db
 
 
@@ -170,7 +170,7 @@ def _get_sets_from_set_nums(set_nums: t.List[int]) -> t.List[CardSet]:
 
 def _get_set_nums() -> t.List[int]:
     """Return card set ids."""
-    set_nums = list(models.card.db.session.query(models.card.Card.set_num).distinct())
+    set_nums = list(card.db.session.query(card.Card.set_num).distinct())
     set_nums = [s[0] for s in set_nums if s[0]]
     return set_nums
 

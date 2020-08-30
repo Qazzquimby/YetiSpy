@@ -7,11 +7,10 @@ import typing as t
 import pandas as pd
 from tqdm import tqdm
 
-import card_collections
-import models.card
-import models.deck
+import infiltrate.card_collections as card_collections
+import infiltrate.models.card as models_card
+import infiltrate.models.deck as models_deck
 from infiltrate import db
-import models.rarity
 
 
 class DeckSearchHasCard(db.Model):
@@ -31,7 +30,7 @@ class DeckSearchHasCard(db.Model):
     )
     __table_args__ = (
         db.ForeignKeyConstraint(
-            (set_num, card_num), [models.card.Card.set_num, models.card.Card.card_num]
+            (set_num, card_num), [models_card.Card.set_num, models_card.Card.card_num]
         ),
         {},
     )
@@ -56,13 +55,13 @@ class DeckSearch(db.Model):
     maximum_age_days = db.Column("maximum_age_days", db.Integer())
     cards: t.List[DeckSearchHasCard] = db.relationship("DeckSearchHasCard")
 
-    def get_decks(self) -> t.List[models.deck.Deck]:
+    def get_decks(self) -> t.List[models_deck.Deck]:
         """Returns all decks belonging to the deck search"""
         time_to_update = datetime.datetime.now() - datetime.timedelta(
             days=self.maximum_age_days
         )
-        is_past_time_to_update = models.deck.Deck.date_updated > time_to_update
-        decks = models.deck.Deck.query.filter(is_past_time_to_update)
+        is_past_time_to_update = models_deck.Deck.date_updated > time_to_update
+        decks = models_deck.Deck.query.filter(is_past_time_to_update)
         return decks
 
     def get_play_counts(self) -> pd.DataFrame:
@@ -91,7 +90,7 @@ class DeckSearch(db.Model):
         playrate = card_collections.make_card_playset_dict()
         for deck in self.get_decks():
             for card in deck.cards:
-                card_id = models.card.CardId(
+                card_id = models_card.CardId(
                     set_num=card.set_num, card_num=card.card_num
                 )
                 for num_played in range(min(card.num_played, 4)):
@@ -180,9 +179,7 @@ def get_weighted_deck_searches(profile=1):
     """Generates the standard weighted deck searches,
     and gives them the user_id."""
 
-    return models.deck_search.WeightedDeckSearch.query.filter_by(
-        profile_id=profile
-    ).all()
+    return WeightedDeckSearch.query.filter_by(profile_id=profile).all()
 
 
 def _normalize_deck_search_weights(weighted_deck_searches: t.List[WeightedDeckSearch]):

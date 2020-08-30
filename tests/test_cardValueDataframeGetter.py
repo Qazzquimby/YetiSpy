@@ -2,14 +2,14 @@ from unittest import TestCase
 
 import pandas as pd
 
-import models.deck_search
-from value_frames import _CardValueDataframeGetter
+import infiltrate.models.deck_search as deck_search
+from infiltrate.value_frames import _CardValueDataframeGetter
 
 
 class TestCardValueDataframeGetter(TestCase):
     def test__merge_value_dfs(self):
         deck_search_value_dfs = [
-            models.deck_search.DeckSearchValue_DF(
+            deck_search.DeckSearchValue_DF(
                 {
                     "set_num": [1, 1, 2],
                     "card_num": [1, 2, 1],
@@ -18,7 +18,7 @@ class TestCardValueDataframeGetter(TestCase):
                     "value": [1, 3, 5],
                 }
             ),
-            models.deck_search.DeckSearchValue_DF(
+            deck_search.DeckSearchValue_DF(
                 {
                     "set_num": [1, 1, 2],
                     "card_num": [1, 2, 2],

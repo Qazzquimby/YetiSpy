@@ -1,8 +1,8 @@
 import typing as t
 
-import browsers
+import infiltrate.browsers as browsers
 from infiltrate import db
-from models.card import Card, CardId
+from infiltrate.models.card import Card, CardId
 
 
 def update_draft_pack_contents():

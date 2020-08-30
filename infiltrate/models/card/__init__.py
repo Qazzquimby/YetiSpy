@@ -9,9 +9,9 @@ import sqlalchemy.exc
 import sqlalchemy.orm
 import sqlalchemy.orm.exc
 
-import browsers
-import df_types
-import models.rarity
+import infiltrate.browsers as browsers
+import infiltrate.df_types as df_types
+import infiltrate.models.rarity as rarity
 from infiltrate import db
 
 
@@ -72,7 +72,7 @@ def all_cards_df_from_db() -> pd.DataFrame:
     )
 
     cards_df["rarity"] = cards_df.rarity.apply(
-        lambda rarity_name: models.rarity.rarity_from_name[rarity_name]
+        lambda rarity_name: rarity.rarity_from_name[rarity_name]
     )
 
     return cards_df
@@ -83,9 +83,9 @@ def update_cards():
     card_json = _get_card_json()
     _make_cards_from_entries(card_json)
     db.session.commit()
-    import models.card.draft
+    import infiltrate.models.card.draft as draft
 
-    models.card.draft.update_draft_pack_contents()
+    draft.update_draft_pack_contents()
 
 
 def _get_card_json():

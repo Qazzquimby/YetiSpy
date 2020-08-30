@@ -15,16 +15,14 @@ import typing as t
 
 import werkzeug.local
 
-import df_types
-import models.card
-import models.deck_constants
-import models.rarity
-import models.user
-import models.card_set
-import models.user.collection
-import rewards
-import card_frame_bases
-from models.deck_search import WeightedDeckSearch
+import infiltrate.df_types as df_types
+import infiltrate.models.deck_constants as deck_constants
+from infiltrate.models.rarity import Rarity
+from infiltrate.models.user import User, collection
+import infiltrate.models.card_set as card_set
+import infiltrate.rewards as rewards
+import infiltrate.card_frame_bases as card_frame_bases
+from infiltrate.models.deck_search import WeightedDeckSearch, get_weighted_deck_searches
 
 
 # TODO Important. Add card values to the database as a column on cards. Everyone has the
@@ -104,7 +102,7 @@ class PlayRateFrame(PlayCountFrame):
         total_card_inclusions = sum(df[cls.PLAY_COUNT_NAME])
         df[cls.PLAY_RATE_NAME] = (
             df[cls.PLAY_COUNT_NAME]
-            * models.deck_constants.AVG_COLLECTABLE_CARDS_IN_DECK
+            * deck_constants.AVG_COLLECTABLE_CARDS_IN_DECK
             / total_card_inclusions
         )
         return cls(df)
@@ -120,7 +118,7 @@ class PlayValueFrame(PlayRateFrame):
     PLAY_VALUE_NAME = "play_value"
     IS_OWNED_NAME = "is_owned"
 
-    def __init__(self, user: models.user.User, *args):
+    def __init__(self, user: User, *args):
         PlayRateFrame.__init__(self, *args)
 
         self.user = user
@@ -131,10 +129,7 @@ class PlayValueFrame(PlayRateFrame):
 
     @classmethod
     def from_play_rates(
-        cls,
-        user: models.user.User,
-        play_rate_frame: PlayRateFrame,
-        ownership: pd.DataFrame,
+        cls, user: User, play_rate_frame: PlayRateFrame, ownership: pd.DataFrame,
     ):
         """Constructor deriving values from play rates."""
         # todo account for collection fit.
@@ -145,9 +140,7 @@ class PlayValueFrame(PlayRateFrame):
             / df["num_decks_with_count_or_less"].max()
         )
 
-        ownership_frame = models.user.collection.create_is_owned_series(
-            play_rate_frame, ownership
-        )
+        ownership_frame = collection.create_is_owned_series(play_rate_frame, ownership)
 
         df = df.join(
             ownership_frame.drop(
@@ -168,7 +161,7 @@ class PlayCraftEfficiencyFrame(PlayValueFrame):
     CRAFT_COST_NAME = "craft_cost"
     FINDABILITY_NAME = "findability"
 
-    def __init__(self, user: models.user.User, *args):
+    def __init__(self, user: User, *args):
         PlayValueFrame.__init__(self, user, *args)
 
         self.play_craft_efficiency = self.play_craft_efficiency
@@ -195,13 +188,13 @@ class PlayCraftEfficiencyFrame(PlayValueFrame):
 
     @staticmethod
     @pd.np.vectorize
-    def get_findability(rarity: models.rarity.Rarity, set_num: int):
+    def get_findability(rarity: Rarity, set_num: int):
         """Get the chance that a player will find the given card."""
         # todo cost could be calculated once per card rather than once per count
         # TODO allow custom player profiles to override this.
         player: rewards.PlayerRewards = rewards.DEFAULT_PLAYER_REWARD_RATE
         findability = player.get_chance_of_specific_card_drop_in_a_week(
-            rarity=rarity, card_set=models.card_set.CardSet(set_num)
+            rarity=rarity, card_set=card_set.CardSet(set_num)
         )
         return findability
 
@@ -223,11 +216,8 @@ class OwnValueFrame(PlayCraftEfficiencyFrame):
     RESELL_VALUE_NAME = "resell_value"
     OWN_VALUE_NAME = "own_value"
 
-    def __init__(self, user: models.user.User, *args):
-        if not (
-            isinstance(user, models.user.User)
-            or isinstance(user, werkzeug.local.LocalProxy)
-        ):
+    def __init__(self, user: User, *args):
+        if not (isinstance(user, User) or isinstance(user, werkzeug.local.LocalProxy)):
             raise ValueError("Must be given user parameter of type User")
 
         PlayCraftEfficiencyFrame.__init__(self, user, *args)
@@ -260,18 +250,16 @@ class OwnValueFrame(PlayCraftEfficiencyFrame):
         return cls(play_craft_efficiency.user, df)
 
     @classmethod
-    def from_user(
-        cls, user: models.user.User, card_details: card_frame_bases.CardDetails
-    ):
+    def from_user(cls, user: User, card_details: card_frame_bases.CardDetails):
         """Creates from a user, performing the entire pipeline."""
-        weighted_deck_searches = models.deck_search.get_weighted_deck_searches()
+        weighted_deck_searches = get_weighted_deck_searches()
         play_count = PlayCountFrame.from_weighted_deck_searches(
             weighted_deck_searches=weighted_deck_searches, card_details=card_details
         )
 
         play_rate = PlayRateFrame.from_play_counts(play_count)
 
-        ownership = models.user.collection.dataframe_for_user(user)
+        ownership = collection.dataframe_for_user(user)
         play_value = PlayValueFrame.from_play_rates(
             user=user, play_rate_frame=play_rate, ownership=ownership
         )
