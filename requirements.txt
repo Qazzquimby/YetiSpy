@@ -14,5 +14,6 @@ pandas
 psycopg2
 requests
 sqlalchemy
+SQLAlchemy-Utils
 tqdm
 werkzeug
