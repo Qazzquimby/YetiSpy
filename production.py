@@ -8,4 +8,4 @@ from infiltrate import application, setup_application
 
 if __name__ == "__main__":
     setup_application(application)
-    application.run(debug=True, use_debugger=False, use_reloader=False)
+    application.run()
