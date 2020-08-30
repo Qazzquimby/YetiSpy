@@ -13,7 +13,6 @@
 /scratch_get_distribution.py
 /.idea
 /instance/
-
-
-
-
+.env
+__pycache__/
+*/__pycache__/
