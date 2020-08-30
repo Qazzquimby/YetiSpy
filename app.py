@@ -6,9 +6,6 @@ import sys
 sys.path.append("/opt/python/current/app/infiltrate")
 from infiltrate import application, setup_application
 
-if __name__ == "__main__":
-    setup_application(application)
-    application.run()
 
 # from flask import Flask, render_template, request
 #
