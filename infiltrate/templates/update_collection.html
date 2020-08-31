@@ -12,25 +12,27 @@
                     Collection</h4>
             </div>
             <div class="modal-body">
-                Update your collection to allow Eternal Infiltrate to make
-                better recommendations.<br>
+                <p>Update your collection to allow Eternal Infiltrate to make
+                    better recommendations.</p>
+                <br>
                 <div id="import-cards-success" class="alert-success"
                      style="display: none">
                     <h3>The page will now reload.</h3>
                 </div>
-                In Eternal -> Cards -> My Collection, click "Export Collection"
-                and paste into the box below.<br>
-                This is just a shortcut to updating your Eternal Warcry collection.
+                <p>In Eternal -> Cards -> My Collection, click "Export Collection"
+                    and paste into the box below.</p><br>
+                <p>This is just a shortcut to updating your Eternal Warcry
+                    collection.</p>
                 <form id="import-cards-form">
                     <label for="import-cards-text"></label>
                     <textarea id="import-cards-text" name="import-cards-text"
                               class="form-control" rows="6"></textarea>
                     <div id="import-cards-error" class="alert-danger"
                          style="display: none">
-                        Eternal Warcry returned an error when updating your
-                        collection.<br>
-                        Something is either wrong with your input, this site,
-                        or Eternal Warcry.
+                        <p>Eternal Warcry returned an error when updating your
+                            collection.</p><br>
+                        <p>Something is either wrong with your input, this site,
+                            or Eternal Warcry.</p>
                     </div>
                     <div class="text-right">
                         <button id="import-cards-action" type="submit"
@@ -39,6 +41,7 @@
                         </button>
                     </div>
                 </form>
+                {# todo add update EW api key here #}
             </div>
             <div class="modal-footer">
                 <span id="spinner" class="loader text-primary"
