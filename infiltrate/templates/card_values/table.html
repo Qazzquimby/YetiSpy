@@ -37,7 +37,7 @@
                     {% if sort == "efficiency" %}
                         {% set display_var = display['play_craft_efficiency']*100 %}
                         {% set stars_var = display['scaled_play_craft_efficiency'] %}
-                    {% elif sort == "value" %}
+                    {% else %}
                         {% set display_var = display['play_value'] %}
                         {% set stars_var = display['play_value'] %}
                     {% endif %}

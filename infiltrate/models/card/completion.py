@@ -7,11 +7,11 @@ import infiltrate.card_evaluation as card_evaluation
 from infiltrate.models.card import Card_DF
 
 
-def get_matching_card(card_df: Card_DF, search_str: str) -> Card_DF:
+def get_matching_card(card_df: Card_DF, user, search_str: str) -> Card_DF:
     """Return rows from the card_df with card names best matching
      the search."""
     matcher = _CardAutoCompleter(card_df)
-    match = matcher.get_cards_matching_search(search_str)
+    match = matcher.get_cards_matching_search(user, search_str)
     return match
 
 
@@ -20,11 +20,11 @@ class _CardAutoCompleter:
         self.cards = all_cards
         self.completer = self._init_autocompleter(self.cards)
 
-    def get_cards_matching_search(self, search: str) -> Card_DF:
+    def get_cards_matching_search(self, user, search: str) -> Card_DF:
         """Returns cards with the name best matching the search string."""
         name = self._match_name(search)
         cards = card_evaluation.OwnValueFrame(
-            self.cards[self.cards["name"].str.lower() == name]
+            user, self.cards[self.cards["name"].str.lower() == name]
         )
         return cards
 

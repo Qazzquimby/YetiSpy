@@ -51,17 +51,19 @@ class CardsView(FlaskView):
         """Searches for cards with names matching the search string,
         by the method used in AllCards"""
 
-        displays = card_displays.CardDisplays.make_for_user(
-            flask_login.current_user, global_data.all_cards
-        )
+        user = flask_login.current_user
+        displays = card_displays.CardDisplays.make_for_user(user)
 
         search_str = search_str[1:]
         search_str = search_str.lower()
-        matching_card_df = completion.get_matching_card(displays.value_info, search_str)
-        if len(matching_card_df) > 0:
-            displays = card_displays.CardDisplayPage.format_ungrouped_page(
-                matching_card_df
-            )
-            return flask.render_template("card_values/table.html", card_values=displays)
-        else:
-            return ""
+        matching_card_df = completion.get_matching_card(
+            displays.value_info, user, search_str
+        )
+
+        return flask.render_template(
+            "card_values/table.html",
+            page=1,
+            sort="value",
+            card_values=matching_card_df,
+            cards_per_page=16,
+        )
