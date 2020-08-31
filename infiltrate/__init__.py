@@ -45,7 +45,7 @@ db = _setup_db(application)
 def setup_application(app):
     Bootstrap(app)
     boltons.fileutils.mkdir_p(app.instance_path)
-    updates()
+    # updates() # move to worker process
     _register_views(app)
     _setup_login_manager(app)
 

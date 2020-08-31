@@ -24,8 +24,10 @@ def initial_update():
 
     deck_search.setup()
     rarity.create_rarities()
+    recurring_update()
 
-    # if len(card_set.CardSetName.query.all()) == 0:
+
+def recurring_update():
     for update in UPDATES_TO_INTERVALS.keys():
         update()
 
