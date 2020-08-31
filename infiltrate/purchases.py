@@ -110,8 +110,14 @@ class CampaignEvaluator(PurchaseEvaluator):
 class DraftEvaluator(PurchaseEvaluator, abc.ABC):
     """ABC for evaluating drafts."""
 
-    def __init__(self, card_data):
-        super().__init__(card_data, cost=5_000, purchase_type="Draft")
+    BASE_COST = 5_000
+
+    def __init__(self, card_data, expected_gold_earned: float):
+        super().__init__(
+            card_data,
+            cost=int(self.BASE_COST - expected_gold_earned),
+            purchase_type="Draft",
+        )
 
     def _get_packs_value(self):
         newest_set = models_card_set.get_newest_main_set()
@@ -161,6 +167,10 @@ class DraftEvaluator(PurchaseEvaluator, abc.ABC):
 class LoseAllGamesDraftEvaluator(DraftEvaluator):
     """A draft where all games are lost."""
 
+    def __init__(self, card_data):
+        no_wins_gold = self._get_no_wins_gold()
+        super().__init__(card_data, no_wins_gold)
+
     def get_values(self) -> float:
         packs_value = self._get_packs_value()
         no_wins_value = self._get_no_wins_value()
@@ -179,13 +189,20 @@ class LoseAllGamesDraftEvaluator(DraftEvaluator):
         _, no_win_reward = list(self._get_win_chances_and_rewards())[0]
         return sum([reward.get_value(self.card_data) for reward in no_win_reward])
 
+    def _get_no_wins_gold(self):
+        _, no_win_reward = list(self._get_win_chances_and_rewards())[0]
+        return sum([reward.gold for reward in no_win_reward])
+
 
 class AverageDraftEvaluator(DraftEvaluator):
     """Evaluates a single where the player has an average win rate."""
 
+    def __init__(self, card_data):
+        average_win_gold = self._get_average_win_gold()
+        super().__init__(card_data, average_win_gold)
+
     def get_values(self) -> float:
         packs_value = self._get_packs_value()
-
         average_wins_value = self._get_average_wins_value()
 
         value = packs_value + average_wins_value
@@ -200,6 +217,13 @@ class AverageDraftEvaluator(DraftEvaluator):
 
             average_win_value += win_value * chance
         return average_win_value
+
+    def _get_average_win_gold(self) -> float:
+        average_win_gold = 0
+        for chance, win_rewards in self._get_win_chances_and_rewards():
+            win_gold = sum([reward.gold for reward in win_rewards])
+            average_win_gold += win_gold * chance
+        return average_win_gold
 
     def get_df_rows(self) -> t.List[PurchaseRow]:
         draft_value = self.get_values()

@@ -100,6 +100,7 @@ def _setup_login_manager(app):
 
     @login_manager.user_loader
     def load_user(user_id):
+        print(f"Loading user {user_id}")
         return User.query.filter(User.id == user_id).first()
 
 
