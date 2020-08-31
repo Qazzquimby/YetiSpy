@@ -231,5 +231,6 @@ def update_decks():
                     )
                     deck.cards.append(deck_has_card)
 
+    print("Info: Updating decks")
     updater = _WarcyDeckUpdater()
     updater.run()

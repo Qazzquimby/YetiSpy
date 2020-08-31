@@ -158,6 +158,7 @@ class WeightedDeckSearch(db.Model):
 
 def update_deck_searches():
     """Update the playrate caches of all deck searches."""
+    print("Info: Updating deck_searches")
     weighted_deck_searches = WeightedDeckSearch.query.all()
     for weighted in weighted_deck_searches:
         print(f"Updating playrate cache for {weighted.name}")
@@ -212,5 +213,6 @@ def create_weighted_deck_searches():
 
 
 def setup():
+    print("Info: Setting up deck searches")
     create_deck_searches()
     create_weighted_deck_searches()

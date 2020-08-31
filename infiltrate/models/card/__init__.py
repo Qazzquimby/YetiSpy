@@ -80,6 +80,7 @@ def all_cards_df_from_db() -> pd.DataFrame:
 
 def update_cards():
     """Updates the db to match the Warcry cards list."""
+    print("Info: Updating cards")
     card_json = _get_card_json()
     _make_cards_from_entries(card_json)
     db.session.commit()

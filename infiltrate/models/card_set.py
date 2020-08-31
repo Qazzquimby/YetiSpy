@@ -62,6 +62,7 @@ def update():
             }
             return card_set_counter
 
+    print("Info: Updating card sets")
     updater = _CardSetNameUpdater()
     updater.run()
 
