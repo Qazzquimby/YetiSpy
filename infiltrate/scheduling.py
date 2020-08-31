@@ -25,9 +25,9 @@ def initial_update():
     deck_search.setup()
     rarity.create_rarities()
 
-    if len(card_set.CardSetName.query.all()) == 0:
-        for update in UPDATES_TO_INTERVALS.keys():
-            update()
+    # if len(card_set.CardSetName.query.all()) == 0:
+    for update in UPDATES_TO_INTERVALS.keys():
+        update()
 
 
 def schedule_updates():
