@@ -4,33 +4,33 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title" id="updateCollectionLabel">Update
+                    Collection</h4>
                 <button type="button" class="close" data-dismiss="modal"
                         aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
-                <h4 class="modal-title" id="updateCollectionLabel">Update
-                    Collection</h4>
             </div>
             <div class="modal-body">
-                <p>Update your collection to allow Eternal Infiltrate to make
-                    better recommendations.</p>
-                <br>
-                <div id="import-cards-success" class="alert-success"
-                     style="display: none">
-                    <h3>The page will now reload.</h3>
-                </div>
-                <p>In Eternal -> Cards -> My Collection, click "Export Collection"
-                    and paste into the box below.</p><br>
-                <p>This is just a shortcut to updating your Eternal Warcry
-                    collection.</p>
                 <form id="import-cards-form">
+                    <p>Update your collection to allow Eternal Infiltrate to make
+                        better recommendations.</p>
+                    <div id="import-cards-success" class="alert-success"
+                         style="display: none">
+                        <h3>The page will now reload.</h3>
+                    </div>
+                    <p>In Eternal -> Cards -> My Collection, click "Export Collection"
+                        and paste into the box below.</p>
+                    <p class="mb-0">This is just a shortcut to updating your Eternal
+                        Warcry
+                        collection.</p>
                     <label for="import-cards-text"></label>
                     <textarea id="import-cards-text" name="import-cards-text"
                               class="form-control" rows="6"></textarea>
                     <div id="import-cards-error" class="alert-danger"
                          style="display: none">
                         <p>Eternal Warcry returned an error when updating your
-                            collection.</p><br>
+                            collection.</p>
                         <p>Something is either wrong with your input, this site,
                             or Eternal Warcry.</p>
                     </div>
@@ -41,7 +41,32 @@
                         </button>
                     </div>
                 </form>
-                {# todo add update EW api key here #}
+                <hr>
+                <form id="update-key-form">
+                    <div id="update-key-success" class="alert-success"
+                         style="display: none">
+                        <h3>The page will now reload.</h3>
+                    </div>
+                    <p class="mb-0">Or update your
+                        <a href="https://eternalwarcry.com/profile/keys"
+                           class="my-link">
+                            Eternal Warcry API Key.
+                        </a>
+                    </p>
+
+                    <label for="new-key"></label>
+                    <input id="new-key" name="new-key" class="form-control">
+                    <div id="update-key-error" class="alert-danger"
+                         style="display: none">
+                        <p>That key is not connected to an Eternal Warcry account.</p>
+                    </div>
+                    <div class="text-right">
+                        <button id="update-key-action" type="submit"
+                                class="btn btn-primary">
+                            Update
+                        </button>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <span id="spinner" class="loader text-primary"
@@ -66,37 +91,47 @@
             data: importCardsForm.serialize(),
             success: function () {
                 $("#spinner").hide();
-                onSuccess();
+                importCardsSuccess();
             },
             error: function () {
-                $("#import-spinner").hide();
+                $("#spinner").hide();
                 $('#import-cards-error').css("display", "block");
             }
         });
     });
 
-    const syncCardsForm = $('#sync-cards-form');
-    syncCardsForm.submit(function (e) {
-        e.preventDefault();
-        console.log("submitting");
-        $("#sync-spinner").show();
-        $.ajax({
-            url: '{{url_for("UpdateCollectionView:post")}}',
-            type: 'post',
-            data: syncCardsForm.serialize(),
-            success: function () {
-                $("#sync-spinner").hide();
-                onSuccess();
-            },
-        });
-    });
-
-    function onSuccess() {
+    function importCardsSuccess() {
         $('#import-cards-success').css("display", "block");
         setTimeout(function () {
             location.reload();
         }, 2000);
     }
 
+    const updateKeyForm = $('#update-key-form');
+    updateKeyForm.submit(function (e) {
+        e.preventDefault();
+        console.log("updating");
+        $("#spinner").show();
+        $.ajax({
+            url: '{{url_for("UpdateKeyView:post")}}',
+            type: 'post',
+            data: updateKeyForm.serialize(),
+            success: function () {
+                $("#spinner").hide();
+                updateKeySuccess();
+            },
+            error: function () {
+                $("#spinner").hide();
+                $('#update-key-error').css("display", "block");
+            }
+        });
+    });
+
+    function updateKeySuccess() {
+        $('#update-key-success').css("display", "block");
+        setTimeout(function () {
+            location.reload();
+        }, 2000);
+    }
 
 </script>

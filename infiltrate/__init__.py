@@ -1,4 +1,5 @@
 """Handles creating the flask app"""
+import functools
 import os
 
 import flask
@@ -56,6 +57,7 @@ def _register_views(app):
     from infiltrate.views.login import LoginView, RegisterView
     from infiltrate.views.purchases_view import PurchasesView
     from infiltrate.views.update_collection import UpdateCollectionView
+    from infiltrate.views.update_key import UpdateKeyView
     from infiltrate.views.faq import FaqView
 
     CardsView.register(app)
@@ -64,6 +66,7 @@ def _register_views(app):
     RegisterView.register(app)
     UpdateAPI.register(app)
     UpdateCollectionView.register(app)
+    UpdateKeyView.register(app)
     FaqView.register(app)
 
     # Temporary dev page to see all routes
@@ -99,6 +102,7 @@ def _setup_login_manager(app):
     from infiltrate.models.user import User
 
     @login_manager.user_loader
+    @functools.lru_cache(20)
     def load_user(user_id):
         print(f"Loading user {user_id}")
         return User.query.filter(User.id == user_id).first()

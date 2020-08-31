@@ -23,6 +23,6 @@ class User(db.Model, UserMixin):
     password = db.Column("password", db.String())
 
 
-def get_by_id(user_id: int):
+def get_by_id(user_id: int) -> User:
     user = User.query.filter_by(id=str(user_id)).first()
     return user

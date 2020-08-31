@@ -16,6 +16,11 @@ class AuthenticationException(Exception):
     pass
 
 
+def ew_key_is_authentic(key: str) -> bool:
+    name = get_username_from_key(key)
+    return name is not None
+
+
 class RegisterView(FlaskView):
     def index(self):
         return flask.render_template("register.html")
@@ -45,7 +50,7 @@ class RegisterView(FlaskView):
         db.session.add(new_user)
         db.session.commit()
 
-        redirect = flask.redirect("/")
+        redirect = flask.redirect(flask.url_for("LoginView:index"))
         return redirect
 
 
