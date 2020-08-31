@@ -50,7 +50,7 @@ class RegisterView(FlaskView):
         db.session.add(new_user)
         db.session.commit()
 
-        redirect = flask.redirect(flask.url_for("LoginView:index"))
+        redirect = flask.redirect("/login")
         return redirect
 
 
