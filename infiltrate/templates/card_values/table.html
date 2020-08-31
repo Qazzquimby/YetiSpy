@@ -55,8 +55,20 @@
 
                     <h4 class="mb-0">#{{ page*cards_per_page + loop.index }}</h4>
 
+                    {% if display_var >= 10 %}
+                        {{ '%0.0f' % display_var }}
+                    {% elif display_var >= 1 %}
+                        {{ '%0.1f' % display_var }}
+                    {% elif display_var >= 0.1 %}
+                        {{ '%0.2f' % display_var }}
+                    {% elif display_var >= 0.01 %}
+                        {{ '%0.3f' % display_var }}
+                    {% else %}
+                        {{ '%0.4f' % display_var }}
+                    {% endif %}
 
-                    {{ '%0.0f' % display_var }}
+
+
 
                     <span class="align-middle" style="color:orange">
 
