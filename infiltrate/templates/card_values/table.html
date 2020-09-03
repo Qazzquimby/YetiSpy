@@ -53,7 +53,7 @@
 / Cost({{ '%0.0f' % display['craft_cost'] }})">
                     {% endif %}
 
-                    <h4 class="mb-0">#{{ page*cards_per_page + loop.index }}</h4>
+                    <h4 class="mb-0">#{{ display['rank'] }}</h4>
 
                     {% if display_var >= 10 %}
                         {{ '%0.0f' % display_var }}
