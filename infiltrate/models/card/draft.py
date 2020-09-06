@@ -27,7 +27,7 @@ def most_recent_draft_pack_json_url():
     file_name = browsers.get_first_text_from_url_and_selector(
         "https://eternalwarcry.com/cards/download", file_name_selector
     ).strip()
-    return f"https://eternalwarcry.com/content/draftpacks/{file_name}"
+    return f"https://eternalwarcry.com/content/draftpacks/{file_name}"  # Todo, this is wrong. Gives first alphabetical, not latest.
 
 
 def most_recent_draft_pack_cards_url():
