@@ -4,6 +4,7 @@ import os
 
 import flask
 import flask_login
+import flask_talisman
 from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
@@ -44,6 +45,7 @@ db = _setup_db(application)
 
 
 def setup_application(app):
+    flask_talisman.Talisman(app)
     Bootstrap(app)
     boltons.fileutils.mkdir_p(app.instance_path)
     # updates() # move to worker process

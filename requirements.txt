@@ -9,6 +9,7 @@ flask-bootstrap4
 Flask-Classy
 flask-login
 flask-sqlalchemy
+flask-talisman
 gunicorn
 mechanicalsoup
 numpy
