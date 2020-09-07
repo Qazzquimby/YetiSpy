@@ -117,10 +117,10 @@ class PlayValueFrame(PlayRateFrame):
 
     PLAY_VALUE_NAME = "play_value"
     IS_OWNED_NAME = "is_owned"
+    _metadata = ["user"]
 
     def __init__(self, user: User, *args):
         PlayRateFrame.__init__(self, *args)
-
         self.user = user
         self.play_value = self.play_value
 
