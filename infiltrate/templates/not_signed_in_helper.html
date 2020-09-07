@@ -1,6 +1,6 @@
 {% if not current_user.is_authenticated %}
     <div class="alert alert-danger" role="alert">
-        <h4>These recommendations aren't tuned to your collections yet.</h4>
+        <h4>These recommendations aren't tuned to your collection yet.</h4>
         <p>
             <a class="alert-link" href="{{ url_for('LoginView:index') }}">
                 Log in
