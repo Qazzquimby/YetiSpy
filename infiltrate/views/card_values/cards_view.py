@@ -46,15 +46,20 @@ class CardsView(FlaskView):
 
         search_str = search_str[1:]
         search_str = search_str.lower()
-        matching_card_df = completion.get_matching_card(
+        cards_on_page = completion.get_matching_card(
             displays.value_info, flask_login.current_user, search_str
         )
 
+        scaled = (np.log2(cards_on_page["play_craft_efficiency"] * 100) * 15).clip(
+            lower=0
+        )
+        cards_on_page["scaled_play_craft_efficiency"] = scaled
+
         return flask.render_template(
             "card_values/table.html",
-            page=1,
-            sort="value",
-            card_values=matching_card_df,
+            page=0,
+            sort=sort_str,
+            card_values=cards_on_page,
             cards_per_page=16,
         )
 
