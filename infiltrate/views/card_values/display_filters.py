@@ -81,8 +81,10 @@ class CraftSort(CardDisplaySort):
     def sort(cards):
         """Sorts the cards by highest to lowest card value
          per shiftstone crafting cost."""
+        cards.index.names = [name + "_index" for name in cards.index.names]
         sorted_df = cards.sort_values(
-            by=[cards.PLAY_CRAFT_EFFICIENCY_NAME], ascending=False
+            by=[cards.PLAY_CRAFT_EFFICIENCY_NAME, cards.COUNT_IN_DECK_NAME,],
+            ascending=[False, True],
         )
         return OwnValueFrame(cards.user, sorted_df)
 
@@ -104,8 +106,10 @@ class ValueSort(CardDisplaySort):
     @staticmethod
     def sort(cards):
         """Sorts cards from highest to lowest card value."""
+        cards.index.names = [name + "_index" for name in cards.index.names]
         sorted_df = cards.sort_values(
-            by=[OwnValueFrame.PLAY_VALUE_NAME], ascending=False
+            by=[OwnValueFrame.PLAY_VALUE_NAME, cards.COUNT_IN_DECK_NAME,],
+            ascending=[False, True],
         )
         return OwnValueFrame(cards.user, sorted_df)
 

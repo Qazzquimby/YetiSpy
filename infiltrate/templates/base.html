@@ -9,9 +9,11 @@
             src="https://www.googletagmanager.com/gtag/js?id=UA-177370739-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
+
         function gtag() {
             dataLayer.push(arguments);
         }
+
         gtag('js', new Date());
         gtag('config', 'UA-177370739-1');
     </script>
@@ -21,6 +23,9 @@
             crossorigin="anonymous"></script>
     <link rel="shortcut icon"
           href="{{ url_for('static', filename='images/logo_zoom.png') }}">
+
+    <meta name="description"
+          content="Yeti Spy is a collection building tool for Eternal players.">
 
     {% set title = title|default('no title') -%}
     {% set nav_items = [
