@@ -11,6 +11,7 @@ Own Craft Efficiency (Own Value, Findability, Cost)
 Purchase Efficiency (Own Value, Cost)
 """
 import pandas as pd
+import numpy as np
 import typing as t
 
 import werkzeug.local
@@ -187,7 +188,7 @@ class PlayCraftEfficiencyFrame(PlayValueFrame):
         return cls(play_value_frame.user, df)
 
     @staticmethod
-    @pd.np.vectorize
+    @np.vectorize
     def get_findability(rarity: Rarity, set_num: int):
         """Get the chance that a player will find the given card."""
         # todo cost could be calculated once per card rather than once per count
@@ -199,7 +200,7 @@ class PlayCraftEfficiencyFrame(PlayValueFrame):
         return findability
 
     @staticmethod
-    @pd.np.vectorize
+    @np.vectorize
     def findability_scalar(craft_efficiency: float, findability: float):
         """Scales the craft efficiency based on the findability."""
         return (1 - findability) * craft_efficiency
