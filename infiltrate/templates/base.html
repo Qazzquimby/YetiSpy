@@ -60,8 +60,14 @@
                     </li>
                 {% endfor %}
             </ul>
-            <ul class="nav nav-pills
-                flex-row justify-content-md-center justify-content-start flex-nowrap">
+            <ul class="nav nav-pills flex-row justify-content-md-center
+                        justify-content-start flex-nowrap">
+                <li class="navbar-item">
+                    <a href="/faq"
+                       class="nav-link text-white">
+                        FAQ
+                    </a>
+                </li>
                 {% if current_user.is_authenticated %}
                     <li class="navbar-item">
                         <a href="#"
