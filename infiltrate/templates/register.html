@@ -39,15 +39,48 @@
             <div class="control">
                 <input class="input is-large"
                        type="password"
+                       id="password"
                        name="password" placeholder="Password">
             </div>
         </div>
 
-        <button class="button is-block is-info is-large is-fullwidth">Sign Up</button>
+        <div class="field">
+            <div class="control">
+                <input class="input is-large"
+                       type="password"
+                       id="confirm-password"
+                       name="confirm_password" placeholder="Confirm Password">
+                <span id='confirm-password-message'>wow</span>
+            </div>
+        </div>
+
+
+        <button
+                class="button is-block is-info is-large is-fullwidth"
+                id="register-submit"
+        >
+            Sign Up
+        </button>
     </form>
     <br>
 
     or <a href="{{ url_for('LoginView:index') }}">Log In</a>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        $('#password, #confirm-password').on('keyup', function () {
+            if ($('#password').val() === $('#confirm-password').val()) {
+                $('#register-submit').prop('disabled', false);
+                $('#confirm-password-message').html('Matching').css('color', 'green');
+            } else {
+                $('#register-submit').prop('disabled', true);
+                $('#confirm-password-message').html('Not Matching').css('color', 'red');
+            }
+        });
+    </script>
 
 {% endblock %}
 
