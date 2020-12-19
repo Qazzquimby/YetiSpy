@@ -1,16 +1,15 @@
-"""This is where the routes are defined."""
 import flask
+import flask_login
+from flask_classy import FlaskView
 
 import infiltrate
 import infiltrate.views.login
-from infiltrate.models.user import User, get_by_id
-from flask_classy import FlaskView
-import flask_login
+from infiltrate.models.user import get_by_id
 
 
 # noinspection PyMethodMayBeStatic
 class UpdateKeyView(FlaskView):
-    """View in which a user may update their collection."""
+    """View for replacing a user's EW api key."""
 
     @flask_login.login_required
     def post(self):
