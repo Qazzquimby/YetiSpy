@@ -6,10 +6,10 @@ import numpy as np
 import pandas as pd
 
 import infiltrate.global_data as global_data
-from infiltrate.models.user import User
+import infiltrate.models.card as card
 from infiltrate.card_evaluation import OwnValueFrame
 from infiltrate.card_frame_bases import CardDetails
-import infiltrate.models.card as card
+from infiltrate.models.user import User
 from infiltrate.views.card_values import display_filters
 
 
@@ -30,13 +30,24 @@ class CardDisplays:
         self._ownership: t.Optional[display_filters.OwnershipFilter] = None
 
     @classmethod
-    @functools.lru_cache(maxsize=50)
     def make_for_user(cls, user: User, card_details: CardDetails = None):
+        own_value = cls.make_own_value_frame_for_user(user, card_details)
+
+        # The frame is cached and could be modified if not copied
+        own_value = own_value.copy()
+
+        return cls(own_value)
+
+    @classmethod
+    @functools.lru_cache(maxsize=50)
+    def make_own_value_frame_for_user(
+        cls, user: User, card_details: CardDetails = None
+    ):
         """Makes the cards for a user, cached for immediate reuse."""
         if card_details is None:
             card_details = global_data.all_cards
         own_value = OwnValueFrame.from_user(user, card_details)
-        return cls(own_value)
+        return own_value
 
     @property
     def sort_method(self) -> t.Optional[display_filters.CardDisplaySort]:

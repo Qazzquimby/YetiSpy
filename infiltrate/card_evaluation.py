@@ -10,20 +10,20 @@ Own Value (Play Value, Play Craft Efficiency)
 Own Craft Efficiency (Own Value, Findability, Cost)
 Purchase Efficiency (Own Value, Cost)
 """
-import pandas as pd
-import numpy as np
 import typing as t
 
+import numpy as np
+import pandas as pd
 import werkzeug.local
 
+import infiltrate.card_frame_bases as card_frame_bases
 import infiltrate.df_types as df_types
+import infiltrate.models.card_set as card_set
 import infiltrate.models.deck_constants as deck_constants
+import infiltrate.rewards as rewards
+from infiltrate.models.deck_search import WeightedDeckSearch, get_weighted_deck_searches
 from infiltrate.models.rarity import Rarity
 from infiltrate.models.user import User, collection
-import infiltrate.models.card_set as card_set
-import infiltrate.rewards as rewards
-import infiltrate.card_frame_bases as card_frame_bases
-from infiltrate.models.deck_search import WeightedDeckSearch, get_weighted_deck_searches
 
 
 # TODO Important. Add card values to the database as a column on cards. Everyone has the
@@ -226,6 +226,11 @@ class OwnValueFrame(PlayCraftEfficiencyFrame):
         self.sell_cost = self.sell_cost
         self.resell_value = self.resell_value
         self.own_value = self.own_value
+
+    def copy(self):
+        copy = super(OwnValueFrame, self).copy()
+        copy.__dict__ = self.__dict__.copy()
+        return copy
 
     @classmethod
     def from_play_craft_efficiency(

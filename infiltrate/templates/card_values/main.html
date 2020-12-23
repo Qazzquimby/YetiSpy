@@ -52,14 +52,18 @@
                 <div class="collapse" id="filter-options">
                     <div class="card bg-dark">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value=""
-                                   id="owned-filter">
-                            <label class="form-check-label" for="owned-filter">
-                                Hide Owned Cards
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   value=""
+                                   id="show-owned-filter">
+                            <label class="form-check-label" for="show-owned-filter">
+                                Show Owned Cards
                             </label>
                         </div>
                         <button type="button"
-                                class="btn btn-primary col-12 col-md-3">
+                                class="btn btn-primary"
+                                onclick="page=0; updateCardTable();"
+                        >
                             Apply
                         </button>
                     </div>
@@ -112,13 +116,23 @@
     <script>
         let page = 0;
         let sort = "efficiency";
-        let ownership = "unowned";
+
+        function getOwnershipString() {
+            showOwned = document.getElementById("show-owned-filter").checked;
+            if (showOwned) {
+                return "all"
+            } else {
+                return "unowned"
+            }
+        }
 
         function updateCardTable() {
             document.getElementById("info-link")
                 .setAttribute("href", {{ url_for("FaqView:index") }}+"#" + sort)
             $.get({
-                url: "/card_values/" + page + "/" + sort + "/" + ownership,
+                url: "/card_values/" + page
+                    + "/" + sort
+                    + "/" + getOwnershipString(),
             }).done(function (data) {
                 $("#card-table").html(data);
                 $("#current-page").html(page + 1);
@@ -135,6 +149,8 @@
                         }
                     }
                 );
+                console.log(`reloaded table. page ${page}. sort ${sort}.
+                             filter ${getOwnershipString()}`)
             }).fail(function (jqxhr, textStatus, error) {
                 const err = jqxhr.status + ", " + textStatus + ", " + error;
                 console.log("Request Failed: " + err);
@@ -159,7 +175,8 @@
 
             const searchStr = search.target.value;
             if (searchStr.length >= 2) {
-                if (searchStr.length >= lastSearch.length || !lastSearch.startsWith(searchStr)) {
+                if (searchStr.length >= lastSearch.length
+                    || !lastSearch.startsWith(searchStr)) {
                     {#console.log("setting searchStr " + searchStr + " over lastSearch " +#}
                     {#    lastSearch);#}
                     lastSearch = searchStr;
@@ -168,7 +185,9 @@
                             if (searchStr.length >= lastSearch.length || !lastSearch.startsWith(searchStr)) {
                                 {#console.log("running " + searchStr);#}
                                 $.get({
-                                    url: "/card_search/" + "_" + searchStr + "/" + sort + "/" + ownership,
+                                    url: "/card_search/" + "_" + searchStr
+                                        + "/" + sort
+                                        + "/" + getOwnershipString(),
                                     {#    todo low prio fix this gross url thing. The _ is prepended because empty str breaks.#}
                                 }).done(function (data) {
                                     if (searchStr.length >= lastSearch.length || !lastSearch
