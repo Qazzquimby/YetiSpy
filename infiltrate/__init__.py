@@ -2,14 +2,14 @@
 import functools
 import os
 
+import boltons.fileutils
 import flask
 import flask_login
 import flask_talisman
 from flask import Flask
 from flask_bootstrap import Bootstrap
+from flask_jsglue import JSGlue
 from flask_sqlalchemy import SQLAlchemy
-
-import boltons.fileutils
 
 application = Flask(__name__)
 application.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -42,6 +42,13 @@ def _setup_db(app):
 
 
 db = _setup_db(application)
+
+
+def _setup_jsglue(app):
+    return JSGlue(app)
+
+
+jsglue = _setup_jsglue(application)
 
 
 def setup_application(app):

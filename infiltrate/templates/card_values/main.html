@@ -60,6 +60,16 @@
                                 Show Owned Cards
                             </label>
                         </div>
+                        <div class="form-check">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   value=""
+                                   checked="checked"
+                                   id="show-cheap-filter">
+                            <label class="form-check-label" for="show-cheap-filter">
+                                Show Commons and Uncommons
+                            </label>
+                        </div>
                         <button type="button"
                                 class="btn btn-primary"
                                 onclick="page=0; updateCardTable();"
@@ -67,6 +77,8 @@
                             Apply
                         </button>
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -117,8 +129,18 @@
         let page = 0;
         let sort = "efficiency";
 
+        function getCardValuesUrl() {
+            return Flask.url_for(
+                'CardsView:card_values', {
+                    "page_num": page,
+                    "owner_str": getOwnershipString(),
+                    "sort_str": sort
+                });
+        }
+
+
         function getOwnershipString() {
-            showOwned = document.getElementById("show-owned-filter").checked;
+            const showOwned = document.getElementById("show-owned-filter").checked;
             if (showOwned) {
                 return "all"
             } else {
@@ -129,10 +151,22 @@
         function updateCardTable() {
             document.getElementById("info-link")
                 .setAttribute("href", {{ url_for("FaqView:index") }}+"#" + sort)
+
             $.get({
-                url: "/card_values/" + page
-                    + "/" + sort
-                    + "/" + getOwnershipString(),
+                {#url: "/card_values/" + page#}
+                {#    + "/" + sort#}
+                {#    + "/" + getOwnershipString(),#}
+                {#url: `/card_values/${page}?sort_str=${sort}&owner_str=${getOwnershipString()}`,#}
+                {##}
+                url: getCardValuesUrl()
+                {#                        values={'owner_str':ownership_str,#}
+                {#                        'page_num':page,#}
+                {#                        'sort_str':sort}#}
+                {#                    )}}#}
+                {#    +`?page_num=${page}\#}
+                {#&sort_str=${sort}\#}
+                {#&owner_str=${getOwnershipString()}`#}
+
             }).done(function (data) {
                 $("#card-table").html(data);
                 $("#current-page").html(page + 1);

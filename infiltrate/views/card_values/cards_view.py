@@ -1,6 +1,6 @@
-import numpy as np
 import flask
 import flask_login
+import numpy as np
 from flask_classy import FlaskView
 
 import infiltrate.models.card.completion as completion
@@ -17,8 +17,11 @@ class CardsView(FlaskView):
         """The main card values page"""
         return flask.render_template("card_values/main.html")
 
-    def card_values(self, page_num=0, sort_str="efficiency", owner_str=None):
+    def card_values(self, page_num=0):
         """A table loaded into the card values page."""
+
+        sort_str = flask.request.args.get("sort_str")
+        owner_str = flask.request.args.get("owner_str")
 
         displays = self._get_displays(sort_str, owner_str)
 
