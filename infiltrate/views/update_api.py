@@ -1,6 +1,6 @@
 """Private API to trigger database updates while site is live."""
 
-from flask_classy import FlaskView
+from flask_classful import FlaskView
 
 import infiltrate.caches as caches
 import infiltrate.models.card as card

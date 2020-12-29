@@ -1,7 +1,7 @@
 """This is where the routes are defined."""
 import flask
 import requests
-from flask_classy import FlaskView
+from flask_classful import FlaskView
 import flask_login
 
 # noinspection PyMethodMayBeStatic

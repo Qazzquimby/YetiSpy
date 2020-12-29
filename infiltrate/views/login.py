@@ -2,7 +2,7 @@
 import typing as t
 import flask
 import flask_login
-from flask_classy import FlaskView
+from flask_classful import FlaskView
 from werkzeug.security import generate_password_hash, check_password_hash
 from infiltrate import db
 

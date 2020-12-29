@@ -3,8 +3,8 @@ from abc import ABC
 
 import numpy as np
 
-from infiltrate.card_evaluation import OwnValueFrame
 import infiltrate.models.card_set as card_set
+from infiltrate.card_evaluation import OwnValueFrame
 
 
 class Filter(ABC):
@@ -83,7 +83,10 @@ class CraftSort(CardDisplaySort):
          per shiftstone crafting cost."""
         cards.index.names = [name + "_index" for name in cards.index.names]
         sorted_df = cards.sort_values(
-            by=[cards.PLAY_CRAFT_EFFICIENCY_NAME, cards.COUNT_IN_DECK_NAME,],
+            by=[
+                OwnValueFrame.PLAY_CRAFT_EFFICIENCY_NAME,
+                OwnValueFrame.COUNT_IN_DECK_NAME,
+            ],
             ascending=[False, True],
         )
         return OwnValueFrame(cards.user, sorted_df)
@@ -108,7 +111,7 @@ class ValueSort(CardDisplaySort):
         """Sorts cards from highest to lowest card value."""
         cards.index.names = [name + "_index" for name in cards.index.names]
         sorted_df = cards.sort_values(
-            by=[OwnValueFrame.PLAY_VALUE_NAME, cards.COUNT_IN_DECK_NAME,],
+            by=[OwnValueFrame.PLAY_VALUE_NAME, OwnValueFrame.COUNT_IN_DECK_NAME],
             ascending=[False, True],
         )
         return OwnValueFrame(cards.user, sorted_df)
@@ -119,12 +122,16 @@ class ValueSort(CardDisplaySort):
         return cards
 
 
+EFFICIENCY_SORT = "efficiency"
+VALUE_SORT = "value"
+
+
 def get_sort(sort_str):
     """Get an OwnershipFilter from its id string."""
-    sort_str_to_sort = {"efficiency": CraftSort, "value": ValueSort}
+    sort_str_to_sort = {EFFICIENCY_SORT: CraftSort, VALUE_SORT: ValueSort}
 
     sort = sort_str_to_sort.get(sort_str, None)
-    if not sort:
+    if sort is None:
         raise ValueError(
             f"Sort method {sort_str} not recognized. "
             f"Known sorts are {sort_str_to_sort.keys()}"
@@ -132,18 +139,23 @@ def get_sort(sort_str):
     return sort
 
 
-def get_owner(owner_str):
+UNOWNED_FILTER = "unowned"
+OWNED_FILTER = "owned"
+ALL_FILTER = "all"
+
+
+def get_filter(filter_str: str) -> Filter:
     """Get an OwnershipFilter from its id string."""
-    owner_str_to_owner = {
-        "unowned": UnownedFilter,
-        "owned": OwnedFilter,
-        "all": AllFilter,
+    filter_str_to_filter = {
+        UNOWNED_FILTER: UnownedFilter,
+        OWNED_FILTER: OwnedFilter,
+        ALL_FILTER: AllFilter,
     }
 
-    sort = owner_str_to_owner.get(owner_str, None)
-    if not sort:
-        raise ValueError(
-            f"Ownership type {owner_str} not recognized. "
-            f"Known types are {owner_str_to_owner.keys()}"
+    _filter = filter_str_to_filter.get(filter_str, None)
+    if not _filter:
+        raise KeyError(
+            f"Filter {filter_str} not recognized. "
+            f"Known filters are {filter_str_to_filter.keys()}"
         )
-    return sort
+    return _filter

@@ -1,6 +1,6 @@
 import flask
 import flask_login
-from flask_classy import FlaskView
+from flask_classful import FlaskView
 
 from infiltrate.views.card_values.card_displays import CardDisplays
 

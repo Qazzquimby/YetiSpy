@@ -6,7 +6,7 @@ cryptography
 fast-autocomplete
 flask
 flask-bootstrap4
-Flask-Classy
+Flask-Classful
 Flask-JSGlue
 flask-login
 flask-sqlalchemy

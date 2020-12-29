@@ -1,6 +1,6 @@
 """This is where the routes are defined."""
 import flask
-from flask_classy import FlaskView
+from flask_classful import FlaskView
 
 
 class FaqView(FlaskView):

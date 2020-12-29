@@ -1,6 +1,6 @@
 import flask
 import flask_login
-from flask_classy import FlaskView
+from flask_classful import FlaskView
 
 import infiltrate
 import infiltrate.views.login

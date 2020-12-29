@@ -23,14 +23,14 @@ class CardDisplays:
 
     def __init__(self, value_info: OwnValueFrame):
         self.value_info = value_info
-        self.is_filtered = False
-        self.is_sorted = False
 
         self._sort_method: t.Optional[display_filters.CardDisplaySort] = None
-        self._ownership: t.Optional[display_filters.OwnershipFilter] = None
+        self._filter_methods: t.List[display_filters.Filter] = []
 
     @classmethod
-    def make_for_user(cls, user: User, card_details: CardDetails = None):
+    def make_for_user(
+        cls, user: User, card_details: CardDetails = None
+    ) -> "CardDisplays":
         own_value = cls.make_own_value_frame_for_user(user, card_details)
 
         # The frame is cached and could be modified if not copied
@@ -54,22 +54,20 @@ class CardDisplays:
         return self._sort_method
 
     @sort_method.setter
-    def sort_method(self, value):
-        if self._sort_method != value:
-            self.is_sorted = False
-            self.is_filtered = False
-            self._sort_method = value
+    def sort_method(self, new_sort_method: display_filters.CardDisplaySort):
+        if self._sort_method == new_sort_method:
+            return
 
-    @property
-    def ownership(self) -> t.Optional[display_filters.OwnershipFilter]:
-        return self._ownership
+        self._sort_method = new_sort_method
+        self.value_info = self._sort_method.sort(self.value_info)
 
-    @ownership.setter
-    def ownership(self, value):
-        if self._ownership != value:
-            self.is_sorted = False
-            self.is_filtered = False
-            self._ownership = value
+    def filter(self, filter_method: display_filters.Filter):
+        """Adds and applies the filter to the cards"""
+        if filter_method in self._filter_methods:
+            return
+
+        self._filter_methods.append(filter_method)
+        self.value_info = filter_method.filter(self.value_info)
 
     def get_page(self, page_num: int = 0) -> t.Tuple[int, OwnValueFrame]:
         """Gets the page page number and page of card displays,
@@ -91,43 +89,6 @@ class CardDisplays:
         ]
 
         return displays_df
-
-    def configure(
-        self,
-        sort_method: t.Type[display_filters.CardDisplaySort],
-        ownership: t.Type[display_filters.OwnedFilter] = None,
-    ) -> "CardDisplays":
-        """Sets sort method and ownership filter,
-        and updates displays to match."""
-        if not ownership:
-            self.ownership = sort_method.default_ownership
-
-        self.sort_method = sort_method
-        self.ownership = ownership
-
-        self._process_displays()
-        return self
-
-    def _process_displays(self):
-        """Sorts and filters the displays"""
-        self._filter()
-        self._sort()
-
-    def _filter(self):
-        if not self.is_filtered:
-            filtered = self.value_info
-            filtered = self.sort_method.filter(filtered)
-            filtered = self.ownership.filter(filtered)
-
-            self.value_info = filtered
-            self.is_filtered = True
-
-    def _sort(self):
-        """Sorts displays by the given method"""
-        if not self.is_sorted:
-            sort_method = self.sort_method
-            self.value_info = sort_method.sort(self.value_info)
-            self.is_sorted = True
 
 
 class CardDisplayPage:

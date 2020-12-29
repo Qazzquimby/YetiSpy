@@ -1,5 +1,5 @@
 import flask
-import flask_classy
+import flask_classful
 import flask_login
 
 import infiltrate.card_evaluation as card_evaluation
@@ -7,7 +7,7 @@ import infiltrate.global_data as global_data
 import infiltrate.purchases as purchases
 
 
-class PurchasesView(flask_classy.FlaskView):
+class PurchasesView(flask_classful.FlaskView):
     """View for the list of card values"""
 
     route_base = "/purchases"
