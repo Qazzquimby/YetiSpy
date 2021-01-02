@@ -7,7 +7,7 @@ ROOT_URL = "https://www.direwolfdigital.com/"
 NEWS_URL = "https://www.direwolfdigital.com/news/"
 ARTICLE_SELECTOR = "section.allNews > div > div > a"
 LEAGUE_PACKS_SELECTOR = (
-    "section.pageContent > div > div > div.col-md-8.content > ul:nth-child(7) > li"
+    "section.pageContent > div > div > div.col-md-8.content > h2 + p + ul > li"
 )
 
 

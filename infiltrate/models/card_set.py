@@ -174,7 +174,3 @@ def _get_set_nums() -> t.List[int]:
     set_nums = list(card.db.session.query(card.Card.set_num).distinct())
     set_nums = [s[0] for s in set_nums if s[0]]
     return set_nums
-
-
-if __name__ == "__main__":
-    update()
