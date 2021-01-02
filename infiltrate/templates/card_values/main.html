@@ -134,10 +134,19 @@
                 'CardsView:card_values', {
                     "page_num": page,
                     "owner_str": getOwnershipString(),
-                    "sort_str": sort
+                    "sort_str": sort,
+                    "excluded_rarities": getExcludedRarities()
                 });
         }
 
+        function getExcludedRarities() {
+            const showCheap = document.getElementById("show-cheap-filter").checked;
+            if (showCheap) {
+                return ["Common", "Uncommon", "Rare", "Promo", "Legendary"]
+            } else {
+                return ["Rare", "Promo", "Legendary"]
+            }
+        }
 
         function getOwnershipString() {
             const showOwned = document.getElementById("show-owned-filter").checked;
@@ -151,22 +160,8 @@
         function updateCardTable() {
             document.getElementById("info-link")
                 .setAttribute("href", {{ url_for("FaqView:index") }}+"#" + sort)
-
             $.get({
-                {#url: "/card_values/" + page#}
-                {#    + "/" + sort#}
-                {#    + "/" + getOwnershipString(),#}
-                {#url: `/card_values/${page}?sort_str=${sort}&owner_str=${getOwnershipString()}`,#}
-                {##}
                 url: getCardValuesUrl()
-                {#                        values={'owner_str':ownership_str,#}
-                {#                        'page_num':page,#}
-                {#                        'sort_str':sort}#}
-                {#                    )}}#}
-                {#    +`?page_num=${page}\#}
-                {#&sort_str=${sort}\#}
-                {#&owner_str=${getOwnershipString()}`#}
-
             }).done(function (data) {
                 $("#card-table").html(data);
                 $("#current-page").html(page + 1);
