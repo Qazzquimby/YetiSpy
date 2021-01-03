@@ -34,9 +34,18 @@
         let sort = "efficiency";
         let ownership = "unowned";
 
+        function getPurchaseValuesUrl() {
+            return Flask.url_for(
+                'PurchasesView:values', {
+                    "page_num": page,
+                    "owner_str": ownership,
+                    "sort_str": sort
+                });
+        }
+
         function updatePurchaseTable() {
             $.get({
-                url: "/purchases/values/" + page + "/" + sort + "/" + ownership,
+                url: getPurchaseValuesUrl()
             }).done(function (data) {
                 $("#purchase-table").html(data);
                 $("#current-page").html(page);
