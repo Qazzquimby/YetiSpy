@@ -11,15 +11,15 @@
                         {% set ns = namespace(minimum = 0, maximum = 0) %}
                         {% for owned in range(1, display['count_in_deck']) %}
                             <img src="../static/images/owned.png"
-                                 style="margin-right: -5px"/>
+                                 style="margin-right: -5px" alt="Owned marker"/>
                         {% endfor %}
                         {% for owned in range(1) %}
                             <img src="../static/images/current.png"
-                                 style="margin-right: -5px"/>
+                                 style="margin-right: -5px" alt="Current marker"/>
                         {% endfor %}
                         {% for owned in range(display['count_in_deck'], 4) %}
                             <img src="../static/images/unowned.png"
-                                 style="margin-right: -5px"/>
+                                 style="margin-right: -5px" alt="Unowned marker"/>
                         {% endfor %}
                     </div>
                     <a href="{{ display['details_url'] }}">
