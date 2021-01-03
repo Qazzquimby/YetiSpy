@@ -6,7 +6,6 @@ import numpy as np
 from flask_classful import FlaskView
 
 import infiltrate.models.card.completion as completion
-import infiltrate.models.rarity
 import infiltrate.views.card_values.card_displays as card_displays
 import infiltrate.views.card_values.display_filters as display_filters
 
@@ -30,19 +29,24 @@ class CardsView(FlaskView):
             sort = display_filters.CraftSort
 
         filter_names_and_defaults = [
-            ("owner_str", display_filters.UNOWNED_FILTER),
-            # ("rarities", list(infiltrate.models.rarity.rarity_from_name.keys()))
+            (
+                "owner_str",
+                [display_filters.UNOWNED_FILTER],
+                display_filters.get_ownership_filter,
+            ),
+            ("excluded_rarities", [], display_filters.get_rarity_filter),
         ]
         filters = []
-        for filter_name, default in filter_names_and_defaults:
-            filter_str = flask.request.args.get(filter_name)
-            try:
-                _filter = display_filters.get_filter(
-                    filter_str
-                )  # TODO REWORK GET OWNER
-            except KeyError:
-                _filter = default
-            filters.append(_filter)
+        for filter_name, default, getter in filter_names_and_defaults:
+            filters_str = flask.request.args.get(filter_name)
+            if filters_str is None:
+                filter_strs = default
+            else:
+                filter_strs = [
+                    _filter for _filter in filters_str.split(",") if len(_filter) > 0
+                ]
+            filters_for_type = [getter(filter_str) for filter_str in filter_strs]
+            filters += filters_for_type
 
         displays = self._get_displays(sort, filters)
 

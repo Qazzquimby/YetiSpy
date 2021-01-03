@@ -4,14 +4,14 @@ from abc import ABC
 import numpy as np
 
 import infiltrate.models.card_set as card_set
+import infiltrate.models.rarity as rarity_mod
 from infiltrate.card_evaluation import OwnValueFrame
 
 
 class Filter(ABC):
     """ABC for methods of filtering cards to be displayed."""
 
-    @classmethod
-    def filter(cls, cards: OwnValueFrame) -> OwnValueFrame:
+    def filter(self, cards: OwnValueFrame) -> OwnValueFrame:
         """Should the card be filtered out."""
         raise NotImplementedError
 
@@ -24,8 +24,7 @@ class UnownedFilter(OwnershipFilter):
     """Keeps only unowned cards."""
 
     # noinspection PyMissingOrEmptyDocstring
-    @classmethod
-    def filter(cls, cards: OwnValueFrame):
+    def filter(self, cards: OwnValueFrame):
         filtered_df = cards.query("is_owned == False")
         return OwnValueFrame(cards.user, filtered_df)
 
@@ -34,8 +33,7 @@ class OwnedFilter(OwnershipFilter):
     """Keeps only owned cards."""
 
     # noinspection PyMissingOrEmptyDocstring
-    @classmethod
-    def filter(cls, cards):
+    def filter(self, cards):
         filtered_df = cards.query("is_owned == True")
         return OwnValueFrame(cards.user, filtered_df)
 
@@ -44,8 +42,7 @@ class AllFilter(OwnershipFilter):
     """Does not filter cards at all."""
 
     # noinspection PyMissingOrEmptyDocstring
-    @classmethod
-    def filter(cls, cards):
+    def filter(self, cards):
         return cards
 
 
@@ -65,8 +62,7 @@ class CardDisplaySort(Filter, ABC):
         """The method to reorder the card displays."""
         raise NotImplementedError
 
-    @classmethod
-    def filter(cls, cards: OwnValueFrame) -> OwnValueFrame:
+    def filter(self, cards: OwnValueFrame) -> OwnValueFrame:
         """The method to filter out irrelevant card displays."""
         return cards
 
@@ -91,8 +87,7 @@ class CraftSort(CardDisplaySort):
         )
         return OwnValueFrame(cards.user, sorted_df)
 
-    @classmethod
-    def filter(cls, cards):
+    def filter(self, cards):
         """Filters out uncraftable."""
         filtered_df = cards[
             np.logical_not(card_set.CardSet.is_campaign_from_num(cards.set_num))
@@ -116,8 +111,7 @@ class ValueSort(CardDisplaySort):
         )
         return OwnValueFrame(cards.user, sorted_df)
 
-    @classmethod
-    def filter(cls, cards):
+    def filter(self, cards):
         """Excludes owned cards."""
         return cards
 
@@ -144,18 +138,40 @@ OWNED_FILTER = "owned"
 ALL_FILTER = "all"
 
 
-def get_filter(filter_str: str) -> Filter:
+def get_ownership_filter(filter_str: str) -> Filter:
     """Get an OwnershipFilter from its id string."""
-    filter_str_to_filter = {
-        UNOWNED_FILTER: UnownedFilter,
-        OWNED_FILTER: OwnedFilter,
-        ALL_FILTER: AllFilter,
+    filter_dict = {
+        UNOWNED_FILTER: UnownedFilter(),
+        OWNED_FILTER: OwnedFilter(),
+        ALL_FILTER: AllFilter(),
     }
+    return _get_filter(filter_dict=filter_dict, filter_str=filter_str)
 
-    _filter = filter_str_to_filter.get(filter_str, None)
+
+class RarityFilter(OwnershipFilter):
+    """Excludes the given rarity."""
+
+    def __init__(self, rarity_name: str):
+        self.rarity = rarity_mod.rarity_from_name[rarity_name]
+
+    def filter(self, cards):
+        filtered_df = cards[cards["rarity"] != self.rarity]
+        return OwnValueFrame(cards.user, filtered_df)
+
+
+def get_rarity_filter(filter_str: str) -> Filter:
+    filter_dict = {
+        rarity_name: RarityFilter(rarity_name)
+        for rarity_name in rarity_mod.rarity_from_name.keys()
+    }
+    return _get_filter(filter_dict=filter_dict, filter_str=filter_str)
+
+
+def _get_filter(filter_dict: t.Dict[str, Filter], filter_str: str) -> Filter:
+    _filter = filter_dict.get(filter_str, None)
     if not _filter:
         raise KeyError(
             f"Filter {filter_str} not recognized. "
-            f"Known filters are {filter_str_to_filter.keys()}"
+            f"Known filters are {filter_dict.keys()}"
         )
     return _filter

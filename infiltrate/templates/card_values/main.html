@@ -142,9 +142,9 @@
         function getExcludedRarities() {
             const showCheap = document.getElementById("show-cheap-filter").checked;
             if (showCheap) {
-                return ["Common", "Uncommon", "Rare", "Promo", "Legendary"]
+                return []
             } else {
-                return ["Rare", "Promo", "Legendary"]
+                return ["Common", "Uncommon"]
             }
         }
 
