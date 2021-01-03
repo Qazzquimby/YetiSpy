@@ -38,7 +38,7 @@
     <nav class="navbar navbar-expand-md navbar-infiltrate navbar-dark">
         <a class="navbar-brand d-inline-block align-top" href="/">
             <img src="{{ url_for('static', filename='images/logo_zoom.png') }}"
-                 style="height: 40px; margin-top: -10px">
+                 style="height: 40px; margin-top: -10px" alt="Yeti Spy Logo">
             Yeti Spy
         </a>
 
@@ -65,7 +65,7 @@
             <ul class="nav nav-pills flex-row justify-content-md-center
                         justify-content-start flex-nowrap">
                 <li class="navbar-item">
-                    <a href="/faq"
+                    <a href="{{ url_for("FaqView:index") }}"
                        class="nav-link text-white">
                         FAQ
                     </a>
@@ -80,7 +80,7 @@
                         </a>
                     </li>
                     <li class="navbar-item">
-                        <a href="/logout" class="nav-link">
+                        <a href="{{ url_for("logout") }}" class="nav-link">
                             Logout {{ current_user.name }}
                         </a>
                     </li>
@@ -141,8 +141,8 @@
                 <div class="row" style="min-height: 100px">
                     <div class="col-md-3 offset-md-3">
                         <h3>Contact</h3>
-                        <p> Reddit: <b>/u/qazzquimby</b></p>
-                        <p>Discord: <b>qazzquimby#0073</b></p>
+                        <p> Reddit: <strong>/u/qazzquimby</strong></p>
+                        <p>Discord: <strong>qazzquimby#0073</strong></p>
                     </div>
 
                     <div class="col-md-5">
@@ -158,7 +158,8 @@
                         </p>
 
                         <p>
-                            <a href="https://github.com/Qazzquimby/eternalCardEvaluator">
+                            <a href="https://github.com
+                            /Qazzquimby/eternalCardEvaluator">
                                 This site is open-source.
                             </a>
 
