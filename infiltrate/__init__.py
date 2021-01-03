@@ -54,16 +54,8 @@ jsglue = _setup_jsglue(application)
 def setup_application(app):
     flask_talisman.Talisman(app, content_security_policy=None)
 
-    # @app.before_request
-    # def before_request():
-    #     if not flask.request.is_secure:
-    #         url = flask.request.url.replace('http://', 'https://', 1)
-    #         code = 301
-    #         return flask.redirect(url, code=code)
-
     Bootstrap(app)
     boltons.fileutils.mkdir_p(app.instance_path)
-    # updates() # move to worker process
     _register_views(app)
     _setup_login_manager(app)
 

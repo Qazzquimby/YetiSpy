@@ -46,6 +46,6 @@ def schedule_updates():
 
 if __name__ == "__main__":
     card.update_cards()
-    # card_set.update()
-    # deck.update_decks()
-    # deck_search.update_deck_searches()
+    card_set.update()
+    deck.update_decks()
+    deck_search.update_deck_searches()
