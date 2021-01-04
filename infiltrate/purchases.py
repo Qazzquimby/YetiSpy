@@ -2,16 +2,16 @@
 import abc
 import collections
 import typing as t
+
 import pandas as pd
 
 import infiltrate.card_evaluation as card_evaluation
 import infiltrate.dwd_news as dwd_news
-import infiltrate.models.card as card
 import infiltrate.models.card.draft as card_draft
 import infiltrate.models.card_set as models_card_set
 import infiltrate.models.rarity as rarity
-from infiltrate.models.user import User
 import infiltrate.rewards as rewards
+from infiltrate.models.user import User
 
 PurchaseRow = t.Tuple[str, str, str, int, float, float]
 
@@ -181,7 +181,7 @@ class LoseAllGamesDraftEvaluator(DraftEvaluator):
         draft_value = self.get_values()
         return [
             self._make_row(
-                "No Wins", card.draft.most_recent_draft_pack_cards_url(), draft_value,
+                "No Wins", card_draft.most_recent_draft_pack_cards_url(), draft_value,
             )
         ]
 
@@ -230,7 +230,7 @@ class AverageDraftEvaluator(DraftEvaluator):
         return [
             self._make_row(
                 "Average Draft",
-                card.draft.most_recent_draft_pack_cards_url(),
+                card_draft.most_recent_draft_pack_cards_url(),
                 draft_value,
             )
         ]
