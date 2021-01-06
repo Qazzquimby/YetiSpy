@@ -44,6 +44,11 @@ def _setup_db(app):
 db = _setup_db(application)
 
 
+@application.teardown_appcontext
+def shutdown_session(exception=None):
+    db.session.remove()
+
+
 def _setup_jsglue(app):
     return JSGlue(app)
 
