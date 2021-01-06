@@ -212,12 +212,16 @@
                     setTimeout(
                         function () {
                             if (searchStr.length >= lastSearch.length || !lastSearch.startsWith(searchStr)) {
-                                {#console.log("running " + searchStr);#}
+                                console.log("Searching for " + searchStr);
                                 $.get({
-                                    url: "/card_search/" + "_" + searchStr
-                                        + "/" + sort
-                                        + "/" + getOwnershipString(),
-                                    {#    todo low prio fix this gross url thing. The _ is prepended because empty str breaks.#}
+                                    url: Flask.url_for(
+                                        'CardsView:card_search', {
+                                            "page_num": page,
+                                            "owner_str": getOwnershipString(),
+                                            "sort_str": sort,
+                                            "excluded_rarities": getExcludedRarities(),
+                                            "search_str": searchStr
+                                        })
                                 }).done(function (data) {
                                     if (searchStr.length >= lastSearch.length || !lastSearch
                                         .startsWith(searchStr)) {

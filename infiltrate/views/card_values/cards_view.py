@@ -19,15 +19,69 @@ class CardsView(FlaskView):
         """The main card values page"""
         return flask.render_template("card_values/main.html")
 
-    def card_values(self, page_num=0):
+    def card_values(self):
         """A table loaded into the card values page."""
 
-        sort_str = flask.request.args.get("sort_str")
-        try:
-            sort = display_filters.get_sort(sort_str)
-        except KeyError:
-            sort = display_filters.CraftSort
+        page_num = int(flask.request.args.get("page_num"))
 
+        displays = self._get_displays()
+
+        page_num = int(page_num)
+        page_num, cards_on_page = displays.get_page(page_num)
+
+        scaled = (np.log2(cards_on_page["play_craft_efficiency"] * 100) * 15).clip(
+            lower=0
+        )
+        cards_on_page["scaled_play_craft_efficiency"] = scaled
+
+        return flask.render_template(
+            "card_values/table.html",
+            page=page_num,
+            sort=self._get_sort_str(),
+            card_values=cards_on_page,
+            cards_per_page=card_displays.CardDisplays.CARDS_PER_PAGE,
+        )
+
+    def card_search(self):
+        """Searches for cards with names matching the search string,
+        by the method used in AllCards"""
+
+        displays = self._get_displays()
+
+        search_str = flask.request.args.get("search_str")
+        search_str = search_str.lower()
+        cards_on_page = completion.get_matching_card(displays.value_info, search_str)
+
+        scaled = (np.log2(cards_on_page["play_craft_efficiency"] * 100) * 15).clip(
+            lower=0
+        )
+        cards_on_page["scaled_play_craft_efficiency"] = scaled
+
+        return flask.render_template(
+            "card_values/table.html",
+            page=0,
+            sort=self._get_sort_str(),
+            card_values=cards_on_page,
+            cards_per_page=16,
+        )
+
+    def _get_displays(self):
+        sort = self._get_sort()
+        filters = self._get_filters()
+        displays = self._get_displays_from_sort_and_filters(sort, filters)
+        return displays
+
+    def _get_sort_str(self):
+        sort_str = flask.request.args.get("sort_str")
+        if sort_str is None:
+            sort_str = "craft"
+        return sort_str
+
+    def _get_sort(self):
+        sort_str = self._get_sort_str()
+        return display_filters.get_sort(sort_str)
+
+    def _get_filters(self):
         filter_names_and_defaults = [
             (
                 "owner_str",
@@ -47,56 +101,9 @@ class CardsView(FlaskView):
                 ]
             filters_for_type = [getter(filter_str) for filter_str in filter_strs]
             filters += filters_for_type
+        return filters
 
-        displays = self._get_displays(sort, filters)
-
-        page_num = int(page_num)
-        page_num, cards_on_page = displays.get_page(page_num)
-
-        scaled = (np.log2(cards_on_page["play_craft_efficiency"] * 100) * 15).clip(
-            lower=0
-        )
-        cards_on_page["scaled_play_craft_efficiency"] = scaled
-
-        return flask.render_template(
-            "card_values/table.html",
-            page=page_num,
-            sort=sort_str,
-            card_values=cards_on_page,
-            cards_per_page=card_displays.CardDisplays.CARDS_PER_PAGE,
-        )
-
-    def card_search(
-        self,
-        search_str="_",
-        sort_str=display_filters.EFFICIENCY_SORT,
-        filters: t.List[display_filters.Filter] = None,
-    ):
-        """Searches for cards with names matching the search string,
-        by the method used in AllCards"""
-        if filters is None:
-            filters = []
-
-        displays = self._get_displays(sort_str, filters)
-
-        search_str = search_str[1:]
-        search_str = search_str.lower()
-        cards_on_page = completion.get_matching_card(displays.value_info, search_str)
-
-        scaled = (np.log2(cards_on_page["play_craft_efficiency"] * 100) * 15).clip(
-            lower=0
-        )
-        cards_on_page["scaled_play_craft_efficiency"] = scaled
-
-        return flask.render_template(
-            "card_values/table.html",
-            page=0,
-            sort=sort_str,
-            card_values=cards_on_page,
-            cards_per_page=16,
-        )
-
-    def _get_displays(
+    def _get_displays_from_sort_and_filters(
         self,
         sort: display_filters.CardDisplaySort = display_filters.CraftSort,
         filters: t.List[display_filters.Filter] = None,
