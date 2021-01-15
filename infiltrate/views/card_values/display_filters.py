@@ -173,5 +173,5 @@ class OnlyExpeditionFilter(OwnershipFilter):
     """Excludes the given rarity."""
 
     def filter(self, cards):
-        filtered_df = cards[cards["is_in_expedition"]]
+        filtered_df = cards[cards["is_in_expedition"] == True]
         return OwnValueFrame(cards.user, filtered_df)
