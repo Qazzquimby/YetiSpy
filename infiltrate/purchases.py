@@ -206,7 +206,9 @@ class AverageDraftEvaluator(DraftEvaluator):
 
     def get_values(self) -> float:
         packs_value = self._get_packs_value()
+        logging.info(f"Average draft packs value: {packs_value}")
         average_wins_value = self._get_average_wins_value()
+        logging.info(f"Average draft average wins value: {average_wins_value}")
 
         value = packs_value + average_wins_value
         logging.info(f"Average draft value: {value}")

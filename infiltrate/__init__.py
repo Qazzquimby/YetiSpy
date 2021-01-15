@@ -13,7 +13,7 @@ from flask_sqlalchemy import SQLAlchemy
 import logging
 
 # noinspection PyArgumentList
-logging.basicConfig(handlers=[logging.StreamHandler()], level=logging.DEBUG)
+logging.basicConfig(handlers=[logging.StreamHandler()], level=logging.INFO)
 
 application = Flask(__name__)
 application.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
