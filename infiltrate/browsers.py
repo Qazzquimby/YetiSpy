@@ -9,11 +9,19 @@ from mechanicalsoup import Browser
 
 
 def get_texts_from_url_and_selector(url: str, selector: str) -> t.List[str]:
-    """Get a list of elements found at the xpath at the url."""
-    soup = get_soup_from_url(url)
-    elements = soup.select(selector)
+    """Get the texts of the elements found at the url and selector"""
+    elements = get_elements_from_url_and_selector(url=url, selector=selector)
     texts = [element.text for element in elements]
     return texts
+
+
+def get_elements_from_url_and_selector(
+    url: str, selector: str
+) -> t.List[bs4.element.Tag]:
+    """Get a list of elements found at the url and selector."""
+    soup = get_soup_from_url(url)
+    elements = list(soup.select(selector))
+    return elements
 
 
 def get_first_element_from_url_and_selector(url: str, selector: str) -> bs4.element.Tag:
@@ -23,7 +31,7 @@ def get_first_element_from_url_and_selector(url: str, selector: str) -> bs4.elem
 
 
 def get_first_text_from_url_and_selector(url: str, selector: str) -> str:
-    """Get the text from an element specified by the xpath at the url."""
+    """Get the text from an element specified by the url and selector."""
     element = get_first_element_from_url_and_selector(url, selector)
     result = element.text
     return result
