@@ -39,6 +39,7 @@ class Card(db.Model):
         "DetailsUrl", db.String(length=100), unique=True, nullable=False
     )
     is_in_draft_pack = db.Column("IsInDraftPack", db.Boolean, nullable=False)
+    is_in_expedition = db.Column("IsInExpedition", db.Boolean, nullable=False)
 
     @property
     def id(self):
@@ -67,6 +68,7 @@ def all_cards_df_from_db() -> pd.DataFrame:
             "ImageUrl": "image_url",
             "DetailsUrl": "details_url",
             "IsInDraftPack": "is_in_draft_pack",
+            "IsInExpedtion": "is_in_expedition",
         },
         inplace=True,
     )
@@ -78,6 +80,17 @@ def all_cards_df_from_db() -> pd.DataFrame:
     return cards_df
 
 
+def get_card_ids_from_names(names: t.List[str]) -> t.List[CardId]:
+    from infiltrate.global_data import all_cards
+
+    matching_cards = all_cards[all_cards["name"].isin(names)]
+    card_ids = [
+        CardId(set_num=card_row["set_num"], card_num=card_row["card_num"])
+        for card_row in matching_cards
+    ]
+    return card_ids
+
+
 def update_cards():
     """Updates the db to match the Warcry cards list."""
     print("Info: Updating cards")
@@ -86,7 +99,11 @@ def update_cards():
     db.session.commit()
     import infiltrate.models.card.draft as draft
 
-    draft.update_draft_pack_contents()
+    draft.update_is_in_draft_pack()
+
+    import infiltrate.models.card.expedition as expedition
+
+    expedition.update_is_in_expedition()
 
 
 def _get_card_json():
