@@ -1,3 +1,4 @@
+import os
 import sys
 from logging.config import fileConfig
 
@@ -14,11 +15,13 @@ config = context.config
 
 # this will overwrite the ini-file sqlalchemy.url path
 # with the path given in the config of the main code
+DB_URL = os.environ.get("DATABASE_URL")
+if not DB_URL:
+    env_lines = open(".env").readlines()
+    database_url_label = "DATABASE_URL="
+    url_line = [line for line in env_lines if line.startswith(database_url_label)][0]
+    DB_URL = url_line.split(database_url_label)[1]
 
-env_lines = open(".env").readlines()
-database_url_label = "DATABASE_URL="
-url_line = [line for line in env_lines if line.startswith(database_url_label)][0]
-DB_URL = url_line.split(database_url_label)[1]
 config.set_main_option("sqlalchemy.url", DB_URL)
 
 # Interpret the config file for Python logging.
