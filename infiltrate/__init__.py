@@ -10,6 +10,10 @@ from flask import Flask
 from flask_bootstrap import Bootstrap
 from flask_jsglue import JSGlue
 from flask_sqlalchemy import SQLAlchemy
+import logging
+
+# noinspection PyArgumentList
+logging.basicConfig(handlers=[logging.StreamHandler()])
 
 application = Flask(__name__)
 application.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
