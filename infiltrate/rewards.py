@@ -30,6 +30,7 @@ class CardClass:
         self.is_premium = is_premium
 
     @property
+    @functools.lru_cache(maxsize=1)
     def num_cards(self) -> int:  # todo cache this
         """The total number of cards in the pool."""
         session = card.db.session
@@ -67,18 +68,24 @@ class CardClass:
         return avg_set_value
 
     def _get_value_for_set(self, card_data, card_set: card_sets.CardSet) -> float:
-        cards_in_set_and_rarity = card_data[
-            np.logical_and(
-                card_data["set_num"] == card_set.set_num,
-                card_data["rarity"] == self.rarity,
-            )
-        ]
-
-        value = get_value(cards_in_set_and_rarity)
-        return value
+        return _get_value_for_set_and_rarity(card_data, card_set, self.rarity)
 
     def __str__(self):
         return f"{tuple(self.sets)} {self.rarity}, premium {self.is_premium}"
+
+
+@functools.lru_cache(maxsize=200)
+def _get_value_for_set_and_rarity(
+    card_data, card_set: card_sets.CardSet, rarity: rarities.Rarity
+) -> float:
+    cards_in_set_and_rarity = card_data[
+        np.logical_and(
+            card_data["set_num"] == card_set.set_num, card_data["rarity"] == rarity,
+        )
+    ]
+
+    value = get_value(cards_in_set_and_rarity)
+    return value
 
 
 def get_value(card_pool):  # called many times and slow
