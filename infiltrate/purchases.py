@@ -181,7 +181,7 @@ class LoseAllGamesDraftEvaluator(DraftEvaluator):
         draft_value = self.get_values()
         return [
             self._make_row(
-                "No Wins", card_draft.most_recent_draft_pack_cards_url(), draft_value,
+                "No Wins", card_draft.get_draft_pack_root_url(), draft_value,
             )
         ]
 
@@ -229,9 +229,7 @@ class AverageDraftEvaluator(DraftEvaluator):
         draft_value = self.get_values()
         return [
             self._make_row(
-                "Average Draft",
-                card_draft.most_recent_draft_pack_cards_url(),
-                draft_value,
+                "Average Draft", card_draft.get_draft_pack_root_url(), draft_value,
             )
         ]
 

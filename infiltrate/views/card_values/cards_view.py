@@ -89,6 +89,13 @@ class CardsView(FlaskView):
                 display_filters.get_ownership_filter,
             ),
             ("excluded_rarities", [], display_filters.get_rarity_filter),
+            (
+                "only_expedition",
+                [],
+                lambda x: display_filters.OnlyExpeditionFilter()
+                if x == "true"
+                else None,
+            ),
         ]
         filters = []
         for filter_name, default, getter in filter_names_and_defaults:
@@ -100,6 +107,7 @@ class CardsView(FlaskView):
                     _filter for _filter in filters_str.split(",") if len(_filter) > 0
                 ]
             filters_for_type = [getter(filter_str) for filter_str in filter_strs]
+            filters_for_type = [_filter for _filter in filters_for_type if _filter]
             filters += filters_for_type
         return filters
 

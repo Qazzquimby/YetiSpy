@@ -68,7 +68,7 @@ def all_cards_df_from_db() -> pd.DataFrame:
             "ImageUrl": "image_url",
             "DetailsUrl": "details_url",
             "IsInDraftPack": "is_in_draft_pack",
-            "IsInExpedtion": "is_in_expedition",
+            "IsInExpedition": "is_in_expedition",
         },
         inplace=True,
     )

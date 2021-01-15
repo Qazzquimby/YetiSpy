@@ -77,7 +77,8 @@
                                    type="checkbox"
                                    value=""
                                    id="only-expedition-filter">
-                            <label class="form-check-label" for="show-owned-filter">
+                            <label class="form-check-label"
+                                   for="only-expedition-filter">
                                 Show Only Expedition
                             </label>
                         </div>
@@ -162,7 +163,7 @@
         }
 
         function getOnlyExpedition() {
-            return document.getElementById("show-only-expedition").checked
+            return document.getElementById("only-expedition-filter").checked
         }
 
         function getOwnershipString() {

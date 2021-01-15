@@ -1,7 +1,7 @@
 import typing as t
 
-import infiltrate.eternal_warcy_cards_browser as ew_cards
 import infiltrate.browsers as browsers
+import infiltrate.eternal_warcy_cards_browser as ew_cards
 from infiltrate import db
 from infiltrate.models.card import Card, CardId
 
@@ -20,9 +20,14 @@ def update_is_in_draft_pack():
 
 
 def _get_draft_pack_card_ids() -> t.List[CardId]:
+    root_url = get_draft_pack_root_url()
+    return ew_cards.get_card_ids_in_search(root_url)
+
+
+def get_draft_pack_root_url():
     draft_pack_id = _get_draft_pack_id()
     root_url = ew_cards.get_ew_cards_root_url(draft_pack_id=draft_pack_id)
-    return ew_cards.get_card_ids_in_search(root_url)
+    return root_url
 
 
 def _get_draft_pack_id():

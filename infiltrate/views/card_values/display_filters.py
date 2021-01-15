@@ -38,14 +38,6 @@ class OwnedFilter(OwnershipFilter):
         return OwnValueFrame(cards.user, filtered_df)
 
 
-class AllFilter(OwnershipFilter):
-    """Does not filter cards at all."""
-
-    # noinspection PyMissingOrEmptyDocstring
-    def filter(self, cards):
-        return cards
-
-
 class CardDisplaySort(Filter, ABC):
     """A method of sorting and filtering cards displays."""
 
@@ -143,7 +135,7 @@ def get_ownership_filter(filter_str: str) -> Filter:
     filter_dict = {
         UNOWNED_FILTER: UnownedFilter(),
         OWNED_FILTER: OwnedFilter(),
-        ALL_FILTER: AllFilter(),
+        ALL_FILTER: None,
     }
     return _get_filter(filter_dict=filter_dict, filter_str=filter_str)
 
@@ -168,10 +160,18 @@ def get_rarity_filter(filter_str: str) -> Filter:
 
 
 def _get_filter(filter_dict: t.Dict[str, Filter], filter_str: str) -> Filter:
-    _filter = filter_dict.get(filter_str, None)
-    if not _filter:
+    try:
+        return filter_dict[filter_str]
+    except KeyError:
         raise KeyError(
             f"Filter {filter_str} not recognized. "
             f"Known filters are {filter_dict.keys()}"
         )
-    return _filter
+
+
+class OnlyExpeditionFilter(OwnershipFilter):
+    """Excludes the given rarity."""
+
+    def filter(self, cards):
+        filtered_df = cards[cards["is_in_expedition"]]
+        return OwnValueFrame(cards.user, filtered_df)
