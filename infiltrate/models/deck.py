@@ -1,5 +1,6 @@
 """The Deck model and related utilities"""
 import enum
+import logging
 import typing as t
 import urllib.error
 from datetime import datetime
@@ -100,7 +101,7 @@ class _WarcryNewIdGetter:
         else:
             max_pages = None
 
-        print("Getting new deck ids")
+        logging.info("Getting new deck ids")
         new_ids = []
         page = 0
         while True:
@@ -112,7 +113,7 @@ class _WarcryNewIdGetter:
                 break
 
             page += 1
-            print(f"Pages of deck ids ready: {page}")
+            logging.info(f"Pages of deck ids ready: {page}")
         return new_ids
 
     def get_ids_from_page(self, page: int):
@@ -231,6 +232,6 @@ def update_decks():
                     )
                     deck.cards.append(deck_has_card)
 
-    print("Info: Updating decks")
+    logging.info("Updating decks")
     updater = _WarcyDeckUpdater()
     updater.run()

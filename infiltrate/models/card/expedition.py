@@ -38,5 +38,3 @@ def _get_expedition_id():
 
 if __name__ == "__main__":
     result = _get_expedition_card_ids()
-
-    print("debug")

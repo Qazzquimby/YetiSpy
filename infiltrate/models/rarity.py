@@ -1,4 +1,5 @@
 """Card Rarities"""
+import logging
 import typing as t
 
 from infiltrate import db
@@ -78,7 +79,7 @@ rarity_from_name = {r.name: r for r in RARITIES}
 
 
 def create_rarities():
-    print("Info: Setting up rarities")
+    logging.info("Setting up rarities")
     db.create_all()
     db.session.commit()
     for rarity in RARITIES:

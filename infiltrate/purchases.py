@@ -1,6 +1,7 @@
 """Handles things that can be bought, such as packs, draft, and league."""
 import abc
 import collections
+import logging
 import typing as t
 
 import pandas as pd
@@ -49,6 +50,7 @@ class PackEvaluator(PurchaseEvaluator):
             card_set: card_pack.get_value(self.card_data)
             for card_set, card_pack in rewards.CARD_PACKS.items()
         }
+        logging.info(f"Pack values: {values}")
         return values
 
     def get_df_rows(self) -> t.List[PurchaseRow]:
@@ -86,7 +88,7 @@ class CampaignEvaluator(PurchaseEvaluator):
 
             value_for_pool = sum(cards_in_pool["play_value"])
             values[card_set] += value_for_pool
-
+        logging.info(f"Campaign values: {values}")
         return values
 
     def get_df_rows(self) -> t.List[PurchaseRow]:
@@ -175,6 +177,7 @@ class LoseAllGamesDraftEvaluator(DraftEvaluator):
         packs_value = self._get_packs_value()
         no_wins_value = self._get_no_wins_value()
         value = packs_value + no_wins_value
+        logging.info(f"Lose all games draft value: {value}")
         return value
 
     def get_df_rows(self) -> t.List[PurchaseRow]:
@@ -206,6 +209,7 @@ class AverageDraftEvaluator(DraftEvaluator):
         average_wins_value = self._get_average_wins_value()
 
         value = packs_value + average_wins_value
+        logging.info(f"Average draft value: {value}")
         return value
 
     def _get_average_wins_value(self) -> float:
@@ -439,6 +443,7 @@ Top 1000 has been at 21 wins, top 500 at 25 wins and top 100 at 30 wins
             average_win_value += weighted_win_value
 
         value = packs_value + average_win_value
+        logging.info(f"First league value: {value}")
         return value
 
     def get_df_rows(self):
@@ -456,7 +461,9 @@ class AdditionalLeagueEvaluator(LeagueEvaluator):
     """Evaluates any league in a month after the first."""
 
     def get_value(self):
-        return self.get_league_packs_value()
+        value = self.get_league_packs_value()
+        logging.info(f"Additional league value: {value}")
+        return value
 
     def get_df_rows(self):
         additional_league_value = self.get_value()

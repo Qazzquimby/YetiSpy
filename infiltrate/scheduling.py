@@ -1,6 +1,7 @@
 """Handles scheduled tasks."""
 
 import atexit
+import logging
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -19,6 +20,7 @@ UPDATES_TO_INTERVALS = {
 
 
 def initial_update():
+    logging.info("Performing initial updates")
     card.db.create_all()
     card.db.session.commit()
 
@@ -28,6 +30,7 @@ def initial_update():
 
 
 def recurring_update():
+    logging.info("Performing recurring updates")
     for update in UPDATES_TO_INTERVALS.keys():
         update()
 

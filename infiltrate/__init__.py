@@ -13,13 +13,14 @@ from flask_sqlalchemy import SQLAlchemy
 import logging
 
 # noinspection PyArgumentList
-logging.basicConfig(handlers=[logging.StreamHandler()])
+logging.basicConfig(handlers=[logging.StreamHandler()], level=logging.DEBUG)
 
 application = Flask(__name__)
 application.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 
 def _set_config(app):
+    logging.info("Setting configuration")
     variables = [
         "SECRET_KEY",
         "WARCRY_KEY",
@@ -38,6 +39,7 @@ _set_config(application)
 
 
 def _setup_db(app):
+    logging.info("Setting up database")
     app.config["SQLALCHEMY_DATABASE_URI"] = app.config["DATABASE_URL"]
     database = SQLAlchemy(
         app, session_options={"expire_on_commit": False}  # Fixes DetachedInstanceError
@@ -50,6 +52,7 @@ db = _setup_db(application)
 
 @application.teardown_appcontext
 def shutdown_session(exception=None):
+    logging.info("Shutting down application")
     db.session.remove()
 
 
@@ -70,6 +73,7 @@ def setup_application(app):
 
 
 def _register_views(app):
+    logging.info("Registering views")
     from infiltrate.views.card_values.cards_view import CardsView
     from infiltrate.views.update_api import UpdateAPI
     from infiltrate.views.login import LoginView, RegisterView
@@ -104,7 +108,7 @@ def _register_views(app):
             if "GET" in rule.methods and has_no_empty_params(rule):
                 url = flask.url_for(rule.endpoint, **(rule.defaults or {}))
                 links.append((url, rule.endpoint))
-        print(links)
+        logging.info(f"Sitemap: {links}")
         return "See backend console log."
 
     @app.route("/logout")
@@ -115,6 +119,7 @@ def _register_views(app):
 
 
 def _setup_login_manager(app):
+    logging.info("Setting up login manager")
     login_manager = flask_login.LoginManager()
     login_manager.login_view = "LoginView:index"
     login_manager.init_app(app)
@@ -124,7 +129,7 @@ def _setup_login_manager(app):
     @login_manager.user_loader
     @functools.lru_cache(20)
     def load_user(user_id):
-        print(f"Loading user {user_id}")
+        logging.info(f"Loading user {user_id}")
         return User.query.filter(User.id == user_id).first()
 
 

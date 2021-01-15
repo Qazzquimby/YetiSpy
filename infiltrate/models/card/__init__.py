@@ -2,6 +2,7 @@
 
 Related to card_collections.py
 """
+import logging
 import typing as t
 
 import pandas as pd
@@ -47,7 +48,7 @@ class Card(db.Model):
         try:
             card_id = CardId(set_num=self.set_num, card_num=self.card_num)
         except sqlalchemy.orm.exc.DetachedInstanceError as e:
-            print("Detached Instance Error!", self, self.__dict__)
+            logging.error("Detached Instance Error!", self, self.__dict__)
             raise e
         return card_id
 
@@ -93,7 +94,7 @@ def get_card_ids_from_names(names: t.List[str]) -> t.List[CardId]:
 
 def update_cards():
     """Updates the db to match the Warcry cards list."""
-    print("Info: Updating cards")
+    logging.info("Updating cards")
     card_json = _get_card_json()
     _make_cards_from_entries(card_json)
     db.session.commit()

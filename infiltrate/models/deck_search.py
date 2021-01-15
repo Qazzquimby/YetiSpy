@@ -3,7 +3,9 @@ from __future__ import annotations
 
 import dataclasses
 import datetime
+import logging
 import typing as t
+
 import pandas as pd
 from tqdm import tqdm
 
@@ -158,10 +160,10 @@ class WeightedDeckSearch(db.Model):
 
 def update_deck_searches():
     """Update the playrate caches of all deck searches."""
-    print("Info: Updating deck_searches")
+    logging.info("Updating deck_searches")
     weighted_deck_searches = WeightedDeckSearch.query.all()
     for weighted in weighted_deck_searches:
-        print(f"Updating playrate cache for {weighted.name}")
+        logging.info(f"Updating playrate cache for {weighted.name}")
         deck_search = weighted.deck_search
         deck_search.update_playrates()
 
@@ -213,6 +215,6 @@ def create_weighted_deck_searches():
 
 
 def setup():
-    print("Info: Setting up deck searches")
+    logging.info("Setting up deck searches")
     create_deck_searches()
     create_weighted_deck_searches()

@@ -1,5 +1,6 @@
 """Models for sets of cards."""
 import collections
+import logging
 import typing as t
 
 import infiltrate.browsers as browsers
@@ -62,7 +63,7 @@ def update():
             }
             return card_set_counter
 
-    print("Info: Updating card sets")
+    logging.info("Updating card sets")
     updater = _CardSetNameUpdater()
     updater.run()
 
@@ -114,6 +115,9 @@ class CardSet:
 
     def __str__(self):
         return str(self.set_num)
+
+    def __repr__(self):
+        return str(self)
 
     def __eq__(self, other):
         if isinstance(other, CardSet):
