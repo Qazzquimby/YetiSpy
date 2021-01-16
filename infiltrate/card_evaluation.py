@@ -227,6 +227,12 @@ class OwnValueFrame(PlayCraftEfficiencyFrame):
         self.resell_value = self.resell_value
         self.own_value = self.own_value
 
+    def __eq__(self, other):
+        return self.user == other.user
+
+    def __hash__(self):
+        return hash(self.user)
+
     def copy(self):
         copy = super(OwnValueFrame, self).copy()
         copy.__dict__ = self.__dict__.copy()

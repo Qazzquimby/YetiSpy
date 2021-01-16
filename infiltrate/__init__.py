@@ -12,6 +12,8 @@ from flask_jsglue import JSGlue
 from flask_sqlalchemy import SQLAlchemy
 import logging
 
+# todo move top level things to __main__ call
+
 # noinspection PyArgumentList
 logging.basicConfig(handlers=[logging.StreamHandler()], level=logging.INFO)
 

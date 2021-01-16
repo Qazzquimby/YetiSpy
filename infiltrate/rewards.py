@@ -9,6 +9,9 @@ import infiltrate.models.card as card
 import infiltrate.models.card_set as card_sets
 import infiltrate.models.rarity as rarities
 
+if t.TYPE_CHECKING:
+    import infiltrate.card_evaluation as card_evaluation
+
 DAYS_IN_WEEK = 7
 
 
@@ -76,7 +79,9 @@ class CardClass:
 
 @functools.lru_cache(maxsize=200)
 def _get_value_for_set_and_rarity(
-    card_data, card_set: card_sets.CardSet, rarity: rarities.Rarity
+    card_data: "card_evaluation.OwnValueFrame",
+    card_set: card_sets.CardSet,
+    rarity: rarities.Rarity,
 ) -> float:
     cards_in_set_and_rarity = card_data[
         np.logical_and(
