@@ -136,6 +136,7 @@ def _make_card_from_entry(entry: dict) -> t.Optional[Card]:
         image_url=entry["ImageUrl"],
         details_url=entry["DetailsUrl"],
         is_in_draft_pack=False,  # Default value
+        is_in_expedition=False,  # Default value
     )
     try:
         db.session.merge(card)
