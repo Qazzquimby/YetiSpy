@@ -72,7 +72,6 @@ def setup_application(app):
     boltons.fileutils.mkdir_p(app.instance_path)
     _register_views(app)
     _setup_login_manager(app)
-    updates()
 
 
 def _register_views(app):
