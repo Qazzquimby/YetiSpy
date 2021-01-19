@@ -153,4 +153,5 @@ def teardown_request(exception):
 setup_application(application)
 
 if __name__ == "__main__":
+    updates()
     application.run()
