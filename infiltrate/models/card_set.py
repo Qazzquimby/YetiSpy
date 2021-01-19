@@ -143,7 +143,11 @@ def get_campaign_sets() -> t.List[CardSet]:
 def get_newest_main_set() -> CardSet:
     """Gets the newest droppable pack."""
     main_sets = get_main_sets()
-    newest_main_set = main_sets[-1]
+    try:
+        newest_main_set = main_sets[-1]
+    except IndexError:
+        logging.warning("No sets are found in get_newest_main_set. Are there no cards?")
+        newest_main_set = 0
     return newest_main_set
 
 
