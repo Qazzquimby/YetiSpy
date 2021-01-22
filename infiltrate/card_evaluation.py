@@ -56,12 +56,34 @@ class PlayCountFrame(card_frame_bases.CardCopy):
         for weighted_deck_search in weighted_deck_searches:
             play_count_dfs.append(cls._get_count_df(weighted_deck_search))
 
+        play_count_dfs.append(PlayCountFrame._make_empty_base_frame(card_details))
+
         index_keys = [cls.SET_NUM_NAME, cls.CARD_NUM_NAME]
         combined_df = cls._sum_count_dfs(play_count_dfs).set_index(index_keys)
 
         added_card_data_df = combined_df.join(card_details)
 
         return cls(added_card_data_df)
+
+    @classmethod
+    def _make_empty_base_frame(cls, card_details):
+        base_frame_rows = []
+        for index, card in card_details.iterrows():
+            for copy_num in range(4):
+                base_frame_rows.append(
+                    [0, card["set_num"], card["card_num"], copy_num, 0]
+                )
+        empty_base_frame = pd.DataFrame(
+            base_frame_rows,
+            columns=[
+                "decksearch_id",
+                "set_num",
+                "card_num",
+                "count_in_deck",
+                "num_decks_with_count_or_less",
+            ],
+        )
+        return empty_base_frame
 
     @classmethod
     def _get_count_df(cls, weighted_deck_search: WeightedDeckSearch):
