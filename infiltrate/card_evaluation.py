@@ -69,7 +69,7 @@ class PlayCountFrame(card_frame_bases.CardCopy):
     def _make_empty_base_frame(cls, card_details):
         base_frame_rows = []
         for index, card in card_details.iterrows():
-            for copy_num in range(4):
+            for copy_num in range(1, 5):
                 base_frame_rows.append(
                     [0, card["set_num"], card["card_num"], copy_num, 0]
                 )
