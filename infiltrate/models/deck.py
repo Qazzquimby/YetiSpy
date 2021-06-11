@@ -40,6 +40,7 @@ class DeckType(enum.Enum):
 
     unknown = 0
     standard = 1
+    throne = 1
     draft = 2
     gauntlet = 3
     forge = 4
