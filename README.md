@@ -1,4 +1,4 @@
-# Eternal Card Evaluator
+# YetiSpy
 Helps [Eternal][https://www.direwolfdigital.com/eternal/] players evaluate cards based on their 
 frequency of use in decks the user is interested in.
 
