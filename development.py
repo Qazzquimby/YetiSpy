@@ -28,7 +28,5 @@ def enable_profiling(application):
 
 if __name__ == "__main__":
     # enable_profiling(application)
-
-    setup_application(application)
     open_in_browser()
     application.run(debug=True, use_debugger=False, use_reloader=False)
