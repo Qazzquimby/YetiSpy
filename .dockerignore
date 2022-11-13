@@ -1,0 +1,255 @@
+venv
+
+# flyctl launch added from .gitignore
+.ebextensions
+**\.elasticbeanstalk\*
+!**\.elasticbeanstalk\*.cfg.yml
+!**\.elasticbeanstalk\*.global.yml
+.pytest_cache
+alembic
+chrome
+infiltrate\data\Beaker\tmp
+venv37
+.ebignore
+chromedriver.exe
+pylintrc
+scratch_get_distribution.py
+.idea
+instance
+**\.env
+**\__pycache__
+**\*\__pycache__
+
+# flyctl launch added from .idea\.gitignore
+# Default ignored files
+.idea\workspace.xml
+
+# Datasource local storage ignored files
+.idea\dataSources
+.idea\dataSources.local.xml
+
+# flyctl launch added from .pytest_cache\.gitignore
+# Created by pytest automatically.
+.pytest_cache\**\*
+
+# flyctl launch added from tests\.pytest_cache\.gitignore
+# Created by pytest automatically.
+tests\.pytest_cache\**\*
+
+# flyctl launch added from venv\.gitignore
+# created by virtualenv automatically
+venv\**\*
+
+# flyctl launch added from venv37\Lib\site-packages\cement\cli\templates\generate\project\.gitignore
+# Byte-compiled / optimized / DLL files
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\__pycache__
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\*.py[cod]
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\*$py.class
+
+# C extensions
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\*.so
+
+# Distribution / packaging
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.Python
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\build
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\develop-eggs
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\dist
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\downloads
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\eggs
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.eggs
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\lib
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\lib64
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\parts
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\sdist
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\var
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\wheels
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\*.egg-info
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.installed.cfg
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\*.egg
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\*.manifest
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\*.spec
+
+# Installer logs
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\pip-log.txt
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\htmlcov
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.tox
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.coverage
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.coverage.*
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\coverage-report
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.cache
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\nosetests.xml
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\coverage.xml
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\*.cover
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.hypothesis
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.pytest_cache
+
+# Translations
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\*.mo
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\*.pot
+
+# Django stuff:
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\*.log
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\local_settings.py
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\db.sqlite3
+
+# Flask stuff:
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\instance
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.webassets-cache
+
+# Scrapy stuff:
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.scrapy
+
+# Sphinx documentation
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\docs\_build
+
+# PyBuilder
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\target
+
+# Jupyter Notebook
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.ipynb_checkpoints
+
+# pyenv
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.python-version
+
+# celery beat schedule file
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\celerybeat-schedule
+
+# SageMath parsed files
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\*.sage.py
+
+# Environments
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.env
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.venv
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\env
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\venv
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\ENV
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\env.bak
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\venv.bak
+
+# Spyder project settings
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.spyderproject
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.spyproject
+
+# Rope project settings
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.ropeproject
+
+# mkdocs documentation
+venv37\Lib\site-packages\cement\cli\templates\generate\project\site
+
+# mypy
+venv37\Lib\site-packages\cement\cli\templates\generate\project\**\.mypy_cache
+
+# flyctl launch added from venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\.gitignore
+# Byte-compiled / optimized / DLL files
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\__pycache__
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\*.py[cod]
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\*$py.class
+
+# C extensions
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\*.so
+
+# Distribution / packaging
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.Python
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\build
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\develop-eggs
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\dist
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\downloads
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\eggs
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.eggs
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\lib
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\lib64
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\parts
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\sdist
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\var
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\wheels
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\*.egg-info
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.installed.cfg
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\*.egg
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\MANIFEST
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\*.manifest
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\*.spec
+
+# Installer logs
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\pip-log.txt
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\htmlcov
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.tox
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.coverage
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.coverage.*
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\coverage-report
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.cache
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\nosetests.xml
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\coverage.xml
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\*.cover
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.hypothesis
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.pytest_cache
+
+# Translations
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\*.mo
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\*.pot
+
+# Django stuff:
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\*.log
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\local_settings.py
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\db.sqlite3
+
+# Flask stuff:
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\instance
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.webassets-cache
+
+# Scrapy stuff:
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.scrapy
+
+# Sphinx documentation
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\docs\_build
+
+# PyBuilder
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\target
+
+# Jupyter Notebook
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.ipynb_checkpoints
+
+# pyenv
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.python-version
+
+# celery beat schedule file
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\celerybeat-schedule
+
+# SageMath parsed files
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\*.sage.py
+
+# Environments
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.env
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.venv
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\env
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\venv
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\ENV
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\env.bak
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\venv.bak
+
+# Spyder project settings
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.spyderproject
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.spyproject
+
+# Rope project settings
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.ropeproject
+
+# mkdocs documentation
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\site
+
+# mypy
+venv37\Lib\site-packages\cement\cli\templates\generate\todo-tutorial\**\.mypy_cache
