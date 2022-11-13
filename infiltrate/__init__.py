@@ -8,7 +8,7 @@ import flask_login
 import flask_talisman
 from flask import Flask
 from flask_bootstrap import Bootstrap
-from flask_jsglue import JSGlue
+from infiltrate.flask_jsglue import JSGlue
 from flask_sqlalchemy import SQLAlchemy
 import logging
 
