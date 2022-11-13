@@ -150,7 +150,12 @@ def teardown_request(exception):
     db.session.remove()
 
 
-setup_application(application)
+@application.before_request
+def one_time_setup():
+    logging.info("Running one time setup")
+    setup_application(application)
+    updates()
+
 
 if __name__ == "__main__":
     application.run()
