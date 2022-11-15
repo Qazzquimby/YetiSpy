@@ -118,6 +118,7 @@ class _WarcryNewIdGetter:
         return new_ids
 
     def get_ids_from_page(self, page: int):
+        # TODO could find what deck search they belong to here and only keep the needed ones
         url = (
             "https://api.eternalwarcry.com/v1/decks/SearchDecks"
             + f"?starting={self.ITEMS_PER_PAGE * page}"
