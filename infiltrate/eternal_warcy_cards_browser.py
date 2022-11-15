@@ -42,10 +42,10 @@ def get_card_ids_in_search(root_url: str) -> t.List[card_mod.CardId]:
     return cards
 
 
-def get_ew_cards_root_url(expedition_id: str = "", draft_pack_id: str = ""):
+def get_ew_cards_root_url(expedition_id: str = "", vault_or_reprint_id: str = ""):
     return (
         f"https://eternalwarcry.com/cards?Query="
         f"&Expedition={expedition_id}"
-        f"&DraftPack={draft_pack_id}"
+        f"&DraftPack={vault_or_reprint_id}"  # Note that this doesn't refer to an actual draft pack anymore
         f"&cardview=false"
     )

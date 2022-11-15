@@ -26,7 +26,7 @@ def _get_draft_pack_card_ids() -> t.List[CardId]:
 
 def get_draft_pack_root_url():
     draft_pack_id = _get_draft_pack_id()
-    root_url = ew_cards.get_ew_cards_root_url(draft_pack_id=draft_pack_id)
+    root_url = ew_cards.get_ew_cards_root_url(vault_or_reprint_id=draft_pack_id)
     return root_url
 
 

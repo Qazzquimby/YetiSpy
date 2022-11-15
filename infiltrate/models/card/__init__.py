@@ -40,7 +40,9 @@ class Card(db.Model):
         "DetailsUrl", db.String(length=100), unique=True, nullable=False
     )
     is_in_draft_pack = db.Column("IsInDraftPack", db.Boolean, nullable=False)
-    is_in_expedition = db.Column("IsInExpedition", db.Boolean, nullable=False)
+    is_in_expedition_vault = db.Column(
+        "IsInExpeditionVault", db.Boolean, nullable=False
+    )
 
     @property
     def id(self):
@@ -69,7 +71,7 @@ def all_cards_df_from_db() -> pd.DataFrame:
             "ImageUrl": "image_url",
             "DetailsUrl": "details_url",
             "IsInDraftPack": "is_in_draft_pack",
-            "IsInExpedition": "is_in_expedition",
+            "IsInExpeditionVault": "is_in_expedition_vault",
         },
         inplace=True,
     )
@@ -100,11 +102,11 @@ def update_cards():
     db.session.commit()
     import infiltrate.models.card.draft as draft
 
-    draft.update_is_in_draft_pack()
+    draft.update_is_in_draft_pack()  # Todo update
 
     import infiltrate.models.card.expedition as expedition
 
-    expedition.update_is_in_expedition()
+    expedition.update_is_in_expedition_vault()
 
 
 def _get_card_json():
@@ -136,7 +138,7 @@ def _make_card_from_entry(entry: dict) -> t.Optional[Card]:
         image_url=entry["ImageUrl"],
         details_url=entry["DetailsUrl"],
         is_in_draft_pack=False,  # Default value
-        is_in_expedition=False,  # Default value
+        is_in_expedition_vault=False,  # Default value
     )
     try:
         db.session.merge(card)
