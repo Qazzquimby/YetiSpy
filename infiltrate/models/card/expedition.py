@@ -28,12 +28,11 @@ def _get_expedition_card_ids() -> t.List[card_mod.CardId]:
 
 def _get_expedition_id():
     card_url = "https://eternalwarcry.com/cards"
-    most_recent_expedition_selector = "#Expedition > option:nth-child(2)"
-    element = browsers.get_first_element_from_url_and_selector(
+    most_recent_expedition_selector = "#Expedition > option"
+    options = browsers.get_elements_from_url_and_selector(
         url=card_url, selector=most_recent_expedition_selector
     )
-    expedition_id = element.attrs["value"]
-    return expedition_id
+    return options[1].attrs["value"]
 
 
 if __name__ == "__main__":

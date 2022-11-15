@@ -68,7 +68,7 @@ class CraftSort(CardDisplaySort):
     @staticmethod
     def sort(cards):
         """Sorts the cards by highest to lowest card value
-         per shiftstone crafting cost."""
+        per shiftstone crafting cost."""
         cards.index.names = [name + "_index" for name in cards.index.names]
         sorted_df = cards.sort_values(
             by=[
