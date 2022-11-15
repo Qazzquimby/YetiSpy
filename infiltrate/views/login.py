@@ -78,7 +78,11 @@ class LoginView(FlaskView):
         user = User.query.filter(User.email == email).first()
 
         if not user or not check_password_hash(user.password, password):
-            flask.flash("Your username or password is incorrect.")
+            flask.flash(
+                "Your username or password is incorrect.\n"
+                "I moved to new infrastructure in Nov 2022. "
+                "Users from earlier need to re-register. Sorry about that."
+            )
             return flask.redirect(flask.url_for("LoginView:index"))
 
         # if the above check passes, then we know the user has the right credentials
