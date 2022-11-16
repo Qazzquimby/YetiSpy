@@ -10,12 +10,14 @@ import infiltrate.models.card_set as card_set
 import infiltrate.models.deck as deck
 import infiltrate.models.deck_search as deck_search
 import infiltrate.models.rarity as rarity
+from infiltrate.models import chapter
 
 UPDATES_TO_INTERVALS = {
     card.update_cards: 3,
     card_set.update: 3,
     deck.update_decks: 3,
     deck_search.update_deck_searches: 3,
+    chapter.update: 3,
 }
 
 
@@ -52,3 +54,4 @@ if __name__ == "__main__":
     card_set.update()
     deck.update_decks()
     deck_search.update_deck_searches()
+    chapter.update()

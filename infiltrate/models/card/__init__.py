@@ -86,8 +86,8 @@ def get_card_ids_from_names(names: t.List[str]) -> t.List[CardId]:
 
     matching_cards = all_cards[all_cards["name"].isin(names)]
     card_ids = [
-        CardId(set_num=card_row["set_num"], card_num=card_row["card_num"])
-        for card_row in matching_cards
+        CardId(set_num=card_row.set_num, card_num=card_row.card_num)
+        for card_row in matching_cards.itertuples()
     ]
     return card_ids
 
