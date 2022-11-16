@@ -64,3 +64,7 @@ def update():
             )
             db.session.merge(chapter_has_card)
         db.session.commit()
+
+
+def get_chapters():
+    return Chapter.query.all()

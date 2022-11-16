@@ -12,6 +12,7 @@ import infiltrate.models.card.draft as card_draft
 import infiltrate.models.card_set as models_card_set
 import infiltrate.models.rarity as rarity
 import infiltrate.rewards as rewards
+from infiltrate.models.chapter import get_chapters, ChapterHasCard
 from infiltrate.models.user import User
 
 PurchaseRow = t.Tuple[str, str, str, int, float, float]
@@ -68,6 +69,45 @@ class PackEvaluator(PurchaseEvaluator):
 
     def _make_info_link(self, card_set: models_card_set.CardSet) -> str:
         return f"https://eternalwarcry.com/cards?CardSet={card_set.set_num}"
+
+
+class ChapterEvaluator(PurchaseEvaluator):
+    def __init__(self, card_data):
+        super().__init__(card_data, cost=2_500, purchase_type="Chapter")
+
+    def get_values(self):
+        chapters = get_chapters()
+        chapter_values = {}
+        for chapter in chapters:
+            cards_in_chapter = ChapterHasCard.query.filter(
+                ChapterHasCard.chapter_number == chapter.chapter_number
+            ).all()
+            chapter_value = 0
+            for card in cards_in_chapter:
+                card_copies_df = self.card_data[
+                    (self.card_data["card_num"] == card.card_num)
+                    & (self.card_data["set_num"] == card.set_num)
+                    & (self.card_data["is_owned"] == False)
+                ]
+                value_of_cards = card_copies_df["play_value"].sum()
+                chapter_value += value_of_cards
+            chapter_values[chapter] = chapter_value
+        return chapter_values
+
+    def get_df_rows(self) -> t.List[PurchaseRow]:
+        """Gets rows for the purchase dataframe.
+        Format is name, cost, value, value/cost"""
+        chapter_values = self.get_values()
+
+        rows = [
+            self._make_row(
+                name=chapter.name,
+                info_link="https://eternalcardgame.fandom.com/wiki/Chapters",
+                value=chapter_values[chapter],
+            )
+            for chapter in chapter_values.keys()
+        ]
+        return rows
 
 
 class CampaignEvaluator(PurchaseEvaluator):
@@ -184,7 +224,9 @@ class LoseAllGamesDraftEvaluator(DraftEvaluator):
         draft_value = self.get_values()
         return [
             self._make_row(
-                "No Wins", card_draft.get_draft_pack_root_url(), draft_value,
+                "No Wins",
+                card_draft.get_draft_pack_root_url(),
+                draft_value,
             )
         ]
 
@@ -235,7 +277,9 @@ class AverageDraftEvaluator(DraftEvaluator):
         draft_value = self.get_values()
         return [
             self._make_row(
-                "Average Draft", card_draft.get_draft_pack_root_url(), draft_value,
+                "Average Draft",
+                card_draft.get_draft_pack_root_url(),
+                draft_value,
             )
         ]
 
@@ -506,6 +550,7 @@ class _PurchasesValueDataframeGetter:
             LoseAllGamesDraftEvaluator(self.card_data),
             FirstLeagueEvaluator(self.card_data),
             AdditionalLeagueEvaluator(self.card_data),
+            ChapterEvaluator(self.card_data),
         ]
 
     def get_purchase_values(self):
