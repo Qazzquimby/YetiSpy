@@ -8,7 +8,7 @@ from infiltrate.models.card import Card_DF
 
 def get_matching_card(card_df: Card_DF, search_str: str) -> Card_DF:
     """Return rows from the card_df with card names best matching
-     the search."""
+    the search."""
     matcher = _CardAutoCompleter(card_df)
     matches = matcher.get_cards_matching_search(search_str)
     return matches
@@ -21,7 +21,7 @@ class _CardAutoCompleter:
 
     def get_cards_matching_search(self, search: str) -> Card_DF:
         """Returns cards with the name best matching the search string."""
-        matches = self._match_name(search)
+        matches = [match.lower() for match in self._match_name(search)]
         name_pattern = "|".join(matches)
         cards_with_matching_name = self.cards[
             self.cards["name"].str.lower().str.fullmatch(name_pattern)

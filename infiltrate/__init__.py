@@ -24,7 +24,6 @@ db = _setup_db(application)
 
 @application.teardown_appcontext
 def shutdown_session(exception=None):
-    logging.info("Shutting down application")
     db.session.remove()
 
 
