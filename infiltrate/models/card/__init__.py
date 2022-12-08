@@ -140,9 +140,17 @@ def _make_card_from_entry(entry: dict) -> t.Optional[Card]:
     )
     try:
         db.session.merge(card)
-    except sqlalchemy.exc.IntegrityError:
-        pass
-    #     db.session.rollback()
+    except sqlalchemy.exc.IntegrityError as e:
+        # I think this always means the name is non-unique
+        # remove the card with the matching name and retry
+        logging.warning(
+            f"IntegrityError adding card {card.name}, removing and retrying."
+            f"\n\n{card}"
+            f"\n\n{e}"
+        )
+        db.session.rollback()
+        db.session.query(Card).filter(Card.name == card.name).delete()
+        db.session.merge(card)
 
 
 if __name__ == "__main__":
