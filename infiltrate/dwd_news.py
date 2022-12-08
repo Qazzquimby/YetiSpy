@@ -4,7 +4,7 @@ import itertools
 import infiltrate.browsers as browsers
 
 ROOT_URL = "https://www.direwolfdigital.com/"
-NEWS_URL = "https://www.direwolfdigital.com/news/"
+NEWS_URL = "https://news.direwolfdigital.com/"
 ARTICLE_SELECTOR = "section.allNews > div > div > a"
 LEAGUE_PACKS_SELECTOR = (
     "section.pageContent > div > div > div.col-md-8.content > h2 + p + ul > li"
@@ -14,6 +14,8 @@ LEAGUE_PACKS_SELECTOR = (
 def get_news_links():
     soup = browsers.get_soup_from_url(NEWS_URL)
     articles = soup.select(ARTICLE_SELECTOR)
+    if not articles:
+        raise ValueError("No articles found on news page. Probably blocking scraping")
     return articles
 
 

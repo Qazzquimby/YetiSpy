@@ -49,7 +49,10 @@ def update():
             db.session.commit()
 
         def _get_league_counts(self) -> t.Dict[str, int]:
-            pack_texts = dwd_news.get_most_recent_league_article_packs_text()
+            try:
+                pack_texts = dwd_news.get_most_recent_league_article_packs_text()
+            except ValueError:
+                return {}
             set_name_counter = collections.defaultdict(int)
             for pack_text in pack_texts:
                 pack_text = pack_text.split(":")[-1]
