@@ -18,7 +18,7 @@ pandas
 psycopg2
 python-Levenshtein
 requests
-sqlalchemy
+sqlalchemy==1.4.43
 SQLAlchemy-Utils
 tqdm
 werkzeug==2.1.2
