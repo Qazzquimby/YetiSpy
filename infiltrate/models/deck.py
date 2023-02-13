@@ -26,7 +26,9 @@ class DeckHasCard(db.Model):
     num_played = db.Column("num_played", db.Integer, nullable=False)
     __table_args__ = (
         db.ForeignKeyConstraint(
-            [set_num, card_num], [card.Card.set_num, card.Card.card_num]
+            [set_num, card_num],
+            [card.Card.set_num, card.Card.card_num],
+            ondelete="CASCADE",
         ),
         {},
     )

@@ -32,7 +32,9 @@ class DeckSearchHasCard(db.Model):
     )
     __table_args__ = (
         db.ForeignKeyConstraint(
-            (set_num, card_num), [models_card.Card.set_num, models_card.Card.card_num]
+            (set_num, card_num),
+            [models_card.Card.set_num, models_card.Card.card_num],
+            ondelete="CASCADE",
         ),
         {},
     )

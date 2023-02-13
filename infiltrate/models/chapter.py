@@ -20,7 +20,9 @@ class ChapterHasCard(db.Model):
     set_num = db.Column("set_num", db.Integer, primary_key=True)
     card_num = db.Column("card_num", db.Integer, primary_key=True)
     __table_args__ = (
-        db.ForeignKeyConstraint([set_num, card_num], [Card.set_num, Card.card_num]),
+        db.ForeignKeyConstraint(
+            [set_num, card_num], [Card.set_num, Card.card_num], ondelete="CASCADE"
+        ),
         {},
     )
 
