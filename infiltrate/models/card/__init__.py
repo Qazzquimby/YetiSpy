@@ -149,7 +149,9 @@ def _make_card_from_entry(entry: dict) -> t.Optional[Card]:
             f"\n\n{e}"
         )
         db.session.rollback()
-        db.session.query(Card).filter(Card.name == card.name).delete()
+
+        duplicate_card = db.session.query(Card).filter(Card.name == card.name).first()
+        db.session.delete(duplicate_card)
         db.session.merge(card)
 
 
