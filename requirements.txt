@@ -21,4 +21,4 @@ requests
 sqlalchemy==1.4.43
 SQLAlchemy-Utils
 tqdm
-werkzeug==2.1.2
+werkzeug==2.2.3
