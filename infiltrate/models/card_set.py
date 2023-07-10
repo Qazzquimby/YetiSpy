@@ -51,7 +51,7 @@ def update():
         def _get_league_counts(self) -> t.Dict[str, int]:
             try:
                 pack_texts = dwd_news.get_most_recent_league_article_packs_text()
-            except ValueError:
+            except (ValueError, IndexError):
                 return {}
             set_name_counter = collections.defaultdict(int)
             for pack_text in pack_texts:
